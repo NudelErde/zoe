@@ -1,0 +1,31 @@
+/*
+ * OpenGLVertexBufferImpl.h
+ *
+ *  Created on: 20.04.2019
+ *      Author: florian
+ */
+
+#pragma once
+
+#include "render/api/VertexBuffer.h"
+
+namespace Zoe {
+
+class GraphicsContext;
+
+class OpenGLVertexBufferImpl: public VertexBufferImpl {
+public:
+	OpenGLVertexBufferImpl(GraphicsContext* context);
+	~OpenGLVertexBufferImpl();
+
+	void bind();
+	void unbind();
+
+	void setData(const void* data, unsigned int size);
+	void* getData(unsigned int offset, unsigned int size);
+private:
+	unsigned int renderID;
+	unsigned int size;
+};
+
+}
