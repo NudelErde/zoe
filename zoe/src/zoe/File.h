@@ -10,6 +10,7 @@
 #include "Core.h"
 #include <iostream>
 #include <memory>
+#include <cinttypes>
 
 namespace Zoe{
 
@@ -19,6 +20,9 @@ public:
 	~File();
 
 	std::istream* getInputStream() const;
+	uint8_t* getByteArray(size_t* size = 0) const;
+
+	std::string getName() const;
 private:
 	bool m_virtual;
 	std::string m_path;

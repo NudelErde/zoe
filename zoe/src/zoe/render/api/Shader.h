@@ -12,6 +12,7 @@
 #include "../../Core.h"
 #include "../../math/mat.h"
 #include "../../File.h"
+#include "Texture.h"
 #include "ImplPointer.h"
 
 namespace Zoe {
@@ -30,6 +31,8 @@ public:
 	virtual void setUniform2m(const std::string& name,const mat2x2& mat)=0;
 	virtual void setUniform3m(const std::string& name,const mat3x3& mat)=0;
 	virtual void setUniform4m(const std::string& name,const mat4x4& mat)=0;
+
+	virtual void setTexture(const std::string& name, Texture& texture)=0;
 
 	virtual void bind()=0;
 	virtual void unbind()=0;
@@ -50,6 +53,8 @@ public:
 	inline void setUniform2m(const std::string& name,const mat2x2& mat){impl->setUniform2m(name, mat); }
 	inline void setUniform3m(const std::string& name,const mat3x3& mat){impl->setUniform3m(name, mat); }
 	inline void setUniform4m(const std::string& name,const mat4x4& mat){impl->setUniform4m(name, mat); }
+
+	inline void setTexture(const std::string& name, Texture& texture){impl->setTexture(name, texture);}
 
 	inline void bind() { impl->bind(); }
 	inline void unbind(){ impl->unbind(); }
