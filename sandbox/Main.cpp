@@ -18,14 +18,11 @@ public:
 		addOval(0, 0, 250, 250);
 	}
 	~TestLayer(){
-
 	}
 
 	void onAttach(){
-
 	}
 	void onDetach(){
-
 	}
 };
 
@@ -35,7 +32,6 @@ public:
 		getLayerStack().pushOverlay(new TestLayer());
 	}
 	~App(){
-
 	}
 };
 
