@@ -16,7 +16,6 @@ namespace Zoe {
 
 class DLL_PUBLIC Image: public Component{
 public:
-
 	Image(const Rectangle& rect, const File& file);
 	~Image();
 
