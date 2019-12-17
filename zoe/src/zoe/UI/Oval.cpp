@@ -12,6 +12,7 @@
 #include "render/api/VertexArray.h"
 #include "render/api/Render.h"
 #include "../Application.h"
+#include "../File.h"
 
 namespace Zoe {
 
@@ -98,7 +99,7 @@ Oval::~Oval() {
 void Oval::draw() {
 	ovalShader->setUniform4f("Color", color.r, color.g, color.b, color.a);
 	ovalShader->setUniform4m("ModelView",
-			Zoe::translate3D(rect.x, rect.y, 0)
+			Zoe::translate3D(rect.x+rect.width/2, rect.y+rect.height/2, 0)
 					* Zoe::scale3D(rect.width/2, rect.height/2, 1)
 					* Zoe::rotateYZ3D(rect.rotation)
 	);

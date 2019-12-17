@@ -8,14 +8,22 @@
 #pragma once
 
 #include "../Core.h"
-#include "api/IndexBuffer.h"
-#include "api/Render.h"
-#include "api/Shader.h"
-#include "api/VertexArray.h"
-#include "api/VertexBuffer.h"
-#include "api/VertexBufferLayout.h"
 #include "../File.h"
-#include <cstring>
+
+namespace Zoe {
+class IndexBuffer;
+class IndexBufferImpl;
+class Render;
+class RenderImpl;
+class Shader;
+class ShaderImpl;
+class Texture;
+class VertexArray;
+class VertexArrayImpl;
+class VertexBuffer;
+class VertexBufferImpl;
+class VertexBufferLayout;
+} /* namespace Zoe */
 
 namespace Zoe{
 
@@ -32,6 +40,8 @@ public:
 	virtual VertexArray* getVertexArray() = 0;
 	virtual VertexBuffer* getVertexBuffer() = 0;
 	virtual VertexBufferLayout* getVertexBufferLayout() = 0;
+	virtual Texture* getTexture(unsigned int width, unsigned int height) = 0;
+	virtual Texture* getTexture(const File& file) = 0;
 
 	IndexBufferImpl* boundIndexBuffer;
 	RenderImpl* boundRender;
