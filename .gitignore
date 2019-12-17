@@ -37,3 +37,5 @@ Debug/
 .metadata/
 .git/
 .settings/
+.project
+.cproject
