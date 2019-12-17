@@ -28,7 +28,6 @@ void OpenGLVertexArrayImpl::set(VertexBuffer& vb,IndexBuffer& ib,VertexBufferLay
 	bind();
 	vb.bind();
 
-	//forcebind
 	ib.bind();
 
 	VertexBufferLayoutImpl* vbl_ptr = layout.getImpl();

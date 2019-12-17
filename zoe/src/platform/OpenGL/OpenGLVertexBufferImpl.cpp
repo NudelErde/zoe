@@ -40,7 +40,11 @@ void OpenGLVertexBufferImpl::unbind(){
 
 void OpenGLVertexBufferImpl::setData(const void* data,unsigned int size){
 	bind();
-	glBufferData(GL_ARRAY_BUFFER,size,data, GL_STATIC_DRAW);
+	if(size == this->size){
+		glBufferSubData(GL_ARRAY_BUFFER,0,size,data);
+	}else{
+		glBufferData(GL_ARRAY_BUFFER,size,data, GL_STATIC_DRAW);
+	}
 	this->size=size;
 }
 void* OpenGLVertexBufferImpl::getData(unsigned int offset,unsigned int size){

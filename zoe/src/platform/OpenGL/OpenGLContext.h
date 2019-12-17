@@ -26,6 +26,8 @@ public:
 	VertexArray* getVertexArray() override;
 	VertexBuffer* getVertexBuffer() override;
 	VertexBufferLayout* getVertexBufferLayout() override;
+	Texture* getTexture(unsigned int width, unsigned int height) override;
+	Texture* getTexture(const File& file) override;
 private:
 	GLFWwindow* windowHandle;
 };

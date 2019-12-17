@@ -11,6 +11,7 @@
 #include "Console.h"
 #include "Window.h"
 #include "LayerStack.h"
+#include "render/GraphicsContext.h"
 
 namespace Zoe {
 

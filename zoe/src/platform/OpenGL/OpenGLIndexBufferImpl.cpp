@@ -47,7 +47,11 @@ void OpenGLIndexBufferImpl::unbind(){
 
 void OpenGLIndexBufferImpl::setData(unsigned int* data,unsigned int count){
 	bind();
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int)*count,data,GL_STATIC_DRAW);
+	if(count == this->count){
+		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,0,sizeof(unsigned int)*count,data);
+	}else{
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int)*count,data,GL_STATIC_DRAW);
+	}
 	this->count=count;
 }
 unsigned int* OpenGLIndexBufferImpl::getData(unsigned int offset,unsigned int count){

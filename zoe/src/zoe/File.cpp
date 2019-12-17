@@ -34,6 +34,23 @@ std::istream* File::getInputStream() const {
 	}
 }
 
+uint8_t* File::getByteArray(size_t* size) const{
+	std::istream* stream = getInputStream();
+	stream->seekg( 0, std::ios::end );
+	size_t len = stream->tellg();
+	if(size!=0){
+		*size = len;
+	}
+	char* ret = new char[len];
+	stream->seekg(0, std::ios::beg);
+	stream->read(ret, len);
+	return (uint8_t*)ret;
+}
+
+std::string File::getName() const{
+	return m_path;
+}
+
 void registerVirtualFile(const std::string& path,
 		const std::string& content) {
 	virtualFileContentMap[path] = std::make_shared<std::string>(content);

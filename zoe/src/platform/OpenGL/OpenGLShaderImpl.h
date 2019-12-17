@@ -7,7 +7,11 @@
 
 #pragma once
 
-#include "render/api/Shader.h"
+#include "../zoe/File.h"
+#include "../zoe/math/mat.h"
+#include "../zoe/render/api/Shader.h"
+#include <string>
+#include <map>
 
 namespace Zoe{
 
@@ -26,10 +30,13 @@ public:
 	void setUniform3m(const std::string& name,const mat3x3& mat);
 	void setUniform4m(const std::string& name,const mat4x4& mat);
 
+	void setTexture(const std::string& name,Texture& texture);
+
 	void bind();
 	void unbind();
 private:
 	unsigned int renderID;
+	std::map<std::string, unsigned int> samplerSlot;
 };
 
 }

@@ -6,8 +6,8 @@
  */
 
 #include "OpenGLContext.h"
-#include "GL/glew.h"
-#include "GLFW/glfw3.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "Console.h"
 #include "OpenGLIndexBufferImpl.h"
 #include "OpenGLRenderImpl.h"
@@ -15,6 +15,7 @@
 #include "OpenGLVertexArrayImpl.h"
 #include "OpenGLVertexBufferImpl.h"
 #include "OpenGLVertexBufferLayoutImpl.h"
+#include "OpenGLTextureImpl.h"
 
 namespace Zoe {
 
@@ -61,6 +62,14 @@ VertexBuffer* OpenGLContext::getVertexBuffer(){
 
 VertexBufferLayout* OpenGLContext::getVertexBufferLayout(){
 	return new VertexBufferLayout(new OpenGLVertexBufferLayoutImpl());
+}
+
+Texture* OpenGLContext::getTexture(unsigned int width, unsigned int height){
+	return new Texture(new OpenGLTextureImpl(this,width,height));
+}
+
+Texture* OpenGLContext::getTexture(const File& file){
+	return new Texture(new OpenGLTextureImpl(this,file));
 }
 
 }
