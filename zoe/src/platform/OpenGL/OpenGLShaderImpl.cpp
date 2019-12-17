@@ -7,16 +7,17 @@
 
 #include "OpenGLShaderImpl.h"
 
-#include "GL/glew.h"
-#include "GLFW/glfw3.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <map>
 #include <iostream>
 #include "File.h"
-#include "../../zoe/render/GraphicsContext.h"
 #include "../../zoe/math/mat.h"
+#include "../../zoe/render/GraphicsContext.h"
 
 namespace Zoe {
 
@@ -30,6 +31,7 @@ struct ShaderSource {
 	std::string fragmentShader;
 	std::vector<layoutLocation> vertexLayoutLocation;
 	std::vector<layoutLocation> fragmentLayoutLocation;
+	std::map<std::string, unsigned int> samplerSlots;
 };
 
 static ShaderSource parseShader(const File& file) {
@@ -38,9 +40,10 @@ static ShaderSource parseShader(const File& file) {
 	enum class ShaderType {
 		NONE = -1, VERTEX = 0, FRAGMENT = 1
 	};
-	ShaderType type = ShaderType::VERTEX;
+	ShaderType type = ShaderType::NONE;
 	std::string line;
 	std::stringstream ss[2];
+	unsigned int samplerSlot = 0;
 	unsigned int index = 0;
 	while (getline(*stream, line)) {
 		if (line.find("#shader") != std::string::npos) {
@@ -89,9 +92,26 @@ static ShaderSource parseShader(const File& file) {
 			} else {
 				shso.fragmentLayoutLocation.push_back(ll);
 			}
-			ss[(int) type] << line.substr(substringStart + 1);
+			if (type != ShaderType::NONE)
+				ss[(int) type] << line.substr(substringStart + 1) << '\n';
+		} else if (line.find("uniform sampler2D") != std::string::npos) {
+			int index = line.find("uniform sampler2D");
+			const char* cstr = line.c_str();
+			int spaceCounter = 2;
+			while (spaceCounter) {
+				if (cstr[index] == ' ') {
+					--spaceCounter;
+				}
+				++index;
+			}
+			shso.samplerSlots[line.substr(index, line.length() - index - 1)] =
+					samplerSlot;
+			++samplerSlot;
+			if (type != ShaderType::NONE)
+				ss[(int) type] << line << '\n';
 		} else {
-			ss[(int) type] << line << '\n';
+			if (type != ShaderType::NONE)
+				ss[(int) type] << line << '\n';
 		}
 	}
 	shso.fragmentShader = ss[1].str();
@@ -151,6 +171,7 @@ static unsigned int createShaderProgram(ShaderSource& ss) {
 OpenGLShaderImpl::OpenGLShaderImpl(const File& file, GraphicsContext* context) :
 		ShaderImpl(context) {
 	ShaderSource ss = parseShader(file);
+	samplerSlot = ss.samplerSlots;
 	renderID = createShaderProgram(ss);
 }
 
@@ -197,6 +218,13 @@ void OpenGLShaderImpl::setUniform4m(const std::string& name,
 	bind();
 	glUniformMatrix4fv(glGetUniformLocation(renderID, name.c_str()), 1, GL_TRUE,
 			&(const_cast<mat4x4&>(mat)[0][0]));
+}
+
+void OpenGLShaderImpl::setTexture(const std::string& name, Texture& texture) {
+	unsigned int slot = samplerSlot[name];
+	texture.bind(slot);
+	bind();
+	glUniform1i(glGetUniformLocation(renderID, name.c_str()), slot);
 }
 
 void OpenGLShaderImpl::bind() {

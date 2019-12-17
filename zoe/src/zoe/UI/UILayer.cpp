@@ -166,6 +166,19 @@ void UILayer::addClickCallback(const Rectangle& rect,
 }
 
 //------------------
+//------IMAGE-------
+//------------------
+
+void UILayer::addImage(const Rectangle& rect, const File& file){
+	addComponent(new Image(rect, file));
+}
+
+void UILayer::addImage(const float& x, const float& y, const float& w, const float& h, const File& file){
+	Rectangle r = {x,y,w,h,0};
+	addComponent(new Image(r,file));
+}
+
+//------------------
 //------RENDER------
 //------------------
 
@@ -181,5 +194,7 @@ bool UILayer::onRenderEvent(AppRenderEvent& event) {
 	}
 	return false;
 }
+
+
 
 }

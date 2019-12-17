@@ -12,6 +12,8 @@
 
 #include "CommonUI.h"
 #include "Oval.h"
+#include "Image.h"
+#include "../File.h"
 
 namespace Zoe {
 
@@ -66,6 +68,9 @@ public:
 	void addClickCallback(const float& x, const float& y, const float& w,
 			const float& h, const ClickCallback& callback);
 	void addClickCallback(const Rectangle& rect, const ClickCallback& callback);
+
+	void addImage(const Rectangle& rect, const File& file);
+	void addImage(const float& x, const float& y, const float& w, const float& h, const File& file);
 
 private:
 	std::vector<Component*> components;

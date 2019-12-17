@@ -63,8 +63,7 @@ public:
 
 	virtual void draw()=0;
 
-	friend class Oval;
-private:
+protected:
 	Component();
 };
 
