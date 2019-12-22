@@ -15,7 +15,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
-#include "File.h"
+#include "../../zoe/File.h"
 #include "../../zoe/math/mat.h"
 #include "../../zoe/render/GraphicsContext.h"
 
@@ -35,7 +35,7 @@ struct ShaderSource {
 };
 
 static ShaderSource parseShader(const File& file) {
-	std::istream* stream = file.getInputStream();
+	std::shared_ptr<std::istream> stream = file.getInputStream();
 	ShaderSource shso;
 	enum class ShaderType {
 		NONE = -1, VERTEX = 0, FRAGMENT = 1

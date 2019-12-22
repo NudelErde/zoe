@@ -1,5 +1,5 @@
 /*
- * Oval.h
+ * Ellipse.h
  *
  *  Created on: 12.11.2019
  *      Author: florian
@@ -12,11 +12,10 @@
 
 namespace Zoe {
 
-class DLL_PUBLIC Oval: public Component{
+class DLL_PUBLIC Ellipse: public Component{
 public:
-
-	Oval(const Rectangle& rect, const Color& color);
-	~Oval();
+	Ellipse(const Rectangle& rect, const Color& color);
+	~Ellipse();
 
 	void draw() override;
 

@@ -41,5 +41,6 @@
 #include "zoe/parallel/Thread.h"
 #include "zoe/UI/UILayer.h"
 #include "zoe/UI/CommonUI.h"
-#include "zoe/UI/Oval.h"
+#include "zoe/UI/Ellipse.h"
 #include "zoe/File.h"
+#include "zoe/core/XMLParser.h"

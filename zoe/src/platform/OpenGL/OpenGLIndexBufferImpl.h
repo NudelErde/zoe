@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "render/api/IndexBuffer.h"
+#include "../../zoe/render/api/IndexBuffer.h"
 
 namespace Zoe{
 

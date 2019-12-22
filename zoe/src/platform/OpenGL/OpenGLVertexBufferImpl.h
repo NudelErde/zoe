@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "render/api/VertexBuffer.h"
+#include "../../zoe/render/api/VertexBuffer.h"
 
 namespace Zoe {
 
