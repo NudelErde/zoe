@@ -6,7 +6,6 @@
  */
 
 #include "mat.h"
-#include "Console.h"
 #include <math.h>
 
 namespace Zoe {
@@ -121,7 +120,7 @@ mat3x3 mat3x3::operator *(const mat3x3& mat) const {
 	}
 	return res;
 }
-
+DLL_PUBLIC
 vec3 mat3x3::operator [](const int& index) const {
 	return data[index];
 }

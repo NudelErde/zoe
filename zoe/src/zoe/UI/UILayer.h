@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include "../Core.h"
-#include "../Layer.h"
-
-#include "CommonUI.h"
-#include "Oval.h"
+#include "Ellipse.h"
 #include "Image.h"
+#include "CommonUI.h"
+
+#include "../Layer.h"
+#include "../Core.h"
 #include "../File.h"
 
 namespace Zoe {
@@ -39,9 +39,9 @@ public:
 
 	inline void addComponent(Component* comp){components.push_back(comp);}
 
-	void addOval(const float& x, const float& y, const float& w, const float& h,
+	void addEllipse(const float& x, const float& y, const float& w, const float& h,
 			const Color& color);
-	void addOval(const Rectangle& rect, const Color& color);
+	void addEllipse(const Rectangle& rect, const Color& color);
 	void addRectangle(const float& x, const float& y, const float& w,
 			const float& h, const Color& color);
 	void addRectangle(const Rectangle& rect, const Color& color);
@@ -54,9 +54,9 @@ public:
 			const Color& color);
 
 	void setColor(const Color& color);
-	void addOval(const float& x, const float& y, const float& w,
+	void addEllipse(const float& x, const float& y, const float& w,
 			const float& h);
-	void addOval(const Rectangle& rect);
+	void addEllipse(const Rectangle& rect);
 	void addRectangle(const float& x, const float& y, const float& w,
 			const float& h);
 	void addRectangle(const Rectangle& rect);

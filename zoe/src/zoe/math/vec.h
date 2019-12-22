@@ -29,8 +29,8 @@ public:
 	bool operator==(const vec2& vec) const;
 	bool operator!=(const vec2& vec) const;
 };
-std::ostream& operator<<(std::ostream& stream,const vec2& v);
-vec2 operator*(const float& m,const vec2& v);
+DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const vec2& v);
+DLL_PUBLIC vec2 operator*(const float& m,const vec2& v);
 
 class DLL_PUBLIC vec3{
 public:
@@ -62,8 +62,8 @@ public:
 	bool operator==(const vec3& vec) const;
 	bool operator!=(const vec3& vec) const;
 };
-std::ostream& operator<<(std::ostream& stream,const vec3& v);
-vec3 operator*(const float& m,const vec3& v);
+DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const vec3& v);
+DLL_PUBLIC vec3 operator*(const float& m,const vec3& v);
 
 class DLL_PUBLIC vec4{
 public:
@@ -98,7 +98,7 @@ public:
 	bool operator==(const vec4& vec) const;
 	bool operator!=(const vec4& vec) const;
 };
-std::ostream& operator<<(std::ostream& stream,const vec4& v);
-vec4 operator*(const float& m,const vec4& v);
+DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const vec4& v);
+DLL_PUBLIC vec4 operator*(const float& m,const vec4& v);
 
 }

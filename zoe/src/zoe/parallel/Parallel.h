@@ -12,7 +12,7 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
-#include "Core.h"
+#include "../Core.h"
 
 #define PARALLEL(C,I,CODE) parallel(C,[&](I)CODE)
 
