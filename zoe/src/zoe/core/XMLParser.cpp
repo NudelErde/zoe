@@ -42,6 +42,10 @@ static inline std::string readString(std::string& in){
     if(cstr[0] != '"')
         return "";
     for(unsigned int i = 1; i < length; ++i){
+<<<<<<< HEAD
+=======
+
+>>>>>>> 997f759dd6622a8743e6cb74fea594ad159692d4
         if(cstr[i] == '\\'){
             escape = true;
         }else if(cstr[i] == '"' && !escape){
