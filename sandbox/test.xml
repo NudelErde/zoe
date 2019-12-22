@@ -1,0 +1,9 @@
+<test stuff = "attribute value">
+	<subElement>
+		Test1
+	</subElement>
+	<subElement>
+		sub element 2
+		newline test
+	</subElement>
+</test>

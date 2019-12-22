@@ -26,25 +26,25 @@ File::~File() {
 
 }
 
-std::istream* File::getInputStream() const {
+std::shared_ptr<std::istream> File::getInputStream() const {
 	if(m_virtual){
-		return new std::stringstream(*getVirtualFileContent(m_path));
+		return std::make_shared<std::stringstream>(*getVirtualFileContent(m_path));
 	}else{
-		return new std::ifstream(m_path,std::ios::in);
+		return std::make_shared<std::ifstream>(m_path,std::ios::in);
 	}
 }
 
-uint8_t* File::getByteArray(size_t* size) const{
-	std::istream* stream = getInputStream();
+std::unique_ptr<uint8_t[]> File::getByteArray(size_t* size) const{
+	std::shared_ptr<std::istream> stream = getInputStream();
 	stream->seekg( 0, std::ios::end );
 	size_t len = stream->tellg();
 	if(size!=0){
 		*size = len;
 	}
-	char* ret = new char[len];
+	std::unique_ptr<uint8_t[]> ret = std::make_unique<uint8_t[]>(len);
 	stream->seekg(0, std::ios::beg);
-	stream->read(ret, len);
-	return (uint8_t*)ret;
+	stream->read((char*)(ret.get()), len);
+	return ret;
 }
 
 std::string File::getName() const{
@@ -60,7 +60,13 @@ std::shared_ptr<std::string> getVirtualFileContent(const std::string& path) {
 	return virtualFileContentMap[path];
 }
 
+bool File::operator==(const File& file){
+	return m_path == file.m_path;
+}
 
+bool File::operator!=(const File& file){
+	return !(*this == file);
+}
 
 }
 

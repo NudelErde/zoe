@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "zpch.h"
-#include "Input.h"
+#include "../../zoe/zpch.h"
+#include "../../zoe/Input.h"
 
 namespace Zoe {
 
