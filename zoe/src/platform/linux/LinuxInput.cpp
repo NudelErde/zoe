@@ -6,7 +6,7 @@
  */
 
 #include "LinuxInput.h"
-#include "Application.h"
+#include "../../zoe/Application.h"
 #include "GLFW/glfw3.h"
 
 namespace Zoe{

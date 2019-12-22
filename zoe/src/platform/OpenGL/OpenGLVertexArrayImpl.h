@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "render/api/VertexArray.h"
+#include "../../zoe/render/api/VertexArray.h"
 
 namespace Zoe{
 

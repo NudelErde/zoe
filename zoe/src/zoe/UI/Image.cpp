@@ -90,7 +90,7 @@ void Image::draw(){
 					* Zoe::scale3D(rect.width, rect.height, 1)
 					* Zoe::rotateYZ3D(rect.rotation)
 	);
-	renderer->draw(*imageVerUND WELCHES EtexArray, *imageShader);
+	renderer->draw(*imageVertexArray, *imageShader);
 }
 
 }

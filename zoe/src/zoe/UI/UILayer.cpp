@@ -72,14 +72,14 @@ bool UILayer::onMouseMoveEvent(MouseMovedEvent& event) {
 //------COMPONENTS------
 //----------------------
 
-void UILayer::addOval(const float& x, const float& y, const float& w,
+void UILayer::addEllipse(const float& x, const float& y, const float& w,
 		const float& h, const Color& color) {
 	Rectangle r {x,y,w,h,0};
-	addComponent(new Oval(r,color));
+	addComponent(new Ellipse(r,color));
 }
 
-void UILayer::addOval(const Rectangle& rect, const Color& color) {
-	addComponent(new Oval(rect, color));
+void UILayer::addEllipse(const Rectangle& rect, const Color& color) {
+	addComponent(new Ellipse(rect, color));
 }
 
 void UILayer::addRectangle(const float& x, const float& y, const float& w,
@@ -119,14 +119,14 @@ void UILayer::setColor(const Color& color) {
 
 //
 
-void UILayer::addOval(const float& x, const float& y, const float& w,
+void UILayer::addEllipse(const float& x, const float& y, const float& w,
 		const float& h) {
 	Rectangle r = {x,y,w,h,0};
-	addComponent(new Oval(r, color));
+	addComponent(new Ellipse(r, color));
 }
 
-void UILayer::addOval(const Rectangle& rect) {
-	addComponent(new Oval(rect, color));
+void UILayer::addEllipse(const Rectangle& rect) {
+	addComponent(new Ellipse(rect, color));
 }
 
 void UILayer::addRectangle(const float& x, const float& y, const float& w,

@@ -5,18 +5,19 @@
  *      Author: florian
  */
 
-#include "zpch.h"
 #include "LinuxWindow.h"
-#include "event/CommonEvent.h"
+#include "../../zoe/zpch.h"
+#include "../../zoe/event/CommonEvent.h"
 #include "../OpenGL/OpenGLContext.h"
+#include "../../zoe/Console.h"
 
 namespace Zoe {
 
 static bool s_GLFWInitialized = false;
 static bool s_GLEWInitialized = false;
 
-static void GLFWErrorCallback(int error, const char* description) {
-	Zoe::error("GLFW ERROR:", description);
+static void GLFWErrorCallback(int errorCode, const char* description) {
+	error("GLFW ERROR:", description);
 }
 
 static void APIENTRY GLDebugMessageCallback(unsigned int source,
