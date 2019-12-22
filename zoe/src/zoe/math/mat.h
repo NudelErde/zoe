@@ -13,7 +13,7 @@
 
 namespace Zoe{
 
-class mat2x2{
+class DLL_PUBLIC mat2x2{
 public:
 	mat2x2();
 	~mat2x2();
@@ -27,9 +27,9 @@ public:
 private:
 	vec2 data[2];
 };
-std::ostream& operator<<(std::ostream& stream,const mat2x2& v);
+DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat2x2& v);
 
-class mat3x3{
+class DLL_PUBLIC mat3x3{
 public:
 	mat3x3();
 	mat3x3(mat2x2 mat);
@@ -44,13 +44,13 @@ public:
 private:
 	vec3 data[3];
 };
-std::ostream& operator<<(std::ostream& stream,const mat3x3& v);
+DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat3x3& v);
 
-mat3x3 rotate2D(float angle);
-mat3x3 translate2D(float x,float y);
-mat3x3 scale2D(float scaleX,float scaleY);
+DLL_PUBLIC mat3x3 rotate2D(float angle);
+DLL_PUBLIC mat3x3 translate2D(float x,float y);
+DLL_PUBLIC mat3x3 scale2D(float scaleX,float scaleY);
 
-class mat4x4{
+class DLL_PUBLIC mat4x4{
 public:
 	mat4x4();
 	mat4x4(mat3x3 mat);
@@ -65,17 +65,17 @@ public:
 private:
 	vec4 data[4];
 };
-std::ostream& operator<<(std::ostream& stream,const mat4x4& v);
+DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat4x4& v);
 
-mat4x4 rotateXY3D(float angle);
-mat4x4 rotateYZ3D(float angle);
-mat4x4 rotateXZ3D(float angle);
+DLL_PUBLIC mat4x4 rotateXY3D(float angle);
+DLL_PUBLIC mat4x4 rotateYZ3D(float angle);
+DLL_PUBLIC mat4x4 rotateXZ3D(float angle);
 
-mat4x4 translate3D(float x,float y,float z);
-mat4x4 scale3D(float scaleX,float scaleY,float scaleZ);
+DLL_PUBLIC mat4x4 translate3D(float x,float y,float z);
+DLL_PUBLIC mat4x4 scale3D(float scaleX,float scaleY,float scaleZ);
 
-mat4x4 orthographic(float left, float top, float right, float bottom, float near, float far);
-mat4x4 rotate3D(vec4 eulerAngles);
-mat4x4 cameraTransform(vec4 cam, vec4 orientation);
-mat4x4 perspective(float near,float far,float fov,float aspectRatio);
+DLL_PUBLIC mat4x4 orthographic(float left, float top, float right, float bottom, float near, float far);
+DLL_PUBLIC mat4x4 rotate3D(vec4 eulerAngles);
+DLL_PUBLIC mat4x4 cameraTransform(vec4 cam, vec4 orientation);
+DLL_PUBLIC mat4x4 perspective(float near,float far,float fov,float aspectRatio);
 }

@@ -5,7 +5,7 @@
  *      Author: florian
  */
 
-#include "render/Model.h"
+#include "Model.h"
 
 namespace Zoe {
 

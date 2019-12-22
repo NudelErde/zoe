@@ -15,20 +15,18 @@ namespace Zoe {
 OpenGLTextureImpl::OpenGLTextureImpl(GraphicsContext* context, const File& file) :
 		TextureImpl(context), dataFormat(GL_RGBA),internalFormat(GL_RGBA8) {
 	size_t size = 0;
-	const uint8_t* data = file.getByteArray(&size);
+	std::unique_ptr<uint8_t[]> data = file.getByteArray(&size);
 	WebPBitstreamFeatures features;
-	VP8StatusCode status = WebPGetFeatures(data, size, &features);
+	VP8StatusCode status = WebPGetFeatures(data.get(), size, &features);
 	if(status != VP8_STATUS_OK){
 		error("Could not load texture from file: ", file.getName());
 		renderID = 0;
-		delete[] data;
 		return;
 	}
 	this->height = features.height;
 	this->width = features.width;
 
-	uint8_t* decoded = WebPDecodeRGBA(data, size, &(features.width), &(features.height));
-	delete[] data;
+	uint8_t* decoded = WebPDecodeRGBA(data.get(), size, &(features.width), &(features.height));
 
 	glActiveTexture(GL_TEXTURE0);
 
@@ -90,17 +88,15 @@ void OpenGLTextureImpl::setData(uint8_t* data, unsigned int size) {
 
 void OpenGLTextureImpl::setData(const File& file) {
 	size_t size = 0;
-	const uint8_t* data = file.getByteArray(&size);
+	std::unique_ptr<uint8_t[]> data = file.getByteArray(&size);
 	WebPBitstreamFeatures features;
-	VP8StatusCode status = WebPGetFeatures(data, size, &features);
+	VP8StatusCode status = WebPGetFeatures(data.get(), size, &features);
 	if(status != VP8_STATUS_OK){
 		error("Could not load texture from file: ", file.getName());
-		delete[] data;
 		return;
 	}
 
-	uint8_t* decoded = WebPDecodeRGBA(data, size, &(features.width), &(features.height));
-	delete[] data;
+	uint8_t* decoded = WebPDecodeRGBA(data.get(), size, &(features.width), &(features.height));
 
 	bind(0);
 	glTexSubImage2D(GL_TEXTURE0, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, decoded);
