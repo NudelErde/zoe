@@ -8,7 +8,7 @@
 #include "OpenGLContext.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "Console.h"
+#include "../../zoe/Console.h"
 #include "OpenGLIndexBufferImpl.h"
 #include "OpenGLRenderImpl.h"
 #include "OpenGLShaderImpl.h"

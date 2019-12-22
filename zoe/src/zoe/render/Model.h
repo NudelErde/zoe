@@ -10,7 +10,7 @@
 #include "../Core.h"
 #include "api/VertexBuffer.h"
 #include "api/IndexBuffer.h"
-#include "math/mat.h"
+#include "../math/mat.h"
 
 #include <vector>
 

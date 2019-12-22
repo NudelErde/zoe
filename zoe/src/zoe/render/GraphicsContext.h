@@ -10,11 +10,11 @@
 #include "../Core.h"
 #include "../File.h"
 
+#include "api/Render.h"
+
 namespace Zoe {
 class IndexBuffer;
 class IndexBufferImpl;
-class Render;
-class RenderImpl;
 class Shader;
 class ShaderImpl;
 class Texture;

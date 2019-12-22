@@ -9,6 +9,7 @@
 
 #include <mutex>
 #include <condition_variable>
+#include "../Core.h"
 
 namespace Zoe {
 
@@ -23,7 +24,7 @@ struct ThreadInformation {
 	unsigned int references;
 };
 
-class Thread {
+class DLL_PUBLIC Thread {
 private:
 	ThreadInformation* threadInfo;
 

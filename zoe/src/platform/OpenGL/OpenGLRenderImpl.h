@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "render/api/Render.h"
+#include "../../zoe/render/api/Render.h"
 #include "../../zoe/math/vec.h"
 #include <GL/glew.h>
 

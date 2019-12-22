@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "render/GraphicsContext.h"
+#include "../../zoe/render/GraphicsContext.h"
 
 struct GLFWwindow;
 

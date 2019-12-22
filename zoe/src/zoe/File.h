@@ -19,10 +19,13 @@ public:
 	File(const std::string& name);
 	~File();
 
-	std::istream* getInputStream() const;
-	uint8_t* getByteArray(size_t* size = 0) const;
+	std::shared_ptr<std::istream> getInputStream() const;
+	std::unique_ptr<uint8_t[]> getByteArray(size_t* size = 0) const;
 
 	std::string getName() const;
+
+	bool operator==(const File& other);
+	bool operator!=(const File& other);
 private:
 	bool m_virtual;
 	std::string m_path;

@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "../zoe/File.h"
-#include "../zoe/math/mat.h"
-#include "../zoe/render/api/Shader.h"
+#include "../../zoe/File.h"
+#include "../../zoe/math/mat.h"
+#include "../../zoe/render/api/Shader.h"
 #include <string>
 #include <map>
 

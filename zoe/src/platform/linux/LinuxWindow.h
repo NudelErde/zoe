@@ -9,8 +9,8 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "Window.h"
-#include "Core.h"
+#include "../../zoe/Window.h"
+#include "../../zoe/Core.h"
 
 namespace Zoe{
 
