@@ -130,3 +130,14 @@
 #define KEY_RIGHT_ALT          346
 #define KEY_RIGHT_SUPER        347
 #define KEY_MENU               348
+
+#include <string>
+#include <map>
+
+namespace Zoe{
+
+extern std::map<std::string,unsigned int> keyMap;
+
+void initKeyMap();
+
+}

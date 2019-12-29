@@ -34,14 +34,14 @@ public:
 	virtual void init() = 0;
 	virtual void swapBuffers() = 0;
 
-	virtual IndexBuffer* getIndexBuffer() = 0;
-	virtual Render* getRender() = 0;
-	virtual Shader* getShader(const File& file) = 0;
-	virtual VertexArray* getVertexArray() = 0;
-	virtual VertexBuffer* getVertexBuffer() = 0;
-	virtual VertexBufferLayout* getVertexBufferLayout() = 0;
-	virtual Texture* getTexture(unsigned int width, unsigned int height) = 0;
-	virtual Texture* getTexture(const File& file) = 0;
+	virtual std::shared_ptr<IndexBuffer> getIndexBuffer() = 0;
+	virtual std::shared_ptr<Render> getRender() = 0;
+	virtual std::shared_ptr<Shader> getShader(const File& file) = 0;
+	virtual std::shared_ptr<VertexArray> getVertexArray() = 0;
+	virtual std::shared_ptr<VertexBuffer> getVertexBuffer() = 0;
+	virtual std::shared_ptr<VertexBufferLayout> getVertexBufferLayout() = 0;
+	virtual std::shared_ptr<Texture> getTexture(unsigned int width, unsigned int height) = 0;
+	virtual std::shared_ptr<Texture> getTexture(const File& file) = 0;
 
 	IndexBufferImpl* boundIndexBuffer;
 	RenderImpl* boundRender;

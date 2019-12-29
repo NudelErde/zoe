@@ -23,7 +23,7 @@ public:
 
 private:
 	Rectangle rect;
-	Texture* texture;
+	std::shared_ptr<Texture> texture;
 };
 
 }
