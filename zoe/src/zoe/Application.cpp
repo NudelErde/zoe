@@ -10,6 +10,9 @@
 #include "event/ApplicationEvent.h"
 
 #include "Console.h"
+#include "KeyCode.h"
+
+#include "game/nodes/2DGameNode.h"
 
 namespace Zoe {
 
@@ -26,6 +29,8 @@ Application::Application() {
 	s_Instance = this;
 	//---Init other stuff
 	Log::init();
+	Layer2D::init();
+	initKeyMap();
 
 	//-------------------
 	window = std::unique_ptr<Zoe::Window>(Zoe::Window::create());

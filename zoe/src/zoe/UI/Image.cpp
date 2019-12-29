@@ -14,17 +14,23 @@
 #include "../render/api/VertexArray.h"
 #include "../render/api/VertexBuffer.h"
 #include "../render/api/VertexBufferLayout.h"
+#include "../render/GraphicsContext.h"
+#include "../Console.h"
 
 namespace Zoe{
 
-static bool hasImageInit = false;
-static Shader* imageShader;
-static File* imageShaderFile;
-static VertexBuffer* imageVertexBuffer;
-static IndexBuffer* imageIndexBuffer;
-static VertexArray* imageVertexArray;
-static Render* renderer;
+struct imageData{
+	std::shared_ptr<Shader> shader;
+	std::shared_ptr<File> file;
+	std::shared_ptr<VertexBuffer> vertexBuffer;
+	std::shared_ptr<IndexBuffer> indexBuffer;
+	std::shared_ptr<VertexArray> vertexArray;
+	std::shared_ptr<Render> renderer;
+};
 
+static imageData data;
+
+static bool hasImageInit = false;
 static const char* imageShaderSrc =
 R"(#shader vertex
 #version 130
@@ -59,23 +65,23 @@ Image::Image(const Rectangle& rect, const File& file): rect(rect){
 	if(!hasImageInit){
 		hasImageInit = true;
 
-		imageVertexBuffer = Application::getContext().getVertexBuffer();
-		imageIndexBuffer = Application::getContext().getIndexBuffer();
-		imageVertexArray = Application::getContext().getVertexArray();
-		renderer = Application::getContext().getRender();
-		renderer->setAlphaEnabled(true);
+		data.vertexBuffer = Application::getContext().getVertexBuffer();
+		data.indexBuffer = Application::getContext().getIndexBuffer();
+		data.vertexArray = Application::getContext().getVertexArray();
+		data.renderer = Application::getContext().getRender();
+		data.renderer->setAlphaEnabled(true);
 		registerVirtualFile("image.shader", imageShaderSrc);
-		imageShaderFile = new File("image.shader");
-		imageShader = Application::getContext().getShader(*imageShaderFile);
+		data.file = std::make_shared<File>("image.shader");
+		data.shader = Application::getContext().getShader(*data.file);
 		float imageVertexData[] {0,0,1,0,1,1,0,1};
 		unsigned int imageIndexData[] {0,1,2,2,3,0};
-		imageVertexBuffer->setData(imageVertexData, sizeof(float)*8);
-		imageIndexBuffer->setData(imageIndexData, 6);
-		VertexBufferLayout* layout = Application::getContext().getVertexBufferLayout();
+		data.vertexBuffer->setData(imageVertexData, sizeof(float)*8);
+		data.indexBuffer->setData(imageIndexData, 6);
+		std::shared_ptr<VertexBufferLayout> layout = Application::getContext().getVertexBufferLayout();
 		layout->push_float(2);
-		imageVertexArray->set(*imageVertexBuffer, *imageIndexBuffer, *layout);
+		data.vertexArray->set(*data.vertexBuffer, *data.indexBuffer, *layout);
 
-		imageShader->setUniform4m("Projection", Zoe::translate3D(0,0,0)
+		data.shader->setUniform4m("Projection", Zoe::translate3D(0,0,0)
 				* Zoe::scale3D(1/800.0, -1/450.0, 1) * Zoe::translate3D(-800, -450, 0));
 	}
 }
@@ -84,13 +90,13 @@ Image::~Image(){
 }
 
 void Image::draw(){
-	imageShader->setTexture("tex", *texture);
-	imageShader->setUniform4m("ModelView",
+	data.shader->setTexture("tex", *texture);
+	data.shader->setUniform4m("ModelView",
 			Zoe::translate3D(rect.x, rect.y, 0)
 					* Zoe::scale3D(rect.width, rect.height, 1)
 					* Zoe::rotateYZ3D(rect.rotation)
 	);
-	renderer->draw(*imageVertexArray, *imageShader);
+	data.renderer->draw(*data.vertexArray, *data.shader);
 }
 
 }

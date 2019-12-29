@@ -11,18 +11,26 @@
 #include "../render/api/IndexBuffer.h"
 #include "../render/api/VertexArray.h"
 #include "../render/api/Render.h"
+#include "../render/GraphicsContext.h"
 #include "../Application.h"
 #include "../File.h"
+#include "../Console.h"
+#include <memory>
 
 namespace Zoe {
 
+struct ellipseData{
+	std::shared_ptr<Shader> shader;
+	std::shared_ptr<File> file;
+	std::shared_ptr<VertexBuffer> vertexBuffer;
+	std::shared_ptr<IndexBuffer> indexBuffer;
+	std::shared_ptr<VertexArray> vertexArray;
+	std::shared_ptr<Render> renderer;
+};
+
+static ellipseData data;
+
 static bool hasellipseInit = false;
-static Shader* ellipseShader;
-static File* ellipseShaderFile;
-static VertexBuffer* ellipseVertexBuffer;
-static IndexBuffer* ellipseIndexBuffer;
-static VertexArray* ellipseVertexArray;
-static Render* renderer;
 static const char* ellipseShaderSrc =
 R"(#shader vertex
 #version 130
@@ -70,23 +78,23 @@ Ellipse::Ellipse(const Rectangle& rect, const Color& color) :
 	if (!hasellipseInit) {
 		hasellipseInit = true;
 
-		ellipseVertexBuffer = Application::getContext().getVertexBuffer();
-		ellipseIndexBuffer = Application::getContext().getIndexBuffer();
-		ellipseVertexArray = Application::getContext().getVertexArray();
-		renderer = Application::getContext().getRender();
-		renderer->setAlphaEnabled(true);
+		data.vertexBuffer = Application::getContext().getVertexBuffer();
+		data.indexBuffer = Application::getContext().getIndexBuffer();
+		data.vertexArray = Application::getContext().getVertexArray();
+		data.renderer = Application::getContext().getRender();
+		data.renderer->setAlphaEnabled(true);
 		registerVirtualFile("ellipse.shader", ellipseShaderSrc);
-		ellipseShaderFile = new File("ellipse.shader");
-		ellipseShader = Application::getContext().getShader(*ellipseShaderFile);
+		data.file = std::make_shared<File>("ellipse.shader");
+		data.shader = Application::getContext().getShader(*data.file);
 		float ellipseVertexData[] { -1, -1, 1, -1, 1, 1, -1, 1 };
 		unsigned int ellipseIndexData[] { 0, 1, 2, 2, 3, 0 };
-		ellipseVertexBuffer->setData(ellipseVertexData, sizeof(float) * 2 * 4);
-		ellipseIndexBuffer->setData(ellipseIndexData, 6);
-		VertexBufferLayout* layout = Application::getContext().getVertexBufferLayout();
+		data.vertexBuffer->setData(ellipseVertexData, sizeof(float) * 2 * 4);
+		data.indexBuffer->setData(ellipseIndexData, 6);
+		std::shared_ptr<VertexBufferLayout> layout = Application::getContext().getVertexBufferLayout();
 		layout->push_float(2);
-		ellipseVertexArray->set(*ellipseVertexBuffer,*ellipseIndexBuffer, *layout);
+		data.vertexArray->set(*data.vertexBuffer,*data.indexBuffer, *layout);
 
-		ellipseShader->setUniform4m("Projection",
+		data.shader->setUniform4m("Projection",
 				Zoe::translate3D(0,0,0)
 				* Zoe::scale3D(1/800.0, -1/450.0, 1) * Zoe::translate3D(-800, -450, 0)
 		);
@@ -97,13 +105,13 @@ Ellipse::~Ellipse() {
 }
 
 void Ellipse::draw() {
-	ellipseShader->setUniform4f("Color", color.r, color.g, color.b, color.a);
-	ellipseShader->setUniform4m("ModelView",
+	data.shader->setUniform4f("Color", color.r, color.g, color.b, color.a);
+	data.shader->setUniform4m("ModelView",
 			Zoe::translate3D(rect.x+rect.width/2, rect.y+rect.height/2, 0)
 					* Zoe::scale3D(rect.width/2, rect.height/2, 1)
 					* Zoe::rotateYZ3D(rect.rotation)
 	);
-	renderer->draw(*ellipseVertexArray, *ellipseShader);
+	data.renderer->draw(*data.vertexArray, *data.shader);
 }
 
 }

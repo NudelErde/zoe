@@ -1,0 +1,20 @@
+global texture = parent.getChild(0);
+global textureSize = 100;
+global lastTickSpacePressed = false;
+
+def tick(delta){
+	if(isKeyPressed(KEY_D)){
+		var x = parent.getNumber("x");
+		parent.set("x",x + 100 * delta);
+	}
+	if(isKeyPressed(KEY_SPACE)){
+		if(!lastTickSpacePressed){
+			lastTickSpacePressed = true;
+			textureSize = textureSize % 500 + 100;
+			texture.set("width",textureSize);
+			texture.set("height",textureSize);
+		}
+	}else{
+		lastTickSpacePressed = false;	
+	}
+}

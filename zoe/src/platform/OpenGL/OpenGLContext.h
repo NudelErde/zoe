@@ -20,14 +20,14 @@ public:
 	void init() override;
 	void swapBuffers() override;
 
-	IndexBuffer* getIndexBuffer() override;
-	Render* getRender() override;
-	Shader* getShader(const File& file) override;
-	VertexArray* getVertexArray() override;
-	VertexBuffer* getVertexBuffer() override;
-	VertexBufferLayout* getVertexBufferLayout() override;
-	Texture* getTexture(unsigned int width, unsigned int height) override;
-	Texture* getTexture(const File& file) override;
+	std::shared_ptr<IndexBuffer> getIndexBuffer() override;
+	std::shared_ptr<Render> getRender() override;
+	std::shared_ptr<Shader> getShader(const File& file) override;
+	std::shared_ptr<VertexArray> getVertexArray() override;
+	std::shared_ptr<VertexBuffer> getVertexBuffer() override;
+	std::shared_ptr<VertexBufferLayout> getVertexBufferLayout() override;
+	std::shared_ptr<Texture> getTexture(unsigned int width, unsigned int height) override;
+	std::shared_ptr<Texture> getTexture(const File& file) override;
 private:
 	GLFWwindow* windowHandle;
 };

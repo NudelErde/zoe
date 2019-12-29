@@ -40,36 +40,36 @@ void OpenGLContext::swapBuffers() {
 	glfwSwapBuffers(windowHandle);
 }
 
-IndexBuffer* OpenGLContext::getIndexBuffer(){
-	return new IndexBuffer(new OpenGLIndexBufferImpl(this));
+std::shared_ptr<IndexBuffer> OpenGLContext::getIndexBuffer(){
+	return std::make_shared<IndexBuffer>(new OpenGLIndexBufferImpl(this));
 }
 
-Render* OpenGLContext::getRender(){
-	return new Render(new OpenGLRenderImpl(this));
+std::shared_ptr<Render> OpenGLContext::getRender(){
+	return std::make_shared<Render>(new OpenGLRenderImpl(this));
 }
 
-Shader* OpenGLContext::getShader(const File& file){
-	return new Shader(new OpenGLShaderImpl(file,this));
+std::shared_ptr<Shader> OpenGLContext::getShader(const File& file){
+	return std::make_shared<Shader>(new OpenGLShaderImpl(file,this));
 }
 
-VertexArray* OpenGLContext::getVertexArray(){
-	return new VertexArray(new OpenGLVertexArrayImpl(this));
+std::shared_ptr<VertexArray> OpenGLContext::getVertexArray(){
+	return std::make_shared<VertexArray>(new OpenGLVertexArrayImpl(this));
 }
 
-VertexBuffer* OpenGLContext::getVertexBuffer(){
-	return new VertexBuffer(new OpenGLVertexBufferImpl(this));
+std::shared_ptr<VertexBuffer> OpenGLContext::getVertexBuffer(){
+	return std::make_shared<VertexBuffer>(new OpenGLVertexBufferImpl(this));
 }
 
-VertexBufferLayout* OpenGLContext::getVertexBufferLayout(){
-	return new VertexBufferLayout(new OpenGLVertexBufferLayoutImpl());
+std::shared_ptr<VertexBufferLayout> OpenGLContext::getVertexBufferLayout(){
+	return std::make_shared<VertexBufferLayout>(new OpenGLVertexBufferLayoutImpl());
 }
 
-Texture* OpenGLContext::getTexture(unsigned int width, unsigned int height){
-	return new Texture(new OpenGLTextureImpl(this,width,height));
+std::shared_ptr<Texture> OpenGLContext::getTexture(unsigned int width, unsigned int height){
+	return std::make_shared<Texture>(new OpenGLTextureImpl(this,width,height));
 }
 
-Texture* OpenGLContext::getTexture(const File& file){
-	return new Texture(new OpenGLTextureImpl(this,file));
+std::shared_ptr<Texture> OpenGLContext::getTexture(const File& file){
+	return std::make_shared<Texture>(new OpenGLTextureImpl(this,file));
 }
 
 }
