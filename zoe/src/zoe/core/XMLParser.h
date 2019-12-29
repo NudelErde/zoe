@@ -22,7 +22,7 @@ struct DLL_PUBLIC XMLNode{
 	std::map<std::string,std::string> attributes;
 };
 
-static DLL_PUBLIC XMLNode readXML(const File& file);
+DLL_PUBLIC XMLNode readXML(const File& file);
 
 }
 

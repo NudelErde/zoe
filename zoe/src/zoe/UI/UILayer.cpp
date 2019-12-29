@@ -44,27 +44,22 @@ void UILayer::onEvent(Event& event) {
 }
 
 bool UILayer::onKeyPressedEvent(KeyPressedEvent& event) {
-
 	return false;
 }
 
 bool UILayer::onKeyReleasedEvent(KeyReleasedEvent& event) {
-
 	return false;
 }
 
 bool UILayer::onMouseButtonPressedEvent(MouseButtonPressedEvent& event) {
-
 	return false;
 }
 
 bool UILayer::onMouseButtonReleasedEvent(MouseButtonReleasedEvent& event) {
-
 	return false;
 }
 
 bool UILayer::onMouseMoveEvent(MouseMovedEvent& event) {
-
 	return false;
 }
 
@@ -183,8 +178,8 @@ void UILayer::addImage(const float& x, const float& y, const float& w, const flo
 //------------------
 
 bool UILayer::onRenderEvent(AppRenderEvent& event) {
-	static Render* render = nullptr;
-	if(render == nullptr){
+	static std::shared_ptr<Render> render = 0;
+	if(render == 0){
 		render = Application::getContext().getRender();
 	}
 	render->setClearColor(1, 1, 1, 1);
@@ -194,7 +189,5 @@ bool UILayer::onRenderEvent(AppRenderEvent& event) {
 	}
 	return false;
 }
-
-
 
 }
