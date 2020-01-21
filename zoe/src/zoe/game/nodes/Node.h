@@ -32,6 +32,7 @@ public:
 	virtual void init(XMLNode& node) = 0;
 
 	virtual void add(std::shared_ptr<Node> node);
+	virtual void remove(unsigned int index);
 
 	virtual void setByKey(std::string key, std::string value){};
 	virtual void setByKey(std::string key, double value){};
@@ -42,6 +43,8 @@ protected:
 	std::vector<std::shared_ptr<Node>> nodes;
 	std::weak_ptr<Node> self;
 	std::weak_ptr<Node> parent;
+
+	friend long _addChild(long ptr, std::string xml);
 };
 
 extern std::map<std::string,std::function<std::shared_ptr<Node>()>> constructors;

@@ -18,8 +18,9 @@ SpriteNode::~SpriteNode() {
 }
 
 void SpriteNode::tick(double delta) {
-	for (std::shared_ptr<Node>& child : nodes) {
-		child->tick(delta);
+	//iterate with index, because vector can change!
+	for (unsigned int i = 0; i<nodes.size(); ++i) {
+		nodes[i]->tick(delta);
 	}
 }
 

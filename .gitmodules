@@ -1,0 +1,12 @@
+[submodule "dependencies/glfw"]
+	path = dependencies/glfw
+	url = https://github.com/glfw/glfw.git
+	branch = 3.3-stable
+[submodule "dependencies/ChaiScript"]
+	path = dependencies/ChaiScript
+	url = https://github.com/ChaiScript/ChaiScript.git
+	branch = release-6.x
+[submodule "dependencies/webp"]
+	path = dependencies/webp
+	url = https://github.com/webmproject/libwebp.git
+	branch = 1.1.0

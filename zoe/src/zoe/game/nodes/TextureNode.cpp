@@ -55,7 +55,6 @@ void main(){
 
 TextureNode::TextureNode():width(-1),height(-1) {
 	if(!textureInit){
-		debug("TextureNode init");
 		textureInit = true;
 		data.vertexBuffer = Application::getContext().getVertexBuffer();
 		data.indexBuffer = Application::getContext().getIndexBuffer();
