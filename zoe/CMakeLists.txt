@@ -22,8 +22,11 @@ execute_process(COMMAND ${CMAKE_COMMAND} -Wno-dev ${PROJECT_SOURCE_DIR}/dependen
 execute_process(COMMAND ${CMAKE_COMMAND} --build ${PROJECT_SOURCE_DIR}/dependencies/webp)
 message("Done creating webp files")
 
-#include ChaiScriptSource
-target_include_directories(zoe PRIVATE ${PROJECT_SOURCE_DIR}/dependencies/ChaiScript/include)
+#make webp library
+add_library(webp STATIC IMPORTED)
+set_target_properties(webp PROPERTIES
+        IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/dependencies/webp/libwebp.a"
+        INTERFACE_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/dependencies/webp/src")
 
 
 #add library to zoe
