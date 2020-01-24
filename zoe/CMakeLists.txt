@@ -3,14 +3,15 @@ add_library(zoe SHARED src/zoe/Sort.cpp src/zoe/Application.cpp src/zoe/Console.
 
 #create glfw files
 message("Create glfw files")
-execute_process(COMMAND ${CMAKE_COMMAND} -DBUILD_SHARED_LIBS=off ${PROJECT_SOURCE_DIR}/dependencies/glfw)
-execute_process(COMMAND ${CMAKE_COMMAND} --build ${PROJECT_SOURCE_DIR}/dependencies/glfw)
+file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/build/glfw)
+execute_process(COMMAND ${CMAKE_COMMAND} -DBUILD_SHARED_LIBS=off ${PROJECT_SOURCE_DIR}/dependencies/glfw WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/build/glfw)
+execute_process(COMMAND ${CMAKE_COMMAND} --build ${PROJECT_SOURCE_DIR}/build/glfw)
 message("Done creating glfw files")
 
 #make glfw library
 add_library(glfw STATIC IMPORTED)
 set_target_properties(glfw PROPERTIES
-        IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/dependencies/glfw/src/libglfw3.a"
+        IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/build/glfw/src/libglfw3.a"
         INTERFACE_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/dependencies/glfw/include")
 
 #include ChaiScriptSource
@@ -18,14 +19,15 @@ target_include_directories(zoe PRIVATE ${PROJECT_SOURCE_DIR}/dependencies/ChaiSc
 
 #create webp
 message("Create webp files")
-execute_process(COMMAND ${CMAKE_COMMAND} -Wno-dev ${PROJECT_SOURCE_DIR}/dependencies/webp)
-execute_process(COMMAND ${CMAKE_COMMAND} --build ${PROJECT_SOURCE_DIR}/dependencies/webp)
+file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/build/webp)
+execute_process(COMMAND ${CMAKE_COMMAND} -Wno-dev ${PROJECT_SOURCE_DIR}/dependencies/webp WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/build/webp)
+execute_process(COMMAND ${CMAKE_COMMAND} --build ${PROJECT_SOURCE_DIR}/build/webp)
 message("Done creating webp files")
 
 #make webp library
 add_library(webp STATIC IMPORTED)
 set_target_properties(webp PROPERTIES
-        IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/dependencies/webp/libwebp.a"
+        IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/build/webp/libwebp.a"
         INTERFACE_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/dependencies/webp/src")
 
 
