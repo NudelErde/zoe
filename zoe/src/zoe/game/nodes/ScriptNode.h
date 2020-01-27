@@ -27,6 +27,8 @@ public:
 private:
 	std::shared_ptr<chaiscript::ChaiScript> script;
 	std::function<void(double)> tickFunction;
+	std::function<void()> initFunction;
+	unsigned int tickCount;
 };
 
 }

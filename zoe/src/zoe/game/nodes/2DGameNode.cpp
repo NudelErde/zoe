@@ -27,13 +27,14 @@ MainNode2D::~MainNode2D(){
 }
 
 void MainNode2D::tick(double delta) {
-	for(std::shared_ptr<Node>& child: nodes){
-		child->tick(delta);
+	//iterate with index, because vector can change!
+	for (unsigned int i = 0; i<nodes.size(); ++i) {
+		nodes[i]->tick(delta);
 	}
 }
 
 void MainNode2D::draw(mat4x4 mat) {
-	mat = mat * scale3D(1/width, -1/height, -1/depth) * translate3D(-width, -height, 0);
+	mat = mat * scale3D(2/width, -2/height, -1/depth) * translate3D(-width/2, -height/2, 0);
 	for (std::shared_ptr<Node>& child : nodes) {
 		child->draw(mat);
 	}

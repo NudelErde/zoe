@@ -37,5 +37,16 @@ Debug/
 .metadata/
 .git/
 .settings/
+CMakeFiles/
+cmake-build-debug/
+.idea/
+build/
+
 .project
 .cproject
+*.iml
+*.cbp
+cmake_install.cmake
+CMakeCache.txt
+Makefile
+sandbox/sandbox

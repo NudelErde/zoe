@@ -11,7 +11,6 @@
 class App: public Zoe::Application{
 public:
 	App(){
-		Zoe::Log::getLogger()->setLoggingLevel(Zoe::LogLevel::Debug);
 		getLayerStack().pushLayer(new Zoe::Layer2D(Zoe::File("game.xml")));
 	}
 	~App(){
