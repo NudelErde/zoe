@@ -1,4 +1,4 @@
-# zoe [![CircleCI](https://img.shields.io/circleci/build/github/NudelErde/zoe?logo=circleci)](https://circleci.com/gh/NudelErde/zoe)
+# zoe [![CircleCI](https://img.shields.io/circleci/build/github/NudelErde/zoe?logo=circleci)](https://circleci.com/gh/NudelErde/zoe) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNudelErde%2Fzoe.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNudelErde%2Fzoe?ref=badge_shield)
 *zoe* is a video game engine that I am working on in my free time. It probably won't surpass *Unity3D* or *Unreal Engine* but where is the fun in using any of these if you can make your own!
 
 I want it to be as optimized as possible but am limited to my free time.
