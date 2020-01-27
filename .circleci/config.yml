@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: 'debian:10'
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: 'apt update && apt install -y git build-essential cmake libglew-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl-dev'
+      - run:
+          name: Update git-submodules
+          command: 'git submodule update --init --recursive'
+      - run:
+          name: Prepare build
+          command: 'cmake .'
+      - run:
+          name: Build project
+          command: 'cmake --build .'
+      - store_artifacts:
+          path: ./sandbox/sandbox
+      - store_artifacts:
+          path: ./zoe/libzoe.so
+          
+
+workflows:
+  main:
+    jobs:
+      - build
