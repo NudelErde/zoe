@@ -25,6 +25,10 @@ void Node::add(std::shared_ptr<Node> node){
 	}
 }
 
+void Node::remove(unsigned int index){
+	nodes.erase(nodes.begin()+index);
+}
+
 void Node::createChildren(XMLNode& node){
 	std::function<std::shared_ptr<Node>()> constructor;
 	for(XMLNode& xmlChild: node.children){

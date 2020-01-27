@@ -1,20 +1,79 @@
-global texture = parent.getChild(0);
-global textureSize = 100;
-global lastTickSpacePressed = false;
+global gravityDelay = 500;
+global keyDelay = 150;
+global tileSize = 50;
+global fieldWidth = 8;
+
+global movable;
+
+global textureSrc = "1_webp_a.webp";
+global gravityTimer = 0;
+global keyTimer = 0;
+global stop = false;
+
+global blockedArea;
 
 def tick(delta){
-	if(isKeyPressed(KEY_D)){
-		var x = parent.getNumber("x");
-		parent.set("x",x + 100 * delta);
-	}
-	if(isKeyPressed(KEY_SPACE)){
-		if(!lastTickSpacePressed){
-			lastTickSpacePressed = true;
-			textureSize = textureSize % 500 + 100;
-			texture.set("width",textureSize);
-			texture.set("height",textureSize);
+	if(!stop){
+		if(keyTimer - time() <= 0){
+			if(isKeyPressed(KEY_A) && 800-tileSize*fieldWidth/2 < getX() && !isPlaced((getX()-800+tileSize*fieldWidth/2)/tileSize-1,getY()/tileSize)){
+				move(-tileSize,0);
+				keyTimer = time() + keyDelay;
+			}else if(isKeyPressed(KEY_D) && 800+tileSize*(fieldWidth/2-1) > getX() && !isPlaced((getX()-800+tileSize*fieldWidth/2)/tileSize+1,getY()/tileSize)){
+				move(tileSize,0);
+				keyTimer = time() + keyDelay;
+			}else if(isKeyPressed(KEY_S)){
+				move(0, tileSize);
+			}
 		}
-	}else{
-		lastTickSpacePressed = false;	
+		if(gravityTimer - time() <= 0){
+			if(!isKeyPressed(KEY_S)){
+				move(0, tileSize);
+			}
+			gravityTimer += gravityDelay;
+		}
+		if(getY() == 900-tileSize || isPlaced((getX()-800+tileSize*fieldWidth/2)/tileSize,getY()/tileSize+1)){
+			if(getY()/tileSize == 0){
+				stop = true;
+				info("STOP");
+			}
+			placeAt((getX()-800+tileSize*fieldWidth/2)/tileSize,getY()/tileSize);
+			spawnSprite();
+		}
 	}
 }
+
+def init(){
+	spawnSprite();
+	blockedArea = [];
+	for(var i = 0; i < (900/tileSize) * fieldWidth; ++i){
+		blockedArea.push_back(false);
+	}
+}
+
+def placeAt(x,y){
+	blockedArea[x + y*fieldWidth] = true;
+}
+
+def isPlaced(x,y){
+	return blockedArea[x + y*fieldWidth];
+}
+
+def move(x,y){
+	movable.set("x",movable.getNumber("x")+x);
+	movable.set("y",movable.getNumber("y")+y);
+}
+
+def getX(){
+	return movable.getNumber("x");
+}
+
+def getY(){
+	return movable.getNumber("y");
+}
+
+def spawnSprite(){
+	keyTimer = time() + keyDelay;
+	gravityTimer = time() + gravityDelay;
+	movable = parent.addChild("<Sprite x=\"800\" y=\"0\" z=\"0\"><Texture x=\"0\" y=\"0\" z=\"0\" width=\""+to_string(tileSize)+"\" height=\""+to_string(tileSize)+"\" src=\""+ textureSrc +"\"></Texture></Sprite>");
+}
+
