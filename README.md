@@ -14,7 +14,7 @@ You can compile zoe [as we tell CircleCI to](https://github.com/NudelErde/zoe/bl
 * Make sure you are using a Linux machine to compile and run zoe
 * Install all dependencies `apt install build-essential cmake libglew-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl-dev`
 
-1. Clone the repository with all its submodules (Use `git submodule update --init --recursive` after cloning)
+1. Clone the repository with `git clone --recurse-submodules https://github.com/NudelErde/zoe.git` (Or use `git submodule update --init --recursive` when you already cloned)
 2. Run `cmake .` and let *cmake* prepare everything
 3. Run `cmake --build .` to build zoe
 
