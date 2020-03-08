@@ -10,62 +10,62 @@
 #include <functional>
 #include "../math/vec.h"
 
-namespace Zoe {
+namespace Zoe{
 
-    typedef vec2 Point;
+typedef vec2 Point;
 
-    struct Dimension {
-        float width, height;
-    };
+struct Dimension{
+	float width, height;
+};
 
-    struct Rect {
-        union {
-            struct {
-                float x, y;
-            };
-            Point pos;
-        };
-        union {
-            struct {
-                float width, height;
+struct Rectangle{
+	union{
+		struct{
+			float x,y;
+		};
+		Point pos;
+	};
+	union{
+		struct{
+			float width, height;
 
-            };
-            Dimension dimension;
-        };
-        float rotation;
-    };
+		};
+		Dimension dimension;
+	};
+	float rotation;
+};
 
-    struct ClickInfo {
-        int button;
-        union {
-            struct {
-                float x, y;
-            };
-            Point point;
-        };
-    };
+struct ClickInfo{
+	int button;
+	union{
+		struct{
+			float x,y;
+		};
+		Point point;
+	};
+};
 
-    struct Color {
-        union {
-            vec4 vector;
-            struct {
-                float r, g, b, a;
-            };
-        };
-    };
+struct Color{
+	union{
+		vec4 vector;
+		struct{
+			float r,g,b,a;
+		};
+	};
+};
 
-    typedef std::function<void(const ClickInfo &)> ClickCallback;
+typedef std::function<void(const ClickInfo&)> ClickCallback;
 
-    class DLL_PUBLIC Component {
-    public:
+class DLL_PUBLIC Component{
+public:
 
-        virtual ~Component();
+	virtual ~Component();
 
-        virtual void draw() = 0;
+	virtual void draw()=0;
 
-    protected:
-        Component();
-    };
+protected:
+	Component();
+};
 
 }
 
