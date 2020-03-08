@@ -12,17 +12,16 @@
 
 namespace Zoe {
 
-    class DLL_PUBLIC Ellipse : public Component {
-    public:
-        Ellipse(const Rect &rect, const Color &color);
+class DLL_PUBLIC Ellipse: public Component{
+public:
+	Ellipse(const Rectangle& rect, const Color& color);
+	~Ellipse();
 
-        ~Ellipse();
+	void draw() override;
 
-        void draw() override;
-
-    private:
-        Rect rect;
-        Color color;
-    };
+private:
+	Rectangle rect;
+	Color color;
+};
 
 }

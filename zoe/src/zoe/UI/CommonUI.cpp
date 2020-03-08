@@ -7,10 +7,14 @@
 
 #include "CommonUI.h"
 
-namespace Zoe {
+namespace Zoe{
 
-    Component::Component() = default;
+	Component::Component(){
 
-    Component::~Component() = default;
+	}
+
+	Component::~Component(){
+
+	}
 
 }
