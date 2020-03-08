@@ -14,16 +14,17 @@
 
 namespace Zoe {
 
-class DLL_PUBLIC Image: public Component{
-public:
-	Image(const Rectangle& rect, const File& file);
-	~Image();
+    class DLL_PUBLIC Image : public Component {
+    public:
+        Image(const Rect &rect, const File &file);
 
-	void draw() override;
+        ~Image();
 
-private:
-	Rectangle rect;
-	std::shared_ptr<Texture> texture;
-};
+        void draw() override;
+
+    private:
+        Rect rect;
+        std::shared_ptr<Texture> texture;
+    };
 
 }

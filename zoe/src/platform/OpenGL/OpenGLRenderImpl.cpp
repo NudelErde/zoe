@@ -11,7 +11,6 @@
 #include "../../zoe/Application.h"
 
 #include "OpenGLVertexArrayImpl.h"
-#include "OpenGLIndexBufferImpl.h"
 
 namespace Zoe {
 
@@ -21,9 +20,7 @@ OpenGLRenderImpl::OpenGLRenderImpl(GraphicsContext* context) :
 	height = Application::get().getWindow().getHeight();
 }
 
-OpenGLRenderImpl::~OpenGLRenderImpl() {
-
-}
+OpenGLRenderImpl::~OpenGLRenderImpl() = default;
 
 void OpenGLRenderImpl::draw(VertexArray& va, Shader& shader) {
 	loadSettings();
@@ -40,34 +37,49 @@ void OpenGLRenderImpl::clear() {
 
 void OpenGLRenderImpl::setClearColor(float r, float g, float b, float a) {
 	clearColor = {r,g,b,a};
+	if(this->context->boundRender == this && (r != clearColor.x || g != clearColor.y || b != clearColor.z || a != clearColor.w)){
+        glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
+	}
 }
 
 void OpenGLRenderImpl::setViewport(unsigned int x, unsigned int y,
 		unsigned int width, unsigned int height) {
-	this->x = x;
-	this->y = y;
-	this->width = width;
-	this->height = height;
+    if(this->context->boundRender == this && (this->x != x || this->y != y || this->width != width || this->height != height)){
+        glViewport(x,y,width,height);
+    }
+    this->x = x;
+    this->y = y;
+    this->width = width;
+    this->height = height;
 }
 
 void OpenGLRenderImpl::setAlphaEnabled(bool enabled) {
+    if(this->context->boundRender == this && enabled != (bool)(settingsFlag & (unsigned long) RenderFlag::ALPHA_FLAG)){
+        if(enabled){
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glBlendEquation(GL_FUNC_ADD);
+        } else {
+            glDisable(GL_BLEND);
+        }
+    }
 	settingsFlag ^= (-(unsigned long) enabled ^ settingsFlag)
 			& ((unsigned int) RenderFlag::ALPHA_FLAG);
 }
 
 void OpenGLRenderImpl::loadSettings() {
 	RenderImpl* bound = this->context->boundRender;
-	if (bound != nullptr && bound->getClearColor() != this->clearColor) {
+	if (bound == nullptr || bound->getClearColor() != this->clearColor) {
 		glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
 	}
-	if (bound != nullptr
-			&& !(bound->getViewportX() == x && bound->getViewportY() == y
+	if (bound == nullptr
+			|| !(bound->getViewportX() == x && bound->getViewportY() == y
 					&& bound->getViewportWidth() == width
 					&& bound->getViewportHeight() == height)) {
 		glViewport(x, y, width, height);
 	}
-	if (bound != nullptr
-			&& ((bound->getSettingsFlag() & settingsFlag)
+	if (bound == nullptr
+			|| ((bound->getSettingsFlag() & settingsFlag)
 					& (unsigned int) RenderFlag::ALPHA_FLAG)) {
 		if (settingsFlag & (unsigned int) RenderFlag::ALPHA_FLAG) {
 			glEnable(GL_BLEND);
