@@ -1,22 +1,15 @@
-/*
- * ellipse.cpp
- *
- *  Created on: 12.11.2019
- *      Author: florian
- */
+//
+// Created by florian on 12.02.20.
+//
 
-#include "Ellipse.h"
-#include "../render/api/Shader.h"
-#include "../render/api/VertexBuffer.h"
-#include "../render/api/IndexBuffer.h"
-#include "../render/api/VertexArray.h"
+#include <memory>
+#include "Rectangle.h"
 #include "../render/api/Render.h"
 #include "../Application.h"
-#include <memory>
 
 namespace Zoe {
 
-    struct ellipseData {
+    struct rectangleData {
         std::shared_ptr<Shader> shader;
         std::shared_ptr<File> file;
         std::shared_ptr<VertexBuffer> vertexBuffer;
@@ -25,23 +18,21 @@ namespace Zoe {
         std::shared_ptr<Render> renderer;
     };
 
-    static ellipseData data;
+    static rectangleData data;
 
-    static bool hasellipseInit = false;
-    static const char *ellipseShaderSrc =
+    static bool hasRectangleInit = false;
+    static const char *rectangleShaderSrc =
             R"(#shader vertex
 #version 130
 
 layout(location=0) in vec2 position;
 out vec4 v_color;
-out vec2 v_pos;
 
 uniform mat4 Projection;
 uniform mat4 ModelView;
 uniform vec4 Color;
 
 void main(){
-	v_pos = position.xy;
 	vec4 pos = vec4(position,0,1);
 	gl_Position = Projection * ModelView * pos;
 	v_color = Color;
@@ -51,37 +42,25 @@ void main(){
 #version 130
 
 in vec4 v_color;
-in vec2 v_pos;
 
 out vec4 color;
 
-float map(float value, float min1, float max1, float min2, float max2) {
-  return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
-}
-
 void main(){
-	float length = length(v_pos);
-	if(length>1)
-		discard;
-	if(length>0.95)
-		color = v_color * vec4(1,1,1,map(length,0.95,1,1,0));
-	else	
-		color = v_color;
+    color = v_color;
 }
 )";
 
-    Ellipse::Ellipse(const Rect &rect, const Color &color) :
-            Component(), rect(rect), color(color) {
-        if (!hasellipseInit) {
-            hasellipseInit = true;
+    Rectangle::Rectangle(const Zoe::Rect &rect, const Zoe::Color &color) : Component(), rect(rect), color(color) {
+        if (!hasRectangleInit) {
+            hasRectangleInit = true;
 
             data.vertexBuffer = Application::getContext().getVertexBuffer();
             data.indexBuffer = Application::getContext().getIndexBuffer();
             data.vertexArray = Application::getContext().getVertexArray();
             data.renderer = Application::getContext().getRender();
             data.renderer->setAlphaEnabled(true);
-            registerVirtualFile("ellipse.shader", ellipseShaderSrc);
-            data.file = std::make_shared<File>("ellipse.shader");
+            registerVirtualFile("rectangle.shader", rectangleShaderSrc);
+            data.file = std::make_shared<File>("rectangle.shader");
             data.shader = Application::getContext().getShader(*data.file);
             float ellipseVertexData[]{-1, -1, 1, -1, 1, 1, -1, 1};
             unsigned int ellipseIndexData[]{0, 1, 2, 2, 3, 0};
@@ -98,9 +77,9 @@ void main(){
         }
     }
 
-    Ellipse::~Ellipse() = default;
+    Rectangle::~Rectangle() = default;
 
-    void Ellipse::draw() {
+    void Rectangle::draw() {
         data.shader->setUniform4f("Color", color.r, color.g, color.b, color.a);
         data.shader->setUniform4m("ModelView",
                                   Zoe::translate3D(rect.x + rect.width / 2, rect.y + rect.height / 2, 0)
@@ -111,4 +90,3 @@ void main(){
     }
 
 }
-
