@@ -53,3 +53,4 @@
 #include "zoe/game/nodes/SpriteNode.h"
 #include "zoe/game/nodes/TextureNode.h"
 #include "zoe/game/nodes/TileMapNode.h"
+#include "zoe/parallel/Parallel.h"
