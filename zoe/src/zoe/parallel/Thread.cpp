@@ -14,131 +14,142 @@
 
 namespace Zoe {
 
-Thread* mainThread;
-thread_local Thread* thisThread;
+    Thread *mainThread;
+    thread_local Thread *thisThread;
 
-std::thread::id mainThreadID = std::this_thread::get_id();
-static unsigned int nextThreadID = 0;
+    std::thread::id mainThreadID = std::this_thread::get_id();
+    static unsigned int nextThreadID = 0;
 
-void checkSetup() {
-	if (mainThreadID == std::this_thread::get_id()) {
-		if (thisThread == nullptr) {
-			mainThread = new Thread("Main");
-			thisThread = mainThread;
-		}
-	}
-}
+    void checkThreadSetup() {
+        if (mainThreadID == std::this_thread::get_id()) {
+            if (thisThread == nullptr) {
+                mainThread = new Thread("Main");
+                thisThread = mainThread;
+            }
+        }
+    }
 
-struct ThreadInformationTransferObject {
-	ThreadInformation* info;
-	void (*function)();
-};
+    struct ThreadInformationTransferObject {
+        std::shared_ptr<ThreadInformation> info;
 
-void threadMethod(ThreadInformationTransferObject* ti) {
-	std::unique_lock<std::mutex> initMutex(ti->info->m_mutex);
-	initMutex.lock();
-	sleep(10);
-	initMutex.unlock();
+        void (*function)();
+    };
 
-	thisThread = new Thread(ti->info);
-	ti->function();
-	delete ti;
-	delete thisThread;
-}
+    void threadMethod(ThreadInformationTransferObject *ti) {
+        std::unique_lock<std::mutex> initLock(ti->info->m_mutex);
+        if(!initLock.owns_lock()){
+            initLock.lock();
+        }
+        sleep(10);
+        initLock.unlock();
 
-void waitForThreadNotify() {
-	checkSetup();
-	if (thisThread == nullptr) {
-		Zoe::error(
-				"Error while waiting in thread, which was not created by Zoe Engine");
-	} else {
-		std::unique_lock<std::mutex> lk(thisThread->threadInfo->m_mutex);
-		thisThread->threadInfo->m_notifyMe = false;
-		thisThread->threadInfo->m_cv.wait(lk,
-				[]() {return thisThread->threadInfo->m_notifyMe;});
-		lk.unlock();
-	}
-}
+        thisThread = new Thread(ti->info);
+        ti->function();
+        delete ti;
+        delete thisThread;
+    }
 
-Thread::Thread(const std::string& name) {
-	if (isMainThread()) {
-		threadInfo = new ThreadInformation();
-		threadInfo->threadID = ++nextThreadID;
-		threadInfo->name = name;
-	} else {
-		Zoe::critical("Dat sollte so nich passieren");
-	}
-}
+    Thread::Thread(const std::string &name) {
+        if (isMainThread()) {
+            threadInfo = std::make_shared<ThreadInformation>();
+            threadInfo->threadID = ++nextThreadID;
+            threadInfo->name = name;
+        } else {
+            Zoe::critical("Dat sollte so nich passieren");
+        }
+    }
 
-Thread::Thread(ThreadInformation* threadInformation) {
-	++threadInformation->references;
-	this->threadInfo = threadInformation;
-}
+    Thread::Thread(std::shared_ptr<ThreadInformation> threadInformation) {
+        this->threadInfo = threadInformation;
+    }
 
-Thread::Thread(void (*function)()) {
-	threadInfo = new ThreadInformation();
-	std::lock_guard<std::mutex> initLock(threadInfo->m_mutex);
-	threadInfo->threadID = ++nextThreadID;
-	threadInfo->references = 1;
-	std::stringstream ss;
-	ss << threadInfo->threadID;
-	threadInfo->name = ss.str();
+    Thread::Thread(void (*function)()) {
+        threadInfo = std::make_shared<ThreadInformation>();
+        std::lock_guard<std::mutex> initLock(threadInfo->m_mutex);
 
-	ThreadInformationTransferObject* ti = new ThreadInformationTransferObject();
-	ti->info = threadInfo;
-	ti->function = function;
+        threadInfo->threadID = ++nextThreadID;
+        std::stringstream ss;
+        ss << threadInfo->threadID;
+        threadInfo->name = ss.str();
 
-	std::thread thread(threadMethod, ti);
-	thread.detach();
-}
+        ThreadInformationTransferObject *ti = new ThreadInformationTransferObject();
+        ti->info = threadInfo;
+        ti->function = function;
 
-Thread::Thread(const std::string& name, void (*function)()) {
-	threadInfo = new ThreadInformation();
-	std::lock_guard<std::mutex> initLock(threadInfo->m_mutex);
-	threadInfo->threadID = ++nextThreadID;
-	threadInfo->name = name;
-	threadInfo->references = 1;
+        std::thread thread(threadMethod, ti);
+        thread.detach();
+    }
 
-	ThreadInformationTransferObject* ti = new ThreadInformationTransferObject();
-	ti->info = threadInfo;
-	ti->function = function;
+    Thread::Thread(const std::string &name, void (*function)()) {
+        threadInfo = std::make_shared<ThreadInformation>();
+        std::lock_guard<std::mutex> initLock(threadInfo->m_mutex);
+        threadInfo->threadID = ++nextThreadID;
+        threadInfo->name = name;
 
-	std::thread thread(threadMethod, ti);
-	thread.detach();
-}
+        ThreadInformationTransferObject *ti = new ThreadInformationTransferObject();
+        ti->info = threadInfo;
+        ti->function = function;
 
-Thread::~Thread() {
-	--threadInfo->references;
-	if (threadInfo->references == 0) {
-		delete threadInfo;
-	}
-}
+        std::thread thread(threadMethod, ti);
+        thread.detach();
+    }
 
-void Thread::notify() {
-	std::lock_guard<std::mutex>(threadInfo->m_mutex);
-	threadInfo->m_notifyMe = true;
-	threadInfo->m_cv.notify_all();
-}
+    Thread::~Thread() = default;
 
-void sleep(unsigned int ms) {
-	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
-}
+    void waitForThreadNotify() {
+        checkThreadSetup();
+        if (thisThread == nullptr) {
+            Zoe::error(
+                    "Error while waiting in thread, which was not created by Zoe Engine");
+        } else {
+            std::unique_lock<std::mutex> lk(thisThread->threadInfo->m_mutex);
+            thisThread->threadInfo->m_notifyMe = false;
+            thisThread->threadInfo->m_cv.wait(lk,
+                                              []() { return thisThread->threadInfo->m_notifyMe; });
+            lk.unlock();
+        }
+    }
 
-bool isMainThread() {
-	return mainThreadID == std::this_thread::get_id();
-}
+    void Thread::notify() {
+        std::lock_guard<std::mutex> lockGuard(threadInfo->m_mutex);
+        threadInfo->m_notifyMe = true;
+        threadInfo->m_cv.notify_all();
+    }
+
+    void Thread::notifyBlocking() {
+        std::unique_lock<std::mutex> lock(this->threadInfo->m_mutex, std::defer_lock_t());
+
+        bool val = true;
+        while(val){
+            lock.lock();
+            val = this->threadInfo->m_notifyMe;
+            lock.unlock();
+            std::this_thread::yield();
+        }
+        notify();
+    }
+
+    Thread::Thread() = default;
+
+    void sleep(unsigned int ms) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+    }
+
+    bool isMainThread() {
+        return mainThreadID == std::this_thread::get_id();
+    }
 
 //FROM console.h
 
-std::string getThreadName() {
-	checkSetup();
-	if (thisThread != nullptr) {
-		return thisThread->getName();
-	} else {
-		std::stringstream ss;
-		ss << std::this_thread::get_id();
-		return ss.str();
-	}
-}
+    std::string getThreadName() {
+        checkThreadSetup();
+        if (thisThread != nullptr) {
+            return thisThread->getName();
+        } else {
+            std::stringstream ss;
+            ss << std::this_thread::get_id();
+            return ss.str();
+        }
+    }
 
 }

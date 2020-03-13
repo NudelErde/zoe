@@ -8,8 +8,11 @@
 #include "zpch.h"
 
 #include "Console.h"
+#include <mutex>
 
 using namespace Zoe;
+
+static std::mutex consoleMutex;
 
 Console::Console() {
 	this->logLevel=LogLevel::Debug;
@@ -35,6 +38,7 @@ void Console::warning(const std::string& m) {
 }
 
 void Console::print(const std::string& m, const char* type) {
+    std::lock_guard<std::mutex> lock(consoleMutex);
 	time_t rawtime;
 	struct tm * timeinfo;
 	char buffer[80];
@@ -43,6 +47,7 @@ void Console::print(const std::string& m, const char* type) {
 	timeinfo = localtime(&rawtime);
 
 	strftime(buffer, 80, "%Y/%m/%d-%X", timeinfo);
+
 	std::cout << "[" << type << "][THREAD-" << getThreadName()
 			<< "][" << buffer << "] " << m << std::endl;
 }

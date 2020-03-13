@@ -13,46 +13,55 @@
 
 namespace Zoe {
 
-void waitForThreadNotify();
+    DLL_PUBLIC void waitForThreadNotify();
 
-struct ThreadInformation {
-	bool m_notifyMe = false;
-	std::mutex m_mutex;
-	std::condition_variable m_cv;
-	std::string name;
-	unsigned int threadID;
-	unsigned int references;
-};
+    void checkThreadSetup();
 
-class DLL_PUBLIC Thread {
-private:
-	ThreadInformation* threadInfo;
+    struct ThreadInformation {
+        bool m_notifyMe = true;
+        std::mutex m_mutex;
+        std::condition_variable m_cv;
+        std::string name;
+        unsigned int threadID;
+    };
 
-	Thread(const std::string& name);
+    class DLL_PUBLIC Thread {
+    private:
+        std::shared_ptr<ThreadInformation> threadInfo;
 
-public:
-	Thread(ThreadInformation* threadInformation);
-	Thread(void (*function)());
-	Thread(const std::string& name, void (*function)());
-	~Thread();
+        explicit Thread(const std::string &name);
 
-	void notify();
+    public:
+        explicit Thread(std::shared_ptr<ThreadInformation> threadInformation);
 
-public:
+        Thread(void (*function)());
 
-	friend void waitForThreadNotify();
-	friend void checkSetup();
+        Thread(const std::string &name, void (*function)());
 
-public:
-	inline std::string getName() {
-		return threadInfo->name;
-	}
-};
+        Thread();
 
-bool isMainThread();
-void sleep(unsigned int ms);
+        ~Thread();
 
-extern Thread* mainThread;
-extern thread_local Thread* thisThread;
+        void notify();
+        void notifyBlocking();
+
+    public:
+
+        friend void waitForThreadNotify();
+
+        friend void checkThreadSetup();
+
+    public:
+        inline std::string getName() {
+            return threadInfo->name;
+        }
+    };
+
+    DLL_PUBLIC bool isMainThread();
+
+    DLL_PUBLIC void sleep(unsigned int ms);
+
+    DLL_PUBLIC extern Thread *mainThread;
+    DLL_PUBLIC extern thread_local Thread *thisThread;
 
 }  // namespace Zoe
