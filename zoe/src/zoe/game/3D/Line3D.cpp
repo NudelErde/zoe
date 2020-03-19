@@ -58,6 +58,35 @@ void main(){
 
 )";
 
+    Line3D::Line3D(const vec3 &start, const vec3 &end, const vec4& startColor, const vec4& endColor)
+            : Object3D(), start(start), end(end), colorStart(startColor), colorEnd(endColor) {
+        if (!lineInit) {
+            lineInit = true;
+            modelMatrix = translate3D(0, 0, 0);
+            registerVirtualFile("lineShader.shader", shaderSource);
+            layout = Application::getContext().getVertexBufferLayout();
+            layout->push_float(3); //position
+            layout->push_float(4); //color
+            indexBuffer = Application::getContext().getIndexBuffer();
+            unsigned int indexData[]{0, 1, 2, 2, 3, 0};
+            indexBuffer->setData(indexData, 6);
+            renderer = Application::getContext().getRender();
+            renderer->setAlphaEnabled(true);
+        }
+        File shaderFile("lineShader.shader");
+        setMaterial(Material(shaderFile, layout));
+        vertexBuffer = Application::getContext().getVertexBuffer(true);
+        LineVertex emptyVertexData[4] = {
+                LineVertex({0, 0, 0}, {1, 1, 1, 1}),
+                LineVertex({0, 0, 0}, {1, 1, 1, 1}),
+                LineVertex({0, 0, 0}, {1, 1, 1, 1}),
+                LineVertex({0, 0, 0}, {1, 1, 1, 1})
+        };
+        float* arr = reinterpret_cast<float*>(emptyVertexData);
+        vertexBuffer->setData(emptyVertexData, sizeof(LineVertex) * 4);
+        lineModel = Model(vertexBuffer, indexBuffer, layout);
+    }
+
     Line3D::Line3D(const vec3 &start, const vec3 &end)
             : Object3D(), start(start), end(end), colorStart({0, 0, 0, 1}), colorEnd({1, 1, 1, 1}) {
         if (!lineInit) {

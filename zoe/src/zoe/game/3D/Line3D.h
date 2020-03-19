@@ -11,6 +11,9 @@ namespace Zoe{
     class DLL_PUBLIC Line3D: public Object3D {
     public:
         Line3D(const vec3& start, const vec3& end);
+
+        Line3D(const vec3 &start, const vec3 &end, const vec4 &startColor, const vec4 &endColor);
+
         ~Line3D();
 
         void draw(Camera& camera) override;
