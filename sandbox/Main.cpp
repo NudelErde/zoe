@@ -1,30 +1,28 @@
-/*
- * Main.cpp
- *
- *  Created on: 17.12.2019
- *      Author: florian
- */
+//
+// Created by florian on 19.03.20.
+//
 
-#include <EntryPoint.h>
-#include <zoe.h>
+#include "zoe.h"
+#include "EntryPoint.h"
 
-class Layer: public Zoe::Layer3D{
+class Layer : public Zoe::Layer3D {
 public:
 
-    void onAttach() override{
-        Zoe::Line3D x = Zoe::Line3D({0,0,0},{10000,0,0});
-        x.setColor({1,0,0,1},{1,0,0,1});
-        Zoe::Line3D y = Zoe::Line3D({0,0,0},{0,10000,0});
-        y.setColor({0,1,0,1},{0,1,0,1});
-        Zoe::Line3D z = Zoe::Line3D({0,0,0},{0,0,10000});
-        z.setColor({0,0,1,1},{0,0,1,1});
+    void onAttach() override {
 
-        Zoe::Line3D mx = Zoe::Line3D({0,0,0},{-10000,0,0});
-        mx.setColor({1,0,0,0.5},{1,0,0,0.5});
-        Zoe::Line3D my = Zoe::Line3D({0,0,0},{0,-10000,0});
-        my.setColor({0,1,0,0.5},{0,1,0,0.5});
-        Zoe::Line3D mz = Zoe::Line3D({0,0,0},{0,0,-10000});
-        mz.setColor({0,0,1,0.5},{0,0,1,0.5});
+        Zoe::Line3D x = Zoe::Line3D({0, 0, 0}, {10000, 0, 0});
+        x.setColor({1, 0, 0, 1}, {1, 0, 0, 1});
+        Zoe::Line3D y = Zoe::Line3D({0, 0, 0}, {0, 10000, 0});
+        y.setColor({0, 1, 0, 1}, {0, 1, 0, 1});
+        Zoe::Line3D z = Zoe::Line3D({0, 0, 0}, {0, 0, 10000});
+        z.setColor({0, 0, 1, 1}, {0, 0, 1, 1});
+
+        Zoe::Line3D mx = Zoe::Line3D({0, 0, 0}, {-10000, 0, 0});
+        mx.setColor({1, 0, 0, 0.5}, {1, 0, 0, 0.5});
+        Zoe::Line3D my = Zoe::Line3D({0, 0, 0}, {0, -10000, 0});
+        my.setColor({0, 1, 0, 0.5}, {0, 1, 0, 0.5});
+        Zoe::Line3D mz = Zoe::Line3D({0, 0, 0}, {0, 0, -10000});
+        mz.setColor({0, 0, 1, 0.5}, {0, 0, 1, 0.5});
 
         add(x);
         add(y);
@@ -33,58 +31,56 @@ public:
         add(my);
         add(mz);
 
-        cam = std::make_shared<Zoe::Camera>();
-        setCamera(cam);
-        cam->setProjectionMatrix(Zoe::perspective(1,100,70,16.0f/9.0f));
-        cam->setPosition({0,0, 10});
-        cam->setRotation(0,0,0);
+        setDebugCamera(true);
     }
 
-    void onTick() override{
-        if(Zoe::Input::isKeyPressed(KEY_SPACE)){
-            cam->setPosition(cam->getPosition()+(Zoe::vec3){0,0.1,0});
-        }else if(Zoe::Input::isKeyPressed(KEY_LEFT_SHIFT)){
-            cam->setPosition(cam->getPosition()+(Zoe::vec3){0,-0.1,0});
-        }else if(Zoe::Input::isKeyPressed(KEY_W)){
-            cam->setPosition(cam->getPosition()+cam->getDirection()*0.1);
-        }else if(Zoe::Input::isKeyPressed(KEY_S)){
-            cam->setPosition(cam->getPosition()+cam->getDirection()*-0.1);
-        }else if(Zoe::Input::isKeyPressed(KEY_D)){
-            cam->setPosition(cam->getPosition()+cam->getDirection().crossProduct({0,0.1,0}));
-        }else if(Zoe::Input::isKeyPressed(KEY_A)){
-            cam->setPosition(cam->getPosition()+cam->getDirection().crossProduct({0,-0.1,0}));
-        }else if(Zoe::Input::isKeyPressed(KEY_RIGHT)){
-            cam->setYaw(cam->getRotation().y-0.01f);
-        }else if(Zoe::Input::isKeyPressed(KEY_LEFT)){
-            cam->setYaw(cam->getRotation().y+0.01f);
-        }else if(Zoe::Input::isKeyPressed(KEY_UP)){
-            cam->setPitch(cam->getRotation().x+0.01f);
-        }else if(Zoe::Input::isKeyPressed(KEY_DOWN)){
-            cam->setPitch(cam->getRotation().x-0.01f);
-        }else if(Zoe::Input::isKeyPressed(KEY_E)){
-            cam->setRoll(cam->getRotation().z-0.01f);
-        }else if(Zoe::Input::isKeyPressed(KEY_Q)){
-            cam->setRoll(cam->getRotation().z+0.01f);
+    void onDetach() override {
+
+    }
+
+    void onTick() override {
+        Zoe::vec3 go = {1,2,3};
+        Zoe::vec3 gr = {-4,2,3};
+
+        Zoe::vec3 ho = {-2,2,2};
+        Zoe::vec3 hr = {1,-3,5};
+        Zoe::vec3 ze = {0,0,0};
+
+        Zoe::vec3 normal = gr.crossProduct(hr).normalize()*10;
+
+        if (!(loaded & BIT(0)) && Zoe::Input::isKeyPressed(KEY_1)) {
+            loaded |= BIT(0);
+            add(Zoe::Line3D(ze, go, {0.75, 0, 0.75, 1}, {0.75, 0, 0.75, 1}));
+        }else if (!(loaded & BIT(1)) && Zoe::Input::isKeyPressed(KEY_2)) {
+            loaded |= BIT(1);
+            add(Zoe::Line3D(go+gr*-20, go+gr*20, {0.75, 0, 0.75, 0.5}, {0.75, 0, 0.75, 0.5}));
+        }else if (!(loaded & BIT(2)) && Zoe::Input::isKeyPressed(KEY_3)) {
+            loaded |= BIT(2);
+            add(Zoe::Line3D(ze, ho, {0, 0.75, 0.75, 1}, {0, 0.75, 0.75, 1}));
+            add(Zoe::Line3D(ho+hr*-20, ho+hr*20, {0, 0.75, 0.75, 0.5}, {0, 0.75, 0.75, 0.5}));
+        }else if (!(loaded & BIT(3)) && Zoe::Input::isKeyPressed(KEY_4)) {
+            loaded |= BIT(3);
+            add(Zoe::Line3D(ze, normal, {0.75, 0.75, 0, 1}, {0.75, 0.75, 0, 1}));
         }
     }
 
-    void onRender() override{
+    void onRender() override {
+
     }
 
-private:
-    std::shared_ptr<Zoe::Camera> cam;
+    int loaded = 0;
+
 };
 
-class App: public Zoe::Application{
+class App : public Zoe::Application {
 public:
-	App(){
-		//getLayerStack().pushLayer(new Zoe::Layer2D(Zoe::File("game.xml")));
-		getLayerStack().pushLayer(new Layer());
-	}
-	~App(){
-	}
+    App() {
+        getLayerStack().pushLayer(new Layer());
+    }
+
+    ~App() override = default;
 };
 
-Zoe::Application* Zoe::createApplication(){
-	return new App();
+Zoe::Application *Zoe::createApplication() {
+    return new App();
 }

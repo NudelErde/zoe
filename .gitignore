@@ -58,3 +58,5 @@ tests/*Test*
 !tests/*.hpp
 !tests/*.h
 !tests/*.c
+
+examples

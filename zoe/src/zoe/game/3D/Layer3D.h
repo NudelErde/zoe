@@ -34,10 +34,13 @@ namespace Zoe {
         virtual void onRender();
         virtual void onTick();
 
+        void setDebugCamera(bool autoCam);
+
     private:
         std::vector<std::shared_ptr<Object3D>> objects;
         std::shared_ptr<Camera> camera;
         std::shared_ptr<Render> render;
+        bool debugCamera;
     };
 }
 
