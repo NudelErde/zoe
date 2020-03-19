@@ -1,68 +1,115 @@
-/*
- * Model.cpp
- *
- *  Created on: 30.04.2019
- *      Author: florian
- */
+//
+// Created by florian on 19.03.20.
+//
 
 #include "Model.h"
 
+#include <utility>
+#include "../Application.h"
+
 namespace Zoe {
 
-Model2::Model2(): count(0),indexCount(0),x(0),y(0),angle(0),width(1),height(1) {
 
-}
+    Model::Model() {
+        vertexArray = nullptr;
+    }
 
-Model2::~Model2() {
+    Model::Model(const File &file) {
+        std::shared_ptr<std::istream> stream = file.getInputStream();
+        std::string line;
+        float data[4];
+        std::vector<vec4> positions;
+        std::vector<vec3> normals;
+        std::vector<vec2> textureCoords;
+        std::stringstream sstream;
+        int index;
+        int element;
+        float value;
+        while (getline(*stream, line)) {
+            if (line[0] == '#') {
+                continue;
+            } else if (line[0] == 'v' && line[1] == ' ') {
+                //create new vertex position
+                data[0] = 0;
+                data[1] = 0;
+                data[2] = 0;
+                data[3] = 1;
+                sstream = std::stringstream();
+                for(element = 0, index = 2; index < line.length(); ++index){
+                    if(line[index] == ' '){
+                        sstream >> data[element];
+                        sstream = std::stringstream();
+                        ++element;
+                    }else{
+                        sstream << line[index];
+                    }
+                }
+                positions.push_back({data[0],data[1],data[2],data[3]});
+            } else if (line[0] == 'v' && line[1] == 't') {
+                //create new vertex texture coordinate
+                data[0] = 0;
+                data[1] = 0;
+                data[2] = 0;
+                data[3] = 1;
+                sstream = std::stringstream();
+                for(element = 0, index = 3; index < line.length(); ++index){
+                    if(line[index] == ' '){
+                        sstream >> data[element];
+                        sstream = std::stringstream();
+                        ++element;
+                    }else{
+                        sstream << line[index];
+                    }
+                }
+                textureCoords.push_back({data[0],data[1]});
+            } else if (line[0] == 'v' && line[1] == 'n') {
+                //create new vertex normal
+                data[0] = 0;
+                data[1] = 0;
+                data[2] = 0;
+                data[3] = 1;
+                sstream = std::stringstream();
+                for(element = 0, index = 3; index < line.length(); ++index){
+                    if(line[index] == ' '){
+                        sstream >> data[element];
+                        sstream = std::stringstream();
+                        ++element;
+                    }else{
+                        sstream << line[index];
+                    }
+                }
+                normals.push_back({data[0],data[1],data[2]});
+            } else if (line[0] == 'f' && line[1] == ' ') {
+                //create new face
+                throw std::runtime_error("not implemented! could not create face");
+            }
+        }
 
-}
+        modelMatrix = translate3D(0,0,0);
+    }
 
-void Model2::flushBuffers(VertexBuffer& vb, IndexBuffer& ib) {
-	vb.setData(buffer.data(), this->count*sizeof(float));
-	ib.setData(indices.data(), indexCount);
-}
+    Model::Model(void *vertices, unsigned int *indices, unsigned int verticesSize, unsigned int indicesCount,
+                 const std::shared_ptr<VertexBufferLayout>& layout) {
+        std::shared_ptr<VertexBuffer> vertexBuffer = Application::getContext().getVertexBuffer(false);
+        std::shared_ptr<IndexBuffer> indexBuffer = Application::getContext().getIndexBuffer(false);
+        vertexBuffer->setData(vertices, verticesSize);
+        indexBuffer->setData(indices, indicesCount);
+        this->vertexArray = Application::getContext().getVertexArray();
+        vertexArray->set(*vertexBuffer, *indexBuffer, *layout);
+        modelMatrix = translate3D(0,0,0);
+    }
 
-mat3x3 Model2::getModelViewMatrix() {
-	return translate2D(x, y)*rotate2D(angle)*scale2D(width, height);
-}
+    Model::Model(const std::shared_ptr<VertexBuffer> &vertexBuffer, const std::shared_ptr<IndexBuffer> &indexBuffer,
+                 const std::shared_ptr<VertexBufferLayout> &layout) {
+        this->vertexArray = Application::getContext().getVertexArray();
+        this->vertexArray->set(*vertexBuffer, *indexBuffer, *layout);
+        modelMatrix = translate3D(0,0,0);
+    }
 
-unsigned int Model2::pushVertex(float x, float y, float r, float g, float b) {
-	buffer.push_back(x);
-	buffer.push_back(y);
-	buffer.push_back(r);
-	buffer.push_back(g);
-	buffer.push_back(b);
-	count++;
-	return count-1;
-}
+    Model::Model(std::shared_ptr<VertexArray> vertexArray) {
+        this->vertexArray = std::move(vertexArray);
+        modelMatrix = translate3D(0,0,0);
+    }
 
-void Model2::pushIndices(unsigned int i0,unsigned int i1,unsigned int i2){
-	indices.push_back(i0);
-	indices.push_back(i1);
-	indices.push_back(i2);
-	indexCount++;
-}
-
-
-void Model2::pushTriangle(float x0,float x1,float x2,float y0,float y1,float y2,float r0,float r1,float r2,float g0,float g1,float g2,float b0,float b1,float b2){
-	unsigned int i0 = pushVertex(x0,y0,r0,g0,b0);
-	unsigned int i1 = pushVertex(x1,y1,r1,g1,b1);
-	unsigned int i2 = pushVertex(x2,y2,r2,g2,b2);
-	pushIndices(i0, i1, i2);
-}
-
-void Model2::setPosition(float x, float y) {
-	this->x=x;
-	this->y=y;
-}
-
-void Model2::setRotation(float angle){
-	this->angle = angle;
-}
-
-void Model2::setScale(float width,float height){
-	this->width = width;
-	this->height = height;
-}
-
+    Model::~Model() = default;
 }

@@ -94,8 +94,8 @@ Layer2D::~Layer2D(){
 }
 
 void Layer2D::onEvent(Event& event){
-	static std::function<bool(AppRenderEvent&)> onRenderEvent = std::bind(&Layer2D::onRender, this, std::placeholders::_1);
-	static std::function<bool(AppTickEvent&)> onTickEvent = std::bind(&Layer2D::onTick, this, std::placeholders::_1);
+	std::function<bool(AppRenderEvent&)> onRenderEvent = std::bind(&Layer2D::onRender, this, std::placeholders::_1);
+	std::function<bool(AppTickEvent&)> onTickEvent = std::bind(&Layer2D::onTick, this, std::placeholders::_1);
 
 	EventDispatcher dispatcher(event);
 

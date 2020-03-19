@@ -59,5 +59,5 @@ void Console::setLoggingLevel(LogLevel level){
 std::shared_ptr<Console> Log::console(new Console());
 
 void Log::init(){
-	Log::console->setLoggingLevel(LogLevel::Info);
+	Log::console->setLoggingLevel(LogLevel::Debug);
 }

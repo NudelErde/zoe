@@ -20,11 +20,11 @@ public:
 	void init() override;
 	void swapBuffers() override;
 
-	std::shared_ptr<IndexBuffer> getIndexBuffer() override;
+	std::shared_ptr<IndexBuffer> getIndexBuffer(bool dynamicBuffer) override;
 	std::shared_ptr<Render> getRender() override;
 	std::shared_ptr<Shader> getShader(const File& file) override;
 	std::shared_ptr<VertexArray> getVertexArray() override;
-	std::shared_ptr<VertexBuffer> getVertexBuffer() override;
+	std::shared_ptr<VertexBuffer> getVertexBuffer(bool dynamicBuffer) override;
 	std::shared_ptr<VertexBufferLayout> getVertexBufferLayout() override;
 	std::shared_ptr<Texture> getTexture(unsigned int width, unsigned int height) override;
 	std::shared_ptr<Texture> getTexture(const File& file) override;
