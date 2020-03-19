@@ -14,6 +14,7 @@
 #include "../../File.h"
 #include "Texture.h"
 #include "ImplPointer.h"
+#include <map>
 
 namespace Zoe {
 
@@ -22,7 +23,7 @@ class GraphicsContext;
 class ShaderImpl{
 public:
 	ShaderImpl(GraphicsContext* context):context(context){}
-	virtual ~ShaderImpl(){}
+	virtual ~ShaderImpl() = default;
 
 	virtual void setUniform1f(const std::string& name,float v0)=0;
 	virtual void setUniform2f(const std::string& name,float v0,float v1)=0;
@@ -37,13 +38,15 @@ public:
 	virtual void bind()=0;
 	virtual void unbind()=0;
 
+    virtual const std::map<std::string, std::string>& getTags()=0;
+
 protected:
 	GraphicsContext* context;
 };
 
 class DLL_PUBLIC Shader {
 public:
-	Shader(ShaderImpl* impl): impl(impl){}
+	explicit Shader(ShaderImpl* impl): impl(impl) {}
 	~Shader() {}
 
 	inline void setUniform1f(const std::string& name, float v0){ impl->setUniform1f(name, v0); }
@@ -58,6 +61,8 @@ public:
 
 	inline void bind() { impl->bind(); }
 	inline void unbind(){ impl->unbind(); }
+
+	inline const std::map<std::string, std::string>& getTags(){return impl->getTags();}
 
 	inline ShaderImpl* getImpl() {return &impl;}
 

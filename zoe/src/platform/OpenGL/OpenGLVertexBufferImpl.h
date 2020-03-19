@@ -15,7 +15,7 @@ class GraphicsContext;
 
 class OpenGLVertexBufferImpl: public VertexBufferImpl {
 public:
-	OpenGLVertexBufferImpl(GraphicsContext* context);
+	OpenGLVertexBufferImpl(GraphicsContext* context, bool dynamicBuffer);
 	~OpenGLVertexBufferImpl();
 
 	void bind();
@@ -24,8 +24,9 @@ public:
 	void setData(const void* data, unsigned int size);
 	void* getData(unsigned int offset, unsigned int size);
 private:
-	unsigned int renderID;
-	unsigned int size;
+    bool dynamicBuffer;
+    unsigned int renderID;
+    unsigned int size;
 };
 
 }
