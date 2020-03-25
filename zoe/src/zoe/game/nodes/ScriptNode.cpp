@@ -34,7 +34,7 @@ def critical(x){
 
 class Node{
 	var _ptr;
-	def Node(long ptr) {this._ptr = ptr;}
+	def Node(ptr) {this._ptr = ptr;}
 
 	def getNumber(key) {
 		return _getDoubleByKey(this._ptr, to_string(key));
@@ -60,31 +60,31 @@ class Node{
 }
 )";
 
-static void _setByKey(long ptr, std::string key, std::string value) {
+static void _setByKey(size_t ptr, std::string key, std::string value) {
 	Node* node = (Node*) (void*) (ptr);
 	node->setByKey(key, value);
 }
-static void _setByKey(long ptr, std::string key, double value) {
+static void _setByKey(size_t ptr, std::string key, double value) {
 	Node* node = (Node*) (void*) (ptr);
 	node->setByKey(key, value);
 }
-static std::string _getStringByKey(long ptr, std::string key) {
+static std::string _getStringByKey(size_t ptr, std::string key) {
 	Node* node = (Node*) (void*) (ptr);
 	return node->getStringByKey(key);
 }
-static double _getDoubleByKey(long ptr, std::string key) {
+static double _getDoubleByKey(size_t ptr, std::string key) {
 	Node* node = (Node*) (void*) (ptr);
 	return node->getDoubleByKey(key);
 }
-static long _getParentPointer(long ptr) {
+static size_t _getParentPointer(size_t ptr) {
 	Node* node = (Node*) (void*) (ptr);
-	return (long) (&(*(node->getParent())));
+	return (size_t) (&(*(node->getParent())));
 }
-static long _getChildPointer(long ptr, unsigned int index) {
+static size_t _getChildPointer(size_t ptr, unsigned int index) {
 	Node* node = (Node*) (void*) (ptr);
-	return (long) (&(*(node->getNode(index))));
+	return (size_t) (&(*(node->getNode(index))));
 }
-long _addChild(long ptr, std::string xml) {
+size_t _addChild(size_t ptr, std::string xml) {
 	Node* node = (Node*) (void*) (ptr);
 	registerVirtualFile("temp.xml", xml);
 	XMLNode xmlNode = readXML(File("temp.xml"));
@@ -95,11 +95,11 @@ long _addChild(long ptr, std::string xml) {
 		node->add(child);
 		child->createChildren(xmlNode);
 		child->init(xmlNode);
-		return (long) (void*) (&(*child));
+		return (size_t) (void*) (&(*child));
 	}
 	return 0;
 }
-static void _removeChild(long ptr, unsigned int index) {
+static void _removeChild(size_t ptr, unsigned int index) {
 	Node* node = (Node*) (void*) (ptr);
 	node->remove(index);
 }
@@ -123,11 +123,11 @@ ScriptNode::ScriptNode() {
 	script->add(chaiscript::fun(static_cast<void (*)(std::string)>(&critical)), "_critical");
 	script->add(
 			chaiscript::fun(
-					static_cast<void (*)(long, std::string,
+					static_cast<void (*)(size_t, std::string,
 							std::string)>(&_setByKey)), "_setByKey");
 	script->add(
 			chaiscript::fun(
-					static_cast<void (*)(long, std::string,
+					static_cast<void (*)(size_t, std::string,
 							double)>(&_setByKey)), "_setByKey");
 	script->add(chaiscript::fun(&_getStringByKey), "_getStringByKey");
 	script->add(chaiscript::fun(&_getDoubleByKey), "_getDoubleByKey");
@@ -163,7 +163,7 @@ void ScriptNode::draw(mat4x4 mat) {
 void ScriptNode::init(XMLNode& node) {
 	std::stringstream sstream;
 	//set parent node in script
-	sstream << "global parent = Node(" << (long) (&(*getParent())) << ")"
+	sstream << "global parent = Node(" << (size_t) (&(*getParent())) << ")"
 			<< std::endl;
 	script->eval(sstream.str());
 
@@ -179,12 +179,12 @@ void ScriptNode::init(XMLNode& node) {
 	}
 	try {
 		tickFunction = script->eval<std::function<void(double)>>("tick");
-	} catch (const std::exception& e) {
+	} catch (const std::exception&) {
 		tickFunction = 0;
 	}
 	try {
 		initFunction = script->eval<std::function<void()>>("init");
-	} catch (const std::exception& e) {
+	} catch (const std::exception&) {
 		initFunction = 0;
 	}
 }
