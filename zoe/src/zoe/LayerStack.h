@@ -13,7 +13,7 @@
 
 namespace Zoe {
 
-class LayerStack {
+class DLL_PUBLIC LayerStack {
 public:
 	LayerStack();
 	virtual ~LayerStack();
@@ -30,12 +30,20 @@ public:
 		return layers.end();
 	}
 
+	inline std::vector<Layer*>::reverse_iterator rbegin() {
+		return layers.rbegin();
+	}
+
+	inline std::vector<Layer*>::reverse_iterator rend() {
+		return layers.rend();
+	}
+
 	template<typename T>
 	void dispatchEvent(T& event) {
 		if (event.isHandled())
 			return;
 		if (event.isInCategory(EventCategoryApplication)) {
-			for (auto it = end()-1; it >= begin(); it--) {
+			for (auto it = rbegin(); it != rend(); ++it) {
 				Layer& layer = *(Layer*) (*it);
 				if (layer.subscribedEvents & event.getCategoryFlags()) {
 					layer.onEvent(event);
@@ -44,7 +52,7 @@ public:
 				}
 			}
 		} else {
-			for (auto it = begin(); it != end(); it++) {
+			for (auto it = begin(); it != end(); ++it) {
 				Layer& layer = *(Layer*) (*it);
 				if (layer.subscribedEvents & event.getCategoryFlags()) {
 					layer.onEvent(event);
