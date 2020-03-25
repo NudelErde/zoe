@@ -1,11 +1,11 @@
 /*
- * LinuxInput.h
+ * WindowsInput.h
  *
  *  Created on: 16.04.2019
  *      Author: florian
  */
 
-#ifndef WIN32
+#ifdef WIN32
 
 #pragma once
 
@@ -14,9 +14,9 @@
 
 namespace Zoe {
 
-class LinuxInput: public Input {
+class WindowsInput: public Input {
 public:
-	~LinuxInput();
+	~WindowsInput();
 
 protected:
 
