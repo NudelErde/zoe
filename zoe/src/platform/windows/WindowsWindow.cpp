@@ -5,9 +5,9 @@
  *      Author: florian
  */
 
-#ifndef WIN32
+#ifdef WIN32
 
-#include "LinuxWindow.h"
+#include "WindowsWindow.h"
 #include "../../zoe/event/CommonEvent.h"
 #include "../OpenGL/OpenGLContext.h"
 #include "../../zoe/Console.h"
@@ -28,22 +28,22 @@ static void APIENTRY GLDebugMessageCallback(unsigned int source,
 }
 
 Window* Window::create(const WindowProps& props) {
-	return new LinuxWindow(props);
+	return new WindowsWindow(props);
 }
 
 void Window::shutdown() {
 	//glfwTerminate();
 }
 
-LinuxWindow::LinuxWindow(const WindowProps& props) {
+WindowsWindow::WindowsWindow(const WindowProps& props) {
 	init(props);
 }
 
-LinuxWindow::~LinuxWindow() {
+    WindowsWindow::~WindowsWindow() {
 	shutdown();
 }
 
-void LinuxWindow::init(const WindowProps& props) {
+void WindowsWindow::init(const WindowProps& props) {
 	data.title = props.title;
 	data.width = props.width;
 	data.height = props.height;
@@ -88,7 +88,7 @@ void LinuxWindow::init(const WindowProps& props) {
 
 }
 
-void LinuxWindow::setUpListener() {
+void WindowsWindow::setUpListener() {
 	glfwSetWindowSizeCallback(window,
 			[](GLFWwindow* window,int width,int height)
 			{
@@ -168,16 +168,16 @@ void LinuxWindow::setUpListener() {
 
 }
 
-void LinuxWindow::shutdown() {
+void WindowsWindow::shutdown() {
 	glfwDestroyWindow(window);
 }
 
-void LinuxWindow::onUpdate() {
+void WindowsWindow::onUpdate() {
 	glfwPollEvents();
 	context->swapBuffers();
 }
 
-void LinuxWindow::setVSync(bool enabled) {
+void WindowsWindow::setVSync(bool enabled) {
 	if (enabled) {
 		glfwSwapInterval(1);
 	} else {
@@ -186,7 +186,7 @@ void LinuxWindow::setVSync(bool enabled) {
 	data.vSync = enabled;
 }
 
-bool LinuxWindow::isVSync() const {
+bool WindowsWindow::isVSync() const {
 	return data.vSync;
 }
 
