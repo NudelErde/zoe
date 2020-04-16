@@ -50,3 +50,11 @@ cmake_install.cmake
 CMakeCache.txt
 Makefile
 sandbox/sandbox
+*.vcxproj
+*.filters
+*.sln
+.vs/
+*.exp
+*.manifest
+*.vcxproj.user
+zoe/glew_download-prefix/

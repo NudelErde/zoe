@@ -5,7 +5,7 @@
  *      Author: florian
  */
 
-#ifndef WIN32
+#ifdef WIN32
 
 #pragma once
 
@@ -16,11 +16,11 @@
 
 namespace Zoe{
 
-class DLL_PUBLIC LinuxWindow: public Window{
+class DLL_PUBLIC WindowsWindow: public Window{
 public:
 
-	explicit LinuxWindow(const WindowProps& props);
-	~LinuxWindow() override;
+    WindowsWindow(const WindowProps& props);
+	~WindowsWindow();
 
 	void onUpdate() override;
 
