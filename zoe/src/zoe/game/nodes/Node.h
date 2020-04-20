@@ -44,16 +44,16 @@ protected:
 	std::weak_ptr<Node> self;
 	std::weak_ptr<Node> parent;
 
-	friend long _addChild(long ptr, std::string xml);
+	friend size_t _addChild(size_t ptr, std::string xml);
 };
 
 extern std::map<std::string,std::function<std::shared_ptr<Node>()>> constructors;
 template<typename T>
-DLL_PUBLIC void registerNode(std::string name){
+void registerNode(std::string name){
 	constructors[name] = [](){return std::make_shared<T>();};
 }
 
-inline DLL_PUBLIC std::function<std::shared_ptr<Node>()> getConstructor(std::string name){
+inline std::function<std::shared_ptr<Node>()> getConstructor(std::string name){
 	return constructors[name];
 }
 
