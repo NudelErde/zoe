@@ -5,7 +5,7 @@ global fieldWidth = 8;
 
 global movable;
 
-global textureSrc = "1_webp_a.webp";
+global textureSrc = "test_image.webp";
 global gravityTimer = 0;
 global keyTimer = 0;
 global stop = false;
