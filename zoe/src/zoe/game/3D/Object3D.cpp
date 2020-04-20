@@ -13,7 +13,14 @@ namespace Zoe{
 
     void Object3D::tick() {}
 
-    Object3D::Object3D(Material material): material(std::move(material)) {}
+    Object3D::Object3D(): material(),model() {}
 
-    Object3D::Object3D(): material() {}
+    Object3D::Object3D(Material material, Model model): material(std::move(material)),model(std::move(model)) {
+
+    }
+
+    void Object3D::draw(Camera &camera) {
+        camera.draw(material, model);
+    }
+
 }

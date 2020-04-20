@@ -28,10 +28,9 @@ namespace Zoe{
 
         mat4x4 modelMatrix;
 
-        //std::shared_ptr<IndexBuffer> indexBuffer;
-        //std::shared_ptr<VertexBuffer> vertexBuffer;
         std::shared_ptr<VertexArray> vertexArray;
-        //std::shared_ptr<VertexBufferLayout> layout;
+        std::shared_ptr<VertexBuffer> vertexBuffer;
+        std::shared_ptr<IndexBuffer> indexBuffer;
     };
 
 }

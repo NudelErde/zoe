@@ -16,6 +16,7 @@
 namespace Zoe {
 
     class VertexArray;
+
     class Render;
 
     class DLL_PUBLIC Material {
@@ -23,9 +24,9 @@ namespace Zoe {
 
         Material();
 
-        Material(const File &materialSource, std::shared_ptr<VertexBufferLayout> bufferLayout);
+        Material(const File &materialSource);
 
-        Material(std::shared_ptr<Shader> shader, std::shared_ptr<VertexBufferLayout> bufferLayout);
+        Material(std::shared_ptr<Shader> shader);
 
         void setModelMatrix(const mat4x4 &modelMatrix);
 
@@ -45,20 +46,22 @@ namespace Zoe {
 
         void setUniform(const std::string &name, const mat4x4 &mat);
 
-        const VertexBufferLayout &getLayoutBuffer() const;
-
         void bind();
+
+        inline std::shared_ptr<Render> &getRender() { return render; }
+
+        inline const std::shared_ptr<Render> &getRender() const { return render; }
 
     private:
         std::shared_ptr<Shader> shader;
-        std::shared_ptr<VertexBufferLayout> layout;
         mat4x4 modelMatrix;
         mat4x4 viewMatrix;
         mat4x4 projectionMatrix;
+        std::shared_ptr<Render> render;
         std::map<std::string, std::function<void(Material *, const std::string &)>> uniformSetter;
         std::map<std::string, std::string> uniformMatrixMap;
 
-        friend void Camera::draw(Zoe::Material material, const Model& model,const std::shared_ptr<Render> &render);
+        friend void Camera::draw(Zoe::Material material, const Model &model);
 
     private:
         void loadTags();
