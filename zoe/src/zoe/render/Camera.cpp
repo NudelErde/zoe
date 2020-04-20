@@ -93,11 +93,11 @@ namespace Zoe{
         this->projectionMatrix = projectionMatrix * Zoe::scale3D(1,1,-1);
     }
 
-    void Camera::draw(Material material, const Model& model, const std::shared_ptr<Render> &render) {
+    void Camera::draw(Material material, const Model& model) {
         material.setProjectionMatrix(getProjectionMatrix());
         material.setViewMatrix(getViewMatrix());
         material.setModelMatrix(model.getModelMatrix());
         material.bind();
-        render->draw(*model.getVertexArray(), *material.shader);
+        material.render->draw(*model.getVertexArray(), *material.shader);
     }
 }

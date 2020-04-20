@@ -30,7 +30,6 @@ void OpenGLRenderImpl::draw(VertexArray& va, Shader& shader) {
 	va.bind();
 	shader.bind();
 	glDrawElements(GL_TRIANGLES, va.getImpl()->getIndexBuffer().getCount(), GL_UNSIGNED_INT, nullptr);
-
 }
 
 void OpenGLRenderImpl::clear() {

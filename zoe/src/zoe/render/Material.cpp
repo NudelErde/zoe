@@ -11,13 +11,12 @@
 namespace Zoe {
 
 
-    Material::Material(const File &materialSource, std::shared_ptr<VertexBufferLayout> bufferLayout) : shader(
-            Application::getContext().getShader(materialSource)), layout(std::move(bufferLayout)) {
+    Material::Material(const File &materialSource) : shader(
+            Application::getContext().getShader(materialSource)) {
         loadTags();
     }
 
-    Material::Material(std::shared_ptr<Shader>  shader, std::shared_ptr<VertexBufferLayout> bufferLayout) : shader(std::move(shader)),
-                                                                                                 layout(std::move(bufferLayout)) {
+    Material::Material(std::shared_ptr<Shader> shader) : shader(std::move(shader)) {
         loadTags();
     }
 
@@ -49,16 +48,12 @@ namespace Zoe {
         shader->setUniform4f(name, vec.x, vec.y, vec.z, vec.w);
     }
 
-    void Material::setUniform(const std::string &name, const mat3x3& mat) {
+    void Material::setUniform(const std::string &name, const mat3x3 &mat) {
         shader->setUniform3m(name, mat);
     }
 
-    void Material::setUniform(const std::string &name, const mat4x4& mat) {
+    void Material::setUniform(const std::string &name, const mat4x4 &mat) {
         shader->setUniform4m(name, mat);
-    }
-
-    const VertexBufferLayout &Material::getLayoutBuffer() const {
-        return *layout;
     }
 
     void Material::bind() {
@@ -71,25 +66,26 @@ namespace Zoe {
         }
         if (name != uniformMatrixMap["projection"]) {
             name = uniformMatrixMap["projection"];
-            uniformSetter[name](this,name);
+            uniformSetter[name](this, name);
         }
     }
 
     void Material::loadTags() {
+        render = Application::getContext().getRender();
         std::map<std::string, std::string> tags = shader->getTags();
         if (!tags["modelMatrix"].empty()) {
-            uniformSetter[tags["modelMatrix"]] = [](Material* me, const std::string &name) {
+            uniformSetter[tags["modelMatrix"]] = [](Material *me, const std::string &name) {
                 me->setUniform(name, me->modelMatrix);
             };
             uniformMatrixMap["model"] = tags["modelMatrix"];
-        }else if(!tags["modelViewMatrix"].empty()) {
-            uniformSetter[tags["modelViewMatrix"]] = [](Material* me, const std::string& name){
+        } else if (!tags["modelViewMatrix"].empty()) {
+            uniformSetter[tags["modelViewMatrix"]] = [](Material *me, const std::string &name) {
                 me->setUniform(name, me->modelMatrix * me->viewMatrix);
             };
             uniformMatrixMap["model"] = tags["modelViewMatrix"];
             uniformMatrixMap["view"] = tags["modelViewMatrix"];
-        }else if(!tags["modelViewProjectionMatrix"].empty()){
-            uniformSetter[tags["modelViewProjectionMatrix"]] = [](Material* me, const std::string& name){
+        } else if (!tags["modelViewProjectionMatrix"].empty()) {
+            uniformSetter[tags["modelViewProjectionMatrix"]] = [](Material *me, const std::string &name) {
                 me->setUniform(name, me->modelMatrix * me->viewMatrix * me->projectionMatrix);
             };
             uniformMatrixMap["model"] = tags["modelViewProjectionMatrix"];
@@ -97,21 +93,21 @@ namespace Zoe {
             uniformMatrixMap["projection"] = tags["modelViewProjectionMatrix"];
         }
 
-        if(!tags["viewMatrix"].empty()){
-            uniformSetter[tags["viewMatrix"]] = [](Material* me, const std::string &name) {
+        if (!tags["viewMatrix"].empty()) {
+            uniformSetter[tags["viewMatrix"]] = [](Material *me, const std::string &name) {
                 me->setUniform(name, me->viewMatrix);
             };
             uniformMatrixMap["view"] = tags["viewMatrix"];
-        }else if(!tags["viewProjectionMatrix"].empty()){
-            uniformSetter[tags["viewProjectionMatrix"]] = [](Material* me, const std::string &name) {
+        } else if (!tags["viewProjectionMatrix"].empty()) {
+            uniformSetter[tags["viewProjectionMatrix"]] = [](Material *me, const std::string &name) {
                 me->setUniform(name, me->viewMatrix * me->projectionMatrix);
             };
             uniformMatrixMap["view"] = tags["viewProjectionMatrix"];
             uniformMatrixMap["projection"] = tags["viewProjectionMatrix"];
         }
 
-        if(!tags["projectionMatrix"].empty()){
-            uniformSetter[tags["projectionMatrix"]] = [](Material* me, const std::string &name) {
+        if (!tags["projectionMatrix"].empty()) {
+            uniformSetter[tags["projectionMatrix"]] = [](Material *me, const std::string &name) {
                 me->setUniform(name, me->projectionMatrix);
             };
             uniformMatrixMap["projection"] = tags["projectionMatrix"];

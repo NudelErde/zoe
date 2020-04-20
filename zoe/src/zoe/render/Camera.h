@@ -37,7 +37,7 @@ namespace Zoe{
         mat4x4 getViewMatrix() const;
         const mat4x4& getProjectionMatrix() const;
 
-        void draw(Material material, const Model& model, const std::shared_ptr<Render>& render);
+        void draw(Material material, const Model& model);
     private:
         vec3 position;
         vec3 rotation;

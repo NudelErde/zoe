@@ -26,7 +26,7 @@ OpenGLIndexBufferImpl::~OpenGLIndexBufferImpl() {
 
 void OpenGLIndexBufferImpl::bind(){
 	if(this->context->boundVertexArray){
-		if(((OpenGLVertexArrayImpl*)this->context->boundVertexArray)->ib!=this){
+		if(((OpenGLVertexArrayImpl*)this->context->boundVertexArray)->ib != this){
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderID);
 			((OpenGLVertexArrayImpl*)this->context->boundVertexArray)->ib = this;
 		}

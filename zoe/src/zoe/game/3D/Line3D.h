@@ -26,8 +26,6 @@ namespace Zoe{
         vec4 colorEnd;
 
         std::shared_ptr<VertexBuffer> vertexBuffer;
-
-        Model lineModel;
     };
 
 }
