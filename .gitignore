@@ -41,6 +41,7 @@ CMakeFiles/
 cmake-build-debug/
 .idea/
 build/
+Testing/
 
 .project
 .cproject
@@ -50,6 +51,15 @@ cmake_install.cmake
 CMakeCache.txt
 Makefile
 sandbox/sandbox
+CTestTestfile.cmake
+tests/*test*
+tests/*Test*
+!tests/*.cpp
+!tests/*.hpp
+!tests/*.h
+!tests/*.c
+
+examples
 *.vcxproj
 *.filters
 *.sln

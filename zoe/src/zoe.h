@@ -8,7 +8,7 @@
 #pragma once
 
 //---STD-HEADERS---------------------------
-#include <stdio.h>
+#include <cstdio>
 
 //---GLFW-HEADER---------------------------
 
@@ -53,3 +53,7 @@
 #include "zoe/game/nodes/SpriteNode.h"
 #include "zoe/game/nodes/TextureNode.h"
 #include "zoe/game/nodes/TileMapNode.h"
+#include "zoe/parallel/Parallel.h"
+#include "zoe/game/3D/Layer3D.h"
+#include "zoe/game/3D/Object3D.h"
+#include "zoe/game/3D/Line3D.h"

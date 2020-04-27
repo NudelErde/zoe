@@ -23,14 +23,14 @@ UILayer::~UILayer() {
 //------------------
 
 void UILayer::onEvent(Event& event) {
-	static std::function<bool(AppRenderEvent&)> onRenderEvent = std::bind(&UILayer::onRenderEvent, this, std::placeholders::_1);
+	std::function<bool(AppRenderEvent&)> onRenderEvent = std::bind(&UILayer::onRenderEvent, this, std::placeholders::_1);
 
-	static std::function<bool(KeyPressedEvent&)> onKeyPressedEvent = std::bind(&UILayer::onKeyPressedEvent, this, std::placeholders::_1);
-	static std::function<bool(KeyReleasedEvent&)> onKeyReleasedEvent = std::bind(&UILayer::onKeyReleasedEvent, this, std::placeholders::_1);
+	std::function<bool(KeyPressedEvent&)> onKeyPressedEvent = std::bind(&UILayer::onKeyPressedEvent, this, std::placeholders::_1);
+	std::function<bool(KeyReleasedEvent&)> onKeyReleasedEvent = std::bind(&UILayer::onKeyReleasedEvent, this, std::placeholders::_1);
 
-	static std::function<bool(MouseButtonPressedEvent&)> onMouseButtonPressedEvent = std::bind(&UILayer::onMouseButtonPressedEvent, this, std::placeholders::_1);
-	static std::function<bool(MouseButtonReleasedEvent&)> onMouseButtonReleasedEvent = std::bind(&UILayer::onMouseButtonReleasedEvent, this, std::placeholders::_1);
-	static std::function<bool(MouseMovedEvent&)> onMouseMoveEvent = std::bind(&UILayer::onMouseMoveEvent, this, std::placeholders::_1);
+	std::function<bool(MouseButtonPressedEvent&)> onMouseButtonPressedEvent = std::bind(&UILayer::onMouseButtonPressedEvent, this, std::placeholders::_1);
+	std::function<bool(MouseButtonReleasedEvent&)> onMouseButtonReleasedEvent = std::bind(&UILayer::onMouseButtonReleasedEvent, this, std::placeholders::_1);
+	std::function<bool(MouseMovedEvent&)> onMouseMoveEvent = std::bind(&UILayer::onMouseMoveEvent, this, std::placeholders::_1);
 
 	EventDispatcher dispatcher(event);
 	dispatcher.dispatch(onRenderEvent);

@@ -40,8 +40,8 @@ void OpenGLContext::swapBuffers() {
 	glfwSwapBuffers(windowHandle);
 }
 
-std::shared_ptr<IndexBuffer> OpenGLContext::getIndexBuffer(){
-	return std::make_shared<IndexBuffer>(new OpenGLIndexBufferImpl(this));
+std::shared_ptr<IndexBuffer> OpenGLContext::getIndexBuffer(bool dynamicBuffer){
+	return std::make_shared<IndexBuffer>(new OpenGLIndexBufferImpl(this, dynamicBuffer));
 }
 
 std::shared_ptr<Render> OpenGLContext::getRender(){
@@ -56,8 +56,8 @@ std::shared_ptr<VertexArray> OpenGLContext::getVertexArray(){
 	return std::make_shared<VertexArray>(new OpenGLVertexArrayImpl(this));
 }
 
-std::shared_ptr<VertexBuffer> OpenGLContext::getVertexBuffer(){
-	return std::make_shared<VertexBuffer>(new OpenGLVertexBufferImpl(this));
+std::shared_ptr<VertexBuffer> OpenGLContext::getVertexBuffer(bool dynamicBuffer){
+	return std::make_shared<VertexBuffer>(new OpenGLVertexBufferImpl(this, dynamicBuffer));
 }
 
 std::shared_ptr<VertexBufferLayout> OpenGLContext::getVertexBufferLayout(){

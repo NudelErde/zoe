@@ -32,7 +32,7 @@ DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat2x2& v);
 class DLL_PUBLIC mat3x3{
 public:
 	mat3x3();
-	mat3x3(mat2x2 mat);
+	mat3x3(const mat2x2& mat);
 	~mat3x3();
 	mat3x3 operator+(const mat3x3& mat) const;
 	mat3x3 operator-(const mat3x3& mat) const;
@@ -53,7 +53,7 @@ DLL_PUBLIC mat3x3 scale2D(float scaleX,float scaleY);
 class DLL_PUBLIC mat4x4{
 public:
 	mat4x4();
-	mat4x4(mat3x3 mat);
+	mat4x4(const mat3x3& mat);
 	~mat4x4();
 	mat4x4 operator+(const mat4x4& mat) const;
 	mat4x4 operator-(const mat4x4& mat) const;
@@ -62,6 +62,7 @@ public:
 
 	vec4 operator[](const int& index )const;
 	vec4& operator[](const int& index );
+
 private:
 	vec4 data[4];
 };
@@ -75,7 +76,6 @@ DLL_PUBLIC mat4x4 translate3D(float x,float y,float z);
 DLL_PUBLIC mat4x4 scale3D(float scaleX,float scaleY,float scaleZ);
 
 DLL_PUBLIC mat4x4 orthographic(float left, float top, float right, float bottom, float near, float far);
-DLL_PUBLIC mat4x4 rotate3D(vec4 eulerAngles);
-DLL_PUBLIC mat4x4 cameraTransform(vec4 cam, vec4 orientation);
+DLL_PUBLIC mat4x4 calcViewMatrix(vec3 position, vec3 rotation);
 DLL_PUBLIC mat4x4 perspective(float near,float far,float fov,float aspectRatio);
 }
