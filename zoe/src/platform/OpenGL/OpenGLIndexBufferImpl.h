@@ -13,7 +13,7 @@ namespace Zoe{
 
 class OpenGLIndexBufferImpl: public IndexBufferImpl{
 public:
-	OpenGLIndexBufferImpl(GraphicsContext* context);
+	OpenGLIndexBufferImpl(GraphicsContext* context, bool dynamicBuffer);
 	~OpenGLIndexBufferImpl();
 
 	void bind();
@@ -27,6 +27,7 @@ public:
 public:
 	unsigned int renderID;
 	unsigned int count;
+	bool dynamicBuffer;
 };
 
 }

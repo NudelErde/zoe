@@ -15,7 +15,7 @@
 
 namespace Zoe{
 
-OpenGLIndexBufferImpl::OpenGLIndexBufferImpl(GraphicsContext* context): IndexBufferImpl(context) {
+OpenGLIndexBufferImpl::OpenGLIndexBufferImpl(GraphicsContext* context, bool dynamicBuffer): IndexBufferImpl(context), dynamicBuffer(dynamicBuffer) {
 	glGenBuffers(1, &renderID);
 	count = 0;
 }
@@ -26,7 +26,7 @@ OpenGLIndexBufferImpl::~OpenGLIndexBufferImpl() {
 
 void OpenGLIndexBufferImpl::bind(){
 	if(this->context->boundVertexArray){
-		if(((OpenGLVertexArrayImpl*)this->context->boundVertexArray)->ib!=this){
+		if(((OpenGLVertexArrayImpl*)this->context->boundVertexArray)->ib != this){
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderID);
 			((OpenGLVertexArrayImpl*)this->context->boundVertexArray)->ib = this;
 		}
@@ -50,7 +50,7 @@ void OpenGLIndexBufferImpl::setData(unsigned int* data,unsigned int count){
 	if(count == this->count){
 		glBufferSubData(GL_ELEMENT_ARRAY_BUFFER,0,sizeof(unsigned int)*count,data);
 	}else{
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int)*count,data,GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(unsigned int)*count,data,dynamicBuffer?GL_DYNAMIC_DRAW:GL_STATIC_DRAW);
 	}
 	this->count=count;
 }

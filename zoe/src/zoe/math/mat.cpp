@@ -60,7 +60,7 @@ vec2& mat2x2::operator [](const int& index) {
 
 mat3x3::mat3x3() {
 }
-mat3x3::mat3x3(mat2x2 mat) {
+mat3x3::mat3x3(const mat2x2& mat) {
 	data[0][0] = mat[0][0];
 	data[1][0] = mat[1][0];
 	data[0][1] = mat[0][1];
@@ -172,20 +172,20 @@ mat3x3 scale2D(float scaleX, float scaleY) {
 }
 
 std::ostream& operator<<(std::ostream& stream, const mat2x2& v) {
-	return stream << v[0][0] << " | " << v[0][1] << " |––| " << v[1][0] << " | "
+	return stream << v[0][0] << " | " << v[0][1] << "\n" << v[1][0] << " | "
 			<< v[1][1];
 }
 
 std::ostream& operator<<(std::ostream& stream, const mat3x3& v) {
-	return stream << v[0][0] << " | " << v[0][1] << " | " << v[0][2] << " |––| "
-			<< v[1][0] << " | " << v[1][1] << " | " << v[1][2] << "|––|"
+	return stream << v[0][0] << " | " << v[0][1] << " | " << v[0][2] << "\n"
+			<< v[1][0] << " | " << v[1][1] << " | " << v[1][2] << "\n"
 			<< v[2][0] << " | " << v[2][1] << " | " << v[2][2];
 }
 
 mat4x4::mat4x4() {
 }
 
-mat4x4::mat4x4(mat3x3 mat) {
+mat4x4::mat4x4(const mat3x3& mat) {
 	data[0][0] = mat[0][0];
 	data[0][1] = mat[0][1];
 	data[0][2] = mat[0][2];
@@ -248,10 +248,10 @@ vec4& mat4x4::operator [](const int& index) {
 }
 
 std::ostream& operator <<(std::ostream& stream, const mat4x4& v) {
-	return stream << v[0][0] << " | " << v[0][1] << " | " << v[0][2] << " | " << v[0][3] <<" |––| "
-			<< v[1][0] << " | " << v[1][1] << " | " << v[1][2] << " | " << v[1][3] <<" |––| "
-			<< v[2][0] << " | " << v[2][1] << " | " << v[2][2] << " | " << v[2][3] <<" |––| "
-			<< v[3][0] << " | " << v[3][1] << " | " << v[3][2] << " | " << v[3][3] <<" |––| ";
+	return stream << v[0][0] << " | " << v[0][1] << " | " << v[0][2] << " | " << v[0][3] <<"\n"
+			<< v[1][0] << " | " << v[1][1] << " | " << v[1][2] << " | " << v[1][3] <<"\n"
+			<< v[2][0] << " | " << v[2][1] << " | " << v[2][2] << " | " << v[2][3] <<"\n"
+			<< v[3][0] << " | " << v[3][1] << " | " << v[3][2] << " | " << v[3][3];
 }
 
 mat4x4 rotateXY3D(float angle) {
@@ -314,13 +314,9 @@ mat4x4 orthographic(float left, float top, float right, float bottom, float near
 	return res;
 }
 
-mat4x4 rotate3D(vec4 eulerAngles){
-	return rotateYZ3D(eulerAngles.x)*rotateXZ3D(eulerAngles.y)*rotateXY3D(eulerAngles.z);
-}
-
-mat4x4 cameraTransform(vec4 cam, vec4 orientation){
-	return rotate3D(-1*orientation)
-			*translate3D(-cam.x,-cam.y,-cam.z);
+mat4x4 calcViewMatrix(vec3 position, vec3 rotation){
+	return rotateXY3D(-rotation.z) * rotateYZ3D(-rotation.x) * rotateXZ3D(-rotation.y)
+			*translate3D(-position.x, -position.y, -position.z);
 }
 
 mat4x4 perspective(float near,float far,float fov,float aspectRatio){
