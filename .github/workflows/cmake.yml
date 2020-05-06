@@ -17,7 +17,7 @@ jobs:
 #    - name: Update git-submodules
 #      run: git submodule update --init --recursive
     - name: Prepare build
-      run: cmake --build .
+      run: cmake .
     - name: Build project
       run: cmake --build .
     - name: Upload a Build Artifact (sandbox)
