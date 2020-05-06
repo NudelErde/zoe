@@ -18,6 +18,8 @@ jobs:
 #      run: git submodule update --init --recursive
     - name: Prepare build
       run: cmake --build .
+    - name: Build project
+      run: cmake --build .
     - name: Upload a Build Artifact (sandbox)
       uses: actions/upload-artifact@v2
       with:
