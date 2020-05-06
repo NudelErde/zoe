@@ -19,10 +19,10 @@ jobs:
     - name: Prepare build
       run: cmake --build .
     - name: Upload a Build Artifact (sandbox)
-    - uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         path: ./sandbox/sandbox
     - name: Upload a Build Artifact (libzoe.so)
-    - uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         path: ./zoe/libzoe.so
