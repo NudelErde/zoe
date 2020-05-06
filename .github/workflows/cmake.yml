@@ -20,11 +20,13 @@ jobs:
       run: cmake .
     - name: Build project
       run: cmake --build .
-    - name: Upload a Build Artifact (sandbox)
+    - name: 'Upload a Build Artifact: sandbox'
       uses: actions/upload-artifact@v2
       with:
+        name: sandbox
         path: ./sandbox/sandbox
-    - name: Upload a Build Artifact (libzoe.so)
+    - name: 'Upload Build Artifact: libzoe.so'
       uses: actions/upload-artifact@v2
       with:
+        name: libzoe.so
         path: ./zoe/libzoe.so
