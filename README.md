@@ -10,7 +10,7 @@ zoe is still work in progress. You can try running [the sandbox](https://github.
 # Compiling
 I don't know why you would like to compile zoe at its current state, but...
 
-You can compile zoe [as we tell CircleCI to](https://github.com/NudelErde/zoe/blob/master/.circleci/config.yml).
+You can compile zoe [as we tell GitHub to](./.github/workflows/cmake.yml).
 * Make sure you are using a Linux machine to compile and run zoe
 * Install all dependencies `apt install build-essential cmake libglew-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl-dev`
 
