@@ -11,7 +11,7 @@ zoe is still work in progress. You can try running [the sandbox](https://github.
 I don't know why you would like to compile zoe at its current state, but...
 
 You can compile zoe [as we tell GitHub to](./.github/workflows/cmake.yml).
-* Make sure you are using a Linux machine to compile and run zoe
+* Make sure you are using a Linux or Windows machine to compile and run zoe
 * Install all dependencies `apt install build-essential cmake libglew-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl-dev`
 
 1. Clone the repository with `git clone --recurse-submodules https://github.com/NudelErde/zoe.git` (Or use `git submodule update --init --recursive` when you already cloned)
