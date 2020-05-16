@@ -1,0 +1,32 @@
+name: Build (with CMake)
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Install dependencies
+      run: sudo apt update && sudo apt install -y git build-essential cmake libglew-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl-dev
+    - name: Prepare build
+      run: cmake .
+    - name: Build project
+      run: cmake --build .
+    - name: 'Upload a Build Artifact: sandbox'
+      uses: actions/upload-artifact@v2
+      with:
+        name: sandbox
+        path: ./sandbox/sandbox
+    - name: 'Upload Build Artifact: libzoe.so'
+      uses: actions/upload-artifact@v2
+      with:
+        name: libzoe.so
+        path: ./zoe/libzoe.so
