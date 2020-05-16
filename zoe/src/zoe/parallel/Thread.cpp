@@ -11,16 +11,17 @@
 #include <chrono>
 
 #include <iostream>
+#include <utility>
 
 namespace Zoe {
 
-    Thread *mainThread;
-    thread_local Thread *thisThread;
+    static Thread *mainThread;
+    static thread_local Thread *thisThread;
 
     std::thread::id mainThreadID = std::this_thread::get_id();
     static unsigned int nextThreadID = 0;
 
-    void checkThreadSetup() {
+    void Thread::checkThreadSetup() {
         if (mainThreadID == std::this_thread::get_id()) {
             if (thisThread == nullptr) {
                 mainThread = new Thread("Main");
@@ -60,7 +61,7 @@ namespace Zoe {
     }
 
     Thread::Thread(std::shared_ptr<ThreadInformation> threadInformation) {
-        this->threadInfo = threadInformation;
+        this->threadInfo = std::move(threadInformation);
     }
 
     Thread::Thread(void (*function)()) {
@@ -96,7 +97,7 @@ namespace Zoe {
 
     Thread::~Thread() = default;
 
-    void waitForThreadNotify() {
+    void Thread::waitForThreadNotify() {
         checkThreadSetup();
         if (thisThread == nullptr) {
             Zoe::error(
@@ -135,14 +136,22 @@ namespace Zoe {
         std::this_thread::sleep_for(std::chrono::milliseconds(ms));
     }
 
-    bool isMainThread() {
+    bool Thread::isMainThread() {
         return mainThreadID == std::this_thread::get_id();
+    }
+
+    Thread *Thread::getMainThread() {
+        return mainThread;
+    }
+
+    Thread *Thread::getThisThread() {
+        return thisThread;
     }
 
 //FROM console.h
 
     std::string getThreadName() {
-        checkThreadSetup();
+        Thread::checkThreadSetup();
         if (thisThread != nullptr) {
             return thisThread->getName();
         } else {

@@ -17,28 +17,29 @@ public:
 	virtual ~Input(){}
 
 	inline static bool isKeyPressed(int keycode) {
-			return instance->isKeyPressedImpl(keycode);
+			return getInstance()->isKeyPressedImpl(keycode);
 		}
 	inline static bool isMouseButtonPressed(int button) {
-			return instance->isMouseButtonPressedImpl(button);
+			return getInstance()->isMouseButtonPressedImpl(button);
 		}
 	inline static vec2 getMousePosition() {
-			return instance->getMousePositionImpl();
+			return getInstance()->getMousePositionImpl();
 		}
 	inline static float getMouseX(){
-		return instance->getMouseXImpl();
+		return getInstance()->getMouseXImpl();
 	}
 	inline static float getMouseY(){
-		return instance->getMouseYImpl();
+		return getInstance()->getMouseYImpl();
 	}
+
+	static Input* getInstance();
+
 protected:
 	virtual bool isKeyPressedImpl(int keycode) = 0;
 	virtual bool isMouseButtonPressedImpl(int button) = 0;
 	virtual vec2 getMousePositionImpl() = 0;
 	virtual float getMouseXImpl() = 0;
 	virtual float getMouseYImpl() = 0;
-private:
-	static Input* instance;
 };
 
 }

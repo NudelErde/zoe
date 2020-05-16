@@ -22,19 +22,19 @@ Console::~Console() {
 }
 
 void Console::critical(const std::string& m) {
-	if(this->logLevel<=LogLevel::Critical)this->print(m, "critical");
+	if(this->logLevel<=LogLevel::Critical)Console::print(m, "critical");
 }
 void Console::debug(const std::string& m) {
-	if(this->logLevel<=LogLevel::Debug)this->print(m, "debug");
+	if(this->logLevel<=LogLevel::Debug)Console::print(m, "debug");
 }
 void Console::error(const std::string& m) {
-	if(this->logLevel<=LogLevel::Error)this->print(m, "error");
+	if(this->logLevel<=LogLevel::Error)Console::print(m, "error");
 }
 void Console::info(const std::string& m) {
-	if(this->logLevel<=LogLevel::Info)this->print(m, "info");
+	if(this->logLevel<=LogLevel::Info)Console::print(m, "info");
 }
 void Console::warning(const std::string& m) {
-	if(this->logLevel<=LogLevel::Warning)this->print(m, "warning");
+	if(this->logLevel<=LogLevel::Warning)Console::print(m, "warning");
 }
 
 void Console::print(const std::string& m, const char* type) {
@@ -56,8 +56,13 @@ void Console::setLoggingLevel(LogLevel level){
 	this->logLevel = level;
 }
 
-std::shared_ptr<Console> Log::console(new Console());
+static std::shared_ptr<Console> instance;
 
-void Log::init(){
-	Log::console->setLoggingLevel(LogLevel::Debug);
+std::shared_ptr<Console> Console::getLogger() {
+    return instance;
+}
+
+void Console::init(){
+    instance = std::make_shared<Console>();
+	instance->setLoggingLevel(LogLevel::Debug);
 }

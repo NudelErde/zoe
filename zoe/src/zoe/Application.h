@@ -33,12 +33,10 @@ public:
 		return *window;
 	}
 
-	inline static Application& get() {
-		return *s_Instance;
-	}
+	static Application& get();
 
 	inline static GraphicsContext& getContext(){
-		return *(s_Instance->getWindow().getContext());
+		return *(get().getWindow().getContext());
 	}
 private:
 	bool onWindowClose(WindowCloseEvent& e);
@@ -47,8 +45,6 @@ private:
 	bool running = true;
 
 	LayerStack layerStack;
-private:
-	static Application* s_Instance;
 };
 
 Application* createApplication();

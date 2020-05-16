@@ -48,7 +48,7 @@ void WindowsWindow::init(const WindowProps& props) {
 	data.width = props.width;
 	data.height = props.height;
 
-	Log::getLogger()->info("Creating Zoe Window");
+	info("Creating Zoe Window");
 
 	if (!s_GLFWInitialized) {
 		int success = glfwInit();

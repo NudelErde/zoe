@@ -6,4 +6,3 @@ macro(add_test_file TESTNAME)
 endmacro()
 
 add_test_file(parallelTest parallelTest.cpp)
-add_test_file(mathTest mathTest.cpp)

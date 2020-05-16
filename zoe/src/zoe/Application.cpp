@@ -18,17 +18,17 @@ namespace Zoe {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-Application* Application::s_Instance = nullptr;
+static Application* s_Instance;
 
 Application::Application() {
 	if(s_Instance!=nullptr){
-		Log::getLogger()->critical("Application already exists!");
+		critical("Application already exists!");
 		Application::get().exit();
 		return;
 	}
 	s_Instance = this;
 	//---Init other stuff
-	Log::init();
+	Console::init();
 	Layer2D::init();
 	initKeyMap();
 
@@ -78,6 +78,10 @@ void Application::exit() {
 bool Application::onWindowClose(WindowCloseEvent& e) {
 	this->running = false;
 	return false;
+}
+
+Application &Application::get() {
+    return *s_Instance;
 }
 
 }
