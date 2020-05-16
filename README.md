@@ -1,4 +1,4 @@
-# zoe [![CircleCI](https://img.shields.io/circleci/build/github/NudelErde/zoe?logo=circleci)](https://circleci.com/gh/NudelErde/zoe) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNudelErde%2Fzoe.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNudelErde%2Fzoe?ref=badge_shield)
+# zoe ![Build](https://github.com/NudelErde/zoe/workflows/Build%20(with%20CMake)/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNudelErde%2Fzoe.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNudelErde%2Fzoe?ref=badge_shield)
 *zoe* is a video game engine that I am working on in my free time. It probably won't surpass *Unity3D* or *Unreal Engine* but where is the fun in using any of these if you can make your own!
 
 I want it to be as optimized as possible but am limited to my free time.
@@ -10,8 +10,8 @@ zoe is still work in progress. You can try running [the sandbox](https://github.
 # Compiling
 I don't know why you would like to compile zoe at its current state, but...
 
-You can compile zoe [as we tell CircleCI to](https://github.com/NudelErde/zoe/blob/master/.circleci/config.yml).
-* Make sure you are using a Linux machine to compile and run zoe
+You can compile zoe [as we tell GitHub to](./.github/workflows/cmake.yml).
+* Make sure you are using a Linux or Windows machine to compile and run zoe
 * Install all dependencies `apt install build-essential cmake libglew-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl-dev`
 
 1. Clone the repository with `git clone --recurse-submodules https://github.com/NudelErde/zoe.git` (Or use `git submodule update --init --recursive` when you already cloned)
