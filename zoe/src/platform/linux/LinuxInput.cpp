@@ -13,7 +13,11 @@
 
 namespace Zoe{
 
-Input* Input::instance = new LinuxInput();
+static Input* instance = new LinuxInput();
+
+Input* Input::getInstance() {
+    return instance;
+}
 
 LinuxInput::~LinuxInput(){}
 

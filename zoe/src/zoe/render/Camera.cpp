@@ -66,7 +66,7 @@ namespace Zoe{
     }
 
     vec3 Camera::getDirection() const{
-        return (rotateXZ3D(rotation.y) * rotateYZ3D(rotation.x) * rotateXY3D(rotation.z) *(vec4){0,0,-1,0}).xyz;
+        return (rotateXZ3D(rotation.y) * rotateYZ3D(rotation.x) * rotateXY3D(rotation.z) *vec4({0,0,-1,0})).xyz;
     }
 
     const mat4x4 &Camera::getViewMatrix() {

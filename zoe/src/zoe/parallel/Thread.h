@@ -13,10 +13,6 @@
 
 namespace Zoe {
 
-    DLL_PUBLIC void waitForThreadNotify();
-
-    void checkThreadSetup();
-
     struct ThreadInformation {
         bool m_notifyMe = true;
         std::mutex m_mutex;
@@ -45,11 +41,14 @@ namespace Zoe {
         void notify();
         void notifyBlocking();
 
+        static bool isMainThread();
+        static void waitForThreadNotify();
+        static Thread* getMainThread();
+        static Thread* getThisThread();
+
     public:
 
-        friend void waitForThreadNotify();
-
-        friend void checkThreadSetup();
+        static void checkThreadSetup();
 
     public:
         inline std::string getName() {
@@ -57,11 +56,6 @@ namespace Zoe {
         }
     };
 
-    DLL_PUBLIC bool isMainThread();
-
     DLL_PUBLIC void sleep(unsigned int ms);
-
-    DLL_PUBLIC extern Thread *mainThread;
-    DLL_PUBLIC extern thread_local Thread *thisThread;
 
 }  // namespace Zoe

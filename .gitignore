@@ -67,4 +67,5 @@ examples
 *.exp
 *.manifest
 *.vcxproj.user
-zoe/glew_download-prefix/
+
+*-prefix/
