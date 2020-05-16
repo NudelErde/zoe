@@ -13,7 +13,11 @@
 
 namespace Zoe{
 
-Input* Input::instance = new WindowsInput();
+static Input* instance = new WindowsInput();
+
+Input* Input::getInstance() {
+    return instance;
+}
 
 WindowsInput::~WindowsInput(){}
 

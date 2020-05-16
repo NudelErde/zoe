@@ -38,9 +38,9 @@ namespace Zoe {
 
     static void workerMain() {
         std::unique_lock lock(queueMutex, std::defer_lock_t());
-        waitForThreadNotify();
+        Thread::waitForThreadNotify();
         while (living) {
-            waitForThreadNotify();
+            Thread::waitForThreadNotify();
             lock.lock();
             while (taskQueue.size() > 0) {
                 Task task = taskQueue.front();
@@ -56,7 +56,7 @@ namespace Zoe {
     }
 
     static void init() {
-        checkThreadSetup();
+        Thread::checkThreadSetup();
         workerArray = new Thread *[workerAmount];
         for (unsigned int i = 0; i < workerAmount; ++i) {
             std::stringstream stringStream;
@@ -73,7 +73,7 @@ namespace Zoe {
             init();
 
         std::unique_lock<std::mutex> lock(queueMutex);
-        TaskGroup *tg = new TaskGroup(thisThread, width);
+        TaskGroup *tg = new TaskGroup(Thread::getThisThread(), width);
         for (unsigned int i = 0; i < width; ++i) {
             taskQueue.push(Task(i, [lam, tg](unsigned int i) {
                 lam(i);
@@ -88,7 +88,7 @@ namespace Zoe {
             workerArray[i]->notify();
         }
         lock.unlock();
-        waitForThreadNotify();
+        Thread::waitForThreadNotify();
     }
 
 }

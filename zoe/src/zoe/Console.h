@@ -39,7 +39,7 @@ static inline std::string buildString(T t, Args... args){
 	return ss.str();
 }
 
-enum DLL_PUBLIC LogLevel {
+enum LogLevel {
 	Debug, Info, Warning, Error, Critical
 };
 
@@ -55,20 +55,15 @@ public:
 	void warning(const std::string& m);
 	void error(const std::string& m);
 	void critical(const std::string& m);
-	void print(const std::string& m, const char* type);
 	void setLoggingLevel(LogLevel level);
-};
 
-class DLL_PUBLIC Log {
-public:
 	static void init();
-	inline static std::shared_ptr<Console>& getLogger() {
-		return console;
-	}
+	static std::shared_ptr<Console> getLogger();
 
 private:
-	static std::shared_ptr<Console> console;
+    static void print(const std::string& m, const char* type);
 };
+
 
 template<typename T>
 inline void debug(T t) {
@@ -82,11 +77,11 @@ inline void debug(T t, Args... args){
 }
 template<>
 inline void debug<std::string>(std::string m) {
-	Log::getLogger()->debug(m);
+	Console::getLogger()->debug(m);
 }
 template<>
 inline void debug<const std::string&>(const std::string& m) {
-	Log::getLogger()->debug(m);
+	Console::getLogger()->debug(m);
 }
 template<typename T>
 inline void info(T t) {
@@ -100,11 +95,11 @@ inline void info(T t, Args... args){
 }
 template<>
 inline void info<std::string>(std::string m) {
-	Log::getLogger()->info(m);
+	Console::getLogger()->info(m);
 }
 template<>
 inline void info<const std::string&>(const std::string& m) {
-	Log::getLogger()->info(m);
+	Console::getLogger()->info(m);
 }
 template<typename T>
 inline void warning(T t) {
@@ -118,11 +113,11 @@ inline void warning(T t, Args... args){
 }
 template<>
 inline void warning<std::string>(std::string m) {
-	Log::getLogger()->warning(m);
+	Console::getLogger()->warning(m);
 }
 template<>
 inline void warning<const std::string&>(const std::string& m) {
-	Log::getLogger()->warning(m);
+	Console::getLogger()->warning(m);
 }
 template<typename T>
 inline void error(T t) {
@@ -136,11 +131,11 @@ inline void error(T t, Args... args){
 }
 template<>
 inline void error<std::string>(std::string m) {
-	Log::getLogger()->error(m);
+	Console::getLogger()->error(m);
 }
 template<>
 inline void error<const std::string&>(const std::string& m) {
-	Log::getLogger()->error(m);
+	Console::getLogger()->error(m);
 }
 template<typename T>
 inline void critical(T t) {
@@ -154,11 +149,11 @@ inline void critical(T t, Args... args){
 }
 template<>
 inline void critical<std::string>(std::string m) {
-	Log::getLogger()->critical(m);
+	Console::getLogger()->critical(m);
 }
 template<>
 inline void critical<const std::string&>(const std::string& m) {
-	Log::getLogger()->error(m);
+	Console::getLogger()->error(m);
 }
 
 }
