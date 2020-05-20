@@ -10,7 +10,7 @@ class Layer : public Zoe::Layer3D {
 public:
 
     void onAttach() override {
-        Zoe::Material material = Zoe::Material(Zoe::File("shader.glsl"));
+        /*Zoe::Material material(Zoe::File("shader.glsl"));
         Zoe::Model model(Zoe::File("CubeNoSub.obj"));
         std::shared_ptr<Zoe::Camera> camera = std::make_shared<Zoe::Camera>();
         camera->setPosition({0, 0, 10});
@@ -18,7 +18,7 @@ public:
         camera->setProjectionMatrix(Zoe::perspective(0.1, 100, 90, 16.0 / 9.0));
         cube = std::make_shared<Zoe::Object3D>(material, model);
         add(cube);
-        setCamera(camera);
+        setCamera(camera);*/
     }
 
     void onDetach() override {

@@ -60,3 +60,12 @@ tests/*Test*
 !tests/*.c
 
 examples
+*.vcxproj
+*.filters
+*.sln
+.vs/
+*.exp
+*.manifest
+*.vcxproj.user
+
+*-prefix/
