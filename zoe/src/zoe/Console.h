@@ -7,8 +7,9 @@
 
 #include "Core.h"
 #include <memory>
-#include <stdarg.h>
+#include <cstdarg>
 #include <sstream>
+#include <iostream>
 
 #pragma once
 
