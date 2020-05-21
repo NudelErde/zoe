@@ -68,6 +68,11 @@ namespace Zoe {
             name = uniformMatrixMap["projection"];
             uniformSetter[name](this, name);
         }
+
+        if(!uniformMatrixMap["modelMatrix_it"].empty()){
+            name = uniformMatrixMap["modelMatrix_it"];
+            uniformSetter[name](this, name);
+        }
     }
 
     void Material::loadTags() {
@@ -111,6 +116,13 @@ namespace Zoe {
                 me->setUniform(name, me->projectionMatrix);
             };
             uniformMatrixMap["projection"] = tags["projectionMatrix"];
+        }
+
+        if(!tags["modelMatrix_it"].empty()) {
+            uniformMatrixMap["modelMatrix_it"] = tags["modelMatrix_it"];
+            uniformSetter[tags["modelMatrix_it"]] = [](Material *me, const std::string &name) {
+                me->setUniform(name, transpose(inverse(me->modelMatrix)));
+            };
         }
     }
 

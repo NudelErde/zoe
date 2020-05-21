@@ -45,7 +45,6 @@ private:
 	bool running = true;
 
 	LayerStack layerStack;
-
 	bool hasWindow;
 };
 
