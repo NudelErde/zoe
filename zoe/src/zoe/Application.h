@@ -17,7 +17,7 @@ namespace Zoe {
 
 class DLL_PUBLIC Application {
 public:
-	Application();
+	Application(bool withWindow = true);
 	virtual ~Application();
 
 	void run();
@@ -45,6 +45,7 @@ private:
 	bool running = true;
 
 	LayerStack layerStack;
+	bool hasWindow;
 };
 
 Application* createApplication();

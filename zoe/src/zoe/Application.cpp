@@ -20,7 +20,7 @@ namespace Zoe {
 
 static Application* s_Instance;
 
-Application::Application() {
+Application::Application(bool withWindow): hasWindow(withWindow) {
 	if(s_Instance!=nullptr){
 		critical("Application already exists!");
 		Application::get().exit();
@@ -33,9 +33,11 @@ Application::Application() {
 	initKeyMap();
 
 	//-------------------
-	window = std::unique_ptr<Zoe::Window>(Zoe::Window::create());
-	std::function<void(Event&)> cb = BIND_EVENT_FN(onEvent);
-	window->setEventCallback(cb);
+	if(withWindow) {
+        window = std::unique_ptr<Zoe::Window>(Zoe::Window::create());
+        std::function<void(Event&)> cb = BIND_EVENT_FN(onEvent);
+        window->setEventCallback(cb);
+    }
 }
 
 Application::~Application() {
