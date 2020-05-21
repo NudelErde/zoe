@@ -15,4 +15,5 @@ ENDIF()
 
 if(WIN32)
   add_custom_command(TARGET zoe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:zoe> ${PROJECT_BINARY_DIR}/sandbox/zoe.dll)
+  add_custom_command(TARGET zoe POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:zoe> ${PROJECT_BINARY_DIR}/tests/zoe.dll)
 endif()

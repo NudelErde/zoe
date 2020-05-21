@@ -30,7 +30,7 @@ public:
     }
 
     void onRender() override {
-        static float position = 0;
+        /*static float position = 0;
         static float rotation = 0;
         position += 0.01;
         cube->getMaterial().setUniform("lightSource", Zoe::vec4({10,10,std::sin(position)*10,1}));
@@ -39,7 +39,7 @@ public:
         if(Zoe::Input::isKeyPressed(KEY_SPACE)){
             rotation += 0.1;
             cube->getModel().setModelMatrix(Zoe::rotateYZ3D(rotation));
-        }
+        }*/
     }
 private:
     std::shared_ptr<Zoe::Object3D> cube;
