@@ -121,7 +121,8 @@ namespace Zoe {
         if(!tags["modelMatrix_it"].empty()) {
             uniformMatrixMap["modelMatrix_it"] = tags["modelMatrix_it"];
             uniformSetter[tags["modelMatrix_it"]] = [](Material *me, const std::string &name) {
-                me->setUniform(name, transpose(inverse(me->modelMatrix)));
+                me->setUniform(name, me->modelMatrix.inverse().transpose());
+                //throw std::runtime_error("modelMatrix^-T is not implemented!");
             };
         }
     }
