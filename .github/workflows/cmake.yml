@@ -1,4 +1,4 @@
-name: Build (with CMake)
+name: Build'n Test
 
 on:
   push:
@@ -20,6 +20,8 @@ jobs:
       run: cmake .
     - name: Build project
       run: cmake --build .
+    - name: Run tests
+      run: ctest
     - name: 'Upload a Build Artifact: sandbox'
       uses: actions/upload-artifact@v2
       with:
