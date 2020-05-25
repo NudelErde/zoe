@@ -20,8 +20,6 @@ jobs:
       run: cmake .
     - name: Build project
       run: cmake --build .
-    - name: Run tests
-      run: ctest
     - name: 'Upload a Build Artifact: sandbox'
       uses: actions/upload-artifact@v2
       with:
@@ -32,12 +30,6 @@ jobs:
       with:
         name: libzoe.so
         path: ./zoe/libzoe.so
-    - name: Cache
-      uses: actions/cache@v1.2.0
-      with:
-        path: s 
-        # An explicit key for restoring and saving the cache
-        key: build-result
   test:
     runs-on: ubuntu-latest
     needs: build
