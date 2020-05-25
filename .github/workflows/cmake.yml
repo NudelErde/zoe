@@ -32,3 +32,16 @@ jobs:
       with:
         name: libzoe.so
         path: ./zoe/libzoe.so
+    - name: Cache
+      uses: actions/cache@v1.2.0
+      with:
+        path: s 
+        # An explicit key for restoring and saving the cache
+        key: build-result
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Run tests
+      run: ctest
