@@ -30,10 +30,19 @@ jobs:
       with:
         name: libzoe.so
         path: ./zoe/libzoe.so
+    - name: 'Upload Working Directory for Test-Job'
+      uses: actions/upload-artifact@v2
+      with:
+        name: wd
+        path: ./
   test:
     runs-on: ubuntu-latest
     needs: build
 
     steps:
+    - name: 'Download Working Directory from Build-Job'
+      uses: actions/download-artifact@v2
+      with:
+        name: wd
     - name: Run tests
       run: ctest
