@@ -11,6 +11,7 @@
 
 #include "Console.h"
 #include "KeyCode.h"
+#include "UI/Font.h"
 
 #include "game/nodes/2DGameNode.h"
 
@@ -30,6 +31,7 @@ Application::Application(bool withWindow): hasWindow(withWindow) {
 	//---Init other stuff
 	Console::init();
 	Layer2D::init();
+	Font::init();
 	initKeyMap();
 
 	//-------------------

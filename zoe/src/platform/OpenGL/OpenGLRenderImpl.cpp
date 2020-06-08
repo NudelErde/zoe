@@ -5,6 +5,8 @@
  *      Author: florian
  */
 
+#include <ObjIdl.h>
+#include <freetype/ftglyph.h>
 #include "OpenGLRenderImpl.h"
 
 #include "../../zoe/render/GraphicsContext.h"
@@ -17,8 +19,8 @@ namespace Zoe {
 
 OpenGLRenderImpl::OpenGLRenderImpl(GraphicsContext* context) :
 		RenderImpl(context, 0, 0, 1280, 720) {
-	width = Application::get().getWindow().getWidth();
-	height = Application::get().getWindow().getHeight();
+	settings.width = Application::get().getWindow().getWidth();
+	settings.height = Application::get().getWindow().getHeight();
 }
 
 OpenGLRenderImpl::~OpenGLRenderImpl() {
@@ -38,45 +40,46 @@ void OpenGLRenderImpl::clear() {
 }
 
 void OpenGLRenderImpl::setClearColor(float r, float g, float b, float a) {
-	clearColor = {r,g,b,a};
+    settings.clearColor = {r,g,b,a};
 }
 
 void OpenGLRenderImpl::setViewport(unsigned int x, unsigned int y,
 		unsigned int width, unsigned int height) {
-	this->x = x;
-	this->y = y;
-	this->width = width;
-	this->height = height;
+	this->settings.x = x;
+	this->settings.y = y;
+	this->settings.width = width;
+	this->settings.height = height;
 }
 
 void OpenGLRenderImpl::setAlphaEnabled(bool enabled) {
-	settingsFlag ^= (-(unsigned long) enabled ^ settingsFlag)
-			& ((unsigned int) RenderFlag::ALPHA_FLAG);
+    settings.flag.alpha = enabled;
 }
 
 void OpenGLRenderImpl::loadSettings() {
-	RenderImpl* bound = this->context->boundRender;
-	if (bound != nullptr && bound->getClearColor() != this->clearColor) {
-		glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
-	}
-	if (bound != nullptr
-			&& !(bound->getViewportX() == x && bound->getViewportY() == y
-					&& bound->getViewportWidth() == width
-					&& bound->getViewportHeight() == height)) {
-		glViewport(x, y, width, height);
-	}
-	if (bound != nullptr
-			&& ((bound->getSettingsFlag() & settingsFlag)
-					& (unsigned int) RenderFlag::ALPHA_FLAG)) {
-		if (settingsFlag & (unsigned int) RenderFlag::ALPHA_FLAG) {
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glBlendEquation(GL_FUNC_ADD);
-		} else {
-			glDisable(GL_BLEND);
-		}
-	}
-	this->context->boundRender = this;
+	Settings& bound = context->boundRenderSettings;
+
+	//Update viewport
+    if (bound.x != settings.x || bound.y != settings.y || bound.width != settings.width ||
+        bound.height != settings.height) {
+        glViewport(settings.x,settings.y,settings.width,settings.height);
+    }
+
+    //Update clearColor
+    if(bound.clearColor != settings.clearColor){
+        glClearColor(settings.clearColor.x, settings.clearColor.y, settings.clearColor.z, settings.clearColor.w);
+    }
+
+    //Check alpha enabled
+    if(bound.flag.alpha != settings.flag.alpha){
+        if(settings.flag.alpha){
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glBlendEquation(GL_FUNC_ADD);
+        } else {
+            glDisable(GL_BLEND);
+        }
+    }
+    bound = settings;
 }
 
 }

@@ -34,6 +34,7 @@ void OpenGLContext::init() {
 	glDepthMask(GL_TRUE);
 	glDepthFunc(GL_LEQUAL);
 	glClearDepth(1.0f);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
 void OpenGLContext::swapBuffers() {
@@ -64,8 +65,8 @@ std::shared_ptr<VertexBufferLayout> OpenGLContext::getVertexBufferLayout(){
 	return std::make_shared<VertexBufferLayout>(new OpenGLVertexBufferLayoutImpl());
 }
 
-std::shared_ptr<Texture> OpenGLContext::getTexture(unsigned int width, unsigned int height){
-	return std::make_shared<Texture>(new OpenGLTextureImpl(this,width,height));
+std::shared_ptr<Texture> OpenGLContext::getTexture(unsigned int width, unsigned int height, unsigned int channels){
+	return std::make_shared<Texture>(new OpenGLTextureImpl(this,width,height,channels));
 }
 
 std::shared_ptr<Texture> OpenGLContext::getTexture(const File& file){

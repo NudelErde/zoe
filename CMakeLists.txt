@@ -10,13 +10,29 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(dependencies/glfw)
 add_subdirectory(dependencies/webp)
+
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/build/freetype)
+add_custom_target(freetype-build
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/dependencies/freetype
+        COMMAND ${CMAKE_COMMAND} -B ${PROJECT_BINARY_DIR}/build/freetype -D CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+        COMMAND ${CMAKE_COMMAND} --build ${PROJECT_BINARY_DIR}/build/freetype
+        )
+add_library(freetype STATIC IMPORTED DEPENDS freetype-build)
+if(WIN32)
+    set_target_properties(freetype PROPERTIES
+            IMPORTED_LOCATION "${PROJECT_BINARY_DIR}/build/freetype/Debug/freetyped.lib"
+            INTERFACE_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/dependencies/freetype/include")
+else()
+#TODO target properties for linux
+endif()
+
 add_definitions(-DGLEW_STATIC -DGLFW_STATIC)
 IF(WIN32)
     add_definitions(/bigobj)
 ENDIF()
 
 set(ZOE_INCLUDES "")
-add_definitions(-DZOE_SHARED -DBUILDING_DLL)
+#add_definitions(-DZOE_SHARED -DBUILDING_DLL)
 #GLEW
 IF(WIN32)
     include(ExternalProject)

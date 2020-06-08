@@ -29,7 +29,7 @@ namespace Zoe{
 
 class DLL_PUBLIC GraphicsContext{
 public:
-	GraphicsContext(): boundIndexBuffer(0), boundRender(0), boundShader(0), boundVertexArray(0), boundVertexBuffer(0){}
+	GraphicsContext(): boundIndexBuffer(0), boundShader(0), boundVertexArray(0), boundVertexBuffer(0){}
 	virtual ~GraphicsContext(){};
 	virtual void init() = 0;
 	virtual void swapBuffers() = 0;
@@ -40,14 +40,14 @@ public:
 	virtual std::shared_ptr<VertexArray> getVertexArray() = 0;
 	virtual std::shared_ptr<VertexBuffer> getVertexBuffer(bool dynamicBuffer = false) = 0;
 	virtual std::shared_ptr<VertexBufferLayout> getVertexBufferLayout() = 0;
-	virtual std::shared_ptr<Texture> getTexture(unsigned int width, unsigned int height) = 0;
+	virtual std::shared_ptr<Texture> getTexture(unsigned int width, unsigned int height, unsigned int channels = 4) = 0;
 	virtual std::shared_ptr<Texture> getTexture(const File& file) = 0;
 
 	IndexBufferImpl* boundIndexBuffer;
-	RenderImpl* boundRender;
 	ShaderImpl* boundShader;
 	VertexArrayImpl* boundVertexArray;
 	VertexBufferImpl* boundVertexBuffer;
+	RenderImpl::Settings boundRenderSettings{};
 };
 
 }
