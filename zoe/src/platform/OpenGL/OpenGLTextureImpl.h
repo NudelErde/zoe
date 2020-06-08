@@ -14,7 +14,7 @@ namespace Zoe{
 class OpenGLTextureImpl: public TextureImpl{
 public:
 	OpenGLTextureImpl(GraphicsContext* context, const File& file);
-	OpenGLTextureImpl(GraphicsContext* context, const unsigned int& width, const unsigned int& height);
+	OpenGLTextureImpl(GraphicsContext* context, const unsigned int& width, const unsigned int& height, unsigned int channels);
 	~OpenGLTextureImpl();
 
 	void bind(unsigned int slot);
@@ -28,6 +28,7 @@ public:
 private:
 	unsigned int dataFormat,internalFormat;
 	unsigned int width,height;
+	unsigned int channels;
 	unsigned int renderID;
 };
 

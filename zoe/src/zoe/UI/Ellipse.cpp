@@ -96,7 +96,7 @@ Ellipse::Ellipse(const Rectangle& rect, const Color& color) :
 
 		data.shader->setUniform4m("Projection",
 				Zoe::translate3D(0,0,0)
-				* Zoe::scale3D(1/800.0, -1/450.0, 1) * Zoe::translate3D(-800, -450, 0)
+				* Zoe::scale3D(1/800.0f, -1/450.0f, 1) * Zoe::translate3D(-800, -450, 0)
 		);
 	}
 }

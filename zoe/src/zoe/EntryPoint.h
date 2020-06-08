@@ -20,6 +20,7 @@ int main(){
         return EXIT_SUCCESS;
     }catch(const std::exception& e){
         Zoe::critical("Uncaught error: ", e.what());
+        std::cin.get();
         return EXIT_FAILURE;
     }
 }

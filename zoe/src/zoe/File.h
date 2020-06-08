@@ -19,8 +19,11 @@ public:
 	File(const std::string& name);
 	~File();
 
-	std::shared_ptr<std::istream> getInputStream() const;
+	std::shared_ptr<std::istream> getInputStream(bool binary = false) const;
 	std::unique_ptr<uint8_t[]> getByteArray(size_t* size = 0) const;
+
+	size_t getSize() const;
+	void getData(uint8_t* data) const;
 
 	std::string getName() const;
 

@@ -6,6 +6,8 @@
  */
 
 #include "Image.h"
+
+#include <utility>
 #include "../Application.h"
 #include "../render/api/Shader.h"
 #include "../render/api/IndexBuffer.h"
@@ -82,12 +84,37 @@ Image::Image(const Rectangle& rect, const File& file): rect(rect){
 		data.vertexArray->set(*data.vertexBuffer, *data.indexBuffer, *layout);
 
 		data.shader->setUniform4m("Projection", Zoe::translate3D(0,0,0)
-				* Zoe::scale3D(1/800.0, -1/450.0, 1) * Zoe::translate3D(-800, -450, 0));
+				* Zoe::scale3D(1/800.0f, -1/450.0f, 1) * Zoe::translate3D(-800, -450, 0));
 	}
 }
 
-Image::~Image(){
+Image::Image(const Rectangle &rect, std::shared_ptr<Texture> tex): rect(rect){
+    texture = std::move(tex);
+    if(!hasImageInit){
+        hasImageInit = true;
+
+        data.vertexBuffer = Application::getContext().getVertexBuffer();
+        data.indexBuffer = Application::getContext().getIndexBuffer();
+        data.vertexArray = Application::getContext().getVertexArray();
+        data.renderer = Application::getContext().getRender();
+        data.renderer->setAlphaEnabled(true);
+        registerVirtualFile("image.shader", imageShaderSrc);
+        data.file = std::make_shared<File>("image.shader");
+        data.shader = Application::getContext().getShader(*data.file);
+        float imageVertexData[] {0,0,1,0,1,1,0,1};
+        unsigned int imageIndexData[] {0,1,2,2,3,0};
+        data.vertexBuffer->setData(imageVertexData, sizeof(float)*8);
+        data.indexBuffer->setData(imageIndexData, 6);
+        std::shared_ptr<VertexBufferLayout> layout = Application::getContext().getVertexBufferLayout();
+        layout->push_float(2);
+        data.vertexArray->set(*data.vertexBuffer, *data.indexBuffer, *layout);
+
+        data.shader->setUniform4m("Projection", Zoe::translate3D(0,0,0)
+                                                * Zoe::scale3D(1/800.0f, -1/450.0f, 1) * Zoe::translate3D(-800, -450, 0));
+    }
 }
+
+Image::~Image()= default;
 
 void Image::draw(){
 	data.shader->setTexture("tex", *texture);

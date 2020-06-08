@@ -26,14 +26,14 @@ namespace Zoe {
 
     }
 
-    std::shared_ptr<std::istream> File::getInputStream() const {
+    std::shared_ptr<std::istream> File::getInputStream(bool binary) const {
 
         if (m_virtual) {
             return std::make_shared<std::stringstream>(*getVirtualFileContent(m_path));
         } else {
             std::ifstream exist(m_path);
             if (exist.good()) {
-                return std::make_shared<std::ifstream>(m_path, std::ios::in);
+                return std::make_shared<std::ifstream>(m_path, std::ios::in|(binary?std::ios::binary:0));
             } else {
                 std::stringstream errorMessage;
                 errorMessage << "Could not open file: " << m_path;
@@ -43,7 +43,7 @@ namespace Zoe {
     }
 
     std::unique_ptr<uint8_t[]> File::getByteArray(size_t *size) const {
-        std::shared_ptr<std::istream> stream = getInputStream();
+        std::shared_ptr<std::istream> stream = getInputStream(true);
         stream->seekg(0, std::ios::end);
         size_t len = stream->tellg();
         if (size != 0) {
@@ -51,7 +51,7 @@ namespace Zoe {
         }
         std::unique_ptr<uint8_t[]> ret = std::make_unique<uint8_t[]>(len);
         stream->seekg(0, std::ios::beg);
-        stream->read((char *) (ret.get()), len);
+        std::copy(std::istreambuf_iterator<char>(*stream),std::istreambuf_iterator<char>(), ret.get());
         return ret;
     }
 
@@ -74,6 +74,19 @@ namespace Zoe {
 
     bool File::operator!=(const File &file) {
         return !(*this == file);
+    }
+
+    void File::getData(uint8_t *data) const {
+        std::shared_ptr<std::istream> stream = getInputStream(true);
+        std::copy(std::istreambuf_iterator<char>(*stream),std::istreambuf_iterator<char>(), data);
+    }
+
+    size_t File::getSize() const {
+        std::shared_ptr<std::istream> stream = getInputStream();
+        stream->seekg(0, std::ios::end);
+        size_t len = stream->tellg();
+        stream->seekg(0, std::ios::beg);
+        return len;
     }
 
 }

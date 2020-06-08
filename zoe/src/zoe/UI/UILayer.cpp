@@ -15,8 +15,7 @@ UILayer::UILayer(): Layer("UILayer") {
 	setSubscribedEvents(EventCategoryApplication|EventCategoryInput);
 }
 
-UILayer::~UILayer() {
-}
+UILayer::~UILayer() = default;
 
 //------------------
 //------EVENTS------
@@ -86,24 +85,15 @@ void UILayer::addRectangle(const Rectangle& rect, const Color& color) {
 	throw std::runtime_error("not implemented");
 }
 
-void UILayer::addText(const float& x, const float& y, const char* string,
-		const Color& color) {
-	throw std::runtime_error("not implemented");
-}
-
-void UILayer::addText(const Point& point, const char* string,
-		const Color& color) {
-	throw std::runtime_error("not implemented");
-}
-
 void UILayer::addText(const float& x, const float& y,
-		const std::string& string, const Color& color) {
-	throw std::runtime_error("not implemented");
+		const std::string& string, const Color& color, const Font& font) {
+	Point p {x,y};
+    addComponent(new Text(p, font, string, color));
 }
 
 void UILayer::addText(const Point& point, const std::string& string,
-		const Color& color) {
-	throw std::runtime_error("not implemented");
+		const Color& color, const Font& font) {
+    addComponent(new Text(point, font, string, color));
 }
 
 //
@@ -133,21 +123,14 @@ void UILayer::addRectangle(const Rectangle& rect) {
 	throw std::runtime_error("not implemented");
 }
 
-void UILayer::addText(const float& x, const float& y, const char* string) {
-	throw std::runtime_error("not implemented");
-}
-
-void UILayer::addText(const Point& point, const char* string) {
-	throw std::runtime_error("not implemented");
-}
-
 void UILayer::addText(const float& x, const float& y,
-		const std::string& string) {
-	throw std::runtime_error("not implemented");
+		const std::string& string, const Font& font) {
+	Point p {x,y};
+	addComponent(new Text(p, font, string, color));
 }
 
-void UILayer::addText(const Point& point, const std::string& string) {
-	throw std::runtime_error("not implemented");
+void UILayer::addText(const Point& point, const std::string& string, const Font& font) {
+	addComponent(new Text(point, font, string, color));
 }
 
 void UILayer::addClickCallback(const float& x, const float& y,
@@ -173,13 +156,23 @@ void UILayer::addImage(const float& x, const float& y, const float& w, const flo
 	addComponent(new Image(r,file));
 }
 
+void UILayer::addImage(const Rectangle &rect, const std::shared_ptr<Texture>&texture) {
+    addComponent(new Image(rect, texture));
+}
+
+void UILayer::addImage(const float& x, const float& y, const float& w, const float& h, const std::shared_ptr<Texture>& texture){
+    Rectangle r = {x,y,w,h,0};
+    addComponent(new Image(r,texture));
+}
+
+
 //------------------
 //------RENDER------
 //------------------
 
 bool UILayer::onRenderEvent(AppRenderEvent& event) {
-	static std::shared_ptr<Render> render = 0;
-	if(render == 0){
+	static std::shared_ptr<Render> render = nullptr;
+	if(render == nullptr){
 		render = Application::getContext().getRender();
 	}
 	render->setClearColor(1, 1, 1, 1);

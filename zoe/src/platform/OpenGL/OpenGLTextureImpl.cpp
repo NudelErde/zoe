@@ -13,7 +13,7 @@
 namespace Zoe {
 
 OpenGLTextureImpl::OpenGLTextureImpl(GraphicsContext* context, const File& file) :
-		TextureImpl(context), dataFormat(GL_RGBA),internalFormat(GL_RGBA8) {
+		TextureImpl(context), dataFormat(GL_RGBA),internalFormat(GL_RGBA8), channels(4) {
 	size_t size = 0;
 	std::unique_ptr<uint8_t[]> data = file.getByteArray(&size);
 	WebPBitstreamFeatures features;
@@ -45,8 +45,21 @@ OpenGLTextureImpl::OpenGLTextureImpl(GraphicsContext* context, const File& file)
 }
 
 OpenGLTextureImpl::OpenGLTextureImpl(GraphicsContext* context,
-		const unsigned int& width, const unsigned int& height) :
-		TextureImpl(context), dataFormat(GL_RGBA),internalFormat(GL_RGBA8), width(width), height(height) {
+		const unsigned int& width, const unsigned int& height, unsigned int channels) :
+		TextureImpl(context), width(width), height(height), channels(channels) {
+    switch (channels) {
+        case 1:
+            dataFormat = GL_RED;
+            internalFormat = GL_R8;
+            break;
+        case 4:
+            dataFormat = GL_RGBA;
+            internalFormat = GL_RGBA8;
+            break;
+        default:
+            warning("Textures with ", channels, " are not supported!");
+            return;
+    }
 	glActiveTexture(GL_TEXTURE0);
 
 	glGenTextures(1, &renderID);
@@ -57,7 +70,7 @@ OpenGLTextureImpl::OpenGLTextureImpl(GraphicsContext* context,
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, nullptr);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -67,8 +80,8 @@ OpenGLTextureImpl::~OpenGLTextureImpl() {
 }
 
 void OpenGLTextureImpl::bind(unsigned int slot) {
-	glActiveTexture(GL_TEXTURE0+slot);
-	glBindTexture(GL_TEXTURE_2D, renderID);
+    glActiveTexture(GL_TEXTURE0+slot);
+    glBindTexture(GL_TEXTURE_2D, renderID);
 }
 
 void OpenGLTextureImpl::unbind(unsigned int slot) {
@@ -77,13 +90,13 @@ void OpenGLTextureImpl::unbind(unsigned int slot) {
 }
 
 void OpenGLTextureImpl::setData(uint8_t* data, unsigned int size) {
-	if(width*height*4 != size){
-		error("Could not load texture. Data size is invalid: ",size," should be ", width*height*4);
+	if(width*height*channels != size){
+		error("Could not load texture. Data size is invalid: ",size," should be ", width*height*channels);
 		return;
 	}
 
-	bind(0);
-	glTexSubImage2D(GL_TEXTURE0, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
+    bind(0);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
 }
 
 void OpenGLTextureImpl::setData(const File& file) {

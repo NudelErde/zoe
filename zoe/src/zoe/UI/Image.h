@@ -17,6 +17,7 @@ namespace Zoe {
 class DLL_PUBLIC Image: public Component{
 public:
 	Image(const Rectangle& rect, const File& file);
+	Image(const Rectangle& rec, std::shared_ptr<Texture> texture);
 	~Image();
 
 	void draw() override;
