@@ -106,9 +106,8 @@ void main(){
     Text::~Text() = default;
 
     void Text::draw() {
-        //TODO: wtf utf-8? what is text? what does freetype do? is everything wrong?
         const size_t length = string.length();
-        const char *cstr = string.c_str();
+        const uint8_t* cstr = reinterpret_cast<const uint8_t *>(string.c_str());
         float textureWidth = (float) font.getTextureWidth();
         float textureHeight = (float) font.getTextureHeight();
 
@@ -118,14 +117,82 @@ void main(){
             memset(indexData, 0, sizeof(unsigned int) * 6 * 64);
 
             unsigned int index;
+            unsigned int charIndex = 0;
             for (index = 0; index < 64; ++index) {
-                if (drawCallIndex + index >= length) {
+                if (charIndex >= length) {
                     break;
                 }
+
+                //make utf-8 stuff
+                //
+                // ascii if char is 0XXXXXXX
+                // utf-8 stuff is char is 1XXXXXXX
+                //  number of 1 before 0 is number of bytes in char
+                //  bytes after start byte are 10XXXXXX
+                //  result is all bits in X
+                //example:
+                //01111111 => ascii shit do nothing
+                //11000011 => start of utf-8 shit do stuff
+                // because it has two 1 before the first 0 there are 2 bytes for this char
+                // next byte must start with 10
+                // next byte is 10110110
+                // result is 00011 110110 (first 5 bits from first byte; next 6 bits from second byte)
+                uint32_t charCode = cstr[charIndex];
+                if(charCode & (uint32_t)BIT(7)){
+                    if(charCode & (uint32_t)BIT(6)){
+                        if(charCode & (uint32_t)BIT(5)){
+                            if(charCode & (uint32_t)BIT(4)){
+                                //should be 4 byte symbol
+                                if(charIndex + 3 >= length){
+                                    warning("String is not long enough for 4 byte char");
+                                    ++charIndex;
+                                    continue;
+                                }
+                                charCode = 0;
+                                charCode |= (cstr[charIndex] & (uint32_t)0b00000111);
+                                charCode <<= (uint32_t)6;
+                                charCode |= (cstr[charIndex+1] & (uint32_t)0b00111111);
+                                charCode <<= (uint32_t)6;
+                                charCode |= (cstr[charIndex+2] & (uint32_t)0b00111111);
+                                charCode <<= (uint32_t)6;
+                                charCode |= (cstr[charIndex+2] & (uint32_t)0b00111111);
+                                charIndex+=3;
+                            }else{
+                                //3 byte symbol
+                                if(charIndex + 2 >= length){
+                                    warning("String is not long enough for 3 byte char");
+                                    ++charIndex;
+                                    continue;
+                                }
+                                charCode = 0;
+                                charCode |= (cstr[charIndex] & (uint32_t)0b00001111);
+                                charCode <<= (uint32_t)6;
+                                charCode |= (cstr[charIndex+1] & (uint32_t)0b00111111);
+                                charCode <<= (uint32_t)6;
+                                charCode |= (cstr[charIndex+2] & (uint32_t)0b00111111);
+                                charIndex+=2;
+                            }
+                        }else{
+                            // 2 byte symbol
+                            if(charIndex + 1 >= length){
+                                warning("String is not long enough for 2 byte char");
+                                ++charIndex;
+                                continue;
+                            }
+                            charCode = 0;
+                            charCode |= (cstr[charIndex] & (uint32_t)0b00011111);
+                            charCode <<= (uint32_t)6;
+                            charCode |= (cstr[charIndex+1] & (uint32_t)0b00111111);
+                            charIndex+=1;
+                        }
+                    }else{
+                        //found multibytechar but not start
+                    }
+                }
+
                 RenderChar renderChar{};
-                FontCharMetric metric = font.getCharMetric(cstr[drawCallIndex + index]);
-                FontCharBitmapInformation bitmapInformation = font.getCharBitmapInformation(
-                        cstr[drawCallIndex + index]);
+                FontCharMetric metric = font.getCharMetric(charCode);
+                FontCharBitmapInformation bitmapInformation = font.getCharBitmapInformation(charCode);
                 renderChar.topLeft.position.x = cursor.x + ((float) metric.horiBearingX) / 64.0f;
                 renderChar.topLeft.position.y = cursor.y - ((float) metric.horiBearingY) / 64.0f;
                 renderChar.topLeft.texPosition.x = (float) bitmapInformation.x / textureWidth;
@@ -163,6 +230,8 @@ void main(){
                 indexData[index * 6 + 3] = index * 4 + 2;
                 indexData[index * 6 + 4] = index * 4 + 3;
                 indexData[index * 6 + 5] = index * 4 + 0;
+
+                ++charIndex;
             }
             indexBuffer->setData(indexData, 6 * 64);
             vertexBuffer->setData(vertexData, sizeof(RenderChar) * 64);

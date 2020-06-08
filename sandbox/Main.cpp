@@ -14,11 +14,11 @@ public:
         addEllipse(10,10,100,100);
 
 
-        Zoe::Font font(Zoe::File("no_game_no_life.ttf"), 80);
+        Zoe::Font font(Zoe::File("Product Sans Regular.ttf"), 80);
 
         //addImage(300,100,600,600,font.getBitmap());
 
-        addText({100,100}, "Hello, World!", Zoe::Color({0,0,0,1}), font);
+        addText({100,100}, "UTF-8 test Lööps", Zoe::Color({0,0,0,1}), font);
     }
 
     void onDetach() override{
