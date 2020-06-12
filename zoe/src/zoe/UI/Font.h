@@ -63,7 +63,7 @@ private:
 private:
     FontData* data;
 
-    void loadGlyph(unsigned int glyphIndex, unsigned long charCode, FT_GlyphRec_ *&glyph, unsigned int &maxWidth,
+    void loadGlyph(unsigned int glyphIndex, unsigned long charCode, void* glyph, unsigned int &maxWidth,
                    unsigned int &maxHeight, unsigned int &glyphCount) const;
 };
 
