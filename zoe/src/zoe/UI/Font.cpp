@@ -170,12 +170,12 @@ namespace Zoe {
         unsigned int maxHeight = 0;
         unsigned int glyphCount = 0;
 
-        loadGlyph(0, 0, glyph, maxWidth, maxHeight, glyphCount); //Load 'missing glyph'
+        loadGlyph(0, 0, &glyph, maxWidth, maxHeight, glyphCount); //Load 'missing glyph'
         for (charCode = FT_Get_First_Char(data->face, &glyphIndex);
              glyphIndex != 0;
              charCode = FT_Get_Next_Char(data->face, charCode, &glyphIndex)) {
 
-            loadGlyph(glyphIndex, charCode, glyph, maxWidth, maxHeight, glyphCount);
+            loadGlyph(glyphIndex, charCode, &glyph, maxWidth, maxHeight, glyphCount);
         }
 
 
@@ -209,8 +209,9 @@ namespace Zoe {
         }
     }
 
-    void Font::loadGlyph(unsigned int glyphIndex, unsigned long charCode, FT_Glyph &glyph, unsigned int &maxWidth,
+    void Font::loadGlyph(unsigned int glyphIndex, unsigned long charCode, void* glyph_ptr, unsigned int &maxWidth,
                          unsigned int &maxHeight, unsigned int &glyphCount) const {
+        FT_Glyph& glyph = *(FT_Glyph*)glyph_ptr;
         int err;
         err = FT_Load_Glyph(data->face, glyphIndex, FT_LOAD_DEFAULT);
         if (err) {
