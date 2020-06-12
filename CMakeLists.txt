@@ -43,12 +43,12 @@ IF(WIN32)
             INSTALL_COMMAND ""
             TEST_COMMAND ""
             )
-    file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/glew_download-prefix/src/glew_download/include)
-    file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/glew_download-prefix/src/glew_download/lib/Release/x64/)
+    file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/glew_download-prefix/src/glew_download/include)
+    file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/glew_download-prefix/src/glew_download/lib/Release/x64/)
     add_library(GLEW STATIC IMPORTED DEPENDS glew_download)
     set_target_properties(GLEW PROPERTIES
-            IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/glew_download-prefix/src/glew_download/lib/Release/x64/glew32s.lib"
-            INTERFACE_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/glew_download-prefix/src/glew_download/include/")
+            IMPORTED_LOCATION "${PROJECT_BINARY_DIR}/glew_download-prefix/src/glew_download/lib/Release/x64/glew32s.lib"
+            INTERFACE_INCLUDE_DIRECTORIES "${PROJECT_BINARY_DIR}/glew_download-prefix/src/glew_download/include/")
 ELSE()
     #should already have GLEW
 ENDIF()

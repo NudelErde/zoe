@@ -6,7 +6,6 @@
 
 #include "../Core.h"
 #include <memory>
-#include <freetype/ftglyph.h>
 #include "../File.h"
 
 namespace Zoe{
