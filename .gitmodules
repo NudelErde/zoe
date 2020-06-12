@@ -13,3 +13,4 @@
 [submodule "dependencies/freetype"]
 	path = dependencies/freetype
 	url = https://git.savannah.gnu.org/git/freetype/freetype2.git
+	branch = master
