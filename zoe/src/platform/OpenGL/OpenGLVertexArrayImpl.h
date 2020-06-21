@@ -23,7 +23,7 @@ public:
 
 	void bind();
 	void unbind();
-	IndexBufferImpl& getIndexBuffer();
+	IndexBufferImpl* getIndexBuffer();
 public:
 	unsigned int renderID;
 	VertexBufferImpl* vb;

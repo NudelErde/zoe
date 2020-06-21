@@ -20,14 +20,16 @@ OpenGLVertexArrayImpl::OpenGLVertexArrayImpl(GraphicsContext* context): VertexAr
 }
 
 OpenGLVertexArrayImpl::~OpenGLVertexArrayImpl(){
+    if(context->boundVertexArray != nullptr && context->boundVertexArray->getID() == id){
+        glBindVertexArray(0);
+        context->boundVertexArray = nullptr;
+    }
 	glDeleteVertexArrays(1,&renderID);
 }
 
 void OpenGLVertexArrayImpl::set(VertexBuffer& vb,IndexBuffer& ib,VertexBufferLayout& layout){
-	this->vb = vb.getImpl();
 	bind();
 	vb.bind();
-
 	ib.bind();
 
 	VertexBufferLayoutImpl* vbl_ptr = layout.getImpl();
@@ -40,24 +42,25 @@ void OpenGLVertexArrayImpl::set(VertexBuffer& vb,IndexBuffer& ib,VertexBufferLay
 		glVertexAttribPointer(i,element.count,element.type,element.normalized,lvbl->getStride(),(const void*)(intptr_t)(offset));
 		offset += element.count * element.offset;
 	}
+	unbind();
 }
 
 void OpenGLVertexArrayImpl::bind(){
-	if(this->context->boundVertexArray != this){
-		glBindVertexArray(renderID);
-		this->context->boundVertexArray = this;
-	}
+    if(context->boundVertexArray == nullptr || context->boundVertexArray->getID()!=id){
+        glBindVertexArray(renderID);
+        context->boundVertexArray = this;
+    }
 }
 
 void OpenGLVertexArrayImpl::unbind(){
-	if(this->context->boundVertexArray!=0){
-		glBindVertexArray(0);
-		this->context->boundVertexArray = 0;
-	}
+    if(context->boundVertexArray != nullptr){
+        glBindVertexArray(0);
+        context->boundVertexArray = nullptr;
+    }
 }
 
-IndexBufferImpl& OpenGLVertexArrayImpl::getIndexBuffer(){
-	return *ib;
+IndexBufferImpl* OpenGLVertexArrayImpl::getIndexBuffer(){
+	return ib;
 }
 
 }

@@ -12,6 +12,7 @@
 #include "../../Core.h"
 #include "ImplPointer.h"
 #include "../../File.h"
+#include "../GraphicsContext.h"
 
 namespace Zoe{
 
@@ -19,7 +20,7 @@ class GraphicsContext;
 
 class TextureImpl{
 public:
-	TextureImpl(GraphicsContext* context): context(context){}
+	TextureImpl(GraphicsContext* context): context(context), id(GraphicsContext::generateID()){}
 	virtual ~TextureImpl(){}
 
 	virtual void bind(unsigned int slot) = 0;
@@ -31,8 +32,12 @@ public:
 	virtual unsigned int getWidth() = 0;
 	virtual unsigned int getHeight() = 0;
 
+    inline const int& getID() const{ return id;}
+
 protected:
 	GraphicsContext* context;
+
+	int id;
 };
 
 class DLL_PUBLIC Texture{
@@ -48,6 +53,10 @@ public:
 
 	inline unsigned int getWidth() {return impl->getWidth();}
 	inline unsigned int getHeiht() {return impl->getHeight();}
+
+    inline TextureImpl* getImpl() {return &impl;}
+
+    inline const int& getID() const { return impl->getID();}
 
 private:
 	ImplPointer<TextureImpl> impl;

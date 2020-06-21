@@ -9,14 +9,13 @@
 
 #include "../../Core.h"
 #include "ImplPointer.h"
+#include "../GraphicsContext.h"
 
 namespace Zoe{
 
-class GraphicsContext;
-
 class VertexBufferImpl{
 public:
-	VertexBufferImpl(GraphicsContext* context): context(context){}
+	VertexBufferImpl(GraphicsContext* context): context(context), id(GraphicsContext::generateID()){}
 	virtual ~VertexBufferImpl(){}
 
 	virtual void bind() = 0;
@@ -24,8 +23,13 @@ public:
 
 	virtual void setData(const void* data,unsigned int size) = 0;
 	virtual void* getData(unsigned int offset,unsigned int size) = 0;
+
+    inline const int& getID() const{ return id;};
+
 protected:
 	GraphicsContext* context;
+
+	int id;
 };
 
 class DLL_PUBLIC VertexBuffer{
@@ -40,6 +44,8 @@ public:
 	inline void* getData(unsigned int offset,unsigned int size){return impl->getData(offset, size);}
 
 	inline VertexBufferImpl* getImpl(){return &impl;}
+
+    inline const int& getID() const { return impl->getID();}
 private:
 	ImplPointer<VertexBufferImpl> impl;
 };

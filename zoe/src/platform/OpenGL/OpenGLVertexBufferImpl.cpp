@@ -12,6 +12,7 @@
 #include <stdlib.h>
 
 #include "../../zoe/render/GraphicsContext.h"
+#include "OpenGLVertexArrayImpl.h"
 
 namespace Zoe {
 
@@ -22,20 +23,47 @@ namespace Zoe {
     }
 
     OpenGLVertexBufferImpl::~OpenGLVertexBufferImpl() {
+        if(context->boundVertexArray != nullptr){
+            if (((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb != nullptr &&
+                ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb->getID() == id) {
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb = nullptr;
+            }
+        }else{
+            if(context->boundVertexBuffer != nullptr && context->boundVertexBuffer->getID() == id){
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                context->boundVertexBuffer = nullptr;
+            }
+        }
         glDeleteBuffers(1, &renderID);
     }
 
     void OpenGLVertexBufferImpl::bind() {
-        if (this->context->boundVertexBuffer != this) {
-            glBindBuffer(GL_ARRAY_BUFFER, renderID);
-            this->context->boundVertexBuffer = this;
+        if(context->boundVertexArray != nullptr){
+            if(((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb == nullptr ||
+               ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb->getID() != id){
+                glBindBuffer(GL_ARRAY_BUFFER, renderID);
+                ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb = this;
+            }
+        }else{
+            if(context->boundVertexBuffer == nullptr || context->boundVertexBuffer->getID() != id){
+                glBindBuffer(GL_ARRAY_BUFFER, renderID);
+                context->boundVertexBuffer = this;
+            }
         }
     }
 
     void OpenGLVertexBufferImpl::unbind() {
-        if (this->context->boundVertexBuffer != 0) {
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            this->context->boundVertexBuffer = 0;
+        if(context->boundVertexArray != nullptr){
+            if(((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb != nullptr){
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb = nullptr;
+            }
+        }else{
+            if(context->boundVertexBuffer != nullptr){
+                glBindBuffer(GL_ARRAY_BUFFER, 0);
+                context->boundVertexBuffer = nullptr;
+            }
         }
     }
 

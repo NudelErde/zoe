@@ -27,9 +27,11 @@ public:
 	void setViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 	void setAlphaEnabled(bool enabled) override;
 
+	void setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) override;
+
 	void loadSettings();
 private:
-
+    std::weak_ptr<RenderTarget> renderTarget;
 };
 
 }

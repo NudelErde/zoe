@@ -18,7 +18,7 @@ public:
 
         //addImage(300,100,600,600,font.getBitmap());
 
-        addText({100,100}, "UTF-8 test Lööps", Zoe::Color({0,0,0,1}), font);
+        addText({100,100}, "UTF-8 test Lööps", Zoe::Color({1,0,0,1}), font);
     }
 
     void onDetach() override{
@@ -72,8 +72,8 @@ private:
 class App : public Zoe::Application {
 public:
     App() {
+        getLayerStack().pushLayer(new Layer());
         getLayerStack().pushLayer(new UITestLayer());
-        //getLayerStack().pushOverlay(new Layer());
     }
 
     ~App() override = default;

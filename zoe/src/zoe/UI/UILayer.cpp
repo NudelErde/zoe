@@ -175,8 +175,8 @@ bool UILayer::onRenderEvent(AppRenderEvent& event) {
 	if(render == nullptr){
 		render = Application::getContext().getRender();
 	}
-	render->setClearColor(1, 1, 1, 1);
-	render->clear();
+	//render->setClearColor(1, 1, 1, 0);
+	//render->clear();
 	for(auto const& component: components) {
 		component->draw();
 	}
