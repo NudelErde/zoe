@@ -12,6 +12,8 @@
 #include "../../zoe/render/GraphicsContext.h"
 #include "../../zoe/Application.h"
 
+#include "../../zoe/render/api/RenderTarget.h"
+
 #include "OpenGLVertexArrayImpl.h"
 #include "OpenGLIndexBufferImpl.h"
 
@@ -31,7 +33,14 @@ void OpenGLRenderImpl::draw(VertexArray& va, Shader& shader) {
 	loadSettings();
 	va.bind();
 	shader.bind();
-	glDrawElements(GL_TRIANGLES, va.getImpl()->getIndexBuffer().getCount(), GL_UNSIGNED_INT, nullptr);
+	if(auto target = renderTarget.lock()){
+	    target->bind();
+	}else{
+	    Application::getContext().getDefaultRenderTarget()->bind();
+	}
+	glDrawElements(GL_TRIANGLES, va.getImpl()->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
+	va.unbind();
+	shader.unbind();
 }
 
 void OpenGLRenderImpl::clear() {
@@ -56,7 +65,7 @@ void OpenGLRenderImpl::setAlphaEnabled(bool enabled) {
 }
 
 void OpenGLRenderImpl::loadSettings() {
-	Settings& bound = context->boundRenderSettings;
+	RenderSettings& bound = context->boundRenderSettings;
 
 	//Update viewport
     if (bound.x != settings.x || bound.y != settings.y || bound.width != settings.width ||
@@ -80,6 +89,10 @@ void OpenGLRenderImpl::loadSettings() {
         }
     }
     bound = settings;
+}
+
+void OpenGLRenderImpl::setRenderTarget(std::shared_ptr<RenderTarget> target) {
+    this->renderTarget = target;
 }
 
 }

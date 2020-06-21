@@ -214,6 +214,10 @@ namespace Zoe {
     }
 
     OpenGLShaderImpl::~OpenGLShaderImpl() {
+        if(context->boundShader != nullptr && context->boundShader->getID() == id){
+            glUseProgram(0);
+            context->boundShader = nullptr;
+        }
         glDeleteShader(renderID);
     }
 
@@ -269,16 +273,16 @@ namespace Zoe {
     }
 
     void OpenGLShaderImpl::bind() {
-        if (this->context->boundShader != this) {
+        if(context->boundShader == nullptr || context->boundShader->getID() != id){
             glUseProgram(renderID);
-            this->context->boundShader = this;
+            context->boundShader = this;
         }
     }
 
     void OpenGLShaderImpl::unbind() {
-        if (this->context->boundShader != nullptr) {
+        if(context->boundShader != nullptr || context->boundShader->getID() != 0){
             glUseProgram(0);
-            this->context->boundShader = nullptr;
+            context->boundShader = nullptr;
         }
     }
 

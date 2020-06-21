@@ -25,6 +25,8 @@ public:
 
 	unsigned int getWidth();
 	unsigned int getHeight();
+
+	inline unsigned int getHandle() const { return renderID; }
 private:
 	unsigned int dataFormat,internalFormat;
 	unsigned int width,height;

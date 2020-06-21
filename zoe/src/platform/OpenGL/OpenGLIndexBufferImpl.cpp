@@ -21,28 +21,48 @@ OpenGLIndexBufferImpl::OpenGLIndexBufferImpl(GraphicsContext* context, bool dyna
 }
 
 OpenGLIndexBufferImpl::~OpenGLIndexBufferImpl() {
-	glDeleteBuffers(1,&renderID);
+    if(context->boundVertexArray != nullptr){
+        if (((OpenGLVertexArrayImpl *) context->boundVertexArray)->ib != nullptr &&
+            ((OpenGLVertexArrayImpl *) context->boundVertexArray)->ib->getID() == id) {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            ((OpenGLVertexArrayImpl *) context->boundVertexArray)->ib = nullptr;
+        }
+    }else{
+        if(context->boundIndexBuffer != nullptr && context->boundIndexBuffer->getID() == id){
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            context->boundIndexBuffer = nullptr;
+        }
+    }
+    glDeleteBuffers(1,&renderID);
 }
 
 void OpenGLIndexBufferImpl::bind(){
-	if(this->context->boundVertexArray){
-		if(((OpenGLVertexArrayImpl*)this->context->boundVertexArray)->ib != this){
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderID);
-			((OpenGLVertexArrayImpl*)this->context->boundVertexArray)->ib = this;
-		}
-	}else{
-		if(this->context->boundIndexBuffer != this){
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderID);
-			this->context->boundIndexBuffer = this;
-		}
-	}
+    if(context->boundVertexArray != nullptr){
+        if(((OpenGLVertexArrayImpl *) context->boundVertexArray)->ib == nullptr ||
+        ((OpenGLVertexArrayImpl *) context->boundVertexArray)->ib->getID() != id){
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderID);
+            ((OpenGLVertexArrayImpl *) context->boundVertexArray)->ib = this;
+        }
+    }else{
+        if(context->boundIndexBuffer == nullptr || context->boundIndexBuffer->getID() != id){
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, renderID);
+            context->boundIndexBuffer = this;
+        }
+    }
 }
 
 void OpenGLIndexBufferImpl::unbind(){
-	if(this->context->boundIndexBuffer != 0){
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-		this->context->boundIndexBuffer = 0;
-	}
+    if(context->boundVertexArray != nullptr){
+        if(((OpenGLVertexArrayImpl *) context->boundVertexArray)->ib != nullptr){
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            ((OpenGLVertexArrayImpl *) context->boundVertexArray)->ib = nullptr;
+        }
+    }else{
+        if(context->boundIndexBuffer != nullptr){
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+            context->boundIndexBuffer = nullptr;
+        }
+    }
 }
 
 void OpenGLIndexBufferImpl::setData(unsigned int* data,unsigned int count){

@@ -9,6 +9,11 @@
 #include "../../Application.h"
 #include "../../Console.h"
 #include "../../render/GraphicsContext.h"
+#include "../../render/api/Render.h"
+#include "../../render/api/RenderTarget.h"
+#include "../../render/api/VertexBuffer.h"
+#include "../../render/api/IndexBuffer.h"
+#include "../../render/api/VertexArray.h"
 
 namespace Zoe{
 

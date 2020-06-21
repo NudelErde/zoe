@@ -9,14 +9,13 @@
 
 #include "../../Core.h"
 #include "ImplPointer.h"
+#include "../GraphicsContext.h"
 
 namespace Zoe{
 
-class GraphicsContext;
-
 class IndexBufferImpl{
 public:
-	IndexBufferImpl(GraphicsContext* context): context(context){}
+	IndexBufferImpl(GraphicsContext* context): context(context), id(GraphicsContext::generateID()){}
 	virtual ~IndexBufferImpl(){}
 
 	virtual void bind() = 0;
@@ -27,8 +26,11 @@ public:
 
 	virtual const unsigned int& getCount() const = 0;
 
+    inline const int& getID() const{ return id;}
+
 protected:
 	GraphicsContext* context;
+    int id;
 };
 
 class DLL_PUBLIC IndexBuffer{
@@ -45,6 +47,7 @@ public:
 	inline const unsigned int& getCount() const{return impl->getCount();}
 
 	inline IndexBufferImpl* getImpl() {return &impl;}
+	inline const int& getID() const { return impl->getID();}
 private:
 	ImplPointer<IndexBufferImpl> impl;
 };
