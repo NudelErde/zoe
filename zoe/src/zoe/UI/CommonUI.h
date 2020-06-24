@@ -9,6 +9,7 @@
 
 #include <functional>
 #include "../math/vec.h"
+#include "../render/api/Render.h"
 
 namespace Zoe{
 
@@ -61,7 +62,7 @@ public:
 
 	virtual ~Component();
 
-	virtual void draw()=0;
+	virtual void draw(std::shared_ptr<Render> renderer)=0;
 
 protected:
 	Component();

@@ -5,8 +5,6 @@
  *      Author: florian
  */
 
-#include <ObjIdl.h>
-#include <freetype/ftglyph.h>
 #include "OpenGLRenderImpl.h"
 
 #include "../../zoe/render/GraphicsContext.h"
@@ -25,19 +23,12 @@ OpenGLRenderImpl::OpenGLRenderImpl(GraphicsContext* context) :
 	settings.height = Application::get().getWindow().getHeight();
 }
 
-OpenGLRenderImpl::~OpenGLRenderImpl() {
-
-}
+OpenGLRenderImpl::~OpenGLRenderImpl() = default;
 
 void OpenGLRenderImpl::draw(VertexArray& va, Shader& shader) {
 	loadSettings();
 	va.bind();
 	shader.bind();
-	if(auto target = renderTarget.lock()){
-	    target->bind();
-	}else{
-	    Application::getContext().getDefaultRenderTarget()->bind();
-	}
 	glDrawElements(GL_TRIANGLES, va.getImpl()->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
 	va.unbind();
 	shader.unbind();
@@ -65,6 +56,11 @@ void OpenGLRenderImpl::setAlphaEnabled(bool enabled) {
 }
 
 void OpenGLRenderImpl::loadSettings() {
+    if(auto target = renderTarget.lock()){
+        target->bind();
+    }else{
+        Application::getContext().getDefaultRenderTarget()->bind();
+    }
 	RenderSettings& bound = context->boundRenderSettings;
 
 	//Update viewport
@@ -93,6 +89,17 @@ void OpenGLRenderImpl::loadSettings() {
 
 void OpenGLRenderImpl::setRenderTarget(std::shared_ptr<RenderTarget> target) {
     this->renderTarget = target;
+}
+
+void OpenGLRenderImpl::push() {
+    stack.push({settings, renderTarget});
+}
+
+void OpenGLRenderImpl::pop() {
+    const StackElement& top = stack.top();
+    settings = top.settings;
+    renderTarget = top.renderTarget;
+    stack.pop();
 }
 
 }

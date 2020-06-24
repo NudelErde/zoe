@@ -21,10 +21,10 @@ namespace Zoe {
 class DLL_PUBLIC UILayer: public Layer {
 public:
 	UILayer();
-	virtual ~UILayer();
+	~UILayer() override;
 
-	virtual void onAttach() = 0;
-	virtual void onDetach() = 0;
+	void onAttach() override = 0;
+	void onDetach() override = 0;
 	void onEvent(Event& event) final;
 
 private:
@@ -36,6 +36,11 @@ private:
 	bool onMouseButtonReleasedEvent(MouseButtonReleasedEvent& event);
 	bool onMouseMoveEvent(MouseMovedEvent& event);
 
+private:
+
+    std::shared_ptr<RenderTarget> renderTarget;
+    std::shared_ptr<Render> render;
+    std::shared_ptr<Render> displayRender;
 public:
 
 	inline void addComponent(Component* comp){components.push_back(comp);}

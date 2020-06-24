@@ -17,7 +17,7 @@ public:
 	Ellipse(const Rectangle& rect, const Color& color);
 	~Ellipse();
 
-	void draw() override;
+	void draw(std::shared_ptr<Render> renderer) override;
 
 private:
 	Rectangle rect;

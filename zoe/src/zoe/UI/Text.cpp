@@ -20,7 +20,6 @@ namespace Zoe {
     struct textData {
         std::shared_ptr<Shader> shader;
         std::shared_ptr<File> file;
-        std::shared_ptr<Render> renderer;
     };
 
     static textData data;
@@ -75,9 +74,6 @@ void main(){
                                                                                             begin(begin), color(color) {
         if (!hasTextInit) {
             hasTextInit = true;
-
-            data.renderer = Application::getContext().getRender();
-            data.renderer->setAlphaEnabled(true);
             registerVirtualFile("text.shader", textShaderSrc);
             data.file = std::make_shared<File>("text.shader");
             data.shader = Application::getContext().getShader(*data.file);
@@ -105,7 +101,7 @@ void main(){
 
     Text::~Text() = default;
 
-    void Text::draw() {
+    void Text::draw(std::shared_ptr<Render> renderer) {
         const size_t length = string.length();
         const uint8_t* cstr = reinterpret_cast<const uint8_t *>(string.c_str());
         float textureWidth = (float) font.getTextureWidth();
@@ -237,7 +233,8 @@ void main(){
             vertexBuffer->setData(vertexData, sizeof(RenderChar) * 64);
             data.shader->setTexture("tex", *bitmap);
             data.shader->setUniform4f("u_textColor", color.r, color.g, color.b, color.a);
-            data.renderer->draw(*vertexArray, *data.shader);
+            renderer->setAlphaEnabled(true);
+            renderer->draw(*vertexArray, *data.shader);
         }
     }
 
