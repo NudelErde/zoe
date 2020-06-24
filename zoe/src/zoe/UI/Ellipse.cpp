@@ -25,7 +25,6 @@ struct ellipseData{
 	std::shared_ptr<VertexBuffer> vertexBuffer;
 	std::shared_ptr<IndexBuffer> indexBuffer;
 	std::shared_ptr<VertexArray> vertexArray;
-	std::shared_ptr<Render> renderer;
 };
 
 static ellipseData data;
@@ -81,8 +80,6 @@ Ellipse::Ellipse(const Rectangle& rect, const Color& color) :
 		data.vertexBuffer = Application::getContext().getVertexBuffer();
 		data.indexBuffer = Application::getContext().getIndexBuffer();
 		data.vertexArray = Application::getContext().getVertexArray();
-		data.renderer = Application::getContext().getRender();
-		data.renderer->setAlphaEnabled(true);
 		registerVirtualFile("ellipse.shader", ellipseShaderSrc);
 		data.file = std::make_shared<File>("ellipse.shader");
 		data.shader = Application::getContext().getShader(*data.file);
@@ -104,14 +101,15 @@ Ellipse::Ellipse(const Rectangle& rect, const Color& color) :
 Ellipse::~Ellipse() {
 }
 
-void Ellipse::draw() {
+void Ellipse::draw(std::shared_ptr<Render> renderer) {
 	data.shader->setUniform4f("Color", color.r, color.g, color.b, color.a);
 	data.shader->setUniform4m("ModelView",
 			Zoe::translate3D(rect.x+rect.width/2, rect.y+rect.height/2, 0)
 					* Zoe::scale3D(rect.width/2, rect.height/2, 1)
 					* Zoe::rotateYZ3D(rect.rotation)
 	);
-	data.renderer->draw(*data.vertexArray, *data.shader);
+    renderer->setAlphaEnabled(true);
+	renderer->draw(*data.vertexArray, *data.shader);
 }
 
 }

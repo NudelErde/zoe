@@ -20,7 +20,7 @@ public:
 	Image(const Rectangle& rec, std::shared_ptr<Texture> texture);
 	~Image();
 
-	void draw() override;
+	void draw(std::shared_ptr<Render> renderer) override;
 
 private:
 	Rectangle rect;

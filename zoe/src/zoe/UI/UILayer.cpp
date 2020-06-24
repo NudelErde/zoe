@@ -7,12 +7,17 @@
 
 #include "UILayer.h"
 #include "../render/api/Render.h"
+#include "../render/api/RenderTarget.h"
 #include "../Application.h"
 
 namespace Zoe{
 
 UILayer::UILayer(): Layer("UILayer") {
 	setSubscribedEvents(EventCategoryApplication|EventCategoryInput);
+	renderTarget = Application::getContext().getRenderTarget(1600,900);
+    render = Application::getContext().getRender();
+    render->setRenderTarget(renderTarget);
+    displayRender = Application::getContext().getRender();
 }
 
 UILayer::~UILayer() = default;
@@ -171,15 +176,13 @@ void UILayer::addImage(const float& x, const float& y, const float& w, const flo
 //------------------
 
 bool UILayer::onRenderEvent(AppRenderEvent& event) {
-	static std::shared_ptr<Render> render = nullptr;
-	if(render == nullptr){
-		render = Application::getContext().getRender();
-	}
-	//render->setClearColor(1, 1, 1, 0);
-	//render->clear();
+
 	for(auto const& component: components) {
-		component->draw();
+        render->push();
+		component->draw(render);
+        render->pop();
 	}
+	renderTarget->getColorAttachment();
 	return false;
 }
 

@@ -35,6 +35,9 @@ public:
 
 	virtual void setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) = 0;
 
+	virtual void push() = 0;
+	virtual void pop() = 0;
+
 	inline vec4 getClearColor(){return settings.clearColor;}
 	inline unsigned int getViewportX(){return settings.x;}
 	inline unsigned int getViewportY(){return settings.y;}
@@ -74,6 +77,9 @@ public:
 	inline void setRenderTarget(std::shared_ptr<RenderTarget> target){impl->setRenderTarget(target);}
 
     inline const int& getID() const { return impl->getID();}
+
+    inline void push() { impl->push();}
+	inline void pop() {impl->pop();}
 private:
 	ImplPointer<RenderImpl> impl;
 };

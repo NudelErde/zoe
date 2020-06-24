@@ -27,7 +27,6 @@ struct imageData{
 	std::shared_ptr<VertexBuffer> vertexBuffer;
 	std::shared_ptr<IndexBuffer> indexBuffer;
 	std::shared_ptr<VertexArray> vertexArray;
-	std::shared_ptr<Render> renderer;
 };
 
 static imageData data;
@@ -70,8 +69,6 @@ Image::Image(const Rectangle& rect, const File& file): rect(rect){
 		data.vertexBuffer = Application::getContext().getVertexBuffer();
 		data.indexBuffer = Application::getContext().getIndexBuffer();
 		data.vertexArray = Application::getContext().getVertexArray();
-		data.renderer = Application::getContext().getRender();
-		data.renderer->setAlphaEnabled(true);
 		registerVirtualFile("image.shader", imageShaderSrc);
 		data.file = std::make_shared<File>("image.shader");
 		data.shader = Application::getContext().getShader(*data.file);
@@ -96,8 +93,6 @@ Image::Image(const Rectangle &rect, std::shared_ptr<Texture> tex): rect(rect){
         data.vertexBuffer = Application::getContext().getVertexBuffer();
         data.indexBuffer = Application::getContext().getIndexBuffer();
         data.vertexArray = Application::getContext().getVertexArray();
-        data.renderer = Application::getContext().getRender();
-        data.renderer->setAlphaEnabled(true);
         registerVirtualFile("image.shader", imageShaderSrc);
         data.file = std::make_shared<File>("image.shader");
         data.shader = Application::getContext().getShader(*data.file);
@@ -116,14 +111,15 @@ Image::Image(const Rectangle &rect, std::shared_ptr<Texture> tex): rect(rect){
 
 Image::~Image()= default;
 
-void Image::draw(){
+void Image::draw(std::shared_ptr<Render> renderer){
 	data.shader->setTexture("tex", *texture);
 	data.shader->setUniform4m("ModelView",
 			Zoe::translate3D(rect.x, rect.y, 0)
 					* Zoe::scale3D(rect.width, rect.height, 1)
 					* Zoe::rotateYZ3D(rect.rotation)
 	);
-	data.renderer->draw(*data.vertexArray, *data.shader);
+	renderer->setAlphaEnabled(true);
+	renderer->draw(*data.vertexArray, *data.shader);
 }
 
 }

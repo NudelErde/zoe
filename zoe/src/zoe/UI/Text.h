@@ -20,7 +20,7 @@ namespace Zoe {
         Text(const Point& begin, const Font& font, std::string string, const Color& color);
         ~Text() override;
 
-        void draw() override;
+        void draw(std::shared_ptr<Render> renderer) override;
 
         void setText(std::string str);
         void setFont(const Font& font);

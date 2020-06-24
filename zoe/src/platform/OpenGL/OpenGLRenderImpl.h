@@ -10,6 +10,7 @@
 #include "../../zoe/render/api/Render.h"
 #include "../../zoe/math/vec.h"
 #include <GL/glew.h>
+#include <stack>
 
 namespace Zoe{
 
@@ -27,11 +28,20 @@ public:
 	void setViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
 	void setAlphaEnabled(bool enabled) override;
 
+    void push() override;
+    void pop() override;
+
 	void setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) override;
 
 	void loadSettings();
 private:
+    struct StackElement{
+        RenderSettings settings;
+        std::weak_ptr<RenderTarget> renderTarget;
+    };
+
     std::weak_ptr<RenderTarget> renderTarget;
+    std::stack<StackElement> stack;
 };
 
 }

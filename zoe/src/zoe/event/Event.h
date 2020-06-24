@@ -13,7 +13,7 @@
 
 namespace Zoe {
 
-enum class EventType {
+enum class EventType : unsigned int {
 	EventNone = 0,
 	WindowClose,
 	WindowResize,
@@ -31,7 +31,7 @@ enum class EventType {
 	MouseScrolled
 };
 
-enum EventCategory {
+enum EventCategory : unsigned int{
 	EventCategoryNone = 0,
 	EventCategoryApplication = BIT(0),
 	EventCategoryWindow = BIT(1),
