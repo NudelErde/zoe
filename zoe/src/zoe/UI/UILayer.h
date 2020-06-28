@@ -37,10 +37,13 @@ private:
 	bool onMouseMoveEvent(MouseMovedEvent& event);
 
 private:
-
     std::shared_ptr<RenderTarget> renderTarget;
     std::shared_ptr<Render> render;
     std::shared_ptr<Render> displayRender;
+public:
+
+    void setBackground(const Color& color);
+
 public:
 
 	inline void addComponent(Component* comp){components.push_back(comp);}
@@ -66,18 +69,26 @@ public:
 	void addText(const float& x, const float& y, const std::string& string, const Font& font);
 	void addText(const Point& point, const std::string& string, const Font& font);
 
-	void addClickCallback(const float& x, const float& y, const float& w,
-			const float& h, const ClickCallback& callback);
-	void addClickCallback(const Rectangle& rect, const ClickCallback& callback);
-
     void addImage(const Rectangle& rect, const File& file);
     void addImage(const float& x, const float& y, const float& w, const float& h, const File& file);
     void addImage(const Rectangle& rect, const std::shared_ptr<Texture>& texture);
     void addImage(const float& x, const float& y, const float& w, const float& h, const std::shared_ptr<Texture>& texture);
 
+    void addKeyPressedListener(const std::function<void(const KeyPressedEvent&)>);
+    void addKeyReleasedListener(std::function<void(const KeyReleasedEvent&)>);
+    void addMousePressedListener(std::function<void(const MouseButtonPressedEvent&)>);
+    void addMouseReleasedListener(std::function<void(const MouseButtonReleasedEvent&)>);
+    void addMouseMoveListener(std::function<void(const MouseMovedEvent&)>);
+
 private:
 	std::vector<Component*> components;
 	Color color{};
+	Color background{};
+    std::vector<std::function<void(const KeyPressedEvent&)>> keyPressedListeners;
+    std::vector<std::function<void(const KeyReleasedEvent&)>> keyReleasedListeners;
+    std::vector<std::function<void(const MouseButtonPressedEvent&)>> mousePressedListeners;
+    std::vector<std::function<void(const MouseButtonReleasedEvent&)>> mouseReleasedListeners;
+    std::vector<std::function<void(const MouseMovedEvent&)>> mouseMoveListeners;
 };
 
 }

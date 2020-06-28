@@ -10,6 +10,7 @@ class UITestLayer : public Zoe::UILayer{
 public:
 
     void onAttach() override{
+        setBackground(Zoe::Color({1,1,1,0.5}));
         setColor(Zoe::Color({1,1,0,1}));
         addEllipse(10,10,100,100);
 
@@ -18,7 +19,13 @@ public:
 
         //addImage(300,100,600,600,font.getBitmap());
 
+        auto* text = new Zoe::Text({200,200}, font, "Hallo", {0,1,1,1});
+
+        addComponent(text);
         addText({100,100}, "UTF-8 test Lööps", Zoe::Color({1,0,0,1}), font);
+        addKeyPressedListener([text](const Zoe::KeyPressedEvent& event){
+            text->setText(text->getText() + (char)event.getKeyCode());
+        });
     }
 
     void onDetach() override{

@@ -48,11 +48,11 @@ struct ClickInfo{
 
 struct Color{
 	union{
-		vec4 vector;
 		struct{
 			float r,g,b,a;
 		};
-	};
+        vec4 vector;
+    };
 };
 
 typedef std::function<void(const ClickInfo&)> ClickCallback;
