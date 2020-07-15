@@ -1,11 +1,16 @@
-# zoe ![Build](https://github.com/NudelErde/zoe/workflows/Build%20(with%20CMake)/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNudelErde%2Fzoe.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNudelErde%2Fzoe?ref=badge_shield)
-*zoe* is a video game engine that I am working on in my free time. It probably won't surpass *Unity3D* or *Unreal Engine* but where is the fun in using any of these if you can make your own!
+<h1 align="center">
+  Zoe
+</h1>
 
-I want it to be as optimized as possible but am limited to my free time.
+<p align="center">
+  Zoe is a video game engine that I am working on in my free time. It probably won't surpass <i>Unity3D</i> or <i>Unreal Engine</i> but where is the fun in using any of these if you can make your own! <br>I want it to be as optimized as possible but am limited to my free time.
+</p>
 
+<h3 align="center">
+  <img src="https://github.com/NudelErde/zoe/workflows/Build%20(with%20CMake)/badge.svg">
+  <a href="https://app.fossa.com/projects/git%2Bgithub.com%2FNudelErde%2Fzoe?ref=badge_shield"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FNudelErde%2Fzoe.svg?type=shield"></a>
+</h3>
 
-## Running
-zoe is still work in progress. You can try running [the sandbox](https://github.com/NudelErde/zoe/releases) but please don't expect anything other than a simple demo.
 
 # Compiling
 I don't know why you would like to compile zoe at its current state, but...
@@ -19,6 +24,9 @@ You can compile zoe [as we tell GitHub to](./.github/workflows/cmake.yml).
 3. Run `cmake --build .` to build zoe
 
 Your artifacts are located in `./sandbox/sandbox` and `./zoe/libzoe.so`
+
+## Running
+Zoe is still work in progress. You can try running [the sandbox](https://github.com/NudelErde/zoe/releases) but please don't expect anything other than a simple demo.
 
 ## Contributors ✨
 <table>
