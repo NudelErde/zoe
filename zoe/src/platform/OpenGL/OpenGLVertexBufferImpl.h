@@ -23,8 +23,9 @@ public:
 
 	void setData(const void* data, unsigned int size);
 	void* getData(unsigned int offset, unsigned int size);
+
+	unsigned int getSize() const override;
 private:
-    bool dynamicBuffer;
     unsigned int renderID;
     unsigned int size;
 };

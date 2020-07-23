@@ -8,7 +8,7 @@
 #include "OpenGLRenderImpl.h"
 
 #include "../../zoe/render/GraphicsContext.h"
-#include "../../zoe/Application.h"
+#include "../../zoe/core/Application.h"
 
 #include "../../zoe/render/api/RenderTarget.h"
 

@@ -17,7 +17,7 @@
 namespace Zoe {
 
     OpenGLVertexBufferImpl::OpenGLVertexBufferImpl(GraphicsContext *context, bool dynamicBuffer) : VertexBufferImpl(
-            context), dynamicBuffer(dynamicBuffer) {
+            context, dynamicBuffer) {
         glGenBuffers(1, &renderID);
         size = 0;
     }
@@ -72,7 +72,7 @@ namespace Zoe {
         if (size == this->size) {
             glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
         } else {
-            glBufferData(GL_ARRAY_BUFFER, size, data, dynamicBuffer ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, size, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
         }
         this->size = size;
     }
@@ -86,5 +86,9 @@ namespace Zoe {
         glGetBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
         return data;
     }
+
+unsigned int OpenGLVertexBufferImpl::getSize() const{
+    return size;
+}
 
 }

@@ -6,7 +6,7 @@
  */
 
 #include "OpenGLTextureImpl.h"
-#include "../../zoe/Console.h"
+#include "../../zoe/core/Console.h"
 #include "GL/glew.h"
 #include "webp/decode.h"
 
@@ -15,11 +15,11 @@ namespace Zoe {
 OpenGLTextureImpl::OpenGLTextureImpl(GraphicsContext* context, const File& file) :
 		TextureImpl(context), dataFormat(GL_RGBA),internalFormat(GL_RGBA8), channels(4) {
 	size_t size = 0;
-	std::unique_ptr<uint8_t[]> data = file.getByteArray(&size);
+	std::unique_ptr<uint8_t[]> data = file.getContent(&size);
 	WebPBitstreamFeatures features;
 	VP8StatusCode status = WebPGetFeatures(data.get(), size, &features);
 	if(status != VP8_STATUS_OK){
-		error("Could not load texture from file: ", file.getName());
+		error("Could not load texture from file: ", file.getPath());
 		renderID = 0;
 		return;
 	}
@@ -101,11 +101,11 @@ void OpenGLTextureImpl::setData(uint8_t* data, unsigned int size) {
 
 void OpenGLTextureImpl::setData(const File& file) {
 	size_t size = 0;
-	std::unique_ptr<uint8_t[]> data = file.getByteArray(&size);
+	std::unique_ptr<uint8_t[]> data = file.getContent(&size);
 	WebPBitstreamFeatures features;
 	VP8StatusCode status = WebPGetFeatures(data.get(), size, &features);
 	if(status != VP8_STATUS_OK){
-		error("Could not load texture from file: ", file.getName());
+		error("Could not load texture from file: ", file.getPath());
 		return;
 	}
 

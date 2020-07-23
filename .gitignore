@@ -72,3 +72,4 @@ examples
 *.vcxproj.user
 
 *-prefix/
+cmake-*
