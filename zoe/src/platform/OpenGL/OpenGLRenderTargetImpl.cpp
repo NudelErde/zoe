@@ -5,7 +5,7 @@
 #include "OpenGLRenderTargetImpl.h"
 #include "../../zoe/render/GraphicsContext.h"
 #include "OpenGLTextureImpl.h"
-#include "../../zoe/Application.h"
+#include "../../zoe/core/Application.h"
 
 namespace Zoe {
 

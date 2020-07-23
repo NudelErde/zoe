@@ -6,9 +6,9 @@
 
 #include "../../zpch.h"
 
-#include "../../Core.h"
+#include "../../core/Core.h"
 #include "../../math/mat.h"
-#include "../../File.h"
+#include "../../core/File.h"
 #include "Texture.h"
 #include "ImplPointer.h"
 #include <map>

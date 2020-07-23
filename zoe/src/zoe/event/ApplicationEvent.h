@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Event.h"
-#include "../Core.h"
+#include "../core/Core.h"
 
 namespace Zoe {
 

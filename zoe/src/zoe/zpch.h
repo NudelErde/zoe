@@ -22,5 +22,5 @@
 
 //----------------------------------------------------
 
-#include "Console.h"
-#include "Core.h"
+#include "core/Console.h"
+#include "core/Core.h"

@@ -27,7 +27,6 @@ public:
 public:
 	unsigned int renderID;
 	unsigned int count;
-	bool dynamicBuffer;
 };
 
 }

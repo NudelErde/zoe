@@ -17,7 +17,7 @@
 namespace Zoe {
 
     struct layoutLocation {
-        unsigned int location;
+        unsigned int location{};
         std::string varName;
     };
 
@@ -32,7 +32,7 @@ namespace Zoe {
 
     static ShaderSource parseShader(const File &file) {
         unsigned int version = 0;
-        std::shared_ptr<std::istream> stream = file.getInputStream();
+        std::unique_ptr<std::istream> stream = file.createIStream(false);
         ShaderSource shso = ShaderSource();
         enum class ShaderType {
             NONE = -1, VERTEX = 0, FRAGMENT = 1
@@ -67,10 +67,10 @@ namespace Zoe {
                     version = std::stoi(line.substr(start, end));
                 }
                 catch (std::invalid_argument const &e) {
-                    error("Could not read version of shader ", file.getName(), ": ", line.substr(start, end));
+                    error("Could not read version of shader ", file.getPath(), ": ", line.substr(start, end));
                 }
                 catch (std::out_of_range const &e) {
-                    error("Could not read version of shader ", file.getName(), ": ", line.substr(start, end));
+                    error("Could not read version of shader ", file.getPath(), ": ", line.substr(start, end));
                 }
                 if (type != ShaderType::NONE)
                     ss[(int) type] << line << '\n';
@@ -186,6 +186,9 @@ namespace Zoe {
         unsigned int vs = compileShader(GL_VERTEX_SHADER, ss.vertexShader);
         unsigned int fs = compileShader(GL_FRAGMENT_SHADER, ss.fragmentShader);
 
+        if(vs == 0 || fs == 0)
+            return 0;
+
         glAttachShader(prg, vs);
         glAttachShader(prg, fs);
 
@@ -211,6 +214,8 @@ namespace Zoe {
         samplerSlot = ss.samplerSlots;
         tags = ss.tags;
         renderID = createShaderProgram(ss);
+        if(renderID == 0)
+            error("Failed to construct Shader for file: ", file.getPath());
     }
 
     OpenGLShaderImpl::~OpenGLShaderImpl() {

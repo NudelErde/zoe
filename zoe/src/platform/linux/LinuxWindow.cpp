@@ -162,7 +162,7 @@ void LinuxWindow::setUpListener() {
 	glfwSetCursorPosCallback(window, [](GLFWwindow* window,double x,double y) {
 		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-		MouseMovedEvent event((float) x,(float) y);
+		MouseMovedEvent event((float) x/(float)data.width,(float) y/(float)data.height);
 		data.eventCallback(event);
 	});
 
