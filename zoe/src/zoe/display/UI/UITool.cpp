@@ -92,21 +92,21 @@ const Font &UITool::getFont() {
 }
 
 void UITool::drawImage(const std::shared_ptr<Texture> &image, const vec2 &&pos, const vec2 &size) {
-    mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,pos.y+450,0) * scale3D(size.x,-size.y,1);
+    mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,-pos.y+450,0) * scale3D(size.x,-size.y,1);
     imageShader->setUniform4m("ModelViewProjection", modelViewProjection);
     imageShader->setTexture("u_image", *image);
     render->draw(*rectVertexArray, *imageShader);
 }
 
 void UITool::drawRectangle(const vec2 &pos, const vec2 &size) {
-    mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,pos.y+450,0) * scale3D(size.x,-size.y,1);
+    mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,-pos.y+450,0) * scale3D(size.x,-size.y,1);
     rectangleShader->setUniform4m("ModelViewProjection", modelViewProjection);
     rectangleShader->setUniform4f("Color", color.x, color.y, color.z, color.w);
     render->draw(*rectVertexArray, *rectangleShader);
 }
 
 void UITool::drawOval(const vec2 &pos, const vec2 &size) {
-    mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,pos.y+450,0) * scale3D(size.x,-size.y,1);
+    mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,-pos.y+450,0) * scale3D(size.x,-size.y,1);
     ovalShader->setUniform4m("ModelViewProjection", modelViewProjection);
     ovalShader->setUniform4f("Color", color.x, color.y, color.z, color.w);
     render->draw(*rectVertexArray, *ovalShader);
@@ -121,7 +121,7 @@ void UITool::drawText(const std::string & string, const vec2 &pos) {
     auto textureWidth = (float) font.getTextureWidth();
     auto textureHeight = (float) font.getTextureHeight();
 
-    mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,pos.y+450,0)*scale3D(1,-1,1);
+    mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,-pos.y+450,0)*scale3D(1,-1,1);
     textShader->setUniform4m("ModelViewProjection", modelViewProjection);
 
     vec2 cursor = pos;

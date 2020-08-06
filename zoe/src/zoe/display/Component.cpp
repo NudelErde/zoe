@@ -15,17 +15,12 @@ static std::map<std::string, std::function<std::shared_ptr<BaseComponent>()>> re
 BaseComponent::BaseComponent() = default;
 
 void BaseComponent::add(const std::shared_ptr<BaseComponent>& component) {
-    devDebug("Add component");
     if(auto ptr = component->parent.lock()){
         warning("Component already has a parent! Component is not added!");
     }else{
-        devDebug("Component has no parent");
         component->parent = shared_from_this();
-        devDebug("Created pointer from this and assigned to child->parent");
         children.push_back(component);
-        devDebug("Push child in children vector");
     }
-    devDebug("Added component");
 }
 
 //private

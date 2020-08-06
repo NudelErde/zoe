@@ -24,8 +24,8 @@ public:
     void onDetach() override;
     void onEvent(Event& event) final;
 
-    inline const Camera& getCamera() {return camera;}
-    inline void setCamera(const Camera& cam) {camera = cam;}
+    inline const std::shared_ptr<Camera>& getCamera() {return camera;}
+    inline void setCamera(const std::shared_ptr<Camera>& cam) {camera = cam;}
 
     static bool isKeyPressed(int keycode);
     static bool isMouseButtonPressed(int button);
@@ -44,7 +44,7 @@ private:
 private:
     std::chrono::time_point<std::chrono::steady_clock> timeOfLastTick;
 
-    Camera camera;
+    std::shared_ptr<Camera> camera;
 
     std::shared_ptr<RenderTarget> target;
     std::shared_ptr<Render> render;

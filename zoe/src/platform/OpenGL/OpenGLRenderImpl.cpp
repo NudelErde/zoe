@@ -17,38 +17,38 @@
 
 namespace Zoe {
 
-OpenGLRenderImpl::OpenGLRenderImpl(GraphicsContext* context) :
-		RenderImpl(context, 0, 0, 1280, 720) {
-	settings.width = Application::get().getWindow().getWidth();
-	settings.height = Application::get().getWindow().getHeight();
+OpenGLRenderImpl::OpenGLRenderImpl(GraphicsContext *context) :
+        RenderImpl(context, 0, 0, 1280, 720) {
+    settings.width = Application::get().getWindow().getWidth();
+    settings.height = Application::get().getWindow().getHeight();
 }
 
 OpenGLRenderImpl::~OpenGLRenderImpl() = default;
 
-void OpenGLRenderImpl::draw(VertexArray& va, Shader& shader) {
-	loadSettings();
-	va.bind();
-	shader.bind();
-	glDrawElements(GL_TRIANGLES, va.getImpl()->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
-	va.unbind();
-	shader.unbind();
+void OpenGLRenderImpl::draw(VertexArray &va, Shader &shader) {
+    loadSettings();
+    va.bind();
+    shader.bind();
+    glDrawElements(GL_TRIANGLES, va.getImpl()->getIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
+    va.unbind();
+    shader.unbind();
 }
 
 void OpenGLRenderImpl::clear() {
-	loadSettings();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    loadSettings();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void OpenGLRenderImpl::setClearColor(float r, float g, float b, float a) {
-    settings.clearColor = {r,g,b,a};
+    settings.clearColor = {r, g, b, a};
 }
 
 void OpenGLRenderImpl::setViewport(unsigned int x, unsigned int y,
-		unsigned int width, unsigned int height) {
-	this->settings.x = x;
-	this->settings.y = y;
-	this->settings.width = width;
-	this->settings.height = height;
+                                   unsigned int width, unsigned int height) {
+    this->settings.x = x;
+    this->settings.y = y;
+    this->settings.width = width;
+    this->settings.height = height;
 }
 
 void OpenGLRenderImpl::setAlphaEnabled(bool enabled) {
@@ -56,27 +56,27 @@ void OpenGLRenderImpl::setAlphaEnabled(bool enabled) {
 }
 
 void OpenGLRenderImpl::loadSettings() {
-    if(auto target = renderTarget.lock()){
+    if (auto target = renderTarget.lock()) {
         target->bind();
-    }else{
+    } else {
         Application::getContext().getDefaultRenderTarget()->bind();
     }
-	RenderSettings& bound = context->boundRenderSettings;
+    RenderSettings &bound = context->boundRenderSettings;
 
-	//Update viewport
+    //Update viewport
     if (bound.x != settings.x || bound.y != settings.y || bound.width != settings.width ||
         bound.height != settings.height) {
-        glViewport(settings.x,settings.y,settings.width,settings.height);
+        glViewport(settings.x, settings.y, settings.width, settings.height);
     }
 
     //Update clearColor
-    if(bound.clearColor != settings.clearColor){
+    if (bound.clearColor != settings.clearColor) {
         glClearColor(settings.clearColor.x, settings.clearColor.y, settings.clearColor.z, settings.clearColor.w);
     }
 
     //Check alpha enabled
-    if(bound.flag.alpha != settings.flag.alpha){
-        if(settings.flag.alpha){
+    if (bound.flag.alpha != settings.flag.alpha) {
+        if (settings.flag.alpha) {
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glBlendEquation(GL_FUNC_ADD);
@@ -96,7 +96,7 @@ void OpenGLRenderImpl::push() {
 }
 
 void OpenGLRenderImpl::pop() {
-    const StackElement& top = stack.top();
+    const StackElement &top = stack.top();
     settings = top.settings;
     renderTarget = top.renderTarget;
     stack.pop();

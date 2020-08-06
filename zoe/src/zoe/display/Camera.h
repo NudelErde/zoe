@@ -80,6 +80,10 @@ public:
 
     [[nodiscard]] const vec3 &getPosition() const;
 
+    void move(const vec3&);
+
+    void rotate(const vec3&);
+
     [[nodiscard]] const vec3 &getRotation() const;
 
     [[nodiscard]] vec3 getDirection() const;

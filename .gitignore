@@ -5,7 +5,6 @@
 *.slo
 *.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch
@@ -73,3 +72,5 @@ examples
 
 *-prefix/
 cmake-*
+out/
+CMakeSettings.json

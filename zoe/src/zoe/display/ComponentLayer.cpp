@@ -113,8 +113,8 @@ void ComponentLayer::onInputEvent(Event &event) {
 
 void ComponentLayer::onDrawEvent(AppRenderEvent &event) {
     render->clear();
-    camera.setRender(render);
-    draw(camera);
+    camera->setRender(render);
+    draw(*camera);
     data.imageCopy->setTexture("u_texture", *target->getColorAttachment());
     displayRender->draw(*data.vertexArray, *data.imageCopy);
 }

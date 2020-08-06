@@ -9,25 +9,29 @@
 
 #include "../../zoe/render/api/VertexArray.h"
 
-namespace Zoe{
+namespace Zoe {
 
 class GraphicsContext;
 
-class OpenGLVertexArrayImpl: public VertexArrayImpl{
+class OpenGLVertexArrayImpl : public VertexArrayImpl {
 public:
 
-	OpenGLVertexArrayImpl(GraphicsContext* context);
-	~OpenGLVertexArrayImpl();
+    OpenGLVertexArrayImpl(GraphicsContext *context);
 
-	void set(VertexBuffer& vb,IndexBuffer& ib,VertexBufferLayout& layout);
+    ~OpenGLVertexArrayImpl();
 
-	void bind();
-	void unbind();
-	IndexBufferImpl* getIndexBuffer();
+    void set(VertexBuffer &vb, IndexBuffer &ib, VertexBufferLayout &layout);
+
+    void bind();
+
+    void unbind();
+
+    IndexBufferImpl *getIndexBuffer() override;
+
 public:
-	unsigned int renderID;
-	VertexBufferImpl* vb;
-	IndexBufferImpl* ib;
+    unsigned int renderID;
+    VertexBufferImpl *vb;
+    IndexBufferImpl *ib;
 };
 
 

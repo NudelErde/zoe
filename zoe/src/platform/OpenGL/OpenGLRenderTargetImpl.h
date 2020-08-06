@@ -11,37 +11,40 @@
 
 namespace Zoe {
 
-    class GraphicsContext;
+class GraphicsContext;
 
-    class OpenGLRenderTargetImpl : public RenderTargetImpl {
-    public:
-        OpenGLRenderTargetImpl(GraphicsContext *context, unsigned int width, unsigned int height);
+class OpenGLRenderTargetImpl : public RenderTargetImpl {
+public:
+    OpenGLRenderTargetImpl(GraphicsContext *context, unsigned int width, unsigned int height);
 
-        ~OpenGLRenderTargetImpl() override;
+    ~OpenGLRenderTargetImpl() override;
 
-        void bind() override;
-        void unbind() override;
+    void bind() override;
 
-        std::shared_ptr<Texture> getColorAttachment() override;
+    void unbind() override;
 
-    private:
-        unsigned int renderID;
-        unsigned int depthAttachmentID;
-        unsigned int width, height;
-        std::shared_ptr<Texture> colorAttachment;
-    };
+    std::shared_ptr<Texture> getColorAttachment() override;
 
-    class OpenGLRenderTargetImplDefaultOuput: public RenderTargetImpl{
-    private:
-        OpenGLRenderTargetImplDefaultOuput(GraphicsContext *context);
+private:
+    unsigned int renderID;
+    unsigned int depthAttachmentID;
+    unsigned int width, height;
+    std::shared_ptr<Texture> colorAttachment;
+};
 
-    public:
-        ~OpenGLRenderTargetImplDefaultOuput();
-        void bind() override;
-        void unbind() override;
+class OpenGLRenderTargetImplDefaultOuput : public RenderTargetImpl {
+private:
+    OpenGLRenderTargetImplDefaultOuput(GraphicsContext *context);
 
-        std::shared_ptr<Texture> getColorAttachment() override;
+public:
+    ~OpenGLRenderTargetImplDefaultOuput();
 
-        friend class OpenGLContext;
-    };
+    void bind() override;
+
+    void unbind() override;
+
+    std::shared_ptr<Texture> getColorAttachment() override;
+
+    friend class OpenGLContext;
+};
 }
