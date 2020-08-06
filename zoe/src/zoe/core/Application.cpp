@@ -84,6 +84,7 @@ void Application::run() {
 			layerStack.dispatchEvent(event);
 		}
 	}
+	debug("Close application");
 }
 
 void Application::exit() {

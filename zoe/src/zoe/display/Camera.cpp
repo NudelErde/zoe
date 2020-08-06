@@ -57,7 +57,7 @@ const vec2 &Camera2D::getPosition() const {
 Camera3D::Camera3D(const vec3 &pos, const vec3 &rot, const float &fov, const float &ratio) : position(pos),
                                                                                              rotation(rot), fov(fov),
                                                                                              ratio(ratio) {
-    projectionMatrix = perspective(0.01f, 100, fov, ratio);
+    projectionMatrix = perspective(0.1f, 100, fov, ratio);
     viewMatrix = calcViewMatrix(pos, -1 * rot);
 }
 
@@ -129,6 +129,14 @@ void Camera3D::setFoV(const float &f) {
 void Camera3D::setRatio(const float &rat) {
     ratio = rat;
     projectionMatrix = perspective(0.01f, 100, fov, ratio);
+}
+
+void Camera3D::move(const vec3 & vec) {
+    setPosition(getPosition()+vec);
+}
+
+void Camera3D::rotate(const vec3 & vec) {
+    setRotation(getRotation()+vec);
 }
 
 }

@@ -19,7 +19,7 @@ void Button::setClickHandler(const std::function<void()> &handler) {
 
 void Button::onDraw(const Camera &camera) {
     UITool tool(camera);
-    tool.setColor(vec4({1,0,0,1}));
+    tool.setColor(color);
     vec2 pos = getWorldPosition().xy;
     tool.drawRectangle(pos, size);
 }
@@ -61,6 +61,14 @@ void Button::onMouseClick(MouseButtonReleasedEvent &mbre) {
         && pos.y > position.y && pos.y < position.y + size.y) {
         onClick();
     }
+}
+
+const vec4 &Button::getColor() const {
+    return color;
+}
+
+void Button::setColor(const vec4 &color) {
+    Button::color = color;
 }
 
 }

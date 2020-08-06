@@ -21,6 +21,11 @@ protected:
     void fill(const XMLNode &node) override;
     void postFill() override;
 
+public:
+    inline const Model &getModel() const {return model;}
+
+    inline void setModel(const Model &model) {WorldObject::model = model;}
+
 private:
     Model model;
 

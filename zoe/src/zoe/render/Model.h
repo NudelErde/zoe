@@ -1,44 +1,57 @@
 //
-// Created by florian on 19.03.20.
+// Created by Florian on 06.08.2020.
 //
 
 #pragma once
 
+#include <memory>
+
 #include "../core/Core.h"
-#include "../core/File.h"
-#include "../math/mat.h"
-#include "api/VertexArray.h"
+#include "Material.h"
 
 namespace Zoe{
 
-    class DLL_PUBLIC Model {
-    public:
-        Model();
-        explicit Model(const File& file);
-        Model(void* vertices, unsigned int* indices, unsigned int verticesSize, unsigned int indicesCount, const std::shared_ptr<VertexBufferLayout>& layout);
-        Model(const std::shared_ptr<VertexBuffer>& vertexBuffer, const std::shared_ptr<IndexBuffer>& indexBuffer, const std::shared_ptr<VertexBufferLayout>& layout);
-        explicit Model(std::shared_ptr<VertexArray> vertexArray);
-        ~Model();
+class VertexBuffer;
+class IndexBuffer;
+class VertexArray;
 
-        Model(const Model& model);
-        Model(Model&& model) noexcept;
-        Model& operator=(const Model&);
-        Model& operator=(Model&&) noexcept;
+class Model;
 
-        inline const mat4x4& getModelMatrix() const {return modelMatrix;}
-        inline void setModelMatrix(const mat4x4& matrix){modelMatrix = matrix;}
-        inline const std::shared_ptr<VertexArray>& getVertexArray() const {return vertexArray;}
+class DLL_PUBLIC WavefrontFile{
+public:
 
-    private:
+    //parse .obj file and used .mtl files
+    static WavefrontFile parseWavefrontFile(const File&);
 
-        mat4x4 modelMatrix;
+    const Model& get(const std::string&);
+    bool hasModel(const std::string&);
 
-        std::shared_ptr<VertexArray> vertexArray;
+    WavefrontFile(WavefrontFile&&) noexcept;
+    WavefrontFile(const WavefrontFile&);
+
+    WavefrontFile& operator=(WavefrontFile&&) noexcept;
+    WavefrontFile& operator=(const WavefrontFile&);
+
+    ~WavefrontFile();
+
+private:
+    WavefrontFile();
+
+    //need ptr because vs is buggy and doesn't like if map is in static storage
+    std::map<std::string, Model>* modelMap;
+};
+
+class DLL_PUBLIC Model {
+public:
+    Model(const Material&, const std::shared_ptr<VertexBuffer>&, const std::shared_ptr<IndexBuffer>&);
+
+private:
+    Material m;
+    struct{
         std::shared_ptr<VertexBuffer> vertexBuffer;
         std::shared_ptr<IndexBuffer> indexBuffer;
-    };
+        std::shared_ptr<VertexArray> vertexArray;
+    } mesh;
+};
 
 }
-
-
-

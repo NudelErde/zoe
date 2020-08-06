@@ -19,6 +19,9 @@ public:
     inline const vec2& getSize() const {return size;}
     inline void setSize(const vec2& size) {this->size = size;}
 
+    const vec4 &getColor() const;
+    void setColor(const vec4 &color);
+
 protected:
     void onDraw(const Camera& camera) override;
     void onUpdate(double time) override;
@@ -32,6 +35,7 @@ private:
 private:
     std::function<void()> onClick;
     vec2 size{};
+    vec4 color{};
 };
 
 }

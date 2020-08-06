@@ -9,24 +9,27 @@
 
 #include "../../zoe/render/api/IndexBuffer.h"
 
-namespace Zoe{
+namespace Zoe {
 
-class OpenGLIndexBufferImpl: public IndexBufferImpl{
+class OpenGLIndexBufferImpl : public IndexBufferImpl {
 public:
-	OpenGLIndexBufferImpl(GraphicsContext* context, bool dynamicBuffer);
-	~OpenGLIndexBufferImpl();
+    OpenGLIndexBufferImpl(GraphicsContext *context, bool dynamicBuffer);
 
-	void bind();
-	void unbind();
+    ~OpenGLIndexBufferImpl();
 
-	void setData(unsigned int* data,unsigned int count);
-	unsigned int* getData(unsigned int offset,unsigned int count);
+    void bind();
 
-	const unsigned int& getCount() const;
+    void unbind();
+
+    void setData(unsigned int *data, unsigned int count);
+
+    unsigned int *getData(unsigned int offset, unsigned int count);
+
+    const unsigned int &getCount() const;
 
 public:
-	unsigned int renderID;
-	unsigned int count;
+    unsigned int renderID;
+    unsigned int count;
 };
 
 }

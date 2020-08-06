@@ -30,8 +30,11 @@ File::File(const std::string &path, const File::FileType &type, bool binary) {
             std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
             std::filesystem::create_directories(dirPath);
         }
-        std::ofstream ofstream(m_path, std::fstream::out);
-        ofstream.close();
+        if(!isFile()){
+            std::stringstream errorMessage;
+            errorMessage << "File " << m_path << " could not be found";
+            throw std::runtime_error(errorMessage.str());
+        }
         m_iostream = std::make_unique<std::fstream>(m_path, std::fstream::in | std::fstream::out |
                                                             (binary ? std::fstream::binary : 0));
     }
@@ -48,10 +51,12 @@ File::File(const File &other) {
             std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
             std::filesystem::create_directories(dirPath);
         }
-        std::ofstream ofstream(m_path, std::fstream::out);
-        ofstream.close();
-        m_iostream = std::make_unique<std::fstream>(m_path, std::fstream::in | std::fstream::out |
-                                                            (m_binary ? std::fstream::binary : 0));
+        if(!isFile()){
+            std::stringstream errorMessage;
+            errorMessage << "File " << m_path << " could not be found";
+            throw std::runtime_error(errorMessage.str());
+        }
+        m_iostream = std::make_unique<std::fstream>(m_path, std::fstream::in | std::fstream::out |(m_binary ? std::fstream::binary : 0));
     }
 }
 
@@ -79,10 +84,7 @@ File &File::operator=(const File &other) {
             std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
             std::filesystem::create_directories(dirPath);
         }
-        std::ofstream ofstream(m_path, std::fstream::out);
-        ofstream.close();
-        m_iostream = std::make_unique<std::fstream>(m_path, std::fstream::in | std::fstream::out |
-                                                            (m_binary ? std::fstream::binary : 0));
+        m_iostream = std::make_unique<std::fstream>(m_path, std::fstream::in | std::fstream::out |(m_binary ? std::fstream::binary : 0));
     }
     return *this;
 }
@@ -124,12 +126,21 @@ std::unique_ptr<std::istream> File::createIStream(bool binary) const {
             std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
             std::filesystem::create_directories(dirPath);
         }
-        std::ofstream ofstream(m_path, std::fstream::out);
-        ofstream.close();
         return std::make_unique<std::ifstream>(m_path, std::ifstream::in |
                                                             (m_binary ? std::ifstream::binary : 0));
     }
     throw std::runtime_error("istream could not be created. File has invalid type");
+}
+
+void File::createFile() {
+    if(!isFile()){
+        std::ofstream ofstream(m_path, std::fstream::out);
+        ofstream.close();
+    }
+}
+
+bool File::isFile() {
+    return std::filesystem::exists(m_path);
 }
 
 }

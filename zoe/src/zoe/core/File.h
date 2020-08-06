@@ -28,6 +28,9 @@ public:
 
     File& operator=(const File&);
 
+    void createFile();
+    bool isFile();
+
     std::iostream& getIOStream();
     std::unique_ptr<uint8_t[]> getContent(size_t* size = nullptr) const;
     [[nodiscard]] const std::string& getPath() const;

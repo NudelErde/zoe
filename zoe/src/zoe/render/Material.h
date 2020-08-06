@@ -1,67 +1,57 @@
-/*
- * Material.h
- *
- *  Created on: 25.06.2019
- *      Author: florian
- */
+//
+// Created by Florian on 05.08.2020.
+//
 
 #pragma once
 
+#include <memory>
+#include <vector>
+#include <functional>
+#include <map>
+
 #include "../core/Core.h"
 #include "../math/mat.h"
-#include "../render/api/Shader.h"
-#include "api/VertexBufferLayout.h"
+#include "../core/File.h"
 
 namespace Zoe {
 
-    class VertexArray;
+class Shader;
+class Texture;
 
-    class Render;
+class Material;
 
-    class DLL_PUBLIC Material {
-    public:
-        static std::map<std::string,Material> loadMaterials(const File& mtlFile);
+class DLL_PUBLIC MaterialLibrary{
+public:
+    //parse .mtl file and load attached images
+    static MaterialLibrary parseMaterialLibrary(const File& file, bool forceReload = false);
 
-    public:
+    [[nodiscard]] const Material& get(const std::string&);
+    [[nodiscard]] bool hasLibrary(const std::string&);
 
-        Material();
+    MaterialLibrary(MaterialLibrary&&) noexcept;
+    MaterialLibrary(const MaterialLibrary&);
 
-        explicit Material(const File &materialSource);
+    MaterialLibrary& operator=(MaterialLibrary&&) noexcept;
+    MaterialLibrary& operator=(const MaterialLibrary&);
 
-        explicit Material(std::shared_ptr<Shader> shader);
+    ~MaterialLibrary();
 
-        void setModelMatrix(const mat4x4 &modelMatrix);
+private:
+    MaterialLibrary();
 
-        void setViewMatrix(const mat4x4 &viewMatrix);
+    //need ptr because vs is buggy and doesn't like if map is in static storage
+    std::map<std::string, Material>* materialMap;
+};
 
-        void setProjectionMatrix(const mat4x4 &projectionMatrix);
+class DLL_PUBLIC Material {
+public:
+    Material(const std::shared_ptr<Shader>&, const std::vector<std::shared_ptr<Texture>>&, const std::function<void(Material*, const mat4x4& model,const mat4x4& view,const mat4x4& projection)>&);
 
-        void setUniform(const std::string &name, float x);
+private:
+    std::shared_ptr<Shader> shader;
+    std::vector<std::shared_ptr<Texture>> textures;
+    std::function<void(Material*, const mat4x4& model,const mat4x4& view,const mat4x4& projection)> bindingFunction;
 
-        void setUniform(const std::string &name, vec2 vec);
-
-        void setUniform(const std::string &name, vec3 vec);
-
-        void setUniform(const std::string &name, vec4 vec);
-
-        void setUniform(const std::string &name, const mat3x3 &mat);
-
-        void setUniform(const std::string &name, const mat4x4 &mat);
-
-        void bind();
-
-        inline const std::shared_ptr<Shader>& getShader(){return shader;}
-
-    private:
-        std::shared_ptr<Shader> shader;
-        mat4x4 modelMatrix;
-        mat4x4 viewMatrix;
-        mat4x4 projectionMatrix;
-        std::map<std::string, std::function<void(Material *, const std::string &)>> uniformSetter;
-        std::map<std::string, std::string> uniformMatrixMap;
-
-    private:
-        void loadTags();
-    };
+};
 
 }
