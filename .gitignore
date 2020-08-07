@@ -74,3 +74,4 @@ examples
 cmake-*
 out/
 CMakeSettings.json
+zoe/src/zoe/core/VirtualFiles.cpp

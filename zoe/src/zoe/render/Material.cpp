@@ -3,6 +3,7 @@
 //
 
 #include "Material.h"
+#include "api/Shader.h"
 
 namespace Zoe{
 
@@ -11,6 +12,11 @@ Material::Material(const std::shared_ptr<Shader>& shader, const std::vector<std:
     this->shader = shader;
     this->textures = textures;
     this->bindingFunction = bindingFunction;
+}
+
+void Material::bind(const mat4x4 &model, const mat4x4 &view, const mat4x4 &projection) {
+    shader->bind();
+    bindingFunction(this, model, view, projection);
 }
 
 static std::shared_ptr<std::map<std::string, MaterialLibrary>> loadedMaterialLibraries;

@@ -11,6 +11,7 @@
 #include <fstream>
 #include <map>
 #include <filesystem>
+#include <algorithm>
 
 namespace Zoe {
 
@@ -35,8 +36,11 @@ File::File(const std::string &path, const File::FileType &type, bool binary) {
             errorMessage << "File " << m_path << " could not be found";
             throw std::runtime_error(errorMessage.str());
         }
-        m_iostream = std::make_unique<std::fstream>(m_path, std::fstream::in | std::fstream::out |
-                                                            (binary ? std::fstream::binary : 0));
+	std::ios_base::openmode openmode = std::fstream::in | std::fstream::out;
+	if(binary){
+	    openmode |= std::fstream::binary;
+	}
+        m_iostream = std::make_unique<std::fstream>(m_path, openmode);
     }
 }
 
@@ -56,12 +60,17 @@ File::File(const File &other) {
             errorMessage << "File " << m_path << " could not be found";
             throw std::runtime_error(errorMessage.str());
         }
-        m_iostream = std::make_unique<std::fstream>(m_path, std::fstream::in | std::fstream::out |(m_binary ? std::fstream::binary : 0));
+	std::ios_base::openmode openmode = std::fstream::in | std::fstream::out;
+	if(m_binary){
+	    openmode |= std::fstream::binary;
+	}
+        m_iostream = std::make_unique<std::fstream>(m_path, openmode);
     }
 }
 
 File::~File() {
     if (m_type == FileType::VIRTUAL) {
+	//save content of virtual file
         virtualFiles[m_path] = dynamic_cast<std::stringstream *>(m_iostream.get())->str();
     }
 }
@@ -71,6 +80,7 @@ File &File::operator=(const File &other) {
         return *this;
 
     if (m_type == FileType::VIRTUAL) {
+	//save content of virtual file
         virtualFiles[m_path] = dynamic_cast<std::stringstream *>(m_iostream.get())->str();
     }
 
@@ -84,7 +94,11 @@ File &File::operator=(const File &other) {
             std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
             std::filesystem::create_directories(dirPath);
         }
-        m_iostream = std::make_unique<std::fstream>(m_path, std::fstream::in | std::fstream::out |(m_binary ? std::fstream::binary : 0));
+	std::ios_base::openmode openmode = std::fstream::in | std::fstream::out;
+	if(m_binary){
+	    openmode |= std::fstream::binary;
+	}
+        m_iostream = std::make_unique<std::fstream>(m_path, openmode);
     }
     return *this;
 }
@@ -126,8 +140,11 @@ std::unique_ptr<std::istream> File::createIStream(bool binary) const {
             std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
             std::filesystem::create_directories(dirPath);
         }
-        return std::make_unique<std::ifstream>(m_path, std::ifstream::in |
-                                                            (m_binary ? std::ifstream::binary : 0));
+	std::ios_base::openmode openmode = std::ifstream::in;
+	if(binary){
+	    openmode |= std::ifstream::binary;
+	}
+        return std::make_unique<std::ifstream>(m_path, openmode);
     }
     throw std::runtime_error("istream could not be created. File has invalid type");
 }

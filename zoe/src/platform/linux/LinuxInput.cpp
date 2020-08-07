@@ -8,7 +8,7 @@
 #ifndef WIN32
 
 #include "LinuxInput.h"
-#include "../../zoe/Application.h"
+#include "../../zoe/core/Application.h"
 #include "GLFW/glfw3.h"
 
 namespace Zoe{

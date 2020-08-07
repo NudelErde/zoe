@@ -24,6 +24,9 @@ if(WIN32)
             INTERFACE_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/dependencies/freetype/include")
 else()
 #TODO target properties for linux
+set_target_properties(freetype PROPERTIES
+        IMPORTED_LOCATION "${PROJECT_BINARY_DIR}/build/freetype/freetyped.lib"
+        INTERFACE_INCLUDE_DIRECTORIES "${PROJECT_SOURCE_DIR}/dependencies/freetype/include")
 endif()
 
 add_definitions(-DGLEW_STATIC -DGLFW_STATIC)

@@ -17,6 +17,9 @@ add_custom_command(OUTPUT ${CMAKE_SOURCE_DIR}/zoe/src/zoe/core/VirtualFiles.cpp
 add_custom_command(TARGET zoe POST_BUILD
         WORKING_DIRECTORY  ${CMAKE_SOURCE_DIR}
         COMMAND ${CMAKE_COMMAND} -P "${CMAKE_SOURCE_DIR}/zoe/src/internal/setup/postBuild.cmake")
+
+target_compile_options(zoe PRIVATE "-std=c++17")
+
 IF(WIN32)
   add_dependencies(zoe GLEW glew_download)
   add_dependencies(zoe webp)

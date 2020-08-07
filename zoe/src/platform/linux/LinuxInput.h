@@ -9,8 +9,7 @@
 
 #pragma once
 
-#include "../../zoe/zpch.h"
-#include "../../zoe/Input.h"
+#include "../../zoe/core/Input.h"
 
 namespace Zoe {
 
