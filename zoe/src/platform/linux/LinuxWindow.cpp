@@ -10,7 +10,7 @@
 #include "LinuxWindow.h"
 #include "../../zoe/event/CommonEvent.h"
 #include "../OpenGL/OpenGLContext.h"
-#include "../../zoe/Console.h"
+#include "../../zoe/core/Console.h"
 
 namespace Zoe {
 

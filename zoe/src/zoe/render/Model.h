@@ -21,7 +21,7 @@ class DLL_PUBLIC WavefrontFile{
 public:
 
     //parse .obj file and used .mtl files
-    static WavefrontFile parseWavefrontFile(const File&);
+    static WavefrontFile parseWavefrontFile(const File&, bool forceReload = false);
 
     const Model& get(const std::string&);
     bool hasModel(const std::string&);
@@ -43,10 +43,10 @@ private:
 
 class DLL_PUBLIC Model {
 public:
-    Model(const Material&, const std::shared_ptr<VertexBuffer>&, const std::shared_ptr<IndexBuffer>&);
+    Model(Material , const std::shared_ptr<VertexBuffer>&, const std::shared_ptr<IndexBuffer>&);
 
 private:
-    Material m;
+    Material material;
     struct{
         std::shared_ptr<VertexBuffer> vertexBuffer;
         std::shared_ptr<IndexBuffer> indexBuffer;

@@ -47,6 +47,8 @@ class DLL_PUBLIC Material {
 public:
     Material(const std::shared_ptr<Shader>&, const std::vector<std::shared_ptr<Texture>>&, const std::function<void(Material*, const mat4x4& model,const mat4x4& view,const mat4x4& projection)>&);
 
+    void bind(const mat4x4& model, const mat4x4& view, const mat4x4& projection);
+
 private:
     std::shared_ptr<Shader> shader;
     std::vector<std::shared_ptr<Texture>> textures;

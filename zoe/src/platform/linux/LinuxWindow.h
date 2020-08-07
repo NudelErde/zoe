@@ -11,8 +11,8 @@
 
 #include "GL/glew.h"
 #include <GLFW/glfw3.h>
-#include "../../zoe/Window.h"
-#include "../../zoe/Core.h"
+#include "../../zoe/core/Window.h"
+#include "../../zoe/core/Core.h"
 
 namespace Zoe{
 
