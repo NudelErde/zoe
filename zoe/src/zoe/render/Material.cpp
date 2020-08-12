@@ -4,6 +4,7 @@
 
 #include "Material.h"
 #include "api/Shader.h"
+#include "../core/String.h"
 
 namespace Zoe{
 
@@ -21,13 +22,145 @@ void Material::bind(const mat4x4 &model, const mat4x4 &view, const mat4x4 &proje
 
 static std::shared_ptr<std::map<std::string, MaterialLibrary>> loadedMaterialLibraries;
 
+static std::pair<std::string,std::string> getStringTo(const std::string& str, char c){
+    std::stringstream ss;
+    std::pair<std::string, std::string> pair;
+    bool hasSwitched = false;
+    for(const char* ptr = str.c_str(); *ptr; ++ptr){
+        if(!hasSwitched && *ptr == c){
+            hasSwitched = true;
+            pair.first = ss.str();
+            ss.str("");
+        }else{
+            ss << *ptr;
+        }
+    }
+    pair.second = ss.str();
+    return pair;
+}
+
+static vec3 readVec3(std::vector<std::string>::iterator begin, std::vector<std::string>::iterator end){
+    std::stringstream ss;
+    vec3 result{};
+    if(begin == end){
+        return vec3({0,0,0});
+    }
+    ss.str(*(begin++));
+    ss >> result.x;
+    if(begin == end){
+        result.y = result.x;
+        result.z = result.x;
+    }
+    ss.str(*(begin++));
+    ss >> result.y;
+    if(begin == end){
+        result.z = result.x;
+    }
+    ss.str(*(begin++));
+    ss >> result.z;
+    return result;
+}
+
+//TODO: insert real xyz to rgb matrix
+static vec3 readRGB_XYZ(const std::string& str){
+    static mat3x3 convertXYZToRGBMatrix = []() {
+        mat3x3 mat;
+        mat[0][0] = 1;mat[0][1] = 0;mat[0][1] = 0;
+        mat[1][0] = 0;mat[1][1] = 1;mat[1][1] = 0;
+        mat[2][0] = 0;mat[2][1] = 0;mat[2][1] = 1;
+        return mat;
+    }();
+    //TODO: throw exception if spectral curve is used or implement spectral curves
+    std::vector<std::string> vec = split(str, ' ');
+    std::string first = vec[0];
+    toLower(first);
+    if(first == "xyz"){
+        return convertXYZToRGBMatrix * readVec3(++vec.begin(), vec.end());
+    }else{
+        return readVec3(vec.begin(), vec.end());
+    }
+}
+
 MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool forceReload) {
     if(!forceReload && loadedMaterialLibraries->count(file.getPath())){
         return loadedMaterialLibraries->at(file.getPath());
     }
     //Create new library
     MaterialLibrary lib;
-    //TODO: implement .mtl parsing
+
+
+    struct MaterialData{
+        bool init = false;
+        std::string name;
+        vec3 ambientReflectivity{};
+        vec3 diffuseReflectivity{};
+        vec3 specularReflectivity{};
+        vec3 transmissionFilter{};
+        int illuminationModel{};
+        float dissolve{};
+        bool dissolveDependentOnSurfaceOrientation{};
+        float specularExponent{};
+        float sharpness{};
+        float opticalDensity{};
+    };
+    std::vector<MaterialData> materials;
+    MaterialData currentMaterial;
+    std::unique_ptr<std::istream> stream = file.createIStream(false);
+    std::istream& is = *stream;
+    std::string line;
+    int lineNumber = 0;
+    while(getline(is,line)){
+        ++lineNumber;
+        trim(line);
+        if(startsWith(line, "#")){
+            continue;
+        }
+        auto [cmd, args] = getStringTo(line, ' ');
+        std::vector<std::string> argsList = split(args, ' ');
+        toLower(cmd);
+        if(cmd == "newmtl"){
+            if(currentMaterial.init){
+                materials.push_back(currentMaterial);
+            }
+            currentMaterial = MaterialData();
+            currentMaterial.init = true;
+            currentMaterial.name = args;
+        }else if(!currentMaterial.init){
+            //no currentMaterial
+            throw std::runtime_error(".mtl file is wrong formatted in line: "+std::to_string(lineNumber));
+        }else if(cmd == "ka"){
+            currentMaterial.ambientReflectivity = readRGB_XYZ(args);
+        }else if(cmd == "kd"){
+            currentMaterial.diffuseReflectivity = readRGB_XYZ(args);
+        }else if(cmd == "ks"){
+            currentMaterial.specularReflectivity = readRGB_XYZ(args);
+        }else if(cmd == "tf"){
+            currentMaterial.transmissionFilter = readRGB_XYZ(args);
+        }else if(cmd == "illum"){
+            currentMaterial.illuminationModel = fromString<int>(args);
+        }else if(cmd == "d"){
+            if(argsList[0] == "-halo"){
+                currentMaterial.dissolveDependentOnSurfaceOrientation = true;
+                currentMaterial.dissolve = fromString<float>(argsList[1]);
+            }else{
+                currentMaterial.dissolveDependentOnSurfaceOrientation = false;
+                currentMaterial.dissolve = fromString<float>(argsList[0]);
+            }
+        }else if(cmd == "ns"){
+            currentMaterial.specularExponent = fromString<float>(args);
+        }else if(cmd == "sharpness"){
+            currentMaterial.sharpness = fromString<float>(args);
+        }else if(cmd == "ni"){
+            currentMaterial.opticalDensity = fromString<float>(args);
+        }else{
+            warning("Unknown or unsupported attribute \"",cmd," ",args,"\" in file ",file.getPath());
+        }
+    }
+
+    for(MaterialData& data: materials){
+        //TODO: materialData to material
+    }
+
     return lib;
 }
 

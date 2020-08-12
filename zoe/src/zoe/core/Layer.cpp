@@ -7,14 +7,12 @@
 
 #include "Layer.h"
 
+#include <utility>
+
 namespace Zoe {
 
-Layer::Layer(const std::string& name = "Layer"): name(name) {
+Layer::Layer(std::string  name): name(std::move(name)) {}
 
-}
-
-Layer::~Layer() {
-
-}
+Layer::~Layer() = default;
 
 } /* namespace Zoe */

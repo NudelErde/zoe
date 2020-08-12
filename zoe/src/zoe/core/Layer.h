@@ -16,7 +16,7 @@ namespace Zoe {
 class DLL_PUBLIC Layer {
 friend class LayerStack;
 public:
-	Layer(const std::string& name);
+	Layer(std::string  name);
 	virtual ~Layer();
 
 	virtual void onAttach() {
