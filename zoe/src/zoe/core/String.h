@@ -42,4 +42,36 @@ static inline std::string rtrim_copy(std::string s) {
     return s;
 }
 
+static inline void toLower(std::string& s){
+    //TODO: make so that utf-8 likes u. maybe something different for text
+    std::transform(s.begin(), s.end(), s.begin(),
+                   [](unsigned char c){ return std::tolower(c); });
+}
+
+static inline bool startsWith(const std::string& s, const std::string& value){
+    return s.rfind(value, 0) == 0;
+}
+
+static inline std::vector<std::string> split(const std::string& s, char c){
+    std::vector<std::string> result;
+    std::stringstream ss;
+    for(const char* ptr = s.c_str(); *ptr; ++ptr){
+        if(*ptr == c){
+            result.push_back(ss.str());
+            ss.str("");
+        }else{
+            ss << *ptr;
+        }
+    }
+    return result;
+}
+
+template<typename T>
+static inline T fromString(std::string string){
+    std::stringstream sstream(string);
+    T value;
+    sstream >> value;
+    return value;
+}
+
 }
