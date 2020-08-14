@@ -11,39 +11,39 @@
 #include <iostream>
 #include <memory>
 #include <cinttypes>
+#include <vector>
 
 namespace Zoe{
 
-class DLL_PUBLIC File {
+class Directory;
+class File;
+
+class DLL_PUBLIC Path {
 public:
+    Path(const std::string&);
 
-    enum class FileType{
-        VIRTUAL, FILE_SYSTEM
-    };
+    bool isFile() const;
+    bool isDirectory() const;
 
-    explicit File(const std::string& path);
-    explicit File(const std::string& path, const FileType&, bool binary = false);
-    File(const File&);
-    ~File();
+    Directory getParent() const;
+    std::string getAbsolutePath() const;
+};
 
-    File& operator=(const File&);
+class DLL_PUBLIC Directory: public Path {
+public:
+    Directory(const Path&);
+    Directory(const std::string&);
 
-    void createFile();
-    bool isFile();
+    std::vector<Path> getFiles() const;
+};
 
-    std::iostream& getIOStream();
-    std::unique_ptr<uint8_t[]> getContent(size_t* size = nullptr) const;
-    [[nodiscard]] const std::string& getPath() const;
+class DLL_PUBLIC File: public Path {
+public:
+    File(const Path&);
+    File(const std::string&);
 
-    [[nodiscard]] std::unique_ptr<std::istream> createIStream(bool binary = false) const;
-
-private:
-    std::unique_ptr<std::iostream> m_iostream;
-    std::string m_path;
-    FileType m_type;
-    bool m_binary;
-private:
-    static FileType getFileTypeByPath(const std::string& path);
+    std::unique_ptr<std::istream> createIStream(bool binary = false) const;
+    std::unique_ptr<std::iostream> createIOStream(bool binary = false);
 };
 
 }
