@@ -25,11 +25,12 @@ const mat4x4 &Camera::getViewMatrix() const {
 }
 
 void Camera::draw(const Model &model, Material &material) const {
-    material.setModelMatrix(model.getModelMatrix());
+    //TODO
+    /*material.setModelMatrix(model.getModelMatrix());
     material.setViewMatrix(getViewMatrix());
     material.setProjectionMatrix(getProjectionMatrix()*Zoe::scale3D(1, 1, -1));
     material.bind();
-    render->draw(*model.getVertexArray(), *material.getShader());
+    render->draw(*model.getVertexArray(), *material.getShader());*/
 }
 
 Camera::~Camera() = default;

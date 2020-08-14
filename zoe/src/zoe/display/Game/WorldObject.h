@@ -22,12 +22,12 @@ protected:
     void postFill() override;
 
 public:
-    inline const Model &getModel() const {return model;}
+    /*inline const Model &getModel() const {return model;}
 
-    inline void setModel(const Model &model) {WorldObject::model = model;}
+    inline void setModel(const Model &model) {WorldObject::model = model;}*/
 
 private:
-    Model model;
+    /*Model model;*/
 
     //std::weak_ptr<TextureComponent> texture;
     //std::weak_ptr<TextureComponent> normalTexture;
