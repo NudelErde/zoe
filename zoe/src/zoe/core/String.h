@@ -52,17 +52,20 @@ static inline bool startsWith(const std::string& s, const std::string& value){
     return s.rfind(value, 0) == 0;
 }
 
-static inline std::vector<std::string> split(const std::string& s, char c){
+template <typename T>
+inline std::vector<std::string> split(const std::string& s, T delimiter) {
     std::vector<std::string> result;
-    std::stringstream ss;
-    for(const char* ptr = s.c_str(); *ptr; ++ptr){
-        if(*ptr == c){
-            result.push_back(ss.str());
-            ss.str("");
-        }else{
-            ss << *ptr;
-        }
+    size_t current = 0;
+    size_t index = s.find_first_of(delimiter, 0);
+
+    while (index != std::string::npos) {
+        result.emplace_back(s, current, index - current);
+        current = index + 1;
+        index = s.find_first_of(delimiter, current);
     }
+
+    result.emplace_back(s, current);
+
     return result;
 }
 

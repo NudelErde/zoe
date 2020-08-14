@@ -8,26 +8,27 @@
 
 namespace Zoe{
 
-static struct{
+//TODO
+/*static struct{
     Material defaultMaterial;
     bool init = false;
-} data;
+} data;*/
 
 
 WorldObject::WorldObject(){
-    if(!data.init){
+    /*if(!data.init){
         data.init = true;
         data.defaultMaterial = Material(Application::getContext().getShader(File("zoe/internal/materials/DefaultMaterial.glsl")));
-    }
+    }*/
 }
 
 void WorldObject::onDraw(const Camera &camera) {
     //TODO: check if object could use other material
-    data.defaultMaterial.setModelMatrix(model.getModelMatrix());
+    /*data.defaultMaterial.setModelMatrix(model.getModelMatrix());
     data.defaultMaterial.setViewMatrix(camera.getViewMatrix());
     data.defaultMaterial.setProjectionMatrix(camera.getProjectionMatrix());
     data.defaultMaterial.bind();
-    camera.getRender()->draw(*model.getVertexArray(), *data.defaultMaterial.getShader());
+    camera.getRender()->draw(*model.getVertexArray(), *data.defaultMaterial.getShader());*/
 }
 
 void WorldObject::onUpdate(double time) {
