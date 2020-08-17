@@ -4,13 +4,13 @@
 
 #include "zoe.h"
 #include "EntryPoint.h"
-#include <cmath>
 
 class App : public Zoe::Application {
 public:
     App() {
         Zoe::MaterialLibrary::parseMaterialLibrary(Zoe::File("sampleObjects/Cube/Cube.mtl"));
         Zoe::MaterialLibrary::parseMaterialLibrary(Zoe::File("sampleObjects/Cube/Cube.mtl"));
+        std::cout << "Ficken bitte?" << std::endl;
     }
 
     ~App() override = default;

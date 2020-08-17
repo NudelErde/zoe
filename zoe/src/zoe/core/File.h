@@ -91,6 +91,8 @@ public:
 
     [[nodiscard]] std::unique_ptr<std::iostream> createIOStream(bool binary = false) const;
 
+    [[nodiscard]] std::unique_ptr<uint8_t[]> getContent(size_t * = nullptr) const;
+
     void create() const;
 
     void clear() const;

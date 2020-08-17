@@ -129,7 +129,7 @@ std::string Path::getAbsolutePath() const {
 }
 
 std::string Path::getAbsolutePath() {
-    if (!absolutPath.empty()) {
+    if (absolutPath.empty()) {
         absolutPath = std::as_const(*this).getAbsolutePath();
     }
     return absolutPath;
@@ -265,6 +265,19 @@ void File::remove() const {
     }
 }
 
+std::unique_ptr<uint8_t[]> File::getContent(size_t * size) const{
+    std::unique_ptr<std::istream> inputStream = createIStream(true);
+    inputStream->seekg(0, std::ios::end);
+    size_t length = inputStream->tellg();
+    if(size != nullptr){
+        *size = length;
+    }
+    std::unique_ptr<uint8_t[]> res = std::make_unique<uint8_t[]>(length);
+    inputStream->seekg(0, std::ios::beg);
+    inputStream->read((char*)res.get(), length);
+    return res;
+}
+
 FileError::FileError(std::string file, std::string what, FileErrorCode errorCode) : m_file(std::move(file)),
                                                                                     m_what(std::move(what)),
                                                                                     errorCode(errorCode) {
@@ -334,8 +347,8 @@ VirtualStreambuf::int_type VirtualStreambuf::underflow() {
         }
         memcpy(getArea, fileData->virtualDataMap[file.getAbsolutePath()].data() + pos, readSize);
         pos += readSize;
-        setg(getArea, getArea, getArea + 128);
-        return traits_type::not_eof(0);
+        setg(getArea, getArea+1, getArea + readSize);
+        return traits_type::not_eof(*getArea);
     } else {
         return traits_type::eof();
     }
