@@ -49,6 +49,13 @@ static ShaderSource parseShader(const File &file) {
     unsigned int samplerSlot = 0;
     int index;
     while (getline(*stream, line)) {
+        debug(line);
+        if(line.c_str()[0] == '#'){
+            for(char ind : line){
+                std::cout << std::hex << +ind << ' ';
+            }
+            std::cout << std::endl;
+        }
         trim(line);
         if (line.find("#shader") != std::string::npos) {
             if (line.find("vertex") != std::string::npos)

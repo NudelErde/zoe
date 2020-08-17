@@ -15,8 +15,8 @@ class DLL_PUBLIC UITool {
 public:
     explicit UITool(const Camera& camera);
 
-    void setColor(vec4 color);
-    void setFont(Font& font);
+    void setColor(const vec4& color);
+    void setFont(const Font& font);
 
     const vec4& getColor();
     const Font& getFont();

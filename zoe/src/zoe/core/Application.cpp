@@ -42,14 +42,14 @@ Application::Application(bool withWindow): hasWindow(withWindow) {
     //---Init other stuff
     initVirtualFiles();
     initKeyMap();
-
     Font::init();
     BaseComponent::init();
-    UITool::init();
-
-    displayRender = getContext().getRender();
-    displayRender->setAlphaEnabled(true);
-    displayRender->setRenderTarget(getContext().getDefaultRenderTarget());
+    if(withWindow){
+        UITool::init();
+        displayRender = getContext().getRender();
+        displayRender->setAlphaEnabled(true);
+        displayRender->setRenderTarget(getContext().getDefaultRenderTarget());
+    }
 }
 
 Application::~Application() {

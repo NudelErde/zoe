@@ -30,7 +30,7 @@ struct RenderChar {
 };
 
 void UITool::init() {
-    defaultFont = std::make_unique<Font>(File("zoe/internal/display/Roboto-Regular.ttf"), 30);
+    defaultFont = std::make_unique<Font>(File("virtual/zoe/display/Roboto-Regular.ttf"), 30);
     rectVertexBuffer = Application::getContext().getVertexBuffer(false);
     rectIndexBuffer = Application::getContext().getIndexBuffer(false);
     rectVertexArray = Application::getContext().getVertexArray();
@@ -48,10 +48,10 @@ void UITool::init() {
     std::shared_ptr<VertexBufferLayout> rectLayout = Application::getContext().getVertexBufferLayout();
     rectLayout->push_float(2);
     rectVertexArray->set(rectVertexBuffer, rectIndexBuffer, rectLayout);
-    imageShader = Application::getContext().getShader(File("zoe/internal/display/ui/Image.glsl"));
-    rectangleShader = Application::getContext().getShader(File("zoe/internal/display/ui/Rectangle.glsl"));
-    ovalShader = Application::getContext().getShader(File("zoe/internal/display/ui/Oval.glsl"));
-    textShader = Application::getContext().getShader(File("zoe/internal/display/ui/Text.glsl"));
+    imageShader = Application::getContext().getShader(File("virtual/zoe/display/ui/Image.glsl"));
+    rectangleShader = Application::getContext().getShader(File("virtual/zoe/display/ui/Rectangle.glsl"));
+    ovalShader = Application::getContext().getShader(File("virtual/zoe/display/ui/Oval.glsl"));
+    textShader = Application::getContext().getShader(File("virtual/zoe/display/ui/Text.glsl"));
 }
 
 UITool::UITool(const Camera &camera) : font(*defaultFont), color(vec4({0, 0, 0, 1})),
@@ -75,11 +75,11 @@ UITool::UITool(const Camera &camera) : font(*defaultFont), color(vec4({0, 0, 0, 
     textBitmap = this->font.getBitmap();
 }
 
-void UITool::setColor(vec4 c) {
+void UITool::setColor(const vec4& c) {
     color = c;
 }
 
-void UITool::setFont(Font &f) {
+void UITool::setFont(const Font& f) {
     font = f;
 }
 

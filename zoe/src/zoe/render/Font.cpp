@@ -40,7 +40,7 @@ namespace Zoe {
 
     void Font::init() {
         if (FT_Init_FreeType(&ftLibrary)) {
-            error("Could not init FreeType library");
+            throw std::runtime_error("Could not init FreeType library");
         } else {
             debug("Init FreeType library");
         }
@@ -53,6 +53,10 @@ namespace Zoe {
         size_t sourceSize = 0;
         std::unique_ptr<uint8_t[]> source = file.getContent(&sourceSize);
 
+        for(unsigned int i = 0; i < 100; ++i){
+            std::cout << std::hex << +source[i] << ' ';
+        }
+
         data->sourceSize = sourceSize;
         data->source = new unsigned char[data->sourceSize];
         memcpy(data->source, source.get(), data->sourceSize);
@@ -64,7 +68,7 @@ namespace Zoe {
         //err = FT_Open_Face(ftLibrary, &args, 0, &(data->face)); //TODO: read font with stream
         int err = FT_New_Memory_Face(ftLibrary, data->source, (FT_Long) data->sourceSize, 0, &(data->face));
         if (err) {
-            error("Could not read font ", file.getPath(), ". Error code: ", err);
+            throw std::runtime_error("Could not read font " + file.getPath() + ". Error code: " + std::to_string(err));
         }
 
         data->sourceReferences = new unsigned int;
@@ -88,7 +92,7 @@ namespace Zoe {
         //TODO: read font with stream
         int err = FT_New_Memory_Face(ftLibrary, data->source, (FT_Long) data->sourceSize, 0, &(data->face));
         if (err) {
-            error("Could not copy font. Error Code: ", err);
+            throw std::runtime_error("Could not copy font. Error Code: " + std::to_string(err));
         }
 
         data->size = font.data->size;
@@ -109,7 +113,7 @@ namespace Zoe {
         //TODO: read font with stream
         int err = FT_New_Memory_Face(ftLibrary, data->source, (FT_Long) data->sourceSize, 0, &(data->face));
         if (err) {
-            error("Could not copy font. Error Code: ", err);
+            throw std::runtime_error("Could not copy font. Error Code: " + std::to_string(err));
         }
 
         data->size = size;
@@ -140,7 +144,7 @@ namespace Zoe {
 
         int err = FT_New_Memory_Face(ftLibrary, data->source, (FT_Long) data->sourceSize, 0, &(data->face));
         if (err) {
-            error("Could not copy font. Error Code: ", err);
+            throw std::runtime_error("Could not copy font. Error Code: " + std::to_string(err));
         }
 
         data->size = rhs.data->size;
@@ -218,11 +222,11 @@ namespace Zoe {
         int err;
         err = FT_Load_Glyph(data->face, glyphIndex, FT_LOAD_DEFAULT);
         if (err) {
-            error("Could not load Glyph: ", glyphIndex, " CharCode: ", charCode, " Error: ", err);
+            throw std::runtime_error("Could not load Glyph: " + std::to_string(glyphIndex) + " CharCode: " + std::to_string(charCode) + " Error: " + std::to_string(err));
         }
         err = FT_Get_Glyph(data->face->glyph, &glyph);
         if (err) {
-            error("Could not get Glyph: ", glyphIndex, " CharCode: ", charCode, " Error: ", err);
+            throw std::runtime_error("Could not get Glyph: " + std::to_string(glyphIndex) + " CharCode: " + std::to_string(charCode) + " Error: " + std::to_string(err));
         }
 
         if (glyph->format == FT_GLYPH_FORMAT_BITMAP) {
