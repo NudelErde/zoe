@@ -16,6 +16,7 @@
 #include <string>
 #include <regex>
 #include <functional>
+#include <set>
 #include "Console.h"
 #include "String.h"
 
@@ -24,16 +25,19 @@
 namespace Zoe {
 
 struct VirtualFileData { //TODO: pack executable and zip for some files? runtime created files to temp file if to big to save resources?
-    std::map<std::string, std::vector<uint8_t>> virtualDataMap;
+    std::map<std::string, std::vector<char>> virtualDataMap;
     std::map<std::string, std::vector<std::string>> virtualDirectoryMap;
-    std::map<std::string, bool> isFile;
-    std::map<std::string, bool> isDirectory;
+    std::set<std::string> isFile;
+    std::set<std::string> isDirectory;
+    VirtualFileData(){
+        isDirectory.insert("virtual/");
+    }
 };
 
-static std::shared_ptr<VirtualFileData> fileData;
+static std::shared_ptr<VirtualFileData> fileData = std::make_shared<VirtualFileData>();
 
 static bool isVirtualByPath(const std::string &path) {
-    return path.rfind("virtual/zoe/", 0) == 0;
+    return path.rfind("virtual/", 0) == 0;
 }
 
 Path::Path(const std::string &path) : m_path(path), m_isVirtual(isVirtualByPath(path)), absolutPath() {}
@@ -47,7 +51,7 @@ bool Path::exists() const {
         }
         return val;
     } else {
-        return fileData->isDirectory[getAbsolutePath()] || fileData->isFile[getAbsolutePath()];
+        return fileData->isDirectory.count(getAbsolutePath()) || fileData->isFile.count(getAbsolutePath());
     }
 }
 
@@ -60,7 +64,7 @@ bool Path::isFile() const {
         }
         return val;
     } else {
-        return fileData->isFile[getAbsolutePath()];
+        return fileData->isFile.count(getAbsolutePath());
     }
 }
 
@@ -73,7 +77,7 @@ bool Path::isDirectory() const {
         }
         return val;
     } else {
-        return fileData->isDirectory[getAbsolutePath()];
+        return fileData->isDirectory.count(getAbsolutePath());
     }
 }
 
@@ -88,7 +92,7 @@ Directory Path::getParent() const {
 }
 
 std::string Path::getAbsolutePath() const {
-    if(!absolutPath.empty()){
+    if (!absolutPath.empty()) {
         return absolutPath;
     }
     if (!m_isVirtual) {
@@ -99,11 +103,13 @@ std::string Path::getAbsolutePath() const {
         }
         return val;
     } else {
+        if(m_path == "virtual/")
+            return m_path;
         std::stringstream result;
         std::vector<std::string> args = split(m_path, '/');
         std::string lastArg;
         bool first = true;
-        for(const auto & arg : args){
+        for (const auto &arg : args) {
             if (!lastArg.empty() && arg == "..") {
                 lastArg.clear();
                 continue;
@@ -111,7 +117,7 @@ std::string Path::getAbsolutePath() const {
                 continue;
             } else {
                 if (!lastArg.empty()) {
-                    result << (first?"":"/") << lastArg;
+                    result << (first ? "" : "/") << lastArg;
                     first = false;
                 }
                 lastArg = arg;
@@ -123,7 +129,7 @@ std::string Path::getAbsolutePath() const {
 }
 
 std::string Path::getAbsolutePath() {
-    if(!absolutPath.empty()){
+    if (!absolutPath.empty()) {
         absolutPath = std::as_const(*this).getAbsolutePath();
     }
     return absolutPath;
@@ -159,13 +165,11 @@ void Directory::create() const {
         if (error) {
             throw FileError(m_path, error.message(), FileError::FileErrorCode::FilesystemError);
         }
-    } else {
-        if (!isDirectory()) {
-            Directory d = getParent();
-            d.create();
-            fileData->virtualDirectoryMap[d.getAbsolutePath()].push_back(getAbsolutePath());
-            fileData->isDirectory[getAbsolutePath()] = true;
-        }
+    } else if (!isDirectory()) {
+        Directory d = getParent();
+        d.create();
+        fileData->virtualDirectoryMap[d.getAbsolutePath()].push_back(getAbsolutePath());
+        fileData->isDirectory.insert(getAbsolutePath());
     }
 }
 
@@ -176,19 +180,19 @@ void Directory::remove() const {
         if (error) {
             throw FileError(m_path, error.message(), FileError::FileErrorCode::FilesystemError);
         }
-    } else {
-        if (isDirectory()) {
-            for (const auto &file : getFiles()) {
-                if (file.isFile()) {
-                    File(file).remove();
-                }else if(file.isDirectory()){
-                    Directory(file).remove();
-                }
+    } else if (isDirectory()) {
+        if(m_path == "virtual/") //never delete virtual files root
+            return;
+        for (const auto &file : getFiles()) {
+            if (file.isFile()) {
+                File(file).remove();
+            } else if (file.isDirectory()) {
+                Directory(file).remove();
             }
-            std::string absPath = getAbsolutePath();
-            fileData->virtualDataMap.erase(absPath);
-            fileData->isDirectory.erase(absPath);
         }
+        std::string absPath = getAbsolutePath();
+        fileData->virtualDataMap.erase(absPath);
+        fileData->isDirectory.erase(absPath);
     }
 }
 
@@ -210,7 +214,8 @@ std::unique_ptr<std::istream> File::createIStream(bool binary) const {
         }
         return std::make_unique<std::ifstream>(m_path, openmode);
     } else {
-        return createIOStream(binary);
+        create();
+        return std::make_unique<VirtualIStream>(*this);
     }
 }
 
@@ -222,30 +227,27 @@ std::unique_ptr<std::iostream> File::createIOStream(bool binary) const {
         }
         return std::make_unique<std::fstream>(m_path, openmode);
     } else {
-        //TODO: Implement iostream
+        create();
+        return std::make_unique<VirtualIOStream>(*this);
     }
 }
 
 void File::create() const {
     if (!m_isVirtual) {
         std::ofstream ostream(m_path, std::ios_base::out);
-    } else {
-        if(!isFile()){
-            getParent().create();
-            std::string path = getAbsolutePath();
-            fileData->isFile[path] = true;
-            fileData->virtualDataMap[path] = std::vector<uint8_t>();
-        }
+    } else if (!isFile()) {
+        getParent().create();
+        std::string path = getAbsolutePath();
+        fileData->isFile.insert(path);
+        fileData->virtualDataMap[path] = std::vector<char>();
     }
 }
 
 void File::clear() const {
     if (!m_isVirtual) {
         std::ofstream ostream(m_path, std::ios_base::out | std::ios_base::trunc);
-    } else {
-        if(isFile()){
-            fileData->virtualDataMap[getAbsolutePath()].clear();
-        }
+    } else if (isFile()) {
+        fileData->virtualDataMap[getAbsolutePath()].clear();
     }
 }
 
@@ -256,12 +258,10 @@ void File::remove() const {
         if (error) {
             throw FileError(m_path, error.message(), FileError::FileErrorCode::FilesystemError);
         }
-    } else {
-        if(isFile()){
-            std::string path = getAbsolutePath();
-            fileData->isFile.erase(path);
-            fileData->virtualDataMap.erase(path);
-        }
+    } else if (isFile()) {
+        std::string path = getAbsolutePath();
+        fileData->isFile.erase(path);
+        fileData->virtualDataMap.erase(path);
     }
 }
 
@@ -271,158 +271,106 @@ FileError::FileError(std::string file, std::string what, FileErrorCode errorCode
     m_what = "Error in file " + m_file + ": " + m_what;
 }
 
-const char *FileError::what() const {
+const char *FileError::what() const noexcept {
     return m_what.c_str();
 }
 
 const std::string &FileError::getFile() const {
     return m_file;
 }
+
+VirtualStreambuf::VirtualStreambuf(File file, bool write, bool read) : file(std::move(file)) {
+    setg(getArea, getArea + 128, getArea + 128);
+    setp(putArea, putArea + 128);
+    pos = 0;
+    VirtualStreambuf::write = write;
+    VirtualStreambuf::read = read;
 }
 
-/*
-std::map<std::string, std::string> virtualFiles;
+VirtualStreambuf::~VirtualStreambuf() = default;
 
-File::File(const std::string &path) : File(path, getFileTypeByPath(path)) {}
-
-File::File(const std::string &path, const File::FileType &type, bool binary) {
-    m_path = path;
-    std::replace(m_path.begin(), m_path.end(), '\\', '/');
-    m_type = type;
-    m_binary = binary;
-    if (type == FileType::VIRTUAL) {
-        m_iostream = std::make_unique<std::stringstream>(virtualFiles[m_path]);
-    } else if (type == FileType::FILE_SYSTEM) {
-        if (m_path.find('/') != std::string::npos) {
-            std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
-            std::filesystem::create_directories(dirPath);
-        }
-        if(!isFile()){
-            std::stringstream errorMessage;
-            errorMessage << "File " << m_path << " could not be found";
-            throw std::runtime_error(errorMessage.str());
-        }
-	std::ios_base::openmode openmode = std::fstream::in | std::fstream::out;
-	if(binary){
-	    openmode |= std::fstream::binary;
-	}
-        m_iostream = std::make_unique<std::fstream>(m_path, openmode);
+VirtualStreambuf::pos_type VirtualStreambuf::seekoff(VirtualStreambuf::off_type offset,
+                                                     std::ios_base::seekdir dir, std::ios_base::openmode which) {
+    if (dir == std::ios_base::beg) {
+        seekpos(0 + offset, which);
+    } else if (dir == std::ios_base::end) {
+        seekpos(fileData->virtualDataMap[file.getAbsolutePath()].size() + offset, which);
+    } else { //relative position
+        pos += offset;
     }
+    sync();
+    return pos;
 }
 
-File::File(const File &other) {
-    m_path = other.m_path;
-    m_type = other.m_type;
-    m_binary = other.m_binary;
-    if (m_type == FileType::VIRTUAL) {
-        m_iostream = std::make_unique<std::stringstream>(virtualFiles[m_path]);
-    } else if (m_type == FileType::FILE_SYSTEM) {
-        if (m_path.find('/') != std::string::npos) {
-            std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
-            std::filesystem::create_directories(dirPath);
-        }
-        if(!isFile()){
-            std::stringstream errorMessage;
-            errorMessage << "File " << m_path << " could not be found";
-            throw std::runtime_error(errorMessage.str());
-        }
-	std::ios_base::openmode openmode = std::fstream::in | std::fstream::out;
-	if(m_binary){
-	    openmode |= std::fstream::binary;
-	}
-        m_iostream = std::make_unique<std::fstream>(m_path, openmode);
-    }
+VirtualStreambuf::pos_type VirtualStreambuf::seekpos(VirtualStreambuf::pos_type position,
+                                                     std::ios_base::openmode which) {
+    pos = position;
+    return pos;
 }
 
-File::~File() {
-    if (m_type == FileType::VIRTUAL) {
-	//save content of virtual file
-        virtualFiles[m_path] = dynamic_cast<std::stringstream *>(m_iostream.get())->str();
-    }
-}
-
-File &File::operator=(const File &other) {
-    if (&other == this)
-        return *this;
-
-    if (m_type == FileType::VIRTUAL) {
-	//save content of virtual file
-        virtualFiles[m_path] = dynamic_cast<std::stringstream *>(m_iostream.get())->str();
-    }
-
-    m_path = other.m_path;
-    m_type = other.m_type;
-    m_binary = other.m_binary;
-    if (m_type == FileType::VIRTUAL) {
-        m_iostream = std::make_unique<std::stringstream>(virtualFiles[m_path]);
-    } else if (m_type == FileType::FILE_SYSTEM) {
-        if (m_path.find('/') != std::string::npos) {
-            std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
-            std::filesystem::create_directories(dirPath);
+VirtualStreambuf::int_type VirtualStreambuf::overflow(VirtualStreambuf::int_type ch) {
+    if (write) {
+        fileData->virtualDataMap[file.getAbsolutePath()].insert(
+                fileData->virtualDataMap[file.getAbsolutePath()].begin() + pos, pbase(), pptr());
+        pos += pptr() - pbase();
+        if (!traits_type::eq_int_type(ch, traits_type::eof())) {
+            fileData->virtualDataMap[file.getAbsolutePath()].push_back(traits_type::to_char_type(ch));
+            pos += 1;
         }
-	std::ios_base::openmode openmode = std::fstream::in | std::fstream::out;
-	if(m_binary){
-	    openmode |= std::fstream::binary;
-	}
-        m_iostream = std::make_unique<std::fstream>(m_path, openmode);
-    }
-    return *this;
-}
-
-File::FileType File::getFileTypeByPath(const std::string &path) {
-    if (path.rfind("zoe/internal/", 0) == 0) {
-        return FileType::VIRTUAL;
+        memset(putArea, 0, 128);
+        setp(putArea, putArea + 128);
+        return traits_type::not_eof(0);
     } else {
-        return FileType::FILE_SYSTEM;
+        return traits_type::eof();
     }
 }
 
-std::iostream &File::getIOStream() {
-    return *m_iostream;
-}
-
-std::unique_ptr<uint8_t[]> File::getContent(size_t *size) const{
-    std::unique_ptr<std::istream> stream = createIStream();
-    stream->seekg(0, std::ios::end);
-    size_t len = stream->tellg();
-    if (size != nullptr) {
-        *size = len;
-    }
-    std::unique_ptr<uint8_t[]> ret = std::make_unique<uint8_t[]>(len);
-    stream->seekg(0, std::ios::beg);
-    std::copy(std::istreambuf_iterator<char>(*stream), std::istreambuf_iterator<char>(), ret.get());
-    return ret;
-}
-
-const std::string &File::getPath() const{
-    return m_path;
-}
-
-std::unique_ptr<std::istream> File::createIStream(bool binary) const {
-    if (m_type == FileType::VIRTUAL) {
-        return std::make_unique<std::istringstream>(dynamic_cast<std::stringstream*>(m_iostream.get())->str());
-    } else if (m_type == FileType::FILE_SYSTEM) {
-        if (m_path.find('/') != std::string::npos) {
-            std::string dirPath = m_path.substr(0, m_path.find_last_of('/'));
-            std::filesystem::create_directories(dirPath);
+VirtualStreambuf::int_type VirtualStreambuf::underflow() {
+    if (read) {
+        size_t readSize = std::min(fileData->virtualDataMap[file.getAbsolutePath()].size() - pos, (size_t) 128);
+        if (readSize == 0) {
+            setg(getArea, nullptr, getArea + 128);
+            return traits_type::eof();
         }
-	std::ios_base::openmode openmode = std::ifstream::in;
-	if(binary){
-	    openmode |= std::ifstream::binary;
-	}
-        return std::make_unique<std::ifstream>(m_path, openmode);
-    }
-    throw std::runtime_error("istream could not be created. File has invalid type");
-}
-
-void File::createFile() {
-    if(!isFile()){
-        std::ofstream ofstream(m_path, std::fstream::out);
-        ofstream.close();
+        memcpy(getArea, fileData->virtualDataMap[file.getAbsolutePath()].data() + pos, readSize);
+        pos += readSize;
+        setg(getArea, getArea, getArea + 128);
+        return traits_type::not_eof(0);
+    } else {
+        return traits_type::eof();
     }
 }
 
-bool File::isFile() {
-    return std::filesystem::exists(m_path);
+int VirtualStreambuf::sync() {
+    if (read) {
+        size_t readSize = std::min(fileData->virtualDataMap[file.getAbsolutePath()].size() - pos, (size_t) 128);
+        memcpy(getArea, fileData->virtualDataMap[file.getAbsolutePath()].data() + pos, readSize);
+    }
+    if (write) {
+        fileData->virtualDataMap[file.getAbsolutePath()].insert(
+                fileData->virtualDataMap[file.getAbsolutePath()].begin() + pos, pbase(), pptr());
+        pos += pptr() - pbase();
+        memset(putArea, 0, 128);
+        setp(putArea, putArea + 128);
+    }
+    return 0;
 }
-*/
+
+VirtualIStream::VirtualIStream(const File &file) : std::istream(new VirtualStreambuf(file, false, true)) {}
+
+VirtualIStream::~VirtualIStream() {
+    delete rdbuf();
+}
+
+VirtualOStream::VirtualOStream(const File &file) : std::ostream(new VirtualStreambuf(file, true, false)) {}
+
+VirtualOStream::~VirtualOStream() {
+    delete rdbuf();
+}
+
+VirtualIOStream::VirtualIOStream(const File &file) : std::iostream(new VirtualStreambuf(file, true, true)) {}
+
+VirtualIOStream::~VirtualIOStream() {
+    delete rdbuf();
+}
+}

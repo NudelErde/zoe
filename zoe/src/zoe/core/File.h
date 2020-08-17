@@ -19,7 +19,6 @@ class Directory;
 
 class File;
 
-
 class DLL_PUBLIC FileError : public std::exception {
 public:
     enum class FileErrorCode {
@@ -31,7 +30,7 @@ public:
 
     FileError(std::string file, std::string what, FileErrorCode errorCode);
 
-    [[nodiscard]] const char *what() const override;
+    [[nodiscard]] const char *what() const noexcept override;
 
     [[nodiscard]] const std::string &getFile() const;
 
@@ -97,6 +96,45 @@ public:
     void clear() const;
 
     void remove() const;
+};
+
+class VirtualStreambuf: public std::streambuf {
+public:
+    using std::streambuf::traits_type;
+
+    VirtualStreambuf(File, bool write, bool read);
+    ~VirtualStreambuf() override;
+    pos_type seekoff(off_type, std::ios_base::seekdir, std::ios_base::openmode) override;
+    pos_type seekpos(pos_type, std::ios_base::openmode) override;
+    int_type overflow(int_type) override;
+    int_type underflow() override;
+    int sync() override;
+private:
+    File file;
+    char getArea[128]{};
+    char putArea[128]{};
+    pos_type pos;
+    bool write;
+    bool read;
+};
+
+//TODO: only move no copy
+class VirtualIStream: public std::istream {
+public:
+    explicit VirtualIStream(const File&);
+    ~VirtualIStream() override;
+};
+
+class VirtualOStream: public std::ostream {
+public:
+    explicit VirtualOStream(const File&);
+    ~VirtualOStream() override;
+};
+
+class VirtualIOStream: public std::iostream {
+public:
+    explicit VirtualIOStream(const File&);
+    ~VirtualIOStream() override;
 };
 
 }
