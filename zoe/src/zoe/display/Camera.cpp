@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "../render/Model.h"
 #include "../render/Material.h"
+#include <cmath>
 
 namespace Zoe {
 

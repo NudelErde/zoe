@@ -5,6 +5,8 @@
 #include "UITool.h"
 
 #include <utility>
+#include <cstring>
+
 #include "../../core/Application.h"
 
 namespace Zoe {
