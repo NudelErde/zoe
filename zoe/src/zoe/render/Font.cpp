@@ -9,7 +9,9 @@
 #include "../core/Application.h"
 
 #include <map>
+#include <cstring>
 
+#include <cmath>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
