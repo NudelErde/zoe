@@ -55,10 +55,6 @@ namespace Zoe {
         size_t sourceSize = 0;
         std::unique_ptr<uint8_t[]> source = file.getContent(&sourceSize);
 
-        for(unsigned int i = 0; i < 100; ++i){
-            std::cout << std::hex << +source[i] << ' ';
-        }
-
         data->sourceSize = sourceSize;
         data->source = new unsigned char[data->sourceSize];
         memcpy(data->source, source.get(), data->sourceSize);
