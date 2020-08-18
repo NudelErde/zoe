@@ -347,7 +347,7 @@ VirtualStreambuf::int_type VirtualStreambuf::underflow() {
         }
         memcpy(getArea, fileData->virtualDataMap[file.getAbsolutePath()].data() + pos, readSize);
         pos += readSize;
-        setg(getArea, getArea+1, getArea + readSize);
+        setg(getArea, getArea, getArea + readSize);
         return traits_type::not_eof(*getArea);
     } else {
         return traits_type::eof();
