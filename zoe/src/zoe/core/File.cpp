@@ -101,6 +101,7 @@ std::string Path::getAbsolutePath() const {
         if (error) {
             throw FileError(m_path, error.message(), FileError::FileErrorCode::FilesystemError);
         }
+        std::replace(val.begin(), val.end(), '\\', '/');
         return val;
     } else {
         if(m_path == "virtual/")

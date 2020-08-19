@@ -8,9 +8,7 @@
 class App : public Zoe::Application {
 public:
     App() {
-        Zoe::MaterialLibrary::parseMaterialLibrary(Zoe::File("sampleObjects/Cube/Cube.mtl"));
-        Zoe::MaterialLibrary::parseMaterialLibrary(Zoe::File("sampleObjects/Cube/Cube.mtl"));
-        std::cout << "Ficken bitte?" << std::endl;
+        Zoe::WavefrontFile::parseWavefrontFile(Zoe::File("C:/dev/vs/zoe/sandbox/sampleObjects/Cube/Cube.obj"));
     }
 
     ~App() override = default;

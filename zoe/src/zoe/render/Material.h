@@ -26,9 +26,9 @@ public:
     //parse .mtl file and load attached images
     static MaterialLibrary parseMaterialLibrary(const File &file, bool forceReload = false);
 
-    [[nodiscard]] const Material &get(const std::string &);
+    [[nodiscard]] const Material &get(const std::string &) const;
 
-    [[nodiscard]] bool hasLibrary(const std::string &);
+    [[nodiscard]] bool hasLibrary(const std::string &) const;
 
     MaterialLibrary(MaterialLibrary &&) noexcept;
 
