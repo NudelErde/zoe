@@ -180,6 +180,9 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
             warning("Unknown or unsupported attribute \"", cmd, " ", args, "\" in file ", file.getPath());
         }
     }
+    if (currentMaterial.init) {
+        materials.push_back(currentMaterial);
+    }
 
     for (MaterialData &data: materials) {
         lib.materialMap->operator[](data.name) = Material(phongShader, std::vector<std::shared_ptr<Texture>>(),

@@ -25,9 +25,9 @@ public:
     //parse .obj file and used .mtl files
     static WavefrontFile parseWavefrontFile(const File &, bool forceReload = false);
 
-    const Model &get(const std::string &);
+    const Model &get(const std::string &) const;
 
-    bool hasModel(const std::string &);
+    bool hasModel(const std::string &) const;
 
     WavefrontFile(WavefrontFile &&) noexcept;
 
@@ -53,6 +53,30 @@ public:
 
     Model();
 
+    inline const Material &getMaterial() const {
+        return material;
+    }
+
+    inline Material &getMaterial() {
+        return material;
+    }
+
+    inline void setMaterial(const Material &material) {
+        Model::material = material;
+    }
+
+    inline const mat4x4 &getModelMatrix() const {
+        return modelMatrix;
+    }
+
+    inline void setModelMatrix(const mat4x4 &modelMatrix) {
+        Model::modelMatrix = modelMatrix;
+    }
+
+    inline const std::shared_ptr<VertexArray>& getVertexArray() {
+        return mesh.vertexArray;
+    }
+
 private:
     Material material;
     struct {
@@ -60,6 +84,7 @@ private:
         std::shared_ptr<IndexBuffer> indexBuffer;
         std::shared_ptr<VertexArray> vertexArray;
     } mesh;
+    mat4x4 modelMatrix;
 };
 
 }

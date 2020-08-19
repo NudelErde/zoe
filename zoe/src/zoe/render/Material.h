@@ -69,7 +69,6 @@ private:
     std::shared_ptr<Shader> shader;
     std::vector<std::shared_ptr<Texture>> textures;
     std::function<void(Material *, const mat4x4 &model, const mat4x4 &view, const mat4x4 &projection)> bindingFunction;
-
 };
 
 }
