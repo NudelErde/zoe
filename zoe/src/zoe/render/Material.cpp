@@ -106,7 +106,7 @@ static vec3 readRGB_XYZ(const std::string &str) {
 
 MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool forceReload) {
     static std::shared_ptr<Shader> phongShader = Application::getContext().getShader(
-            File("zoe/internal/materials/TemplatePhong.glsl"));
+            File("virtual/zoe/materials/TemplatePhong.glsl"));
     if (!forceReload && loadedMaterialLibraries->count(file.getPath())) {
         return loadedMaterialLibraries->at(file.getPath());
     }
