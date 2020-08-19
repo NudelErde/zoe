@@ -378,12 +378,14 @@ VirtualIStream::~VirtualIStream() {
 VirtualOStream::VirtualOStream(const File &file) : std::ostream(new VirtualStreambuf(file, true, false)) {}
 
 VirtualOStream::~VirtualOStream() {
+    flush();
     delete rdbuf();
 }
 
 VirtualIOStream::VirtualIOStream(const File &file) : std::iostream(new VirtualStreambuf(file, true, true)) {}
 
 VirtualIOStream::~VirtualIOStream() {
+    flush();
     delete rdbuf();
 }
 }

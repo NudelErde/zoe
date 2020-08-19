@@ -12,7 +12,7 @@ foreach(file IN LISTS internFiles)
     string(REGEX REPLACE "([0-9a-f][0-9a-f])" "0x\\1u,"
             regexedContent ${content})
     string(LENGTH ${content} contentLength)
-    file(APPEND ${targetFile} "\n    {\n        File f(\"virtual/zoe/${fileName}\");\n        const uint8_t data[] {${regexedContent}};\n        f.createIOStream()->write((const char*)data, ${contentLength}/2);\n    }")
+    file(APPEND ${targetFile} "\n    {\n        File f(\"virtual/zoe/${fileName}\");\n        const uint8_t data[] {${regexedContent}};\n        f.createIOStream()->write((const char*)data, sizeof(data));\n    }")
 endforeach()
 
 file(APPEND ${targetFile} "\n}")
