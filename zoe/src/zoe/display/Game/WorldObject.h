@@ -27,13 +27,8 @@ public:
     inline void setModel(const Model &model) {WorldObject::model = model;}*/
 
 private:
-    /*Model model;*/
-
-    //std::weak_ptr<TextureComponent> texture;
-    //std::weak_ptr<TextureComponent> normalTexture;
-    //std::weak_ptr<MaterialComponent> material;
-
-    //TODO: default material
+    Model model;
+    bool init;
 };
 
 }

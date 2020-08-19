@@ -9,7 +9,6 @@
 #include <memory>
 #include <utility>
 #include "../core/String.h"
-#include "Material.h"
 
 namespace Zoe {
 
@@ -58,12 +57,17 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
         std::string name;
         std::vector<Face> faces;
         Material material;
+
+        explicit Object(const std::string &name) {
+            Object::name = name;
+            material = MaterialLibrary::parseMaterialLibrary(File("virtual/zoe/materials/DefaultMaterial.mtl")).get("default");
+        }
     };
     std::vector<vec4> positions;
     std::vector<vec3> normals;
     std::vector<vec2> texPositions;
     std::vector<Object> objects;
-    Object currentObject{"default"};
+    Object currentObject("default");
     while (getline(is, line)) {
         ++lineNumber;
         trim(line);
@@ -95,7 +99,7 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
             if (!currentObject.faces.empty()) {
                 objects.push_back(currentObject);
             }
-            currentObject = {splitLine[1]};
+            currentObject = Object(splitLine[1]);
         } else if (splitLine[0] == "usemtl") {
             for (const auto &materialLibrary: materialLibraries) {
                 if (materialLibrary.hasLibrary(splitLine[1])) {
@@ -147,7 +151,7 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
                 v.pos = positions[face.positionIndex[i]];
                 v.norm = normals[face.normalsIndex[i]];
                 v.tex = texPositions[face.texPositionsIndex[i]];
-                unsigned int index = (unsigned int)vertexVector.size();
+                auto index = (unsigned int) vertexVector.size();
                 for (unsigned int j = 0; j < vertexVector.size(); ++j) {
                     if (vertexVector[j] == v) {
                         index = j;
@@ -176,11 +180,11 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
             vertexData[index * 9 + 8] = vertex.tex.y;
         }
         std::shared_ptr<VertexBuffer> vertexBuffer = Application::getContext().getVertexBuffer(false);
-        vertexBuffer->setData(vertexData, (unsigned int)(vertexVector.size() * 9 * sizeof(float)));
+        vertexBuffer->setData(vertexData, (unsigned int) (vertexVector.size() * 9 * sizeof(float)));
         delete[] vertexData;
 
         std::shared_ptr<IndexBuffer> indexBuffer = Application::getContext().getIndexBuffer(false);
-        indexBuffer->setData(indexData.data(), (unsigned int)indexData.size());
+        indexBuffer->setData(indexData.data(), (unsigned int) indexData.size());
 
         wff.modelMap->operator[](object.name) = Model(object.material, vertexBuffer, indexBuffer);
     }
@@ -188,11 +192,11 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
     return wff;
 }
 
-const Model &WavefrontFile::get(const std::string &name) {
+const Model &WavefrontFile::get(const std::string &name) const {
     return modelMap->at(name);
 }
 
-bool WavefrontFile::hasModel(const std::string &name) {
+bool WavefrontFile::hasModel(const std::string &name) const {
     return modelMap->count(name);
 }
 
