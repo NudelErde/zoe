@@ -26,18 +26,7 @@ void Material::bind(const mat4x4 &model, const mat4x4 &view, const mat4x4 &proje
 
 Material::Material() = default;
 
-static std::map<std::string, MaterialLibrary> *loadedMaterialLibraries;
-
-static struct Init {
-    Init() noexcept {
-        loadedMaterialLibraries = new std::map<std::string, MaterialLibrary>();
-    }
-
-    ~Init() {
-        delete loadedMaterialLibraries;
-    }
-
-} init;
+static std::shared_ptr<std::map<std::string, MaterialLibrary>> loadedMaterialLibraries = std::make_shared<std::map<std::string, MaterialLibrary>>();
 
 static std::pair<std::string, std::string> getStringTo(const std::string &str, char c) {
     std::stringstream ss;
@@ -242,11 +231,11 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
     return lib;
 }
 
-const Material &MaterialLibrary::get(const std::string &name) {
+const Material &MaterialLibrary::get(const std::string &name) const {
     return materialMap->at(name);
 }
 
-bool MaterialLibrary::hasLibrary(const std::string &name) {
+bool MaterialLibrary::hasLibrary(const std::string &name) const {
     return materialMap->count(name);
 }
 
