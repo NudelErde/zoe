@@ -7,4 +7,4 @@
 
 #pragma once
 
-#include "zoe/EntryPoint.h"
+#include "zoe/core/EntryPoint.h"

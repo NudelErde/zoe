@@ -7,28 +7,41 @@
 
 #pragma once
 
-#include "../Core.h"
+#include "../core/Core.h"
 
 #include "vec.h"
 
 namespace Zoe{
 
+class mat2x2;
+class mat3x3;
+class mat4x4;
+
 class DLL_PUBLIC mat2x2{
 public:
 	mat2x2();
+	explicit mat2x2(const mat3x3& mat);
+	explicit mat2x2(const mat4x4& mat);
 	~mat2x2();
 	mat2x2 operator+(const mat2x2& mat) const;
 	mat2x2 operator-(const mat2x2& mat) const;
 	vec2 operator*(const vec2& vec) const;
 	mat2x2 operator*(const mat2x2& mat) const;
 
-	vec2 operator[](const int& index )const;
-	vec2& operator[](const int& index );
+	vec2 operator[](const int& index) const;
+	vec2& operator[](const int& index);
 
-    friend mat2x2 operator*(const mat2x2& mat, float a);
-    friend mat2x2 operator*(float a, const mat2x2& mat);
+    bool operator==(const mat2x2 &rhs) const;
+    bool operator!=(const mat2x2 &rhs) const;
+
+    mat2x2 inverse() const;
+    mat2x2 transpose() const;
+
+    float determinant() const;
+
+    static const mat2x2& identity();
 private:
-	vec2 data[2];
+	vec2 data[2]{};
 };
 DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat2x2& v);
 
@@ -38,7 +51,8 @@ DLL_PUBLIC mat2x2 operator*(float a, const mat2x2& mat);
 class DLL_PUBLIC mat3x3{
 public:
 	mat3x3();
-	mat3x3(const mat2x2& mat);
+	explicit mat3x3(const mat2x2& mat);
+	explicit mat3x3(const mat4x4& mat);
 	~mat3x3();
 	mat3x3 operator+(const mat3x3& mat) const;
 	mat3x3 operator-(const mat3x3& mat) const;
@@ -48,10 +62,17 @@ public:
 	vec3 operator[](const int& index )const;
 	vec3& operator[](const int& index );
 
-    friend mat3x3 operator*(const mat3x3& mat, float a);
-    friend mat3x3 operator*(float a, const mat3x3& mat);
+    bool operator==(const mat3x3 &rhs) const;
+    bool operator!=(const mat3x3 &rhs) const;
+
+    mat3x3 inverse() const;
+    mat3x3 transpose() const;
+
+    float determinant() const;
+
+    static const mat3x3& identity();
 private:
-	vec3 data[3];
+	vec3 data[3]{};
 };
 DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat3x3& v);
 
@@ -65,7 +86,8 @@ DLL_PUBLIC mat3x3 operator*(float a, const mat3x3& mat);
 class DLL_PUBLIC mat4x4{
 public:
 	mat4x4();
-	mat4x4(const mat3x3& mat);
+    explicit mat4x4(const mat2x2& mat);
+    explicit mat4x4(const mat3x3& mat);
 	~mat4x4();
 	mat4x4 operator+(const mat4x4& mat) const;
 	mat4x4 operator-(const mat4x4& mat) const;
@@ -75,10 +97,18 @@ public:
 	vec4 operator[](const int& index )const;
 	vec4& operator[](const int& index );
 
-    friend mat4x4 operator*(const mat4x4& mat, float a);
-    friend mat4x4 operator*(float a, const mat4x4& mat);
+    bool operator==(const mat4x4 &rhs) const;
+
+    bool operator!=(const mat4x4 &rhs) const;
+
+    mat4x4 inverse() const;
+    mat4x4 transpose() const;
+
+    float determinant() const;
+
+    static const mat4x4& identity();
 private:
-	vec4 data[4];
+	vec4 data[4]{};
 };
 DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat4x4& v);
 
@@ -93,8 +123,6 @@ DLL_PUBLIC mat4x4 orthographic(float left, float top, float right, float bottom,
 DLL_PUBLIC mat4x4 calcViewMatrix(vec3 position, vec3 rotation);
 DLL_PUBLIC mat4x4 perspective(float near,float far,float fov,float aspectRatio);
 
-DLL_PUBLIC mat4x4 inverse(const mat4x4& mat);
-DLL_PUBLIC mat4x4 transpose(const mat4x4& mat);
 
 DLL_PUBLIC mat4x4 operator*(const mat4x4& mat, float a);
 DLL_PUBLIC mat4x4 operator*(float a, const mat4x4& mat);

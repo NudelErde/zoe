@@ -5,7 +5,6 @@
 *.slo
 *.lo
 *.o
-*.obj
 
 # Precompiled Headers
 *.gch
@@ -30,6 +29,9 @@
 *.exe
 *.out
 *.app
+
+*.ilk
+*.pdb
 
 Release/
 Debug/
@@ -69,3 +71,7 @@ examples
 *.vcxproj.user
 
 *-prefix/
+cmake-*
+out/
+CMakeSettings.json
+zoe/src/zoe/core/VirtualFiles.cpp
