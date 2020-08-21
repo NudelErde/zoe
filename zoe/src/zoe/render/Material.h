@@ -12,6 +12,7 @@
 #include "../core/Core.h"
 #include "../math/mat.h"
 #include "../core/File.h"
+#include "../display/Camera.h"
 
 namespace Zoe {
 
@@ -51,10 +52,9 @@ class DLL_PUBLIC Material {
 public:
     Material();
     Material(const std::shared_ptr<Shader> &, const std::vector<std::shared_ptr<Texture>> &,
-             const std::function<void(Material *, const mat4x4 &model, const mat4x4 &view,
-                                      const mat4x4 &projection)> &);
+             const std::function<void(Material *, const Camera&, const mat4x4&)> &);
 
-    void bind(const mat4x4 &model, const mat4x4 &view, const mat4x4 &projection);
+    void bind(const Camera& camera, const mat4x4 &model);
 
     [[nodiscard]] inline const std::shared_ptr<Shader> &getShader() const {
         return shader;
@@ -68,7 +68,7 @@ private:
     friend class MaterialLibrary;
     std::shared_ptr<Shader> shader;
     std::vector<std::shared_ptr<Texture>> textures;
-    std::function<void(Material *, const mat4x4 &model, const mat4x4 &view, const mat4x4 &projection)> bindingFunction;
+    std::function<void(Material *, const Camera&, const mat4x4& modelMatrix)> bindingFunction;
 };
 
 }

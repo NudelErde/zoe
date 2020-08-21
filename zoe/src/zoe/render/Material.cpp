@@ -10,17 +10,16 @@
 namespace Zoe {
 
 Material::Material(const std::shared_ptr<Shader> &shader, const std::vector<std::shared_ptr<Texture>> &textures,
-                   const std::function<void(Material *, const mat4x4 &, const mat4x4 &,
-                                            const mat4x4 &)> &bindingFunction) {
+                   const std::function<void(Material *, const Camera&, const mat4x4&)> &bindingFunction) {
     this->shader = shader;
     this->textures = textures;
     this->bindingFunction = bindingFunction;
 }
 
-void Material::bind(const mat4x4 &model, const mat4x4 &view, const mat4x4 &projection) {
+void Material::bind(const Camera& camera, const mat4x4& model) {
     if(shader){
         shader->bind();
-        bindingFunction(this, model, view, projection);
+        bindingFunction(this, camera, model);
     }
 }
 
@@ -186,7 +185,7 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
 
     for (MaterialData &data: materials) {
         lib.materialMap->operator[](data.name) = Material(phongShader, std::vector<std::shared_ptr<Texture>>(),
-                     [data](Material *me, const mat4x4 &model, const mat4x4 &view, const mat4x4 &projection) {
+                     [data](Material *me, const Camera& camera, const mat4x4& model) {
                          Shader &shader = *(me->shader);
                          shader.bind();
                          const std::map<std::string, std::string> &tags = shader.getTags();
@@ -201,22 +200,22 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
                          if (!modelUniformIsSet && tags.count("modelViewMatrix")) {
                              modelUniformIsSet = true;
                              viewUniformIsSet = true;
-                             shader.setUniform4m(tags.at("modelViewMatrix"), model * view);
+                             shader.setUniform4m(tags.at("modelViewMatrix"), model * camera.getViewMatrix());
                          }
                          if (!modelUniformIsSet && !viewUniformIsSet && tags.count("modelViewProjectionMatrix")) {
                              viewUniformIsSet = true;
                              projectUniformIsSet = true;
-                             shader.setUniform4m(tags.at("modelViewProjectionMatrix"), model * view * projection);
+                             shader.setUniform4m(tags.at("modelViewProjectionMatrix"), model * camera.getViewMatrix() * camera.getProjectionMatrix());
                          }
                          if (!viewUniformIsSet && tags.count("viewMatrix")) {
                              viewUniformIsSet = true;
-                             shader.setUniform4m(tags.at("viewMatrix"), view);
+                             shader.setUniform4m(tags.at("viewMatrix"), camera.getViewMatrix());
                          }
                          if (!viewUniformIsSet && tags.count("viewProjectionMatrix")) {
-                             shader.setUniform4m(tags.at("viewProjectionMatrix"), view * projection);
+                             shader.setUniform4m(tags.at("viewProjectionMatrix"), camera.getViewMatrix() * camera.getProjectionMatrix());
                          }
                          if (!projectUniformIsSet && tags.count("projectionMatrix")) {
-                             shader.setUniform4m(tags.at("projectionMatrix"), projection);
+                             shader.setUniform4m(tags.at("projectionMatrix"), camera.getProjectionMatrix());
                          }
                          if (tags.count("modelMatrix_it")) {
                              shader.setUniform4m(tags.at("modelMatrix_it"), model.transpose().inverse());
@@ -228,6 +227,12 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
                          shader.setUniform3f("specularReflectivity_mtl", data.specularReflectivity.x,
                                              data.specularReflectivity.y, data.specularReflectivity.z);
                          shader.setUniform1f("specularExponent_mtl", data.specularExponent);
+                         vec3 cameraPos = camera.getPosition();
+                         shader.setUniform3f("cameraPosition", cameraPos.x, cameraPos.y, cameraPos.z);
+
+                         //TODO: source is enough documentation
+                         shader.setUniform3f("lightPosition", 10, 10, 10);
+                         shader.setUniform3f("lightColor", 0.5f, 1, 0);
                      });
     }
     loadedMaterialLibraries->operator[](file.getPath()) = lib;

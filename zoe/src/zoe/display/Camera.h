@@ -26,17 +26,21 @@ public:
     void setProjectionMatrix(const mat4x4 &projectionMatrix);
 
     [[nodiscard]] const mat4x4 &getViewMatrix() const;
+    [[nodiscard]] const mat4x4 &getInvViewMatrix() const;
 
     [[nodiscard]] const mat4x4 &getProjectionMatrix() const;
 
-    void draw(const Model &model, Material &material) const;
+    void draw(Model &model) const;
 
     inline void setRender(const std::shared_ptr<Render>& render){this->render = render;}
     inline const std::shared_ptr<Render>& getRender() const {return render;}
 
-protected:
+    [[nodiscard]] virtual vec3 getPosition() const;
+
+private:
     mat4x4 viewMatrix;
     mat4x4 projectionMatrix;
+    mat4x4 invViewMatrix;
 
     std::shared_ptr<Render> render;
 };
@@ -47,7 +51,7 @@ public:
 
     void setPosition(const vec2 &position);
 
-    [[nodiscard]] const vec2 &getPosition() const;
+    [[nodiscard]] vec3 getPosition() const override;
 
 private:
     vec2 position;
@@ -78,7 +82,7 @@ public:
 
     void setRatio(const float& ratio);
 
-    [[nodiscard]] const vec3 &getPosition() const;
+    [[nodiscard]] vec3 getPosition() const override;
 
     void move(const vec3&);
 

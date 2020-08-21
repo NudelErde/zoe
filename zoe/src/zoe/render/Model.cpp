@@ -26,6 +26,7 @@ Model::Model(Material material, const std::shared_ptr<VertexBuffer> &vbo, const 
 
 Model::Model() = default;
 
+//TODO: do not load models. load model templates. create model if needed. model contains VertexArray
 static std::shared_ptr<std::map<std::string, WavefrontFile>> loadedWavefrontFiles = std::make_shared<std::map<std::string, WavefrontFile>>();
 
 WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceReload) {
@@ -49,9 +50,9 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
         }
     };
     struct Face {
-        std::array<unsigned int, 3> positionIndex;
-        std::array<unsigned int, 3> normalsIndex;
-        std::array<unsigned int, 3> texPositionsIndex;
+        std::array<unsigned int, 4> positionIndex;
+        std::array<unsigned int, 4> normalsIndex;
+        std::array<unsigned int, 4> texPositionsIndex;
     };
     struct Object {
         std::string name;
@@ -86,7 +87,7 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
                                     fromString<float>(splitLine[2]),
                                     fromString<float>(splitLine[3])}).normalize());
         } else if (splitLine[0] == "vt") {
-            positions.push_back(vec4({fromString<float>(splitLine[1]),
+            texPositions.push_back(vec2({fromString<float>(splitLine[1]),
                                       fromString<float>(splitLine[2])}));
         } else if (splitLine[0] == "mtllib") {
             Path path(file.getParent().getPath() + "/" + splitLine[1]);
@@ -108,8 +109,33 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
                 }
             }
         } else if (splitLine[0] == "f") {
+            if(splitLine.size()==5){
+                Face face{};
+                for(int i : {0,2,3}){
+                    std::vector<std::string> values = split(splitLine[i + 1], '/');
+                    face.positionIndex[i] = fromString<int>(values[0]);
+                    if (face.positionIndex[i] > 0) {
+                        --face.positionIndex[i];
+                    } else if (face.positionIndex[i] < 0) {
+                        face.positionIndex[i] = (unsigned int) (positions.size() - face.positionIndex[i]);
+                    }
+                    face.texPositionsIndex[i] = (values.size() < 2) ? 0 : fromString<int>(values[1]);
+                    if (face.texPositionsIndex[i] > 0) {
+                        --face.texPositionsIndex[i];
+                    } else if (face.texPositionsIndex[i] < 0) {
+                        face.texPositionsIndex[i] = (unsigned int) (texPositions.size() - face.texPositionsIndex[i]);
+                    }
+                    face.normalsIndex[i] = (values.size() < 3 ? 0 : fromString<int>(values[2]));
+                    if (face.normalsIndex[i] > 0) {
+                        --face.normalsIndex[i];
+                    } else if (face.normalsIndex[i] < 0) {
+                        face.normalsIndex[i] = (unsigned int) (normals.size() - face.normalsIndex[i]);
+                    }
+                }
+                currentObject.faces.push_back(face);
+            }
             Face face{};
-            for (int i = 0; i < 3; ++i) {
+            for (int i : {0,1,2}) {
                 std::vector<std::string> values = split(splitLine[i + 1], '/');
                 face.positionIndex[i] = fromString<int>(values[0]);
                 if (face.positionIndex[i] > 0) {
@@ -140,6 +166,9 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
         } else {
             warning("Unknown or unsupported attribute \"", line, "\" in file ", file.getPath(), ":", lineNumber);
         }
+    }
+    if (!currentObject.faces.empty()) {
+        objects.push_back(currentObject);
     }
     //TODO: objects and other std::vectors => Model
     for (const auto &object: objects) {
