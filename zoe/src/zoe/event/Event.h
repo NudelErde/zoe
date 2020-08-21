@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "../Core.h"
+#include "../core/Core.h"
 #include <functional>
 #include <iostream>
 
@@ -72,7 +72,7 @@ protected:
 
 class DLL_PUBLIC EventDispatcher {
 	template<typename T>
-	using EventFn = std::function<bool(T&)>;
+	using EventFn = std::function<void(T&)>;
 
 public:
 	EventDispatcher(Event& e) :
@@ -82,7 +82,7 @@ public:
 	template<typename T>
 	bool dispatch(EventFn<T> func) {
 		if (event.getEventType() == T::getStaticType()) {
-			event.handled = func(*(T*) &event);
+			func(*(T*) &event);
 			return true;
 		}
 		return false;
