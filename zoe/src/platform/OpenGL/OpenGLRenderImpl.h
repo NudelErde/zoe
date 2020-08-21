@@ -12,30 +12,36 @@
 #include <GL/glew.h>
 #include <stack>
 
-namespace Zoe{
+namespace Zoe {
 
 class GraphicsContext;
 
-class OpenGLRenderImpl: public RenderImpl{
+class OpenGLRenderImpl : public RenderImpl {
 public:
-	OpenGLRenderImpl(GraphicsContext* context);
-	~OpenGLRenderImpl();
+    OpenGLRenderImpl(GraphicsContext *context);
 
-	void draw(VertexArray& va,Shader& shader);
-	void setClearColor(float r,float g,float b,float a);
-	void clear();
+    ~OpenGLRenderImpl();
 
-	void setViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
-	void setAlphaEnabled(bool enabled) override;
+    void draw(VertexArray &va, Shader &shader);
+
+    void setClearColor(float r, float g, float b, float a);
+
+    void clear();
+
+    void setViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height);
+
+    void setAlphaEnabled(bool enabled) override;
 
     void push() override;
+
     void pop() override;
 
-	void setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) override;
+    void setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) override;
 
-	void loadSettings();
+    void loadSettings();
+
 private:
-    struct StackElement{
+    struct StackElement {
         RenderSettings settings;
         std::weak_ptr<RenderTarget> renderTarget;
     };

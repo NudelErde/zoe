@@ -7,7 +7,7 @@
 
 #include "Thread.h"
 #include <thread>
-#include "../Console.h"
+#include "../core/Console.h"
 #include <chrono>
 
 #include <iostream>

@@ -12,7 +12,7 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
-#include "../Core.h"
+#include "../core/Core.h"
 
 #define PARALLEL(C,I,CODE) ::Zoe::parallel(C,[&](unsigned int I)CODE)
 

@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include"../Core.h"
-#include "../File.h"
+#include "../core/Core.h"
+#include "../core/File.h"
 #include "api/RenderFlags.h"
 
 namespace Zoe {

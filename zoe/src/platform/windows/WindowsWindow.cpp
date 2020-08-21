@@ -10,7 +10,7 @@
 #include "WindowsWindow.h"
 #include "../../zoe/event/CommonEvent.h"
 #include "../OpenGL/OpenGLContext.h"
-#include "../../zoe/Console.h"
+#include "../../zoe/core/Console.h"
 
 namespace Zoe {
 
@@ -162,7 +162,7 @@ void WindowsWindow::setUpListener() {
 	glfwSetCursorPosCallback(window, [](GLFWwindow* window,double x,double y) {
 		WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-		MouseMovedEvent event((float) x,(float) y);
+		MouseMovedEvent event((float) x/(float)data.width,(float) y/(float)data.height);
 		data.eventCallback(event);
 	});
 

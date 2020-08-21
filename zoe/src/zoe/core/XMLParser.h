@@ -10,8 +10,8 @@
 #include <vector>
 #include <map>
 
-#include "../Core.h"
-#include "../File.h"
+#include "Core.h"
+#include "File.h"
 
 namespace Zoe{
 

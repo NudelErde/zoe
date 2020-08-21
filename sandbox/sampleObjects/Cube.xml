@@ -1,0 +1,6 @@
+<ComponentLayer>
+    <WorldObject>
+        <Model name="Cube" src="C:/dev/vs/zoe/sandbox/sampleObjects/Cube/Cube.obj">
+        </Model>
+    </WorldObject>
+</ComponentLayer>

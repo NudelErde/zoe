@@ -9,9 +9,9 @@
 
 #include <cinttypes>
 
-#include "../../Core.h"
+#include "../../core/Core.h"
 #include "ImplPointer.h"
-#include "../../File.h"
+#include "../../core/File.h"
 #include "../GraphicsContext.h"
 
 namespace Zoe{

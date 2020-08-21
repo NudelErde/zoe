@@ -1,276 +1,263 @@
 //
-// Created by florian on 19.03.20.
+// Created by Florian on 06.08.2020.
 //
 
 #include "Model.h"
-
+#include "../core/Application.h"
+#include "api/VertexBufferLayout.h"
+#include "api/VertexArray.h"
+#include <memory>
 #include <utility>
-#include <cstring>
-#include "../Application.h"
+#include "../core/String.h"
 
 namespace Zoe {
 
-    static vec4 defaultPosition = {0, 0, 0, 1};
-    static vec3 defaultNormal = {1, 0, 0};
-    static vec2 defaultTextureCoordinate = {0, 0};
+Model::Model(Material material, const std::shared_ptr<VertexBuffer> &vbo, const std::shared_ptr<IndexBuffer> &ibo)
+        : material(std::move(material)) {
+    mesh.vertexBuffer = vbo;
+    mesh.indexBuffer = ibo;
+    mesh.vertexArray = Application::getContext().getVertexArray();
+    std::shared_ptr<VertexBufferLayout> layout = Application::getContext().getVertexBufferLayout();
+    layout->push_float(4);
+    layout->push_float(3);
+    layout->push_float(2);
+    mesh.vertexArray->set(vbo, ibo, layout);
+}
 
-    class Vertex {
-    public:
-        Vertex(vec4 position, vec2 texture, vec3 normal) : position(position), normal(normal),
-                                                           textureCoordinate(texture) {}
+Model::Model() = default;
 
-        vec4 position;
-        vec3 normal;
-        vec2 textureCoordinate;
+//TODO: do not load models. load model templates. create model if needed. model contains VertexArray
+static std::shared_ptr<std::map<std::string, WavefrontFile>> loadedWavefrontFiles = std::make_shared<std::map<std::string, WavefrontFile>>();
+
+WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceReload) {
+    if (!forceReload && loadedWavefrontFiles->count(file.getAbsolutePath())) {
+        return loadedWavefrontFiles->at(file.getAbsolutePath());
+    }
+    WavefrontFile wff;
+    std::unique_ptr<std::istream> stream = file.createIStream(false);
+    std::istream &is = *stream;
+    std::string line;
+    int lineNumber = 0;
+
+    std::vector<MaterialLibrary> materialLibraries;
+    struct Vertex {
+        vec4 pos;
+        vec3 norm;
+        vec2 tex;
 
         bool operator==(const Vertex &rhs) const {
-            return position == rhs.position &&
-                   normal == rhs.normal &&
-                   textureCoordinate == rhs.textureCoordinate;
-        }
-
-        bool operator!=(const Vertex &rhs) const {
-            return !(rhs == *this);
+            return this->pos == rhs.pos && this->norm == rhs.norm && this->tex == rhs.tex;
         }
     };
+    struct Face {
+        std::array<unsigned int, 4> positionIndex;
+        std::array<unsigned int, 4> normalsIndex;
+        std::array<unsigned int, 4> texPositionsIndex;
+    };
+    struct Object {
+        std::string name;
+        std::vector<Face> faces;
+        Material material;
 
-    static Vertex createVertex(const std::string &vertexString, const std::vector<vec4> &positions, const std::vector<vec3> &normals,
-                 const std::vector<vec2> &textureCoords) {
-        int posIndex;
-        int normIndex;
-        int texIndex;
-        int firstSlash;
-        int secondSlash;
+        explicit Object(const std::string &name) {
+            Object::name = name;
+            material = MaterialLibrary::parseMaterialLibrary(File("virtual/zoe/materials/DefaultMaterial.mtl")).get("default");
+        }
+    };
+    std::vector<vec4> positions;
+    std::vector<vec3> normals;
+    std::vector<vec2> texPositions;
+    std::vector<Object> objects;
+    Object currentObject("default");
+    while (getline(is, line)) {
+        ++lineNumber;
+        trim(line);
+        if (line.empty() || line[0] == '#')
+            continue;
 
-        firstSlash = vertexString.find('/');
-        if (firstSlash == std::string::npos) {
-            posIndex = std::stoi(vertexString);
-            return Vertex(positions[(posIndex < 0) ? positions.size() + posIndex : posIndex - 1],
-                          defaultTextureCoordinate,
-                          defaultNormal);
-        } else {
-            posIndex = std::stoi(vertexString.substr(0, firstSlash));
-            secondSlash = vertexString.find('/', firstSlash + 1);
-            if (secondSlash == std::string::npos) {
-                texIndex = std::stoi(vertexString.substr(firstSlash + 1, vertexString.length() - (firstSlash + 1)));
-                return Vertex(
-                        positions[(posIndex < 0) ? positions.size() + posIndex : posIndex - 1],
-                        textureCoords[(texIndex < 0) ? textureCoords.size() + texIndex : texIndex - 1],
-                        defaultNormal);
-            } else if (firstSlash + 1 == secondSlash) {
-                normIndex = std::stoi(vertexString.substr(firstSlash + 2, vertexString.length() - (firstSlash + 2)));
-                return Vertex(
-                        positions[(posIndex < 0) ? positions.size() + posIndex : posIndex - 1],
-                        defaultTextureCoordinate,
-                        normals[(normIndex < 0) ? normals.size() + normIndex : normIndex - 1]);
+        std::vector<std::string> splitLine = split(line, ' ');
+        trim(splitLine[0]);
+        if (splitLine[0] == "v") {
+            positions.push_back(vec4({fromString<float>(splitLine[1]),
+                                      fromString<float>(splitLine[2]),
+                                      fromString<float>(splitLine[3]),
+                                      splitLine.size() > 4 ? fromString<float>(splitLine[4]) : 1.0f}));
+        } else if (splitLine[0] == "vn") {
+            normals.push_back(vec3({fromString<float>(splitLine[1]),
+                                    fromString<float>(splitLine[2]),
+                                    fromString<float>(splitLine[3])}).normalize());
+        } else if (splitLine[0] == "vt") {
+            texPositions.push_back(vec2({fromString<float>(splitLine[1]),
+                                      fromString<float>(splitLine[2])}));
+        } else if (splitLine[0] == "mtllib") {
+            Path path(file.getParent().getPath() + "/" + splitLine[1]);
+            if (!path.isFile()) {
+                warning("Material library ", path.getPath(), " could not be found");
             } else {
-                texIndex = std::stoi(vertexString.substr(firstSlash + 1, secondSlash - (firstSlash + 1)));
-                normIndex = std::stoi(vertexString.substr(secondSlash + 1, vertexString.length() - (secondSlash + 1)));
-                return Vertex(
-                        positions[(posIndex < 0) ? positions.size() + posIndex : posIndex - 1],
-                        textureCoords[(texIndex < 0) ? textureCoords.size() + texIndex : texIndex - 1],
-                        normals[(normIndex < 0) ? normals.size() + normIndex : normIndex - 1]);
+                materialLibraries.push_back(MaterialLibrary::parseMaterialLibrary(path, false));
             }
+        } else if (splitLine[0] == "o") {
+            if (!currentObject.faces.empty()) {
+                objects.push_back(currentObject);
+            }
+            currentObject = Object(splitLine[1]);
+        } else if (splitLine[0] == "usemtl") {
+            for (const auto &materialLibrary: materialLibraries) {
+                if (materialLibrary.hasLibrary(splitLine[1])) {
+                    currentObject.material = materialLibrary.get(splitLine[1]);
+                    break;
+                }
+            }
+        } else if (splitLine[0] == "f") {
+            if(splitLine.size()==5){
+                Face face{};
+                for(int i : {0,2,3}){
+                    std::vector<std::string> values = split(splitLine[i + 1], '/');
+                    face.positionIndex[i] = fromString<int>(values[0]);
+                    if (face.positionIndex[i] > 0) {
+                        --face.positionIndex[i];
+                    } else if (face.positionIndex[i] < 0) {
+                        face.positionIndex[i] = (unsigned int) (positions.size() - face.positionIndex[i]);
+                    }
+                    face.texPositionsIndex[i] = (values.size() < 2) ? 0 : fromString<int>(values[1]);
+                    if (face.texPositionsIndex[i] > 0) {
+                        --face.texPositionsIndex[i];
+                    } else if (face.texPositionsIndex[i] < 0) {
+                        face.texPositionsIndex[i] = (unsigned int) (texPositions.size() - face.texPositionsIndex[i]);
+                    }
+                    face.normalsIndex[i] = (values.size() < 3 ? 0 : fromString<int>(values[2]));
+                    if (face.normalsIndex[i] > 0) {
+                        --face.normalsIndex[i];
+                    } else if (face.normalsIndex[i] < 0) {
+                        face.normalsIndex[i] = (unsigned int) (normals.size() - face.normalsIndex[i]);
+                    }
+                }
+                currentObject.faces.push_back(face);
+            }
+            Face face{};
+            for (int i : {0,1,2}) {
+                std::vector<std::string> values = split(splitLine[i + 1], '/');
+                face.positionIndex[i] = fromString<int>(values[0]);
+                if (face.positionIndex[i] > 0) {
+                    --face.positionIndex[i];
+                } else if (face.positionIndex[i] < 0) {
+                    face.positionIndex[i] = (unsigned int) (positions.size() - face.positionIndex[i]);
+                }
+                face.texPositionsIndex[i] = (values.size() < 2) ? 0 : fromString<int>(values[1]);
+                if (face.texPositionsIndex[i] > 0) {
+                    --face.texPositionsIndex[i];
+                } else if (face.texPositionsIndex[i] < 0) {
+                    face.texPositionsIndex[i] = (unsigned int) (texPositions.size() - face.texPositionsIndex[i]);
+                }
+                face.normalsIndex[i] = (values.size() < 3 ? 0 : fromString<int>(values[2]));
+                if (face.normalsIndex[i] > 0) {
+                    --face.normalsIndex[i];
+                } else if (face.normalsIndex[i] < 0) {
+                    face.normalsIndex[i] = (unsigned int) (normals.size() - face.normalsIndex[i]);
+                }
+            }
+            currentObject.faces.push_back(face);
+        } else if (splitLine[0] == "g") {
+            info("Wavefront groups are not yet supported");
+        } else if (splitLine[0] == "s") {
+            if (splitLine[1] != "off") {
+                info("Wavefront smooth shading is not yet supported");
+            }
+        } else {
+            warning("Unknown or unsupported attribute \"", line, "\" in file ", file.getPath(), ":", lineNumber);
         }
     }
-
-    Model::Model() {
-        vertexArray = nullptr;
-        vertexBuffer = nullptr;
-        indexBuffer = nullptr;
-        modelMatrix = scale3D(1, 1, 1);
+    if (!currentObject.faces.empty()) {
+        objects.push_back(currentObject);
     }
-
-    Model::Model(const File &file) {
-        modelMatrix = scale3D(1, 1, 1);
-        std::shared_ptr<std::istream> stream = file.getInputStream();
-        std::string line;
-        float data[4];
-        std::vector<vec4> positions;
-        std::vector<vec3> normals;
-        std::vector<vec2> textureCoords;
-        std::stringstream sstream;
-        int index;
-        int element;
-
-        std::vector<Vertex> vertices;
-        std::vector<unsigned int> indices;
-
-        while (getline(*stream, line)) {
-            if (line[0] == '#') {
-                continue;
-            } else if (line[0] == 'v' && line[1] == ' ') {
-                //create new vertex position
-                data[0] = 0;
-                data[1] = 0;
-                data[2] = 0;
-                data[3] = 1;
-                sstream = std::stringstream();
-                for (element = 0, index = 2; index < line.length(); ++index) {
-                    if (line[index] == ' ') {
-                        sstream >> data[element];
-                        sstream = std::stringstream();
-                        ++element;
-                    } else {
-                        sstream << line[index];
+    //TODO: objects and other std::vectors => Model
+    for (const auto &object: objects) {
+        std::vector<unsigned int> indexData;
+        std::vector<Vertex> vertexVector;
+        for (const auto &face: object.faces) {
+            for (int i = 0; i < 3; ++i) {
+                Vertex v{};
+                v.pos = positions[face.positionIndex[i]];
+                v.norm = normals[face.normalsIndex[i]];
+                v.tex = texPositions[face.texPositionsIndex[i]];
+                auto index = (unsigned int) vertexVector.size();
+                for (unsigned int j = 0; j < vertexVector.size(); ++j) {
+                    if (vertexVector[j] == v) {
+                        index = j;
+                        break;
                     }
                 }
-                if (sstream.str().length() > 0) {
-                    sstream >> data[element];
-                    sstream = std::stringstream();
+                if (index == vertexVector.size()) {
+                    vertexVector.push_back(v);
                 }
-                positions.push_back({data[0], data[1], data[2], data[3]});
-            } else if (line[0] == 'v' && line[1] == 't') {
-                //create new vertex texture coordinate
-                data[0] = 0;
-                data[1] = 0;
-                data[2] = 0;
-                data[3] = 1;
-                sstream = std::stringstream();
-                for (element = 0, index = 3; index < line.length(); ++index) {
-                    if (line[index] == ' ') {
-                        sstream >> data[element];
-                        sstream = std::stringstream();
-                        ++element;
-                    } else {
-                        sstream << line[index];
-                    }
-                }
-                if (sstream.str().length() > 0) {
-                    sstream >> data[element];
-                    sstream = std::stringstream();
-                }
-                textureCoords.push_back({data[0], data[1]});
-            } else if (line[0] == 'v' && line[1] == 'n') {
-                //create new vertex normal
-                data[0] = 0;
-                data[1] = 0;
-                data[2] = 0;
-                data[3] = 1;
-                sstream = std::stringstream();
-                for (element = 0, index = 3; index < line.length(); ++index) {
-                    if (line[index] == ' ') {
-                        sstream >> data[element];
-                        sstream = std::stringstream();
-                        ++element;
-                    } else {
-                        sstream << line[index];
-                    }
-                }
-                if (sstream.str().length() > 0) {
-                    sstream >> data[element];
-                    sstream = std::stringstream();
-                }
-                normals.push_back({data[0], data[1], data[2]});
-            } else if (line[0] == 'f' && line[1] == ' ') {
-                std::vector<std::string> elements;
-                sstream = std::stringstream();
-                element = 0;
-                for (index = 2; index < line.length(); ++index) {
-                    if (line[index] == ' ') {
-                        elements.push_back(sstream.str());
-                        sstream.str(std::string()); //clear
-                        ++element;
-                    } else {
-                        sstream << line[index];
-                    }
-                }
-                if (sstream.str().length() > 0) {
-                    elements.push_back(sstream.str());
-                    sstream.str(std::string()); //clear
-                }
-
-                element = 0;
-                unsigned int firstVertexIndex = 0;
-                unsigned int lastVertexIndex = 0;
-                for (const std::string &string: elements) {
-                    Vertex vertex = createVertex(string, positions, normals, textureCoords);
-                    unsigned int index = vertices.size();
-                    for (unsigned int i = 0; i < vertices.size(); ++i) {
-                        if (vertices[i] == vertex) {
-                            index = i;
-                            break;
-                        }
-                    }
-
-                    if (index == vertices.size()) {
-                        vertices.push_back(vertex);
-                    }
-
-                    if (element == 0) {
-                        firstVertexIndex = index;
-                        ++element;
-                    } else if (element == 1) {
-                        lastVertexIndex = index;
-                        ++element;
-                    } else if (element == 2) {
-                        indices.push_back(firstVertexIndex);
-                        indices.push_back(lastVertexIndex);
-                        indices.push_back(index);
-                        lastVertexIndex = index;
-                    }
-                }
+                indexData.push_back(index);
             }
         }
 
-        //create arrays
-        const size_t verticesArrayLength = vertices.size() * 9;
-        float *verticesArray = new float[verticesArrayLength];
-        for (index = 0; index < vertices.size(); ++index) {
-            verticesArray[index * 9 + 0] = vertices[index].position.x;
-            verticesArray[index * 9 + 1] = vertices[index].position.y;
-            verticesArray[index * 9 + 2] = vertices[index].position.z;
-            verticesArray[index * 9 + 3] = vertices[index].position.w;
-            verticesArray[index * 9 + 4] = vertices[index].normal.x;
-            verticesArray[index * 9 + 5] = vertices[index].normal.y;
-            verticesArray[index * 9 + 6] = vertices[index].normal.z;
-            verticesArray[index * 9 + 7] = vertices[index].textureCoordinate.x;
-            verticesArray[index * 9 + 8] = vertices[index].textureCoordinate.y;
+        auto *vertexData = new float[vertexVector.size() * 9];
+
+        for (unsigned int index = 0; index < vertexVector.size(); ++index) {
+            const auto &vertex = vertexVector[index];
+            vertexData[index * 9 + 0] = vertex.pos.x;
+            vertexData[index * 9 + 1] = vertex.pos.y;
+            vertexData[index * 9 + 2] = vertex.pos.z;
+            vertexData[index * 9 + 3] = vertex.pos.w;
+            vertexData[index * 9 + 4] = vertex.norm.x;
+            vertexData[index * 9 + 5] = vertex.norm.y;
+            vertexData[index * 9 + 6] = vertex.norm.z;
+            vertexData[index * 9 + 7] = vertex.tex.x;
+            vertexData[index * 9 + 8] = vertex.tex.y;
         }
-        unsigned int *indicesArray = new unsigned int[indices.size()];
-        std::copy(indices.begin(), indices.end(), indicesArray);
+        std::shared_ptr<VertexBuffer> vertexBuffer = Application::getContext().getVertexBuffer(false);
+        vertexBuffer->setData(vertexData, (unsigned int) (vertexVector.size() * 9 * sizeof(float)));
+        delete[] vertexData;
 
-        vertexBuffer = Application::getContext().getVertexBuffer(false);
-        indexBuffer = Application::getContext().getIndexBuffer(false);
-        vertexBuffer->setData(verticesArray, vertices.size() * 9 * sizeof(float));
-        indexBuffer->setData(indicesArray, indices.size());
+        std::shared_ptr<IndexBuffer> indexBuffer = Application::getContext().getIndexBuffer(false);
+        indexBuffer->setData(indexData.data(), (unsigned int) indexData.size());
 
-        indexBuffer->getCount();
-        delete[] verticesArray;
-        delete[] indicesArray;
-        this->vertexArray = Application::getContext().getVertexArray();
-        std::shared_ptr<VertexBufferLayout> layout = Application::getContext().getVertexBufferLayout();
-        layout->push_float(4);
-        layout->push_float(3);
-        layout->push_float(2);
-        vertexArray->set(*vertexBuffer, *indexBuffer, *layout);
-        modelMatrix = translate3D(0, 0, 0);
+        wff.modelMap->operator[](object.name) = Model(object.material, vertexBuffer, indexBuffer);
     }
+    loadedWavefrontFiles->operator[](file.getAbsolutePath()) = wff;
+    return wff;
+}
 
-    Model::Model(void *vertices, unsigned int *indices, unsigned int verticesSize, unsigned int indicesCount,
-                 const std::shared_ptr<VertexBufferLayout> &layout) {
-        vertexBuffer = Application::getContext().getVertexBuffer(false);
-        indexBuffer = Application::getContext().getIndexBuffer(false);
-        vertexBuffer->setData(vertices, verticesSize);
-        indexBuffer->setData(indices, indicesCount);
-        this->vertexArray = Application::getContext().getVertexArray();
-        vertexArray->set(*vertexBuffer, *indexBuffer, *layout);
-        modelMatrix = translate3D(0, 0, 0);
-    }
+const Model &WavefrontFile::get(const std::string &name) const {
+    return modelMap->at(name);
+}
 
-    Model::Model(const std::shared_ptr<VertexBuffer> &vertexBuffer, const std::shared_ptr<IndexBuffer> &indexBuffer,
-                 const std::shared_ptr<VertexBufferLayout> &layout) {
-        this->vertexBuffer = vertexBuffer;
-        this->indexBuffer = indexBuffer;
-        this->vertexArray = Application::getContext().getVertexArray();
-        this->vertexArray->set(*vertexBuffer, *indexBuffer, *layout);
-        modelMatrix = translate3D(0, 0, 0);
-    }
+bool WavefrontFile::hasModel(const std::string &name) const {
+    return modelMap->count(name);
+}
 
-    Model::Model(std::shared_ptr<VertexArray> vertexArray) {
-        this->vertexArray = std::move(vertexArray);
-        modelMatrix = translate3D(0, 0, 0);
-    }
+WavefrontFile::WavefrontFile(WavefrontFile &&other) noexcept {
+    modelMap = other.modelMap;;
+    other.modelMap = nullptr;
+}
 
-    Model::~Model() = default;
+WavefrontFile::WavefrontFile(const WavefrontFile &other) {
+    modelMap = new std::map<std::string, Model>(*other.modelMap);
+}
+
+WavefrontFile &WavefrontFile::operator=(WavefrontFile &&other) noexcept {
+    delete modelMap;
+    modelMap = other.modelMap;
+    other.modelMap = nullptr;
+    return *this;
+}
+
+WavefrontFile &WavefrontFile::operator=(const WavefrontFile &other) {
+    if (this == &other)
+        return *this;
+    delete modelMap;
+    modelMap = new std::map<std::string, Model>(*other.modelMap);
+    return *this;
+}
+
+WavefrontFile::~WavefrontFile() {
+    delete modelMap;
+}
+
+WavefrontFile::WavefrontFile() {
+    modelMap = new std::map<std::string, Model>();
+}
 }

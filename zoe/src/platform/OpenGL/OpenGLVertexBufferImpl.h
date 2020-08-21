@@ -13,18 +13,23 @@ namespace Zoe {
 
 class GraphicsContext;
 
-class OpenGLVertexBufferImpl: public VertexBufferImpl {
+class OpenGLVertexBufferImpl : public VertexBufferImpl {
 public:
-	OpenGLVertexBufferImpl(GraphicsContext* context, bool dynamicBuffer);
-	~OpenGLVertexBufferImpl();
+    OpenGLVertexBufferImpl(GraphicsContext *context, bool dynamicBuffer);
 
-	void bind();
-	void unbind();
+    ~OpenGLVertexBufferImpl();
 
-	void setData(const void* data, unsigned int size);
-	void* getData(unsigned int offset, unsigned int size);
+    void bind();
+
+    void unbind();
+
+    void setData(const void *data, unsigned int size);
+
+    void *getData(unsigned int offset, unsigned int size);
+
+    unsigned int getSize() const override;
+
 private:
-    bool dynamicBuffer;
     unsigned int renderID;
     unsigned int size;
 };
