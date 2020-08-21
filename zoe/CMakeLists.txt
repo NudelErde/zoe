@@ -21,7 +21,7 @@ add_custom_command(TARGET zoe POST_BUILD
 IF(WIN32)
   add_dependencies(zoe GLEW glew_download)
   add_dependencies(zoe webp)
-  add_dependencies(zoe freetype freetype-build)
+  add_dependencies(zoe freetype)
   target_link_libraries(zoe glfw GLEW opengl32 webp freetype)
 ELSE()
   target_link_libraries(zoe pthread glfw GL GLEW webp freetype)
