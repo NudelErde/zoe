@@ -7,7 +7,7 @@
 
 #include "Parallel.h"
 #include "Thread.h"
-#include "../Console.h"
+#include "../core/Console.h"
 #include <mutex>
 #include <condition_variable>
 #include <queue>

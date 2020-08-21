@@ -9,9 +9,9 @@
 
 #include "../../zpch.h"
 
-#include "../../Core.h"
+#include "../../core/Core.h"
 #include "../../math/mat.h"
-#include "../../File.h"
+#include "../../core/File.h"
 #include "Texture.h"
 #include "ImplPointer.h"
 #include <map>
@@ -22,7 +22,7 @@ class GraphicsContext;
 
 class ShaderImpl{
 public:
-	ShaderImpl(GraphicsContext* context):context(context){}
+	ShaderImpl(GraphicsContext* context):context(context), id(GraphicsContext::generateID()){}
 	virtual ~ShaderImpl() = default;
 
 	virtual void setUniform1f(const std::string& name,float v0)=0;
@@ -40,8 +40,11 @@ public:
 
     virtual const std::map<std::string, std::string>& getTags()=0;
 
+    inline const int& getID() const{ return id;}
+
 protected:
 	GraphicsContext* context;
+	int id;
 };
 
 class DLL_PUBLIC Shader {
@@ -65,6 +68,8 @@ public:
 	inline const std::map<std::string, std::string>& getTags(){return impl->getTags();}
 
 	inline ShaderImpl* getImpl() {return &impl;}
+
+    inline const int& getID() const { return impl->getID();}
 
 private:
 	ImplPointer<ShaderImpl> impl;

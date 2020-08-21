@@ -12,51 +12,83 @@
 #include <stdlib.h>
 
 #include "../../zoe/render/GraphicsContext.h"
+#include "OpenGLVertexArrayImpl.h"
 
 namespace Zoe {
 
-    OpenGLVertexBufferImpl::OpenGLVertexBufferImpl(GraphicsContext *context, bool dynamicBuffer) : VertexBufferImpl(
-            context), dynamicBuffer(dynamicBuffer) {
-        glGenBuffers(1, &renderID);
-        size = 0;
-    }
+OpenGLVertexBufferImpl::OpenGLVertexBufferImpl(GraphicsContext *context, bool dynamicBuffer) : VertexBufferImpl(
+        context, dynamicBuffer) {
+    glGenBuffers(1, &renderID);
+    size = 0;
+}
 
-    OpenGLVertexBufferImpl::~OpenGLVertexBufferImpl() {
-        glDeleteBuffers(1, &renderID);
-    }
-
-    void OpenGLVertexBufferImpl::bind() {
-        if (this->context->boundVertexBuffer != this) {
-            glBindBuffer(GL_ARRAY_BUFFER, renderID);
-            this->context->boundVertexBuffer = this;
-        }
-    }
-
-    void OpenGLVertexBufferImpl::unbind() {
-        if (this->context->boundVertexBuffer != 0) {
+OpenGLVertexBufferImpl::~OpenGLVertexBufferImpl() {
+    if (context->boundVertexArray != nullptr) {
+        if (((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb != nullptr &&
+            ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb->getID() == id) {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
-            this->context->boundVertexBuffer = 0;
+            ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb = nullptr;
+        }
+    } else {
+        if (context->boundVertexBuffer != nullptr && context->boundVertexBuffer->getID() == id) {
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            context->boundVertexBuffer = nullptr;
         }
     }
+    glDeleteBuffers(1, &renderID);
+}
 
-    void OpenGLVertexBufferImpl::setData(const void *data, unsigned int size) {
-        bind();
-        if (size == this->size) {
-            glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
-        } else {
-            glBufferData(GL_ARRAY_BUFFER, size, data, dynamicBuffer ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+void OpenGLVertexBufferImpl::bind() {
+    if (context->boundVertexArray != nullptr) {
+        if (((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb == nullptr ||
+            ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb->getID() != id) {
+            glBindBuffer(GL_ARRAY_BUFFER, renderID);
+            ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb = this;
         }
-        this->size = size;
+    } else {
+        if (context->boundVertexBuffer == nullptr || context->boundVertexBuffer->getID() != id) {
+            glBindBuffer(GL_ARRAY_BUFFER, renderID);
+            context->boundVertexBuffer = this;
+        }
     }
+}
 
-    void *OpenGLVertexBufferImpl::getData(unsigned int offset, unsigned int size) {
-        if (size == 0) {
-            size = this->size;
+void OpenGLVertexBufferImpl::unbind() {
+    if (context->boundVertexArray != nullptr) {
+        if (((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb != nullptr) {
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            ((OpenGLVertexArrayImpl *) context->boundVertexArray)->vb = nullptr;
         }
-        void *data = malloc(size);
-        bind();
-        glGetBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
-        return data;
+    } else {
+        if (context->boundVertexBuffer != nullptr) {
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+            context->boundVertexBuffer = nullptr;
+        }
     }
+}
+
+void OpenGLVertexBufferImpl::setData(const void *data, unsigned int size) {
+    bind();
+    if (size == this->size) {
+        glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
+    } else {
+        glBufferData(GL_ARRAY_BUFFER, size, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+    }
+    this->size = size;
+}
+
+void *OpenGLVertexBufferImpl::getData(unsigned int offset, unsigned int size) {
+    if (size == 0) {
+        size = this->size;
+    }
+    void *data = malloc(size);
+    bind();
+    glGetBufferSubData(GL_ARRAY_BUFFER, offset, size, data);
+    return data;
+}
+
+unsigned int OpenGLVertexBufferImpl::getSize() const {
+    return size;
+}
 
 }

@@ -8,7 +8,7 @@
 #ifdef WIN32
 
 #include "WindowsInput.h"
-#include "../../zoe/Application.h"
+#include "../../zoe/core/Application.h"
 #include "GLFW/glfw3.h"
 
 namespace Zoe{
@@ -37,7 +37,7 @@ vec2 WindowsInput::getMousePositionImpl() {
 	auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
 	double x,y;
 	glfwGetCursorPos(window, &x, &y);
-	return {(float)x,(float)y};
+	return {(float)x/(float)Application::get().getWindow().getWidth(),(float)y/(float)Application::get().getWindow().getHeight()};
 }
 
 float WindowsInput::getMouseXImpl() {
