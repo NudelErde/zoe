@@ -15,8 +15,6 @@ namespace Zoe{
 class DLL_PUBLIC ComponentLayer: public Layer, public BaseComponent {
 public:
     ComponentLayer();
-    explicit ComponentLayer(const File &file);
-    explicit ComponentLayer(const XMLNode& node);
     ComponentLayer(const unsigned int& width, const unsigned int& height);
     ~ComponentLayer() override;
 
@@ -24,11 +22,15 @@ public:
     void onDetach() override;
     void onEvent(Event& event) final;
 
-    inline const std::shared_ptr<Camera>& getCamera() {return camera;}
-    inline void setCamera(const std::shared_ptr<Camera>& cam) {camera = cam;}
+    void load(const File& file);
+    void load(const XMLNode& node);
 
+    inline const std::shared_ptr<Camera>& getCamera() {return camera;}
+
+    inline void setCamera(const std::shared_ptr<Camera>& cam) {camera = cam;}
     static bool isKeyPressed(int keycode);
     static bool isMouseButtonPressed(int button);
+
     static vec2 getMousePosition();
 
 protected:

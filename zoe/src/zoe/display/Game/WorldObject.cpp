@@ -5,17 +5,17 @@
 #include "WorldObject.h"
 #include "../../render/Material.h"
 #include "../../core/Application.h"
+#include "ModelComponent.h"
 
-namespace Zoe{
+namespace Zoe {
 
 WorldObject::WorldObject() {
     init = false;
 }
 
 void WorldObject::onDraw(const Camera &camera) {
-    if(init){
-        model.getMaterial().bind(model.getModelMatrix(), camera.getViewMatrix(), camera.getProjectionMatrix());
-        camera.getRender()->draw(*model.getVertexArray(), *model.getMaterial().getShader());
+    if (init) {
+        camera.draw(model);
     }
 }
 
@@ -32,6 +32,13 @@ void WorldObject::fill(const XMLNode &node) {
 }
 
 void WorldObject::postFill() {
-    //TODO: search in children for material
+    for (const auto &child: getChildren()) {
+        //could be optimised with member var and reinterpret_cast
+        //is only called when object is loaded from xml file
+        if (const auto &modelComponent = std::dynamic_pointer_cast<ModelComponent>(child); modelComponent) {
+            model = modelComponent->getModel();
+            break;
+        }
+    }
 }
 }

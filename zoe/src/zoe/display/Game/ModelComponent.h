@@ -1,5 +1,5 @@
 //
-// Created by Florian on 11.07.2020.
+// Created by Florian on 20.08.2020.
 //
 
 #pragma once
@@ -8,11 +8,11 @@
 #include "../Component.h"
 #include "../../render/Model.h"
 
-namespace Zoe{
+namespace Zoe {
 
-class DLL_PUBLIC WorldObject: public BaseComponent{
+class DLL_PUBLIC ModelComponent: public BaseComponent{
 public:
-    WorldObject();
+    ModelComponent();
 
 protected:
     void onDraw(const Camera& camera) override;
@@ -22,16 +22,16 @@ protected:
     void postFill() override;
 
 public:
-    inline const Model &getModel() const {return model;}
+    inline const Model &getModel() const {
+        return model;
+    }
 
-    inline void setModel(const Model &model) {WorldObject::model = model;}
+    inline void setModel(const Model &model) {
+        ModelComponent::model = model;
+    }
 
 private:
-    //TODO: create LightSource class
-    //LightSource lightSource
-    //bool hasLightSource
     Model model;
-    bool init;
 };
 
 }

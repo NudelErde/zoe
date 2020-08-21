@@ -6,6 +6,7 @@
 #include "../core/Application.h"
 #include "../render/api/RenderTarget.h"
 #include "../core/Input.h"
+#include "Camera.h"
 
 namespace Zoe {
 
@@ -50,7 +51,7 @@ ComponentLayer::ComponentLayer(const unsigned int &width, const unsigned int &he
         data.vertexArray = Application::getContext().getVertexArray();
         data.vertexArray->set(data.vertexBuffer, data.indexBuffer, layout);
 
-        data.imageCopy = Application::getContext().getShader(File("zoe/internal/display/TextureCopyShader.glsl"));
+        data.imageCopy = Application::getContext().getShader(File("virtual/zoe/display/TextureCopyShader.glsl"));
     }
     target = Application::getContext().getRenderTarget(width, height);
 
@@ -63,12 +64,6 @@ ComponentLayer::ComponentLayer(const unsigned int &width, const unsigned int &he
     displayRender = Application::getContext().getRender();
     displayRender->setRenderTarget(Application::getContext().getDefaultRenderTarget());
     displayRender->setAlphaEnabled(true);
-}
-
-ComponentLayer::ComponentLayer(const File &file) : ComponentLayer(readXML(file)) {}
-
-ComponentLayer::ComponentLayer(const XMLNode &node) : ComponentLayer() {
-    init(node);
 }
 
 ComponentLayer::~ComponentLayer() = default;
@@ -113,8 +108,10 @@ void ComponentLayer::onInputEvent(Event &event) {
 
 void ComponentLayer::onDrawEvent(AppRenderEvent &event) {
     render->clear();
-    camera->setRender(render);
-    draw(*camera);
+    if (camera) {
+        camera->setRender(render);
+        draw(*camera);
+    }
     data.imageCopy->setTexture("u_texture", *target->getColorAttachment());
     displayRender->draw(*data.vertexArray, *data.imageCopy);
 }
@@ -138,10 +135,18 @@ vec2 ComponentLayer::getMousePosition() {
         vec2 pos = Input::getMousePosition();
         pos.x *= (float)ptr->width;
         pos.y *= (float)ptr->height;
-        //TODO: translate correct camera and stuff ya kno
-        return pos;
+        mat4x4 viewMatrix = ptr->getCamera()->getViewMatrix();
+        return (viewMatrix.inverse()*vec4({pos.x, pos.y, 0, 1})).xy;
     }
     throw std::runtime_error("ComponentLayer API from non component source");
+}
+
+void ComponentLayer::load(const File &file) {
+    load(readXML(file));
+}
+
+void ComponentLayer::load(const XMLNode &node) {
+    init(node);
 }
 
 }
