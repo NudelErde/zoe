@@ -12,6 +12,7 @@
 #include "../../zoe/render/api/Shader.h"
 #include <string>
 #include <map>
+#include <set>
 
 namespace Zoe {
 
@@ -47,12 +48,13 @@ public:
 
 private:
 
-    int getUniformLocation(const std::string&) const;
+    [[nodiscard]] int getUniformLocation(const std::string&) const;
 
 private:
     unsigned int renderID;
     std::map<std::string, unsigned int> samplerSlot;
     std::map<std::string, std::string> tags;
+    mutable std::set<std::string> undefinedUniformsLogged;
 };
 
 }

@@ -20,18 +20,21 @@ out vec2 v_texturePosition;
 
 void main() {
     v_position = position.xyz;
-    v_normal = normalize(mat3(model_it)*v_normal);
+    v_normal = normalize(mat3(model_it)*normal);
     v_texturePosition = texturePosition;
     gl_Position = projection * view * model * position;
 }
 
-#shader fragment
-#version 130
+    #shader fragment
+    #version 130
 
 uniform vec3 ambientReflectivity_mtl;
 uniform vec3 diffuseReflectivity_mtl;
 uniform vec3 specularReflectivity_mtl;
 uniform float specularExponent_mtl;
+uniform float ambientIntensity;
+uniform float diffuseIntensity;
+uniform float specularIntensity;
 
 in vec3 v_position;
 in vec3 v_normal;
@@ -51,17 +54,17 @@ void main() {
     float diff = max(dot(v_normal, lightDirection), 0.0);
     vec3 diffuseResult = diff * lightColor * diffuseReflectivity_mtl;
 
+    vec3 viewDir = normalize(v_position - cameraPosition);
+    vec3 reflectDir = reflect(lightDirection, v_normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), specularExponent_mtl);
 
-    vec3 viewDir = normalize(cameraPosition - v_position);
-    vec3 reflectDir = reflect(-lightDirection, v_normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
 
     vec3 specularResult = spec * lightColor * specularReflectivity_mtl;
 
     //TODO: add texture stuff
-    vec3 result = (ambientResult * vec3(1.0,1.0,1.0))
-                + (diffuseResult * vec3(1.0,1.0,1.0))
-                + (specularResult * vec3(1.0,1.0,1.0));
+    vec3 result = (ambientResult * vec3(1.0, 1.0, 1.0) * ambientIntensity)
+    + (diffuseResult * vec3(1.0, 1.0, 1.0) * diffuseIntensity)
+    + (specularResult * vec3(1.0, 1.0, 1.0) * specularIntensity);
 
     outColor = vec4(result, 1.0);
 }

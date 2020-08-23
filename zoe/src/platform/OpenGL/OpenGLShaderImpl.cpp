@@ -97,7 +97,8 @@ static ShaderSource parseShader(const File &file) {
                 ++end;
             }
 
-            shso.tags[line.substr(start + 1, end - start - 2)] = line.substr(end, line.length() - end);//TODO: trim value
+            shso.tags[line.substr(start + 1, end - start - 2)] = line.substr(end,
+                                                                             line.length() - end);//TODO: trim value
         } else if (version < 330 && (line.rfind("layout(location=", 0)) == 0) {
             index = line.find("layout(location=");
             unsigned int substringStart = 0;
@@ -219,7 +220,7 @@ OpenGLShaderImpl::OpenGLShaderImpl(const File &file, GraphicsContext *context) :
     samplerSlot = ss.samplerSlots;
     tags = ss.tags;
     renderID = createShaderProgram(ss);
-    if (renderID == 0){
+    if (renderID == 0) {
         std::stringstream sstream;
         sstream << "Failed to construct Shader for file: " << file.getPath();
         throw std::runtime_error(sstream.str());
@@ -297,7 +298,10 @@ const std::map<std::string, std::string> &OpenGLShaderImpl::getTags() {
 int OpenGLShaderImpl::getUniformLocation(const std::string &uniformName) const {
     int location = glGetUniformLocation(renderID, uniformName.c_str());
     if (location == -1) {
-        warning("Uniform ",uniformName," is not found.");
+        if (!undefinedUniformsLogged.count(uniformName)) {
+            warning("Uniform ", uniformName, " is not found.");
+            undefinedUniformsLogged.insert(uniformName);
+        }
     }
     return location;
 }
