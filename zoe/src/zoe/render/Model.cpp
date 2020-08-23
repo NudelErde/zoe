@@ -22,6 +22,7 @@ Model::Model(Material material, const std::shared_ptr<VertexBuffer> &vbo, const 
     layout->push_float(3);
     layout->push_float(2);
     mesh.vertexArray->set(vbo, ibo, layout);
+    modelMatrix = mat4x4::identity();
 }
 
 Model::Model() = default;
@@ -61,7 +62,8 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
 
         explicit Object(const std::string &name) {
             Object::name = name;
-            material = MaterialLibrary::parseMaterialLibrary(File("virtual/zoe/materials/DefaultMaterial.mtl")).get("default");
+            material = MaterialLibrary::parseMaterialLibrary(File("virtual/zoe/materials/DefaultMaterial.mtl")).get(
+                    "default");
         }
     };
     std::vector<vec4> positions;
@@ -88,7 +90,7 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
                                     fromString<float>(splitLine[3])}).normalize());
         } else if (splitLine[0] == "vt") {
             texPositions.push_back(vec2({fromString<float>(splitLine[1]),
-                                      fromString<float>(splitLine[2])}));
+                                         fromString<float>(splitLine[2])}));
         } else if (splitLine[0] == "mtllib") {
             Path path(file.getParent().getPath() + "/" + splitLine[1]);
             if (!path.isFile()) {
@@ -109,10 +111,10 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
                 }
             }
         } else if (splitLine[0] == "f") {
-            if(splitLine.size()==5){
+            if (splitLine.size() == 5) {
                 Face face{};
-                for(int i : {0,2,3}){
-                    std::vector<std::string> values = split(splitLine[i + 1], '/');
+                for (unsigned int i = 0; i < 3; ++i) {
+                    std::vector<std::string> values = split(splitLine[((i + 2) % 4) + 1], '/');
                     face.positionIndex[i] = fromString<int>(values[0]);
                     if (face.positionIndex[i] > 0) {
                         --face.positionIndex[i];
@@ -135,7 +137,7 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
                 currentObject.faces.push_back(face);
             }
             Face face{};
-            for (int i : {0,1,2}) {
+            for (unsigned int i = 0; i < 3; ++i) {
                 std::vector<std::string> values = split(splitLine[i + 1], '/');
                 face.positionIndex[i] = fromString<int>(values[0]);
                 if (face.positionIndex[i] > 0) {
@@ -170,7 +172,6 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
     if (!currentObject.faces.empty()) {
         objects.push_back(currentObject);
     }
-    //TODO: objects and other std::vectors => Model
     for (const auto &object: objects) {
         std::vector<unsigned int> indexData;
         std::vector<Vertex> vertexVector;
@@ -230,7 +231,7 @@ bool WavefrontFile::hasModel(const std::string &name) const {
 }
 
 WavefrontFile::WavefrontFile(WavefrontFile &&other) noexcept {
-    modelMap = other.modelMap;;
+    modelMap = other.modelMap;
     other.modelMap = nullptr;
 }
 

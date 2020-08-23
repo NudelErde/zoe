@@ -45,24 +45,22 @@ static std::pair<std::string, std::string> getStringTo(const std::string &str, c
 }
 
 static vec3 readVec3(std::vector<std::string>::iterator begin, std::vector<std::string>::iterator end) {
-    std::stringstream ss;
     vec3 result{};
     if (begin == end) {
         return vec3({0, 0, 0});
     }
-    ss.str(*(begin++));
-    ss >> result.x;
+    result.x = fromString<float>(*(begin++));
     if (begin == end) {
         result.y = result.x;
         result.z = result.x;
+        return result;
     }
-    ss.str(*(begin++));
-    ss >> result.y;
+    result.y = fromString<float>(*(begin++));
     if (begin == end) {
         result.z = result.x;
+        return result;
     }
-    ss.str(*(begin++));
-    ss >> result.z;
+    result.z = fromString<float>(*(begin++));
     return result;
 }
 
@@ -112,7 +110,7 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
         int illuminationModel{};
         float dissolve{};
         bool dissolveDependentOnSurfaceOrientation{};
-        float specularExponent{};
+        float specularExponent = 32;
         float sharpness{};
         float opticalDensity{};
     };
@@ -231,8 +229,13 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
                          shader.setUniform3f("cameraPosition", cameraPos.x, cameraPos.y, cameraPos.z);
 
                          //TODO: source is enough documentation
-                         shader.setUniform3f("lightPosition", 10, 10, 10);
-                         shader.setUniform3f("lightColor", 0.5f, 1, 0);
+                         shader.setUniform3f("lightPosition", cameraPos.x, cameraPos.y+1, cameraPos.z);
+                         shader.setUniform3f("lightColor", 1, 1, 0);
+
+                         //TODO: changeable intensity
+                         shader.setUniform1f("ambientIntensity", 1.0f);
+                         shader.setUniform1f("diffuseIntensity", 1.0f);
+                         shader.setUniform1f("specularIntensity", 1.0f);
                      });
     }
     loadedMaterialLibraries->operator[](file.getPath()) = lib;
