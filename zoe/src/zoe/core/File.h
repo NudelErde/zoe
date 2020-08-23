@@ -21,6 +21,9 @@ class File;
 
 class DLL_PUBLIC FileError : public std::exception {
 public:
+    /**
+     * Error codes for class FileError
+     */
     enum class FileErrorCode {
         UNKNOWN,
         FileConstructorWithDirectoryPath,
@@ -28,13 +31,36 @@ public:
         FilesystemError
     };
 
+    /**
+     * Constructs FileError.
+     * Errors from std::filesystem are caught and rethrown as FileErrors. In this case errorCode = FileErrorCode::FilesystemError.
+     * errorCode is an element from FileErrorCode. It indicates what kind of error was thrown
+     * @param file is the file from which the FileError was thrown
+     * @param what is the value returned by what()
+     * @param errorCode is an element from FileErrorCode
+     */
     FileError(std::string file, std::string what, FileErrorCode errorCode);
 
+    /**
+     * Pointer to a null-terminated string with explanatory information. The pointer is guaranteed to be valid at least
+     * until the exception object from which it is obtained is destroyed, or until a non-const member function on the
+     * exception object is called.
+     * @returns an explanatory string
+     * @see https://en.cppreference.com/w/cpp/error/exception/what
+     */
     [[nodiscard]] const char *what() const noexcept override;
 
+    /**
+     *
+     * @returns name of the file from which the file FileError was thrown
+     */
     [[nodiscard]] const std::string &getFile() const;
 
-    [[nodiscard]] inline const FileErrorCode& getErrorCode() const {
+    /**
+     * errorCode is an element from FileErrorCode. It indicates what kind of error was thrown
+     * @returns the error code from the exception
+     */
+    [[nodiscard]] inline const FileErrorCode &getErrorCode() const {
         return errorCode;
     }
 
@@ -56,6 +82,7 @@ public:
     [[nodiscard]] Directory getParent() const;
 
     [[nodiscard]] std::string getAbsolutePath();
+
     [[nodiscard]] std::string getAbsolutePath() const;
 
     [[nodiscard]] inline const std::string &getPath() const {
@@ -100,17 +127,24 @@ public:
     void remove() const;
 };
 
-class VirtualStreambuf: public std::streambuf {
+class VirtualStreambuf : public std::streambuf {
 public:
     using std::streambuf::traits_type;
 
     VirtualStreambuf(File, bool write, bool read);
+
     ~VirtualStreambuf() override;
+
     pos_type seekoff(off_type, std::ios_base::seekdir, std::ios_base::openmode) override;
+
     pos_type seekpos(pos_type, std::ios_base::openmode) override;
+
     int_type overflow(int_type) override;
+
     int_type underflow() override;
+
     int sync() override;
+
 private:
     File file;
     char getArea[128]{};
@@ -121,21 +155,24 @@ private:
 };
 
 //TODO: only move no copy
-class VirtualIStream: public std::istream {
+class VirtualIStream : public std::istream {
 public:
-    explicit VirtualIStream(const File&);
+    explicit VirtualIStream(const File &);
+
     ~VirtualIStream() override;
 };
 
-class VirtualOStream: public std::ostream {
+class VirtualOStream : public std::ostream {
 public:
-    explicit VirtualOStream(const File&);
+    explicit VirtualOStream(const File &);
+
     ~VirtualOStream() override;
 };
 
-class VirtualIOStream: public std::iostream {
+class VirtualIOStream : public std::iostream {
 public:
-    explicit VirtualIOStream(const File&);
+    explicit VirtualIOStream(const File &);
+
     ~VirtualIOStream() override;
 };
 

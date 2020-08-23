@@ -281,9 +281,7 @@ std::unique_ptr<uint8_t[]> File::getContent(size_t * size) const{
 
 FileError::FileError(std::string file, std::string what, FileErrorCode errorCode) : m_file(std::move(file)),
                                                                                     m_what(std::move(what)),
-                                                                                    errorCode(errorCode) {
-    m_what = "Error in file " + m_file + ": " + m_what;
-}
+                                                                                    errorCode(errorCode) {}
 
 const char *FileError::what() const noexcept {
     return m_what.c_str();

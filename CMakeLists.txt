@@ -69,10 +69,25 @@ ELSE ()
 ENDIF ()
 
 list(APPEND ZOE_INCLUDES ${PROJECT_SOURCE_DIR}/dependencies/webp/src)
+
+#Engine
 add_subdirectory(zoe)
+
+#Sandbox
 add_subdirectory(sandbox)
 
+#tests
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     enable_testing()
     add_subdirectory(tests)
 endif ()
+
+#docs
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+    add_custom_target(doc_doxygen ALL
+            COMMAND ${CMAKE_COMMAND} -E env DOXYGEN_DOC_DIR=${CMAKE_BINARY_DIR}/docs ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/.doxyfile
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            COMMENT "Generating API documentation with Doxygen"
+            VERBATIM )
+endif()
