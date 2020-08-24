@@ -19,7 +19,7 @@ out vec3 v_normal;
 out vec2 v_texturePosition;
 
 void main() {
-    v_position = position.xyz;
+    v_position = (model * position).xyz;
     v_normal = normalize(mat3(model_it)*normal);
     v_texturePosition = texturePosition;
     gl_Position = projection * view * model * position;
