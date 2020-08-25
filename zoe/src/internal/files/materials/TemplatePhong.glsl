@@ -25,8 +25,8 @@ void main() {
     gl_Position = projection * view * model * position;
 }
 
-    #shader fragment
-    #version 130
+#shader fragment
+#version 130
 
 uniform vec3 ambientReflectivity_mtl;
 uniform vec3 diffuseReflectivity_mtl;
@@ -44,6 +44,12 @@ uniform vec3 cameraPosition;
 
 uniform vec3 lightPosition;
 uniform vec3 lightColor;
+
+
+uniform sampler2D ambientMap;
+uniform sampler2D diffuseMap;
+uniform sampler2D specularMap;
+
 
 out vec4 outColor;
 
