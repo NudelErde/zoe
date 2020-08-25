@@ -9,15 +9,16 @@
 
 namespace Zoe {
 
-Material::Material(const std::shared_ptr<Shader> &shader, const std::vector<std::shared_ptr<Texture>> &textures,
-                   const std::function<void(Material *, const Camera&, const mat4x4&)> &bindingFunction) {
+Material::Material(const std::shared_ptr<Shader> &shader,
+                   const std::map<std::string, std::shared_ptr<Texture>> &textures,
+                   const std::function<void(Material *, const Camera &, const mat4x4 &)> &bindingFunction) {
     this->shader = shader;
     this->textures = textures;
     this->bindingFunction = bindingFunction;
 }
 
-void Material::bind(const Camera& camera, const mat4x4& model) {
-    if(shader){
+void Material::bind(const Camera &camera, const mat4x4 &model) {
+    if (shader) {
         shader->bind();
         bindingFunction(this, camera, model);
     }
@@ -108,11 +109,14 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
         vec3 emissivityCoefficient{};
         vec3 transmissionFilter{};
         int illuminationModel{};
-        float dissolve{};
+        float dissolve = 1;
         bool dissolveDependentOnSurfaceOrientation{};
         float specularExponent = 32;
         float sharpness{};
         float opticalDensity{};
+        std::string mapAmbientReflectivityName;
+        std::string mapDiffuseReflectivityName;
+        std::string mapSpecularReflectivityName;
     };
     std::vector<MaterialData> materials;
     MaterialData currentMaterial;
@@ -130,7 +134,7 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
         std::vector<std::string> argsList = split(args, ' ');
         trim(cmd);
         toLower(cmd);
-        if(cmd.empty())
+        if (cmd.empty())
             continue;
 
         if (cmd == "newmtl") {
@@ -173,6 +177,12 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
             currentMaterial.sharpness = fromString<float>(args);
         } else if (cmd == "ni") {
             currentMaterial.opticalDensity = fromString<float>(args);
+        } else if (cmd == "map_ka") {
+            currentMaterial.mapAmbientReflectivityName = file.getParent().getAbsolutePath()+"/"+args;
+        } else if (cmd == "map_kd") {
+            currentMaterial.mapDiffuseReflectivityName = file.getParent().getAbsolutePath()+"/"+args;
+        } else if (cmd == "map_ks") {
+            currentMaterial.mapSpecularReflectivityName = file.getParent().getAbsolutePath()+"/"+args;
         } else {
             warning("Unknown or unsupported attribute \"", cmd, " ", args, "\" in file ", file.getPath());
         }
@@ -182,61 +192,80 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
     }
 
     for (MaterialData &data: materials) {
-        lib.materialMap->operator[](data.name) = Material(phongShader, std::vector<std::shared_ptr<Texture>>(),
-                     [data](Material *me, const Camera& camera, const mat4x4& model) {
-                         Shader &shader = *(me->shader);
-                         shader.bind();
-                         const std::map<std::string, std::string> &tags = shader.getTags();
-                         bool modelUniformIsSet = false;
-                         bool viewUniformIsSet = false;
-                         bool projectUniformIsSet = false;
-                         //some logic is simplified, could be solved smart and shit but no
-                         if (tags.count("modelMatrix") != 0) {
-                             modelUniformIsSet = true;
-                             shader.setUniform4m(tags.at("modelMatrix"), model);
-                         }
-                         if (!modelUniformIsSet && tags.count("modelViewMatrix")) {
-                             modelUniformIsSet = true;
-                             viewUniformIsSet = true;
-                             shader.setUniform4m(tags.at("modelViewMatrix"), model * camera.getViewMatrix());
-                         }
-                         if (!modelUniformIsSet && !viewUniformIsSet && tags.count("modelViewProjectionMatrix")) {
-                             viewUniformIsSet = true;
-                             projectUniformIsSet = true;
-                             shader.setUniform4m(tags.at("modelViewProjectionMatrix"), model * camera.getViewMatrix() * camera.getProjectionMatrix());
-                         }
-                         if (!viewUniformIsSet && tags.count("viewMatrix")) {
-                             viewUniformIsSet = true;
-                             shader.setUniform4m(tags.at("viewMatrix"), camera.getViewMatrix());
-                         }
-                         if (!viewUniformIsSet && tags.count("viewProjectionMatrix")) {
-                             shader.setUniform4m(tags.at("viewProjectionMatrix"), camera.getViewMatrix() * camera.getProjectionMatrix());
-                         }
-                         if (!projectUniformIsSet && tags.count("projectionMatrix")) {
-                             shader.setUniform4m(tags.at("projectionMatrix"), camera.getProjectionMatrix());
-                         }
-                         if (tags.count("modelMatrix_it")) {
-                             shader.setUniform4m(tags.at("modelMatrix_it"), model.transpose().inverse());
-                         }
-                         shader.setUniform3f("ambientReflectivity_mtl", data.ambientReflectivity.x,
-                                             data.ambientReflectivity.y, data.ambientReflectivity.z);
-                         shader.setUniform3f("diffuseReflectivity_mtl", data.diffuseReflectivity.x,
-                                             data.diffuseReflectivity.y, data.diffuseReflectivity.z);
-                         shader.setUniform3f("specularReflectivity_mtl", data.specularReflectivity.x,
-                                             data.specularReflectivity.y, data.specularReflectivity.z);
-                         shader.setUniform1f("specularExponent_mtl", data.specularExponent);
-                         vec3 cameraPos = camera.getPosition();
-                         shader.setUniform3f("cameraPosition", cameraPos.x, cameraPos.y, cameraPos.z);
+        std::map<std::string, std::shared_ptr<Texture>> textureMap;
+        if(Path ambientMap(currentMaterial.mapAmbientReflectivityName); ambientMap.isFile()){
+            textureMap["map_ka"] = Application::getContext().getTexture(ambientMap);
+        } else {
+            //TODO: warning
+        }
+        if(Path diffuseMap(currentMaterial.mapDiffuseReflectivityName); diffuseMap.isFile()){
+            textureMap["map_kd"] = Application::getContext().getTexture(diffuseMap);
+        } else {
+            //TODO: warning
+        }
+        if(Path specularMap(currentMaterial.mapSpecularReflectivityName); specularMap.isFile()){
+            textureMap["map_ks"] = Application::getContext().getTexture(specularMap);
+        } else {
+            //TODO: warning
+        }
+        lib.materialMap->operator[](data.name) =
+                Material(phongShader, textureMap,
+                         [data](Material *me, const Camera &camera, const mat4x4 &model) {
+                             Shader &shader = *(me->shader);
+                             shader.bind();
+                             const std::map<std::string, std::string> &tags = shader.getTags();
+                             bool modelUniformIsSet = false;
+                             bool viewUniformIsSet = false;
+                             bool projectUniformIsSet = false;
+                             //some logic is simplified, could be solved smart and shit but no
+                             if (tags.count("modelMatrix") != 0) {
+                                 modelUniformIsSet = true;
+                                 shader.setUniform4m(tags.at("modelMatrix"), model);
+                             }
+                             if (!modelUniformIsSet && tags.count("modelViewMatrix")) {
+                                 modelUniformIsSet = true;
+                                 viewUniformIsSet = true;
+                                 shader.setUniform4m(tags.at("modelViewMatrix"), model * camera.getViewMatrix());
+                             }
+                             if (!modelUniformIsSet && !viewUniformIsSet && tags.count("modelViewProjectionMatrix")) {
+                                 viewUniformIsSet = true;
+                                 projectUniformIsSet = true;
+                                 shader.setUniform4m(tags.at("modelViewProjectionMatrix"),
+                                                     model * camera.getViewMatrix() * camera.getProjectionMatrix());
+                             }
+                             if (!viewUniformIsSet && tags.count("viewMatrix")) {
+                                 viewUniformIsSet = true;
+                                 shader.setUniform4m(tags.at("viewMatrix"), camera.getViewMatrix());
+                             }
+                             if (!viewUniformIsSet && tags.count("viewProjectionMatrix")) {
+                                 shader.setUniform4m(tags.at("viewProjectionMatrix"),
+                                                     camera.getViewMatrix() * camera.getProjectionMatrix());
+                             }
+                             if (!projectUniformIsSet && tags.count("projectionMatrix")) {
+                                 shader.setUniform4m(tags.at("projectionMatrix"), camera.getProjectionMatrix());
+                             }
+                             if (tags.count("modelMatrix_it")) {
+                                 shader.setUniform4m(tags.at("modelMatrix_it"), model.transpose().inverse());
+                             }
+                             shader.setUniform3f("ambientReflectivity_mtl", data.ambientReflectivity.x,
+                                                 data.ambientReflectivity.y, data.ambientReflectivity.z);
+                             shader.setUniform3f("diffuseReflectivity_mtl", data.diffuseReflectivity.x,
+                                                 data.diffuseReflectivity.y, data.diffuseReflectivity.z);
+                             shader.setUniform3f("specularReflectivity_mtl", data.specularReflectivity.x,
+                                                 data.specularReflectivity.y, data.specularReflectivity.z);
+                             shader.setUniform1f("specularExponent_mtl", data.specularExponent);
+                             vec3 cameraPos = camera.getPosition();
+                             shader.setUniform3f("cameraPosition", cameraPos.x, cameraPos.y, cameraPos.z);
 
-                         //TODO: source is enough documentation
-                         shader.setUniform3f("lightPosition", cameraPos.x, cameraPos.y+1, cameraPos.z);
-                         shader.setUniform3f("lightColor", 1, 1, 0);
+                             //TODO: source is enough documentation
+                             shader.setUniform3f("lightPosition", cameraPos.x, cameraPos.y + 1, cameraPos.z);
+                             shader.setUniform3f("lightColor", 1, 0, 0);
 
-                         //TODO: changeable intensity
-                         shader.setUniform1f("ambientIntensity", 1.0f);
-                         shader.setUniform1f("diffuseIntensity", 1.0f);
-                         shader.setUniform1f("specularIntensity", 1.0f);
-                     });
+                             //TODO: changeable intensity
+                             shader.setUniform1f("ambientIntensity", 1.0f);
+                             shader.setUniform1f("diffuseIntensity", 1.0f);
+                             shader.setUniform1f("specularIntensity", 1.0f);
+                         });
     }
     loadedMaterialLibraries->operator[](file.getPath()) = lib;
     return lib;

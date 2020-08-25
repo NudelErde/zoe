@@ -57,6 +57,8 @@ bool Path::exists() const {
 
 bool Path::isFile() const {
     if (!m_isVirtual) {
+        if(!exists())
+            return false;
         std::error_code error;
         bool val = std::filesystem::is_regular_file(m_path, error);
         if (error) {
@@ -70,6 +72,8 @@ bool Path::isFile() const {
 
 bool Path::isDirectory() const {
     if (!m_isVirtual) {
+        if(!exists())
+            return false;
         std::error_code error;
         bool val = std::filesystem::is_directory(m_path, error);
         if (error) {
