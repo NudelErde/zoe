@@ -20,7 +20,7 @@ class GraphicsContext;
 
 class OpenGLShaderImpl : public ShaderImpl {
 public:
-    OpenGLShaderImpl(const File &filepath, GraphicsContext *context);
+    OpenGLShaderImpl(const File &filepath, const std::set<std::string>& options, GraphicsContext *context);
 
     ~OpenGLShaderImpl() override;
 
