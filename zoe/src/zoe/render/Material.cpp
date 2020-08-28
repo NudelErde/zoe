@@ -92,8 +92,21 @@ static vec3 readRGB_XYZ(const std::string &str) {
 }
 
 MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool forceReload) {
-    static std::shared_ptr<Shader> phongShader = Application::getContext().getShader(
-            File("virtual/zoe/materials/TemplatePhong.glsl"));
+    static std::shared_ptr<Shader> phongShaders[8]{};
+    for(unsigned int i = 0; i < 8; ++i){
+        std::set<std::string> options;
+        if(i & 0b001u){
+            options.insert("ambientMap");
+        }
+        if(i & 0b010u){
+            options.insert("diffuseMap");
+        }
+        if(i & 0b100u){
+            options.insert("specularMap");
+        }
+        phongShaders[i] = Application::getContext().getShader(
+                File("virtual/zoe/materials/TemplatePhong.glsl"), options);
+    }
     if (!forceReload && loadedMaterialLibraries->count(file.getPath())) {
         return loadedMaterialLibraries->at(file.getPath());
     }
@@ -192,25 +205,30 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
     }
 
     for (MaterialData &data: materials) {
+        unsigned int shaderOptionsIndex = 0;
         std::map<std::string, std::shared_ptr<Texture>> textureMap;
         if(Path ambientMap(currentMaterial.mapAmbientReflectivityName); ambientMap.isFile()){
             textureMap["map_ka"] = Application::getContext().getTexture(ambientMap);
+            shaderOptionsIndex |= 0b001u;
         } else {
             //TODO: warning
         }
         if(Path diffuseMap(currentMaterial.mapDiffuseReflectivityName); diffuseMap.isFile()){
             textureMap["map_kd"] = Application::getContext().getTexture(diffuseMap);
+            shaderOptionsIndex |= 0b010u;
         } else {
             //TODO: warning
         }
         if(Path specularMap(currentMaterial.mapSpecularReflectivityName); specularMap.isFile()){
             textureMap["map_ks"] = Application::getContext().getTexture(specularMap);
+            shaderOptionsIndex |= 0b100u;
         } else {
             //TODO: warning
         }
+
         lib.materialMap->operator[](data.name) =
-                Material(phongShader, textureMap,
-                         [data](Material *me, const Camera &camera, const mat4x4 &model) {
+                Material(phongShaders[shaderOptionsIndex], textureMap,
+                         [data, shaderOptionsIndex](Material *me, const Camera &camera, const mat4x4 &model) {
                              Shader &shader = *(me->shader);
                              shader.bind();
                              const std::map<std::string, std::string> &tags = shader.getTags();
@@ -259,12 +277,21 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
 
                              //TODO: source is enough documentation
                              shader.setUniform3f("lightPosition", cameraPos.x, cameraPos.y + 1, cameraPos.z);
-                             shader.setUniform3f("lightColor", 1, 0, 0);
+                             shader.setUniform3f("lightColor", 0, 0, 0);
 
                              //TODO: changeable intensity
                              shader.setUniform1f("ambientIntensity", 1.0f);
                              shader.setUniform1f("diffuseIntensity", 1.0f);
                              shader.setUniform1f("specularIntensity", 1.0f);
+                             for(const auto& entry: me->textures){
+                                 if(entry.first == "map_ka"){
+                                     shader.setTexture("ambientMap", *entry.second);
+                                 } else if(entry.first == "map_kd"){
+                                     shader.setTexture("diffuseMap", *entry.second);
+                                 } else if(entry.first == "map_ks"){
+                                     shader.setTexture("specularMap", *entry.second);
+                                 }
+                             }
                          });
     }
     loadedMaterialLibraries->operator[](file.getPath()) = lib;
