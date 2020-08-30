@@ -177,13 +177,13 @@ namespace Zoe {
                 (*this)[2][0] * vec[0] + (*this)[2][1] * vec[1] + (*this)[2][2] * vec[2]};
     }
 
-    mat3x3 mat3x3::operator*(const mat3x3 &mat) const {
+    mat3x3 mat3x3::operator*(const mat3x3 &rhs) const {
         mat3x3 res;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 res[i][j] = 0;
                 for (int k = 0; k < 3; k++) {
-                    res[i][j] += data[i][k] * mat[k][j];
+                    res[i][j] += data[i][k] * rhs[k][j];
                 }
             }
         }

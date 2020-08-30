@@ -22,10 +22,6 @@ void WorldObject::onDraw(const Camera &camera) {
 }
 
 void WorldObject::onUpdate(double time) {
-    static std::chrono::time_point<std::chrono::steady_clock> timePoint = std::chrono::steady_clock::now();
-    model.setModelMatrix(rotateXZ3D(std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::steady_clock::now() - timePoint).count() / 1000.0f));
-    //TODO:: remove this code
 }
 
 void WorldObject::onInputEvent(Event &event) {
