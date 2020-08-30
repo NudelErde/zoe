@@ -31,6 +31,10 @@ public:
 
     inline void setPosition(const vec3 &pos) { position = pos; }
 
+    inline const std::weak_ptr<BaseComponent> &getParent() { return parent; }
+
+    inline const std::vector<std::shared_ptr<BaseComponent>> &getChildren() { return children; }
+
 protected:
 
     virtual void fill(const XMLNode &node) = 0;
@@ -42,10 +46,6 @@ protected:
     virtual void onUpdate(double time) = 0;
 
     virtual void onInputEvent(Event &event) = 0;
-
-    inline const std::weak_ptr<BaseComponent> &getParent() { return parent; }
-
-    inline const std::vector<std::shared_ptr<BaseComponent>> &getChildren() { return children; }
 
 protected:
     vec3 position{};
@@ -66,7 +66,8 @@ public:
     static void registerComponent(const std::string &name, const std::function<std::shared_ptr<BaseComponent>()> &func);
 
     static std::shared_ptr<BaseComponent> createComponent(const std::string &name);
-    static bool hasComponentConstructor(const std::string& name);
+
+    static bool hasComponentConstructor(const std::string &name);
 
     static void init();
 };

@@ -36,7 +36,8 @@ struct ShaderSource {
     std::map<std::string, std::string> tags;
 };
 
-static ShaderSource parseShader(const File &file) {
+//TODO: add zoe preprocessor
+static ShaderSource parseShader(const File &file, const std::set<std::string> &options) {
     unsigned int version = 0;
     std::unique_ptr<std::istream> stream = file.createIStream(false);
     ShaderSource shso = ShaderSource();
@@ -48,13 +49,27 @@ static ShaderSource parseShader(const File &file) {
     std::stringstream ss[2];
     unsigned int samplerSlot = 0;
     int index;
+    bool optionSkipToEnd = false;
     while (getline(*stream, line)) {
         trim(line);
+        if(optionSkipToEnd){
+            toLower(line);
+            if (line == "#zoe optionend") {
+               optionSkipToEnd = false;
+            }
+            continue;
+        }
         if (line.find("#shader") != std::string::npos) {
             if (line.find("vertex") != std::string::npos)
                 type = ShaderType::VERTEX;
             else if (line.find("fragment") != std::string::npos)
                 type = ShaderType::FRAGMENT;
+        } else if (line.rfind("#zoe", 0) == 0) {
+            std::vector<std::string> args = split(line, " ");
+            toLower(args[1]);
+            if (args.size() > 2 && args[1] == "optionbegin" && !options.count(args[2])) {
+                optionSkipToEnd = true;
+            }
         } else if (line.find("#version") != std::string::npos) {
             unsigned int start = line.find("#version");
             const char *cstr = line.c_str();
@@ -97,7 +112,8 @@ static ShaderSource parseShader(const File &file) {
                 ++end;
             }
 
-            shso.tags[line.substr(start + 1, end - start - 2)] = line.substr(end, line.length() - end);//TODO: trim value
+            shso.tags[line.substr(start + 1, end - start - 2)] = line.substr(end,
+                                                                             line.length() - end);//TODO: trim value
         } else if (version < 330 && (line.rfind("layout(location=", 0)) == 0) {
             index = line.find("layout(location=");
             unsigned int substringStart = 0;
@@ -214,12 +230,13 @@ static unsigned int createShaderProgram(ShaderSource &ss) {
     return prg;
 }
 
-OpenGLShaderImpl::OpenGLShaderImpl(const File &file, GraphicsContext *context) : ShaderImpl(context) {
-    ShaderSource ss = parseShader(file);
+OpenGLShaderImpl::OpenGLShaderImpl(const File &file, const std::set<std::string> &options, GraphicsContext *context)
+        : ShaderImpl(context) {
+    ShaderSource ss = parseShader(file, options);
     samplerSlot = ss.samplerSlots;
     tags = ss.tags;
     renderID = createShaderProgram(ss);
-    if (renderID == 0){
+    if (renderID == 0) {
         std::stringstream sstream;
         sstream << "Failed to construct Shader for file: " << file.getPath();
         throw std::runtime_error(sstream.str());
@@ -297,7 +314,10 @@ const std::map<std::string, std::string> &OpenGLShaderImpl::getTags() {
 int OpenGLShaderImpl::getUniformLocation(const std::string &uniformName) const {
     int location = glGetUniformLocation(renderID, uniformName.c_str());
     if (location == -1) {
-        warning("Uniform ",uniformName," is not found.");
+        if (!undefinedUniformsLogged.count(uniformName)) {
+            warning("Uniform ", uniformName, " is not found.");
+            undefinedUniformsLogged.insert(uniformName);
+        }
     }
     return location;
 }

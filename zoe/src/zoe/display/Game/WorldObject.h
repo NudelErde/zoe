@@ -23,7 +23,7 @@ protected:
 
 public:
     inline const Model &getModel() const {return model;}
-
+    inline Model &getModel() {return model;}
     inline void setModel(const Model &model) {WorldObject::model = model;}
 
 private:
@@ -32,6 +32,7 @@ private:
     //bool hasLightSource
     Model model;
     bool init;
+
 };
 
 }
