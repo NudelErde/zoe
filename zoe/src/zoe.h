@@ -5,6 +5,28 @@
  *      Author: florian
  */
 
+/**\mainpage Zoe Engine
+ * \section intro_sec Introduction
+ *
+ * Lorem ipsum stuff
+ *
+ * \section build_sec Building
+ * Init github submodules if needed `git submodule update --init --recursive`\n
+ * Make sure your compiler supports c++17\n
+ * Make sure you have CMake 3.13+ installed\n
+ * \subsection build_win_sec On Windows
+ * Install dependencies I don't know what you need. Just try to run cmake and google every error.\n
+ * Run `cmake .` to generate the makefiles\n
+ * Run `cmake --build .` to compile the default target\n
+ * \subsection build_linux_sec On Linux
+ * Install dependencies `apt install build-essential cmake libglew-dev libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl-dev`\n
+ * Run `cmake .` to generate the makefiles\n
+ * Run `cmake --build .` to compile the default target\n
+ * \subsection build_mac_sec On MacOS
+ * I don't know
+ */
+
+
 #pragma once
 
 #include "zoe/core/Application.h"
