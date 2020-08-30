@@ -57,7 +57,7 @@ public:
 	mat3x3 operator+(const mat3x3& mat) const;
 	mat3x3 operator-(const mat3x3& mat) const;
 	vec3 operator*(const vec3& vec) const;
-	mat3x3 operator*(const mat3x3& mat) const;
+	mat3x3 operator*(const mat3x3& rhs) const;
 
 	vec3 operator[](const int& index )const;
 	vec3& operator[](const int& index );
@@ -83,6 +83,12 @@ DLL_PUBLIC mat3x3 scale2D(float scaleX,float scaleY);
 DLL_PUBLIC mat3x3 operator*(const mat3x3& mat, float a);
 DLL_PUBLIC mat3x3 operator*(float a, const mat3x3& mat);
 
+/**
+ * mat[0][0] = 0;mat[0][1] = 0;mat[0][2] = 0;mat[0][3] = 0;
+ * mat[1][0] = 0;mat[1][1] = 0;mat[1][2] = 0;mat[1][3] = 0;
+ * mat[2][0] = 0;mat[2][1] = 0;mat[2][2] = 0;mat[2][3] = 0;
+ * mat[3][0] = 0;mat[3][1] = 0;mat[3][2] = 0;mat[3][3] = 0;
+ */
 class DLL_PUBLIC mat4x4{
 public:
 	mat4x4();

@@ -7,6 +7,8 @@
 #include "Game/WorldObject.h"
 #include "Game/ModelComponent.h"
 #include "UI/Button.h"
+#include "NativeScriptComponent.h"
+#include "ChaiScriptComponent.h"
 
 namespace Zoe {
 
@@ -73,11 +75,15 @@ void BaseComponent::inputEvent(Event &event) {
 }
 
 void BaseComponent::init() {
+    NativeScriptComponent::init();
+
     registerComponent<Sprite>("Sprite");
     registerComponent<ComponentGroup>("ComponentGroup");
     registerComponent<WorldObject>("WorldObject");
     registerComponent<Button>("Button");
     registerComponent<ModelComponent>("Model");
+    registerComponent<NativeScriptComponent>("NativeScriptComponent");
+    registerComponent<ChaiScriptComponent>("ChaiScriptComponent");
 }
 
 vec3 BaseComponent::getWorldPosition() {
