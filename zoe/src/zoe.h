@@ -26,6 +26,8 @@
 #include "zoe/display/Camera.h"
 #include "zoe/display/Component.h"
 #include "zoe/display/ComponentLayer.h"
+#include "zoe/display/ChaiScriptComponent.h"
+#include "zoe/display/NativeScriptComponent.h"
 
 #include "zoe/event/CommonEvent.h"
 

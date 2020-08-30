@@ -51,24 +51,26 @@ private:
 class DLL_PUBLIC Material {
 public:
     Material();
-    Material(const std::shared_ptr<Shader> &, const std::vector<std::shared_ptr<Texture>> &,
-             const std::function<void(Material *, const Camera&, const mat4x4&)> &);
 
-    void bind(const Camera& camera, const mat4x4 &model);
+    Material(const std::shared_ptr<Shader> &, const std::map<std::string, std::shared_ptr<Texture>> &,
+             const std::function<void(Material *, const Camera &, const mat4x4 &)> &);
+
+    void bind(const Camera &camera, const mat4x4 &model);
 
     [[nodiscard]] inline const std::shared_ptr<Shader> &getShader() const {
         return shader;
     }
 
-    [[nodiscard]] inline const std::vector<std::shared_ptr<Texture>> &getTextures() const {
+    [[nodiscard]] inline const std::map<std::string, std::shared_ptr<Texture>> &getTextures() const {
         return textures;
     }
 
 private:
     friend class MaterialLibrary;
+
     std::shared_ptr<Shader> shader;
-    std::vector<std::shared_ptr<Texture>> textures;
-    std::function<void(Material *, const Camera&, const mat4x4& modelMatrix)> bindingFunction;
+    std::map<std::string, std::shared_ptr<Texture>> textures;
+    std::function<void(Material *, const Camera &, const mat4x4 &modelMatrix)> bindingFunction;
 };
 
 }
