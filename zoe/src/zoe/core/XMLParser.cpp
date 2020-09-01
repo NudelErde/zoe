@@ -135,6 +135,9 @@ static XMLNode parse(std::unique_ptr<std::istream>& stream){
 
 
 XMLNode readXML(const File& file) {
+    if(!file.isFile()){
+        throw std::runtime_error("Can not parse non existing file: " + file.getAbsolutePath());
+    }
 	std::unique_ptr<std::istream> stream = file.createIStream(false);
 
 	return parse(stream);
