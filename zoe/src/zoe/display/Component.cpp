@@ -9,6 +9,7 @@
 #include "UI/Button.h"
 #include "NativeScriptComponent.h"
 #include "ChaiScriptComponent.h"
+#include "UI/TextBox.h"
 
 namespace Zoe {
 
@@ -81,6 +82,7 @@ void BaseComponent::init() {
     registerComponent<ComponentGroup>("ComponentGroup");
     registerComponent<WorldObject>("WorldObject");
     registerComponent<Button>("Button");
+    registerComponent<TextBox>("TextBox");
     registerComponent<ModelComponent>("Model");
     registerComponent<NativeScriptComponent>("NativeScriptComponent");
     registerComponent<ChaiScriptComponent>("ChaiScriptComponent");
