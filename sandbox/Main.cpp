@@ -34,8 +34,6 @@ public:
                 lambda = startLambda;
             }
             mat4x4 m = originalMatrix-(lambda*lambdaMatrix);
-            info("Lambda: ", lambda);
-            info("det: ", m.determinant());
             worldObject->getModel().setModelMatrix(m);
         }
     }
