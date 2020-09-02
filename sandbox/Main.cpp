@@ -52,6 +52,12 @@ public:
         getLayerStack().pushLayer(ptr);
 
         NativeScriptComponent::registerNativeScript<MyScript>("test");
+
+        std::shared_ptr<ComponentLayer> uiLayer = std::make_shared<ComponentLayer>();
+        uiLayer->setCamera(std::make_shared<Camera2D>(vec2({0,0}),1600.0f,900.0f));
+        uiLayer->load(File("sampleObjects/UITest.xml"));
+
+        getLayerStack().pushLayer(uiLayer);
     }
 
     ~App() override = default;
