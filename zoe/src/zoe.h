@@ -11,7 +11,7 @@
  * Lorem ipsum stuff
  *
  * \section build_sec Building
- * Init github submodules if needed `git submodule update --init --recursive`\n
+ * Init github submodules if needed: `git submodule update --init --recursive`\n
  * Make sure your compiler supports c++17\n
  * Make sure you have CMake 3.13+ installed\n
  * \subsection build_win_sec On Windows

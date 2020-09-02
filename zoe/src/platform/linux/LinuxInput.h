@@ -5,7 +5,7 @@
  *      Author: florian
  */
 
-#ifndef WIN32
+#if !defined(WIN32) || defined(DOXYGEN)
 
 #pragma once
 

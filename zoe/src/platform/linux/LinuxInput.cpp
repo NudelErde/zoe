@@ -5,7 +5,7 @@
  *      Author: florian
  */
 
-#ifndef WIN32
+#if !defined(WIN32) || defined(DOXYGEN)
 
 #include "LinuxInput.h"
 #include "../../zoe/core/Application.h"
