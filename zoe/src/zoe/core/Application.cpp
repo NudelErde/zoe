@@ -23,6 +23,7 @@ namespace Zoe {
 
 static Application* s_Instance;
 static std::shared_ptr<Render> displayRender;
+static std::unique_ptr<Font> defaultFont;
 
 Application::Application(bool withWindow): hasWindow(withWindow) {
 	if(s_Instance!=nullptr){
@@ -43,6 +44,7 @@ Application::Application(bool withWindow): hasWindow(withWindow) {
     initVirtualFiles();
     initKeyMap();
     Font::init();
+    defaultFont = std::make_unique<Font>(File("virtual/zoe/display/Roboto-Regular.ttf"), 30);
     BaseComponent::init();
     if(withWindow){
         UITool::init();
@@ -98,6 +100,9 @@ bool Application::onWindowClose(WindowCloseEvent& e) {
 
 Application &Application::get() {
     return *s_Instance;
+}
+const Font &Application::getDefaultFont() {
+    return *defaultFont;
 }
 
 }
