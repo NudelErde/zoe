@@ -239,6 +239,7 @@ std::unique_ptr<std::iostream> File::createIOStream(bool binary) const {
 
 void File::create() const {
     if (!m_isVirtual) {
+        getParent().create();
         std::ofstream ostream(m_path, std::ios_base::out);
     } else if (!isFile()) {
         getParent().create();
