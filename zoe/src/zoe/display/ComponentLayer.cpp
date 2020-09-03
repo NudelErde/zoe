@@ -78,14 +78,6 @@ void ComponentLayer::onEvent(Event &event) {
     }
 }
 
-void ComponentLayer::onAttach() {
-
-}
-
-void ComponentLayer::onDetach() {
-
-}
-
 void ComponentLayer::fill(const XMLNode &node) {
 
 }
@@ -135,8 +127,8 @@ vec2 ComponentLayer::getMousePosition() {
         vec2 pos = Input::getMousePosition();
         pos.x *= (float)ptr->width;
         pos.y *= (float)ptr->height;
-        mat4x4 viewMatrix = ptr->getCamera()->getViewMatrix();
-        return (viewMatrix.inverse()*vec4({pos.x, pos.y, 0, 1})).xy;
+        mat4x4 invViewMatrix = ptr->getCamera()->getInvViewMatrix();
+        return (invViewMatrix.inverse()*vec4({pos.x, pos.y, 0, 1})).xy;
     }
     throw std::runtime_error("ComponentLayer API from non component source");
 }
