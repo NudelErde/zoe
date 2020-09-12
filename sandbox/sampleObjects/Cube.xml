@@ -1,6 +1,8 @@
 <ComponentLayer>
     <WorldObject>
-        <Model name="Cube" src="C:/dev/vs/zoe/sandbox/sampleObjects/Cube/Cube.obj">
+        <Model name="Cube" src="sampleObjects/Cube/Cube.obj">
         </Model>
+        <NativeScriptComponent script="test">
+        </NativeScriptComponent>
     </WorldObject>
 </ComponentLayer>

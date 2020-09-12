@@ -12,6 +12,7 @@
 #include "../../zoe/render/api/Shader.h"
 #include <string>
 #include <map>
+#include <set>
 
 namespace Zoe {
 
@@ -33,7 +34,7 @@ public:
      * @param filepath the .glsl file
      * @param context the GraphicsContext. Must be OpenGLContext
      */
-    OpenGLShaderImpl(const File &filepath, GraphicsContext *context);
+    OpenGLShaderImpl(const File &filepath, const std::set<std::string>& options, GraphicsContext *context);
 
     /**
      * Releases all used OpenGL resources for this object.
@@ -133,12 +134,13 @@ private:
      * find uniform location for a given name
      * @returns uniform location
      */
-    int getUniformLocation(const std::string&) const;
+    [[nodiscard]] int getUniformLocation(const std::string&) const;
 
 private:
     unsigned int renderID;
     std::map<std::string, unsigned int> samplerSlot;
     std::map<std::string, std::string> tags;
+    mutable std::set<std::string> undefinedUniformsLogged;
 };
 
 }

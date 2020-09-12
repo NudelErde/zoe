@@ -23,7 +23,7 @@ public:
      * Creates new OpenGLContext for a specific window.
      * @param window the window that provides the OpenGLContext
      */
-    OpenGLContext(GLFWwindow *window);
+    explicit OpenGLContext(GLFWwindow *window);
 
     /**
      * Initializes this object
@@ -41,29 +41,30 @@ public:
      * @returns the new IndexBuffer
      * @see OpenGLIndexBufferImpl
      */
-    std::shared_ptr<IndexBuffer> getIndexBufferV(bool dynamicBuffer) override;
+    std::shared_ptr<IndexBuffer> getIndexBuffer(bool dynamicBuffer) override;
 
     /**
      * Creates a new Render Object.
      * @returns the new Render Object
      * @see OpenGLRenderImpl
      */
-    std::shared_ptr<Render> getRenderV() override;
+    std::shared_ptr<Render> getRender() override;
 
     /**
      * Creates a new Shader Object.
      * @param file the File used for the creation of the Shader
+     * @param options the options used for the creation of the Shader
      * @returns the new Shader
      * @see OpenGLShaderImpl
      */
-    std::shared_ptr<Shader> getShaderV(const File &file) override;
+    std::shared_ptr<Shader> getShader(const File &file, const std::set<std::string>& options) override;
 
     /**
      * Creates a new Vertex Array.
      * @returns the new VertexArray
      * @see OpenGLVertexArrayImpl
      */
-    std::shared_ptr<VertexArray> getVertexArrayV() override;
+    std::shared_ptr<VertexArray> getVertexArray() override;
 
     /**
      * Creates a new Vertex buffer. The returned object is static if `dynamicBuffer == false` and dynamic if `dynamicBuffer == true`.
@@ -71,14 +72,14 @@ public:
      * @returns the new VertexBuffer
      * @see OpenGLVertexBufferImpl
      */
-    std::shared_ptr<VertexBuffer> getVertexBufferV(bool dynamicBuffer) override;
+    std::shared_ptr<VertexBuffer> getVertexBuffer(bool dynamicBuffer) override;
 
     /**
      * Creates a new VertexBufferLayer.
      * @returns the new VertexBufferLayout
      * @see OpenGLVertexBufferLayoutImpl
      */
-    std::shared_ptr<VertexBufferLayout> getVertexBufferLayoutV() override;
+    std::shared_ptr<VertexBufferLayout> getVertexBufferLayout() override;
 
     /**
      * Creates an empty texture object with specified width, height and channel amount.
@@ -88,7 +89,7 @@ public:
      * @returns the new Texture
      * @see OpenGLTextureImpl
      */
-    std::shared_ptr<Texture> getTextureV(unsigned int width, unsigned int height, unsigned int channels) override;
+    std::shared_ptr<Texture> getTexture(unsigned int width, unsigned int height, unsigned int channels) override;
 
     /**
      * Creates a texture object and reads the specified .webp file.
@@ -96,7 +97,7 @@ public:
      * @returns the new Texture
      * @see OpenGLTextureImpl
      */
-    std::shared_ptr<Texture> getTextureV(const File &file) override;
+    std::shared_ptr<Texture> getTexture(const File &file) override;
 
     /**
      * Creates a custom render target with specified width and height. A render target has a RGBA texture and a depth buffer.
@@ -105,14 +106,14 @@ public:
      * @returns the new RenderTarget
      * @see OpenGLRenderTargetImpl
      */
-    std::shared_ptr<RenderTarget> getRenderTargetV(unsigned int width, unsigned int height) override;
+    std::shared_ptr<RenderTarget> getRenderTarget(unsigned int width, unsigned int height) override;
 
     /**
      * Returns the default render target
      * @returns the default render target
      * @see OpenGLRenderTargetImpl
      */
-    std::shared_ptr<RenderTarget> getDefaultRenderTargetV() override;
+    std::shared_ptr<RenderTarget> getDefaultRenderTarget() override;
 
 private:
     GLFWwindow *windowHandle;

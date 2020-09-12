@@ -12,6 +12,7 @@
 #include "Window.h"
 #include "LayerStack.h"
 #include "../render/GraphicsContext.h"
+#include "../render/Font.h"
 
 namespace Zoe {
 
@@ -78,6 +79,9 @@ public:
 	inline static GraphicsContext& getContext(){
 		return *(get().getWindow().getContext());
 	}
+
+	static const Font& getDefaultFont();
+
 private:
 	bool onWindowClose(WindowCloseEvent& e);
 

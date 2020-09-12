@@ -112,6 +112,7 @@ void ComponentLayer::onTickEvent(AppTickEvent &event) {
     double duration = (std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::steady_clock::now() - timeOfLastTick).count() / 1000.0f);
     update(duration);
+    timeOfLastTick = std::chrono::steady_clock::now();
 }
 
 bool ComponentLayer::isKeyPressed(int keycode) {
