@@ -16,24 +16,65 @@
 
 namespace Zoe{
 
+/**
+ * WindowsWindow is the implementation for Window on Windows.
+ */
 class DLL_PUBLIC WindowsWindow: public Window{
 public:
 
-    WindowsWindow(const WindowProps& props);
-	~WindowsWindow();
+    /**
+     * Creates WindowsWindow with the specified WindowProps
+     * @param props the properties used to create this window
+     */
+    explicit WindowsWindow(const WindowProps& props);
+    /**
+     * Destructs the window and releases used resources
+     */
+    ~WindowsWindow() override;
 
-	void onUpdate() override;
+    /**
+     * Pull events and swap buffers
+     */
+    void onUpdate() override;
 
-	inline unsigned int getWidth() const override {return data.width;}
-	inline unsigned int getHeight() const override {return data.height;}
+    /**
+     * return the windows width
+     * @return width
+     */
+    inline unsigned int getWidth() const override {return data.width;}
+    /**
+     * return the windows height
+     * @return height
+     */
+    inline unsigned int getHeight() const override {return data.height;}
 
-	inline void setEventCallback(const EventCallbackFn& callback) override {data.eventCallback = callback;}
-	void setVSync(bool enabled) override;
-	bool isVSync() const override;
+    /**
+     * Sets the event callback function. The callback function is used when events are available.
+     * @param callback the callback function
+     */
+    inline void setEventCallback(const EventCallbackFn& callback) override {data.eventCallback = callback;}
+    /**
+     * Set vSync.
+     * @param enabled true if vSync should be enabled
+     */
+    void setVSync(bool enabled) override;
+    /**
+     * Returns true if vSync is enabled.
+     * @returns true if vSync is enabled
+     */
+    bool isVSync() const override;
 
-	inline void* getNativeWindow() const override {return window;}
+    /**
+     * Get native window handler.
+     * @returns native window handler
+     */
+    inline void* getNativeWindow() const override {return window;}
 
-	inline GraphicsContext* getContext() const override {return context;}
+    /**
+     * Returns used graphics context
+     * @return graphics context
+     */
+    inline GraphicsContext* getContext() const override {return context;}
 private:
 	void init(const WindowProps& props);
 	void shutdown();

@@ -23,7 +23,7 @@ class GraphicsContext;
 class OpenGLRenderTargetImpl : public RenderTargetImpl {
 public:
     /**
-     * Creates a OpenGLRenderTarget with a specified width and height.
+     * Creates an OpenGLRenderTarget with a specified width and height.
      * @param context the GraphicsContext. Must be OpenGLContext
      * @param width width of the OpenGLRenderTarget
      * @param height height of the OpenGLRenderTarget
@@ -31,7 +31,7 @@ public:
     OpenGLRenderTargetImpl(GraphicsContext *context, unsigned int width, unsigned int height);
 
     /**
-     * Releases all used OpenGL resources for this objects.
+     * Releases all used OpenGL resources for this object.
      */
     ~OpenGLRenderTargetImpl() override;
 
