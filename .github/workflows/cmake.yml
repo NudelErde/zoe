@@ -32,11 +32,13 @@ jobs:
       with:
         name: libzoe.so
         path: ./zoe/libzoe.so
+    - name: 'Preapre Working Directory for Test-Job'
+      run: tar -cf ./wd.tar ./*
     - name: 'Upload Working Directory for Test-Job'
       uses: actions/upload-artifact@v2
       with:
         name: wd
-        path: ./
+        path: ./wd.tar
   test:
     runs-on: ubuntu-latest
     needs: build
@@ -46,5 +48,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: wd
+    - name: 'Prepare Working Directoy for Build-Job'
+      run: tar -xf wd.tar
     - name: Run tests
       run: ctest
