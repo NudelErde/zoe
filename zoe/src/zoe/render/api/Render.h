@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "../../Core.h"
+#include "../../core/Core.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
@@ -16,17 +16,14 @@
 
 namespace Zoe{
 
-class GraphicsContext;
-
-enum class RenderFlag: unsigned int{
-	ALPHA_FLAG = 0b1
-};
+class RenderTarget;
 
 class RenderImpl{
+
 public:
-	RenderImpl(GraphicsContext* context,unsigned int x, unsigned int y, unsigned int width, unsigned int height):  settingsFlag(0),clearColor({0,0,0,1}),x(x),y(y),width(width), height(height){
-		this->context = context;
-	}
+    RenderImpl(GraphicsContext *context, unsigned int x, unsigned int y, unsigned int width, unsigned int height)
+            : settings({0, {0, 0, 0, 1}, x, y, width, height}), context(context), id(GraphicsContext::generateID()) {
+    }
 	virtual ~RenderImpl(){}
 
 	virtual void clear() = 0;
@@ -36,18 +33,25 @@ public:
 	virtual void setViewport(unsigned int left, unsigned int top, unsigned int right, unsigned int bottom) = 0;
 	virtual void setAlphaEnabled(bool enable) = 0;
 
-	inline vec4 getClearColor(){return clearColor;}
-	inline unsigned int getViewportX(){return x;}
-	inline unsigned int getViewportY(){return y;}
-	inline unsigned int getViewportWidth(){return width;}
-	inline unsigned int getViewportHeight(){return height;}
-	inline unsigned int getSettingsFlag(){return settingsFlag;}
+	virtual void setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) = 0;
+
+	virtual void push() = 0;
+	virtual void pop() = 0;
+
+	inline vec4 getClearColor(){return settings.clearColor;}
+	inline unsigned int getViewportX(){return settings.x;}
+	inline unsigned int getViewportY(){return settings.y;}
+	inline unsigned int getViewportWidth(){return settings.width;}
+	inline unsigned int getViewportHeight(){return settings.height;}
+	inline RenderFlag getSettingsFlag(){return settings.flag;}
+
+    inline const int& getID() const{ return id;}
 
 protected:
 	GraphicsContext* context;
-	unsigned int settingsFlag;
-	vec4 clearColor;
-	unsigned int x,y,width,height;
+    RenderSettings settings;
+
+    int id;
 
 	friend class Render;
 };
@@ -63,12 +67,19 @@ public:
 	inline void setViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height){impl->setViewport(x, y, width, height);}
 	inline void setAlphaEnabled(bool enable){impl->setAlphaEnabled(enable);}
 
-	inline vec4 getClearColor(){return impl->clearColor;}
-	inline unsigned int getViewportX(){return impl->x;}
-	inline unsigned int getViewportY(){return impl->y;}
-	inline unsigned int getViewportWidth(){return impl->width;}
-	inline unsigned int getViewportHeight(){return impl->height;}
-	inline unsigned int getSettingsFlag(){return impl->settingsFlag;}
+	inline vec4 getClearColor(){return impl->settings.clearColor;}
+	inline unsigned int getViewportX(){return impl->settings.x;}
+	inline unsigned int getViewportY(){return impl->settings.y;}
+	inline unsigned int getViewportWidth(){return impl->settings.width;}
+	inline unsigned int getViewportHeight(){return impl->settings.height;}
+	inline RenderFlag getSettingsFlag(){return impl->settings.flag;}
+
+	inline void setRenderTarget(std::shared_ptr<RenderTarget> target){impl->setRenderTarget(target);}
+
+    inline const int& getID() const { return impl->getID();}
+
+    inline void push() { impl->push();}
+	inline void pop() {impl->pop();}
 private:
 	ImplPointer<RenderImpl> impl;
 };

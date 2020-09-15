@@ -8,7 +8,7 @@
 #pragma once
 
 #include <ostream>
-#include "../Core.h"
+#include "../core/Core.h"
 
 namespace Zoe{
 

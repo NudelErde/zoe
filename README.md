@@ -30,4 +30,4 @@ Your artifacts are located in `./sandbox/sandbox` and `./zoe/libzoe.so`
 ## Licenses
 zoe is licensed under the [MIT License](https://github.com/NudelErde/zoe/blob/master/LICENSE)
 
-**Please take a look at the licenses of [our dependencies](https://github.com/NudelErde/zoe/tree/master/dependencies)** in particular [ChaiScript](https://github.com/ChaiScript/ChaiScript/blob/3af55d60f23c6a3ef4e3becc16ade6364ca15f7d/LICENSE)
+**Please take a look at the licenses of [our dependencies](https://github.com/NudelErde/zoe/tree/master/dependencies)** in particular [ChaiScript](https://github.com/ChaiScript/ChaiScript/blob/3af55d60f23c6a3ef4e3becc16ade6364ca15f7d/LICENSE) and [FreeType 2](https://github.com/aseprite/freetype2/blob/fbbcf50367403a6316a013b51690071198962920/docs/FTL.TXT)

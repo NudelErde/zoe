@@ -7,16 +7,15 @@
 
 #pragma once
 
-#include "../../Core.h"
+#include "../../core/Core.h"
 #include "ImplPointer.h"
+#include "../GraphicsContext.h"
 
 namespace Zoe{
 
-class GraphicsContext;
-
 class IndexBufferImpl{
 public:
-	IndexBufferImpl(GraphicsContext* context): context(context){}
+	IndexBufferImpl(GraphicsContext* context, bool dynamic): context(context), id(GraphicsContext::generateID()), dynamic(dynamic){}
 	virtual ~IndexBufferImpl(){}
 
 	virtual void bind() = 0;
@@ -27,8 +26,15 @@ public:
 
 	virtual const unsigned int& getCount() const = 0;
 
+    inline const int& getID() const{ return id;}
+
+    inline bool isDynamic() const {return dynamic;}
+
 protected:
 	GraphicsContext* context;
+    int id;
+
+    bool dynamic;
 };
 
 class DLL_PUBLIC IndexBuffer{
@@ -45,6 +51,9 @@ public:
 	inline const unsigned int& getCount() const{return impl->getCount();}
 
 	inline IndexBufferImpl* getImpl() {return &impl;}
+	inline const int& getID() const { return impl->getID();}
+
+    inline bool isDynamic() const {return impl->isDynamic();}
 private:
 	ImplPointer<IndexBufferImpl> impl;
 };

@@ -9,7 +9,7 @@
 
 #include <mutex>
 #include <condition_variable>
-#include "../Core.h"
+#include "../core/Core.h"
 
 namespace Zoe {
 

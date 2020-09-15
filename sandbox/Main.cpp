@@ -4,59 +4,63 @@
 
 #include "zoe.h"
 #include "EntryPoint.h"
-#include <cmath>
 
-class Layer : public Zoe::Layer3D {
+using namespace Zoe;
+
+class MyScript: public NativeScript{
 public:
+    mat4x4 originalMatrix;
+    mat4x4 lambdaMatrix;
+    double lambda = 0;
+    double startLambda = 0;
+    double endLambda = 3;
+    double duration = 20;
 
-    void onAttach() override {
-        Zoe::Material material(Zoe::File("shader.glsl"));
-        Zoe::Model model(Zoe::File("Model.obj"));
-        model.setModelMatrix(Zoe::scale3D(2,2,2));
-        std::shared_ptr<Zoe::Camera> camera = std::make_shared<Zoe::Camera>();
-        camera->setPosition({0, 7, 10});
-        camera->setRotation(0, 0, 0);
-        camera->setProjectionMatrix(Zoe::scale3D(4,4,1)*Zoe::perspective(0.05, 100, 70, 16.0 / 9.0));
-        cube = std::make_shared<Zoe::Object3D>(material, model);
-        add(cube);
-        setCamera(camera);
+    void onInit() override {
+        originalMatrix[0][0] = 3;originalMatrix[0][1] = 0;originalMatrix[0][2] = 0;originalMatrix[0][3] = 0;
+        originalMatrix[1][0] =-9;originalMatrix[1][1] = 6;originalMatrix[1][2] = 0;originalMatrix[1][3] = 0;
+        originalMatrix[2][0] = 0;originalMatrix[2][1] = 0;originalMatrix[2][2] = 1;originalMatrix[2][3] = 0;
+        originalMatrix[3][0] = 0;originalMatrix[3][1] = 0;originalMatrix[3][2] = 0;originalMatrix[3][3] = 1;
+
+        lambdaMatrix[0][0] = 1;lambdaMatrix[0][1] = 0;lambdaMatrix[0][2] = 0;lambdaMatrix[0][3] = 0;
+        lambdaMatrix[1][0] = 0;lambdaMatrix[1][1] = 1;lambdaMatrix[1][2] = 0;lambdaMatrix[1][3] = 0;
+        lambdaMatrix[2][0] = 0;lambdaMatrix[2][1] = 0;lambdaMatrix[2][2] = 0;lambdaMatrix[2][3] = 0;
+        lambdaMatrix[3][0] = 0;lambdaMatrix[3][1] = 0;lambdaMatrix[3][2] = 0;lambdaMatrix[3][3] = 0;
     }
-
-    void onDetach() override {
-
-    }
-
-    void onTick() override {
-
-    }
-
-    void onRender() override {
-        static float position = 0;
-        static float rotation = 0;
-        cube->getMaterial().setUniform("lightSource", Zoe::vec4({10,10,std::sin(position)*10,1}));
-        cube->getMaterial().setUniform("lightColor", Zoe::vec3({1,1,1}));
-        cube->getMaterial().setUniform("ambiLight", Zoe::vec3({0.2,0.2,0.2}));
-        if(Zoe::Input::isKeyPressed(KEY_SPACE)){
-            rotation += 0.1;
-            cube->getModel().setModelMatrix(Zoe::scale3D(2,2,2)*Zoe::rotateXZ3D(rotation));
-        }
-        if(Zoe::Input::isKeyPressed(KEY_ENTER)){
-            position += 0.01;
+    void onUpdate(const double & time) override {
+        if(std::shared_ptr<WorldObject> worldObject = std::dynamic_pointer_cast<WorldObject>(component.lock())){
+            lambda += time/(60.0/(endLambda-startLambda));
+            if(lambda >= endLambda) {
+                lambda = startLambda;
+            }
+            mat4x4 m = originalMatrix-(lambda*lambdaMatrix);
+            worldObject->getModel().setModelMatrix(m);
         }
     }
-private:
-    std::shared_ptr<Zoe::Object3D> cube;
 };
 
-class App : public Zoe::Application {
+class App : public Application {
 public:
     App() {
-        getLayerStack().pushLayer(new Layer());
+        std::shared_ptr<ComponentLayer> ptr = std::make_shared<ComponentLayer>();
+        ptr->load(File("sampleObjects/Cube.xml"));
+        std::shared_ptr<Camera3D> cam = std::make_shared<Camera3D>(vec3({0, 0, -6}), vec3({0, 0, 0}),
+                                                                             70.0f, 16.0f / 9.0f);
+        ptr->setCamera(cam);
+        getLayerStack().pushLayer(ptr);
+
+        NativeScriptComponent::registerNativeScript<MyScript>("test");
+
+        std::shared_ptr<ComponentLayer> uiLayer = std::make_shared<ComponentLayer>();
+        uiLayer->setCamera(std::make_shared<Camera2D>(vec2({0,0}),1600.0f,900.0f));
+        uiLayer->load(File("sampleObjects/UITest.xml"));
+
+        getLayerStack().pushLayer(uiLayer);
     }
 
     ~App() override = default;
 };
 
-Zoe::Application *Zoe::createApplication() {
+Application* Zoe::createApplication() {
     return new App();
 }
