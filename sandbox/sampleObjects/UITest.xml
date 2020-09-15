@@ -1,0 +1,4 @@
+<ComponentLayer>
+    <TextBox x="100" y="100" r="0" g="1" b="1" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr">
+    </TextBox>
+</ComponentLayer>

@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <cctype>
 #include <locale>
+#include <utility>
 
 namespace Zoe {
 
@@ -37,11 +38,11 @@ static inline void trim(std::string &s) {
 static inline std::string readString(std::string& in){
     const char* cstr = in.c_str();
     std::stringstream stringstream;
-    const unsigned int length = in.length();
+    const size_t length = in.length();
     bool escape = false;
     if(cstr[0] != '"')
         return "";
-    for(unsigned int i = 1; i < length; ++i){
+    for(size_t i = 1; i < length; ++i){
         if(cstr[i] == '\\'){
             escape = true;
         }else if(cstr[i] == '"' && !escape){
@@ -56,7 +57,7 @@ static inline std::string readString(std::string& in){
     return stringstream.str();
 }
 
-static std::string readTo(std::shared_ptr<std::istream>& stream, char ch){
+static std::string readTo(std::unique_ptr<std::istream>& stream, char ch){
 	std::stringstream stringstream;
 	int ret = 0;
 	char c = 0;
@@ -74,7 +75,7 @@ static std::string readTo(std::shared_ptr<std::istream>& stream, char ch){
 
 static void parseNameAndAttributes(XMLNode& node, std::string nameAndAttributes){
 	trim(nameAndAttributes);
-	std::size_t found = nameAndAttributes.find(" ");
+	std::size_t found = nameAndAttributes.find(' ');
 	if(found == std::string::npos){
 		node.name = nameAndAttributes;
 	}else {
@@ -82,7 +83,7 @@ static void parseNameAndAttributes(XMLNode& node, std::string nameAndAttributes)
 		nameAndAttributes = nameAndAttributes.substr(found);
 		while(true){
 			trim(nameAndAttributes);
-			if((found = nameAndAttributes.find("=")) == std::string::npos){
+			if((found = nameAndAttributes.find('=')) == std::string::npos){
 				break;
 			}
 			std::string key = nameAndAttributes.substr(0, found);
@@ -95,9 +96,9 @@ static void parseNameAndAttributes(XMLNode& node, std::string nameAndAttributes)
 	}
 }
 
-static XMLNode parse(std::shared_ptr<std::istream>& stream, std::string tag);
+static XMLNode parse(std::unique_ptr<std::istream>& stream, std::string tag);
 
-static void parseContent(XMLNode& node, std::shared_ptr<std::istream>& stream){
+static void parseContent(XMLNode& node, std::unique_ptr<std::istream>& stream){
 	std::string terminate = "/" + node.name;
 	std::stringstream sstream;
 
@@ -115,14 +116,14 @@ static void parseContent(XMLNode& node, std::shared_ptr<std::istream>& stream){
 	}
 }
 
-static XMLNode parse(std::shared_ptr<std::istream>& stream, std::string tag){
+static XMLNode parse(std::unique_ptr<std::istream>& stream, std::string tag){
 	XMLNode top;
-	parseNameAndAttributes(top, tag);
+	parseNameAndAttributes(top, std::move(tag));
 	parseContent(top, stream);
 	return top;
 }
 
-static XMLNode parse(std::shared_ptr<std::istream>& stream){
+static XMLNode parse(std::unique_ptr<std::istream>& stream){
 	XMLNode top;
 	readTo(stream, '<'); //find start;
 	std::string nameAndAttributes = readTo(stream, '>');
@@ -134,7 +135,10 @@ static XMLNode parse(std::shared_ptr<std::istream>& stream){
 
 
 XMLNode readXML(const File& file) {
-	std::shared_ptr<std::istream> stream = file.getInputStream();
+    if(!file.isFile()){
+        throw std::runtime_error("Can not parse non existing file: " + file.getAbsolutePath());
+    }
+	std::unique_ptr<std::istream> stream = file.createIStream(false);
 
 	return parse(stream);
 }

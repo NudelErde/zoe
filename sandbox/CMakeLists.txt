@@ -1,5 +1,3 @@
-add_definitions(-DZOE_SHARED)
-
 add_executable(sandbox Main.cpp)
 target_include_directories(sandbox PRIVATE ${PROJECT_SOURCE_DIR}/zoe/src)
 

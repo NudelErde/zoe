@@ -1,70 +1,76 @@
-/*
- * Material.h
- *
- *  Created on: 25.06.2019
- *      Author: florian
- */
+//
+// Created by Florian on 05.08.2020.
+//
 
 #pragma once
 
-#include "../Core.h"
+#include <memory>
+#include <vector>
+#include <functional>
+#include <map>
+
+#include "../core/Core.h"
 #include "../math/mat.h"
-#include "../render/api/Shader.h"
-#include "api/VertexBufferLayout.h"
-#include "Camera.h"
+#include "../core/File.h"
+#include "../display/Camera.h"
 
 namespace Zoe {
 
-    class VertexArray;
+class Shader;
 
-    class Render;
+class Texture;
 
-    class DLL_PUBLIC Material {
-    public:
+class Material;
 
-        Material();
+class DLL_PUBLIC MaterialLibrary {
+public:
+    //parse .mtl file and load attached images
+    static MaterialLibrary parseMaterialLibrary(const File &file, bool forceReload = false);
 
-        Material(const File &materialSource);
+    [[nodiscard]] const Material &get(const std::string &) const;
 
-        Material(std::shared_ptr<Shader> shader);
+    [[nodiscard]] bool hasLibrary(const std::string &) const;
 
-        void setModelMatrix(const mat4x4 &modelMatrix);
+    MaterialLibrary(MaterialLibrary &&) noexcept;
 
-        void setViewMatrix(const mat4x4 &viewMatrix);
+    MaterialLibrary(const MaterialLibrary &);
 
-        void setProjectionMatrix(const mat4x4 &projectionMatrix);
+    MaterialLibrary &operator=(MaterialLibrary &&) noexcept;
 
-        void setUniform(const std::string &name, float x);
+    MaterialLibrary &operator=(const MaterialLibrary &);
 
-        void setUniform(const std::string &name, vec2 vec);
+    ~MaterialLibrary();
 
-        void setUniform(const std::string &name, vec3 vec);
+    MaterialLibrary();
 
-        void setUniform(const std::string &name, vec4 vec);
+private:
+    //need ptr because vs is buggy and doesn't like if map is in static storage
+    std::map<std::string, Material> *materialMap;
+};
 
-        void setUniform(const std::string &name, const mat3x3 &mat);
+class DLL_PUBLIC Material {
+public:
+    Material();
 
-        void setUniform(const std::string &name, const mat4x4 &mat);
+    Material(const std::shared_ptr<Shader> &, const std::map<std::string, std::shared_ptr<Texture>> &,
+             const std::function<void(Material *, const Camera &, const mat4x4 &)> &);
 
-        void bind();
+    void bind(const Camera &camera, const mat4x4 &model);
 
-        inline std::shared_ptr<Render> &getRender() { return render; }
+    [[nodiscard]] inline const std::shared_ptr<Shader> &getShader() const {
+        return shader;
+    }
 
-        inline const std::shared_ptr<Render> &getRender() const { return render; }
+    [[nodiscard]] inline const std::map<std::string, std::shared_ptr<Texture>> &getTextures() const {
+        return textures;
+    }
 
-    private:
-        std::shared_ptr<Shader> shader;
-        mat4x4 modelMatrix;
-        mat4x4 viewMatrix;
-        mat4x4 projectionMatrix;
-        std::shared_ptr<Render> render;
-        std::map<std::string, std::function<void(Material *, const std::string &)>> uniformSetter;
-        std::map<std::string, std::string> uniformMatrixMap;
+private:
+    friend class MaterialLibrary;
 
-        friend void Camera::draw(Zoe::Material material, const Model &model);
-
-    private:
-        void loadTags();
-    };
+    std::shared_ptr<Shader> shader;
+    std::map<std::string, std::shared_ptr<Texture>> textures;
+    std::function<void(Material *, const Camera &, const mat4x4 &modelMatrix)> bindingFunction;
+};
 
 }
