@@ -14,11 +14,20 @@
 
 namespace Zoe {
 
+/**
+ * Contains information about the window
+ */
 struct DLL_PUBLIC WindowProps {
 	std::string title;
 	unsigned int width;
 	unsigned int height;
 
+	/**
+	 * Creates a window with the specified arguments.
+	 * @param title the title
+	 * @param width the width in pixel
+	 * @param height the height in pixel
+	 */
 	WindowProps(const std::string& title = "Zoe Engine", unsigned int width =
 			1280, unsigned int height = 720) :
 			title(title), width(width), height(height) {

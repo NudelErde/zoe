@@ -80,6 +80,10 @@ public:
 		return *(get().getWindow().getContext());
 	}
 
+	/**
+	 * Returns the default Font.
+	 * @returns the default Font
+	 */
 	static const Font& getDefaultFont();
 
 private:
