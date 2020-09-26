@@ -31,8 +31,10 @@ const mat4x4& Camera::getInvViewMatrix() const {
 }
 
 void Camera::draw(Model &model) const {
-    model.getMaterial().bind(*this, model.getModelMatrix());
-    getRender()->draw(*model.getVertexArray(), *model.getMaterial().getShader());
+    if(render){
+        model.getMaterial().bind(*this, model.getModelMatrix());
+        getRender()->draw(*model.getVertexArray(), *model.getMaterial().getShader());
+    }
 }
 
 vec3 Camera::getPosition() const {
