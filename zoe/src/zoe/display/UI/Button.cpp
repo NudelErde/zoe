@@ -20,7 +20,7 @@ void Button::setClickHandler(const std::function<void()> &handler) {
 void Button::onDraw(const Camera &camera) {
     UITool tool(camera);
     tool.setColor(color);
-    vec2 pos = getWorldPosition().xy;
+    vec2 pos = getWorldPosition().xy();
     tool.drawRectangle(pos, size);
 }
 
@@ -55,7 +55,7 @@ void Button::postFill() {
 
 void Button::onMouseClick(MouseButtonReleasedEvent &mbre) {
     //TODO: check if element is in focus and active and visible
-    vec2 position = getWorldPosition().xy;
+    vec2 position = getWorldPosition().xy();
     vec2 pos = ComponentLayer::getMousePosition();
     if (pos.x > position.x && pos.x < position.x + size.x
         && pos.y > position.y && pos.y < position.y + size.y) {

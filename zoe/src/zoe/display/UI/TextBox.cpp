@@ -13,7 +13,7 @@ TextBox::TextBox() : font(Application::getDefaultFont()) {}
 void TextBox::onDraw(const Camera &camera) {
     UITool tool(camera);
     tool.setColor(color);
-    vec2 pos = getWorldPosition().xy;
+    vec2 pos = getWorldPosition().xy();
     tool.drawText(text, pos);
 }
 void TextBox::onUpdate(double time) {

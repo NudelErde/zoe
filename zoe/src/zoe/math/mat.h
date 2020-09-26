@@ -25,7 +25,7 @@ class mat4x4;
  * m[0][0] = 1; m[0][1] = 0;\n
  * m[1][0] = 0; m[1][1] = 1;
  */
-class DLL_PUBLIC mat2x2 {
+class mat2x2 {
 public:
 
     /**
@@ -53,7 +53,7 @@ public:
     mat2x2 operator+(const mat2x2& mat) const;
 
     /**
-     * Subtracts this matrix element by element to the specified matrix and returns the result.
+     * Subtracts this matrix element by element from the specified matrix and returns the result.
      * @param mat the specified matrix
      * @returns the result
      */
@@ -138,7 +138,7 @@ private:
  * @param v the specified matrix
  * @returns the stream
  */
-DLL_PUBLIC std::ostream& operator<<(std::ostream& stream, const mat2x2& v);
+std::ostream& operator<<(std::ostream& stream, const mat2x2& v);
 
 /**
  * Multiplies the specified matrix and the specified float element by element.
@@ -146,14 +146,14 @@ DLL_PUBLIC std::ostream& operator<<(std::ostream& stream, const mat2x2& v);
  * @param a the specified float
  * @returns the result
  */
-DLL_PUBLIC mat2x2 operator*(const mat2x2& mat, float a);
+mat2x2 operator*(const mat2x2& mat, float a);
 /**
  * Multiplies the specified matrix and the specified float element by element.
  * @param a the specified float
  * @param mat the specified matrix
  * @returns the result
  */
-DLL_PUBLIC mat2x2 operator*(float a, const mat2x2& mat);
+mat2x2 operator*(float a, const mat2x2& mat);
 
 /**
  * A 3 by 3 matrix. The vales can be access by the [] operator. It returns a vector which has [] operator. The first [] is the y coordinate of the cell.
@@ -162,7 +162,7 @@ DLL_PUBLIC mat2x2 operator*(float a, const mat2x2& mat);
  * m[1][0] = 0; m[1][1] = 1; m[1][2] = 0;\n
  * m[2][0] = 0; m[2][1] = 0; m[2][2] = 1;
  */
-class DLL_PUBLIC mat3x3 {
+class mat3x3 {
 public:
 
     /**
@@ -190,7 +190,7 @@ public:
     mat3x3 operator+(const mat3x3& mat) const;
 
     /**
-     * Subtracts this matrix element by element to the specified matrix and returns the result.
+     * Subtracts this matrix element by element from the specified matrix and returns the result.
      * @param mat the specified matrix
      * @returns the result
      */
@@ -277,14 +277,14 @@ private:
  * @param v the specified matrix
  * @returns the stream
  */
-DLL_PUBLIC std::ostream& operator<<(std::ostream& stream, const mat3x3& v);
+std::ostream& operator<<(std::ostream& stream, const mat3x3& v);
 
 /**
  * Returns a rotation matrix for 2D space by the specified angle in radians.
  * @param angle the specified angle
  * @returns the rotation matrix
  */
-DLL_PUBLIC mat3x3 rotate2D(float angle);
+mat3x3 rotate2D(float angle);
 
 /**
  * Returns a translation matrix for 2D space by the specified offset.
@@ -292,7 +292,7 @@ DLL_PUBLIC mat3x3 rotate2D(float angle);
  * @param y the y offset
  * @return the translation matrix
  */
-DLL_PUBLIC mat3x3 translate2D(float x, float y);
+mat3x3 translate2D(float x, float y);
 
 /**
  * Returns a scaling matrix for 2D space by the specified values in the x and y direction.
@@ -300,7 +300,7 @@ DLL_PUBLIC mat3x3 translate2D(float x, float y);
  * @param scaleY the y scale factor
  * @returns the scaling matrix
  */
-DLL_PUBLIC mat3x3 scale2D(float scaleX, float scaleY);
+mat3x3 scale2D(float scaleX, float scaleY);
 
 /**
  * Multiplies the specified matrix and the specified float element by element.
@@ -308,7 +308,7 @@ DLL_PUBLIC mat3x3 scale2D(float scaleX, float scaleY);
  * @param a the specified float
  * @returns the result
  */
-DLL_PUBLIC mat3x3 operator*(const mat3x3& mat, float a);
+mat3x3 operator*(const mat3x3& mat, float a);
 
 /**
  * Multiplies the specified matrix and the specified float element by element.
@@ -316,7 +316,7 @@ DLL_PUBLIC mat3x3 operator*(const mat3x3& mat, float a);
  * @param mat the specified matrix
  * @returns the result
  */
-DLL_PUBLIC mat3x3 operator*(float a, const mat3x3& mat);
+mat3x3 operator*(float a, const mat3x3& mat);
 
 /**
  * A43 by 4 matrix. The vales can be access by the [] operator. It returns a vector which has [] operator. The first [] is the y coordinate of the cell.
@@ -326,7 +326,7 @@ DLL_PUBLIC mat3x3 operator*(float a, const mat3x3& mat);
  * m[2][0] = 0; m[2][1] = 0; m[2][2] = 1; m[2][3] = 0;\n
  * m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
  */
-class DLL_PUBLIC mat4x4 {
+class mat4x4 {
 public:
     /**
      * Creates an empty 4 by 4 matrix.
@@ -353,7 +353,7 @@ public:
     mat4x4 operator+(const mat4x4& mat) const;
 
     /**
-     * Subtracts this matrix element by element to the specified matrix and returns the result.
+     * Subtracts this matrix element by element from the specified matrix and returns the result.
      * @param mat the specified matrix
      * @returns the result
      */
@@ -441,28 +441,28 @@ private:
  * @param v the specified matrix
  * @returns the stream
  */
-DLL_PUBLIC std::ostream& operator<<(std::ostream& stream, const mat4x4& v);
+std::ostream& operator<<(std::ostream& stream, const mat4x4& v);
 
 /**
  * Returns a rotation around the Z-axis matrix for 3D space by the specified angle in radians.
  * @param angle the specified angle
  * @returns the rotation matrix
  */
-DLL_PUBLIC mat4x4 rotateXY3D(float angle);
+mat4x4 rotateXY3D(float angle);
 
 /**
  * Returns a rotation around the X-axis matrix for 3D space by the specified angle in radians.
  * @param angle the specified angle
  * @returns the rotation matrix
  */
-DLL_PUBLIC mat4x4 rotateYZ3D(float angle);
+mat4x4 rotateYZ3D(float angle);
 
 /**
  * Returns a rotation around the Y-axis matrix for 3D space by the specified angle in radians.
  * @param angle the specified angle
  * @returns the rotation matrix
  */
-DLL_PUBLIC mat4x4 rotateXZ3D(float angle);
+mat4x4 rotateXZ3D(float angle);
 
 /**
  * Returns a translation matrix for 3D space by the specified offset.
@@ -471,7 +471,7 @@ DLL_PUBLIC mat4x4 rotateXZ3D(float angle);
  * @param z the z offset
  * @return the translation matrix
  */
-DLL_PUBLIC mat4x4 translate3D(float x, float y, float z);
+mat4x4 translate3D(float x, float y, float z);
 
 /**
  * Returns a scaling matrix for 3D space by the specified values in the x, y and z direction.
@@ -480,7 +480,7 @@ DLL_PUBLIC mat4x4 translate3D(float x, float y, float z);
  * @param scaleZ the z scale factor
  * @returns the scaling matrix
  */
-DLL_PUBLIC mat4x4 scale3D(float scaleX, float scaleY, float scaleZ);
+mat4x4 scale3D(float scaleX, float scaleY, float scaleZ);
 
 /**
  * Calculates an orthographic projection matrix, also known as a perspective projection matrix, with the specified limits.
@@ -492,7 +492,7 @@ DLL_PUBLIC mat4x4 scale3D(float scaleX, float scaleY, float scaleZ);
  * @param far the furthest value that is in the resulting space
  * @returns the resulting orthographic projection matrix
  */
-DLL_PUBLIC mat4x4 orthographic(float left, float top, float right, float bottom, float near, float far);
+mat4x4 orthographic(float left, float top, float right, float bottom, float near, float far);
 
 /**
  * Calculates the view matrix by the specified position and rotation.
@@ -500,7 +500,7 @@ DLL_PUBLIC mat4x4 orthographic(float left, float top, float right, float bottom,
  * @param rotation the specified rotation
  * @returns the resulting view matrix
  */
-DLL_PUBLIC mat4x4 calcViewMatrix(vec3 position, vec3 rotation);
+mat4x4 calcViewMatrix(vec3 position, vec3 rotation);
 
 /**
  * Calculates the perspective projection matrix.
@@ -510,7 +510,7 @@ DLL_PUBLIC mat4x4 calcViewMatrix(vec3 position, vec3 rotation);
  * @param aspectRatio the ratio from width to height
  * @returns the resulting perspective projection matrix
  */
-DLL_PUBLIC mat4x4 perspective(float near, float far, float fov, float aspectRatio);
+mat4x4 perspective(float near, float far, float fov, float aspectRatio);
 
 /**
  * Multiplies the specified matrix and the specified float element by element.
@@ -518,7 +518,7 @@ DLL_PUBLIC mat4x4 perspective(float near, float far, float fov, float aspectRati
  * @param a the specified float
  * @returns the result
  */
-DLL_PUBLIC mat4x4 operator*(const mat4x4& mat, float a);
+mat4x4 operator*(const mat4x4& mat, float a);
 
 /**
  * Multiplies the specified matrix and the specified float element by element.
@@ -526,6 +526,6 @@ DLL_PUBLIC mat4x4 operator*(const mat4x4& mat, float a);
  * @param mat the specified matrix
  * @returns the result
  */
-DLL_PUBLIC mat4x4 operator*(float a, const mat4x4& mat);
+mat4x4 operator*(float a, const mat4x4& mat);
 
 }

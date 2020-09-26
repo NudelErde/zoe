@@ -59,7 +59,7 @@ void Camera2D::setPosition(const vec2 &pos) {
 
 vec3 Camera2D::getPosition() const {
     vec3 res{};
-    res.xy = position;
+    res.xy() = position;
     return res;
 }
 
@@ -129,7 +129,7 @@ const vec3 &Camera3D::getRotation() const {
 }
 
 vec3 Camera3D::getDirection() const {
-    return (rotateXZ3D(rotation.y) * rotateYZ3D(rotation.x) * rotateXY3D(rotation.z) * vec4({0, 0, -1, 0})).xyz;
+    return (rotateXZ3D(rotation.y) * rotateYZ3D(rotation.x) * rotateXY3D(rotation.z) * vec4({0, 0, -1, 0})).xyz();
 }
 
 void Camera3D::setFoV(const float &f) {

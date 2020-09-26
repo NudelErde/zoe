@@ -129,7 +129,7 @@ vec2 ComponentLayer::getMousePosition() {
         pos.x *= (float)ptr->width;
         pos.y *= (float)ptr->height;
         mat4x4 invViewMatrix = ptr->getCamera()->getInvViewMatrix();
-        return (invViewMatrix.inverse()*vec4({pos.x, pos.y, 0, 1})).xy;
+        return (invViewMatrix.inverse()*vec4({pos.x, pos.y, 0, 1})).xy();
     }
     throw std::runtime_error("ComponentLayer API from non component source");
 }

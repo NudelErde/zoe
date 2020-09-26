@@ -150,9 +150,9 @@ mat3x3::mat3x3(const mat2x2 &mat) {
 }
 
 mat3x3::mat3x3(const mat4x4 &mat) {
-    data[0] = mat[0].xyz;
-    data[1] = mat[1].xyz;
-    data[2] = mat[2].xyz;
+    data[0] = mat[0].xyz();
+    data[1] = mat[1].xyz();
+    data[2] = mat[2].xyz();
 }
 
 
