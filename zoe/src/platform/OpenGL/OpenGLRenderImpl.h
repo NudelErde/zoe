@@ -35,7 +35,7 @@ public:
     ~OpenGLRenderImpl();
 
     /**
-     * Draws the specified VertexArray with the specified Shader
+     * Draws the specified VertexArray with the specified Shader.
      * @param va the VertexArray
      * @param shader the Shader
      */
@@ -86,7 +86,7 @@ public:
     void pop() override;
 
     /**
-     * Sets the used RenderTarget
+     * Sets the used RenderTarget.
      * @param renderTarget the RenderTarget
      */
     void setRenderTarget(std::shared_ptr<RenderTarget> renderTarget) override;

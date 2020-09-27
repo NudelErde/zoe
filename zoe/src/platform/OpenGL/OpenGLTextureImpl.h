@@ -14,7 +14,7 @@ namespace Zoe {
 /**
  * Implementation of Texture.\n
  * OpenGl should be used if no better implementation is available.\n
- * An OpenGLTextureImpl has 4 color channels (RGBA).\n
+ * An OpenGLTextureImpl has a maximum of 4 color channels (RGBA).\n
  */
 class OpenGLTextureImpl : public TextureImpl {
 public:
@@ -47,13 +47,13 @@ public:
     void bind(unsigned int slot);
 
     /**
-     * Unbinds the OpenGLTexture on the specified slot
+     * Unbinds the OpenGLTexture from the specified slot.
      * @param slot the specified slot
      */
     void unbind(unsigned int slot);
 
     /**
-     * Stores the data with the specified size. Size must equal `width * height * channels`. The data must be one byte per channel.
+     * Stores the data with the specified size. Size must equal `width * height * channels`. The data must have one byte per channel and pixel.
      * If channels is 4, data must be in RGBA order from to left to right.
      * @param data the data of the texture
      * @param size the size of data

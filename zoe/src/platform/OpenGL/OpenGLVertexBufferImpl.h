@@ -16,7 +16,7 @@ class GraphicsContext;
 /**
  * Implementation of VertexBufferImpl\n
  * OpenGl should be used if no better implementation is available.\n
- * A VertexBuffer stores the vertices used for drawing. \n
+ * A VertexBuffer stores the vertices used for drawing.
  * @see IndexBuffer
  * @see VertexArray
  */

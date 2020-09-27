@@ -29,7 +29,7 @@ public:
     RenderTargetImpl(GraphicsContext *context) : context(context), id(GraphicsContext::generateID()) {}
 
     /**
-     * A virtual default destructor
+     * A virtual default destructor.
      */
     virtual ~RenderTargetImpl() = default;
 
@@ -39,7 +39,7 @@ public:
     virtual void bind() = 0;
 
     /**
-     * Unbinds the OpenGLRenderTarget
+     * Unbinds the OpenGLRenderTarget.
      */
     virtual void unbind() = 0;
 
@@ -78,7 +78,7 @@ public:
     inline void bind() { impl->bind(); }
 
     /**
-     * Unbinds the OpenGLRenderTarget
+     * Unbinds the OpenGLRenderTarget.
      */
     inline void unbind() { impl->unbind(); }
 
