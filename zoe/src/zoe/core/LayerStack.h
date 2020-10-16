@@ -42,7 +42,7 @@ public:
 	void dispatchEvent(T& event) {
 		if (event.isHandled())
 			return;
-		if (event.isInCategory(EventCategoryApplication)) {
+		if (event.isInCategory(EventCategory::Application)) {
 			for (auto it = rbegin(); it != rend(); ++it) {
 				Layer& layer = *(std::shared_ptr<Layer>) (*it);
 				if (layer.subscribedEvents & event.getCategoryFlags()) {
@@ -52,8 +52,8 @@ public:
 				}
 			}
 		} else {
-			for (auto it = begin(); it != end(); ++it) {
-				Layer& layer = *(std::shared_ptr<Layer>) (*it);
+			for (auto & it : *this) {
+				Layer& layer = *(std::shared_ptr<Layer>) it;
 				if (layer.subscribedEvents & event.getCategoryFlags()) {
 					layer.onEvent(event);
 					if (event.isHandled())

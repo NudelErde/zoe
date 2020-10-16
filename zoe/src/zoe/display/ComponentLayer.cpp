@@ -24,7 +24,7 @@ ComponentLayer::ComponentLayer() : ComponentLayer(1600, 900) {}
 
 ComponentLayer::ComponentLayer(const unsigned int &width, const unsigned int &height) : Layer("ComponentLayer"), width(width),
                                                                           height(height) {
-    setSubscribedEvents(EventCategory::EventCategoryApplication | EventCategory::EventCategoryInput);
+    setSubscribedEvents((unsigned int)EventCategory::Application | (unsigned int)EventCategory::Input);
     timeOfLastTick = std::chrono::steady_clock::now();
 
     if (!data.init) {
@@ -73,7 +73,7 @@ void ComponentLayer::onEvent(Event &event) {
     EventDispatcher dispatcher(event);
     dispatcher.dispatch<AppRenderEvent>([this](AppRenderEvent &eve) { this->onDrawEvent(eve); });
     dispatcher.dispatch<AppTickEvent>([this](AppTickEvent &eve) { this->onTickEvent(eve); });
-    if (event.isInCategory(EventCategoryInput)) {
+    if (event.isInCategory(EventCategory::Input)) {
         inputEvent(event);
     }
 }

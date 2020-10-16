@@ -10,31 +10,24 @@
 #include "Event.h"
 #include "../core/Core.h"
 
-namespace Zoe{
+namespace Zoe {
 
-class DLL_PUBLIC WindowResizeEvent : public Event{
+class DLL_PUBLIC WindowResizeEvent : public EventTemplate<EventType::WindowResize, EventCategory::Window> {
 public:
-	WindowResizeEvent(unsigned int width, unsigned int height): width(width),height(height){}
-	~WindowResizeEvent(){}
+    WindowResizeEvent(unsigned int width, unsigned int height) : width(width), height(height) {}
+    ~WindowResizeEvent() {}
 
-	inline unsigned int getHeight() const {return height;}
-	inline unsigned int getWidth() const {return width;}
-
-	EVENT_CLASS_TYPE(WindowResize)
-	EVENT_CLASS_CATEGORY(EventCategoryWindow)
+    inline unsigned int getHeight() const { return height; }
+    inline unsigned int getWidth() const { return width; }
 
 private:
-	unsigned int width,height;
+    unsigned int width, height;
 };
 
-class DLL_PUBLIC WindowCloseEvent : public Event{
+class DLL_PUBLIC WindowCloseEvent : public EventTemplate<EventType::WindowClose, EventCategory::Window> {
 public:
-	WindowCloseEvent(){}
-	~WindowCloseEvent(){}
-
-	EVENT_CLASS_TYPE(WindowClose)
-	EVENT_CLASS_CATEGORY(EventCategoryWindow)
-
+    WindowCloseEvent() {}
+    ~WindowCloseEvent() {}
 };
 
 }

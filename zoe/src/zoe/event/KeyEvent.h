@@ -10,40 +10,36 @@
 #include "Event.h"
 #include "../core/Core.h"
 
-namespace Zoe{
+namespace Zoe {
 
-class DLL_PUBLIC KeyEvent: public Event{
+template<EventType type>
+class DLL_PUBLIC KeyEvent : public EventTemplate<type, EventCategory::Keyboard, EventCategory::Input> {
 public:
-	inline int getKeyCode() const {return keyCode;}
-
-	EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
+    inline int getKeyCode() const { return keyCode; }
 
 protected:
-	KeyEvent(int keycode): keyCode(keycode){};
-	virtual ~KeyEvent(){}
+    KeyEvent(int keycode) : keyCode(keycode) {};
+    virtual ~KeyEvent() {}
 
-	int keyCode;
+    int keyCode;
 };
 
-class DLL_PUBLIC KeyPressedEvent: public KeyEvent{
+class DLL_PUBLIC KeyPressedEvent : public KeyEvent<EventType::KeyPressed> {
 public:
-	KeyPressedEvent(int keycode, int repeatcount): KeyEvent(keycode), repeatCount(repeatcount){}
-	~KeyPressedEvent(){}
+    KeyPressedEvent(int keycode, int repeatcount) : KeyEvent(keycode), repeatCount(repeatcount) {}
+    ~KeyPressedEvent() {}
 
-	inline int getRepeatCount() const {return repeatCount; }
-
-	EVENT_CLASS_TYPE(KeyPressed)
+    inline int getRepeatCount() const { return repeatCount; }
 
 private:
-	int repeatCount;
+    int repeatCount;
 };
 
-class DLL_PUBLIC KeyReleasedEvent: public KeyEvent{
+class DLL_PUBLIC KeyReleasedEvent : public KeyEvent<EventType::KeyReleased> {
 public:
-	KeyReleasedEvent(int keycode): KeyEvent(keycode) {}
-	~KeyReleasedEvent(){}
+    KeyReleasedEvent(int keycode) : KeyEvent(keycode) {}
+    ~KeyReleasedEvent() {}
 
-	EVENT_CLASS_TYPE(KeyReleased)
 };
 
 }

@@ -37,7 +37,7 @@ public:
 		return this->enabled;
 	}
 
-	inline int getSubscribedEvents() const {
+	inline unsigned int getSubscribedEvents() const {
 		return this->subscribedEvents;
 	}
 
@@ -48,7 +48,7 @@ public:
 protected:
 	std::string name;
 	bool enabled = true;
-	int subscribedEvents = EventCategory::EventCategoryNone;
+	unsigned int subscribedEvents = static_cast<unsigned int>(EventCategory::None);
 };
 
 } /* namespace Zoe */
