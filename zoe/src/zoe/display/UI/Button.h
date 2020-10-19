@@ -45,7 +45,7 @@ public:
     const vec4 &getColor() const;
     /**
      * Specifies the new color of this component, where x, y, z, w are r, g, b, a.
-     * @param size the new size
+     * @param color the new color
      */
     void setColor(const vec4 &color);
 

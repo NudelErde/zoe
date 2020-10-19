@@ -75,12 +75,12 @@ public:
      * @param width the width of the viewport
      * @param height the height of the viewport
      */
-    virtual void setViewport(unsigned int left, unsigned int top, unsigned int right, unsigned int bottom) = 0;
+    virtual void setViewport(unsigned int x, unsigned int y, unsigned int width, unsigned int height) = 0;
 
     /**
      * Sets if Alpha should be used while drawing.
      * See implementation for details.
-     * @param enabled `true` if alpha should be enabled
+     * @param enable `true` if alpha should be enabled
      */
     virtual void setAlphaEnabled(bool enable) = 0;
 
@@ -201,7 +201,7 @@ public:
 
     /**
      * Sets if Alpha should be used while drawing.
-     * @param enabled `true` if alpha should be enabled
+     * @param enable `true` if alpha should be enabled
      */
     inline void setAlphaEnabled(bool enable) { impl->setAlphaEnabled(enable); }
 
@@ -243,7 +243,7 @@ public:
 
     /**
      * Sets the used RenderTarget.
-     * @param renderTarget the RenderTarget
+     * @param target the RenderTarget
      */
     inline void setRenderTarget(std::shared_ptr<RenderTarget> target) { impl->setRenderTarget(target); }
 

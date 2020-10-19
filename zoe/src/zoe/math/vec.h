@@ -64,7 +64,7 @@ public:
 
     /**
      * Calculates the scalar product of the specified and this vector.
-     * @param mat the specified vector
+     * @param v the specified vector
      * @returns the result
      */
     float operator*(const vec2& v) const;
@@ -214,7 +214,7 @@ public:
 
     /**
      * Calculates the scalar product of the specified and this vector.
-     * @param mat the specified vector
+     * @param v the specified vector
      * @returns the result
      */
     float operator*(const vec3& v) const;
@@ -401,7 +401,7 @@ public:
 
     /**
      * Calculates the scalar product of the specified and this vector.
-     * @param mat the specified vector
+     * @param v the specified vector
      * @returns the result
      */
     float operator*(const vec4& v) const;

@@ -205,7 +205,7 @@ public:
 
     /**
      * Multiplies this matrix and the specified matrix using matrix multiplication.
-     * @param mat the specified matrix
+     * @param rhs the specified matrix
      * @returns the result
      */
     mat3x3 operator*(const mat3x3& rhs) const;

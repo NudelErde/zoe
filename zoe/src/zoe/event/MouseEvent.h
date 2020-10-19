@@ -79,6 +79,7 @@ private:
 /**
  * An event which indicates that a mouse button was pressed or released.
  * Can be a MouseButtonPressedEvent or a MouseButtonReleasedEvent.
+ * @tparam type the specific EventType
  */
 template<EventType type>
 class DLL_PUBLIC MouseButtonEvent : public EventTemplate<type, EventCategory::MouseButton, EventCategory::Input> {

@@ -32,6 +32,7 @@ public:
      * #shader [ vertex | fragment ]
      * \endcode
      * @param filepath the .glsl file
+     * @param options the options used to create the shader
      * @param context the GraphicsContext. Must be OpenGLContext
      */
     OpenGLShaderImpl(const File &filepath, const std::set<std::string>& options, GraphicsContext *context);
