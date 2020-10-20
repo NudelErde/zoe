@@ -73,8 +73,17 @@ public:
 	}
 
 protected:
+    /**
+     * The name of the Layer.
+     */
 	std::string name;
+	/**
+	 * `enabled` is false if the layer should be ignored.
+	 */
 	bool enabled = true;
+	/**
+	 * `subscribedEvents` describes which events should this layer receive.
+	 */
 	unsigned int subscribedEvents = static_cast<unsigned int>(EventCategory::None);
 };
 

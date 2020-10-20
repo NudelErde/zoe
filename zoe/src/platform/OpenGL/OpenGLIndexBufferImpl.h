@@ -67,7 +67,7 @@ public:
      */
     const unsigned int &getCount() const;
 
-public:
+private:
     unsigned int renderID;
     unsigned int count;
 };

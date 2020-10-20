@@ -22,7 +22,15 @@ class vec4;
  */
 class vec2 {
 public:
-    float x, y;
+    /**
+     * The x value of the vector.
+     */
+    float x;
+
+    /**
+     * The y value of the vector.
+     */
+    float y;
 public:
     /**
      * Creates a new null vector.
@@ -101,13 +109,13 @@ public:
      * Returns a normalized version of this vector. Its length is guaranteed to be 1.
      * @returns the normalized vector
      */
-    vec2 normalize() const;
+    [[nodiscard]] vec2 normalize() const;
 
     /**
      * Returns the length, also known as magnitude, of this vector.
      * @returns the length
      */
-    float length() const;
+    [[nodiscard]] float length() const;
 
     /**
      * Checks if this vector equals the specified vector.
@@ -125,28 +133,23 @@ public:
 };
 
 /**
- * Prints the specified vector to the specified stream.
- * @param stream the specified stream.
- * @param v the specified vector
- * @returns the stream
- */
-std::ostream& operator<<(std::ostream& stream, const vec2& v);
-
- /**
-  * Scales the specified vector by the specified factor.
-  * @param m the specified factor
-  * @param v the specified vector
-  * @returns the result
-  */
-vec2 operator*(const float& m, const vec2& v);
-
-/**
  * A 3 dimensional vector.
  * @see https://en.wikipedia.org/wiki/Vector_(mathematics_and_physics)
  */
 class vec3 {
 public:
-    float x, y, z;
+    /**
+     * The x value of the vector.
+     */
+    float x;
+    /**
+     * The y value of the vector.
+     */
+    float y;
+    /**
+     * The z value of the vector.
+     */
+    float z;
 public:
 
     /**
@@ -190,13 +193,13 @@ public:
      * Access the x and y member as a vec2.
      * @return a copy of x and y as a vec2
      */
-    inline const vec2& xy() const { return reinterpret_cast<const vec2&>(x); }
+    [[nodiscard]] inline const vec2& xy() const { return reinterpret_cast<const vec2&>(x); }
 
     /**
      * Access the y and z member as a vec2.
      * @return a copy of y and z as a vec2
      */
-    inline const vec2& yz() const { return reinterpret_cast<const vec2&>(y); }
+    [[nodiscard]] inline const vec2& yz() const { return reinterpret_cast<const vec2&>(y); }
 
     /**
      * Adds this vector element by element to the specified vector and returns the result.
@@ -238,7 +241,7 @@ public:
      * @param v the specified vector
      * @returns the result
      */
-    vec3 crossProduct(const vec3& v) const;
+    [[nodiscard]] vec3 crossProduct(const vec3& v) const;
 
     /**
      * Access an element of this vector by its index.
@@ -258,13 +261,13 @@ public:
      * Returns a normalized version of this vector. Its length is guaranteed to be 1.
      * @returns the normalized vector
      */
-    vec3 normalize() const;
+    [[nodiscard]] vec3 normalize() const;
 
     /**
      * Returns the length, also known as magnitude, of this vector.
      * @returns the length
      */
-    float length() const;
+    [[nodiscard]] float length() const;
 
     /**
      * Checks if this vector equals the specified vector.
@@ -282,21 +285,30 @@ public:
 };
 
 /**
- * Prints the specified vector to the specified stream.
- * @param stream the specified stream.
- * @param v the specified vector
- * @returns the stream
- */
-std::ostream& operator<<(std::ostream& stream, const vec3& v);
-vec3 operator*(const float& m, const vec3& v);
-
-/**
  * A 4 dimensional vector.
  * @see https://en.wikipedia.org/wiki/Vector_(mathematics_and_physics)
  */
 class vec4 {
 public:
-    float x, y, z, w;
+    /**
+     * The x value of the vector.
+     */
+    float x;
+
+    /**
+     * The y value of the vector.
+     */
+    float y;
+
+    /**
+     * The z value of the vector.
+     */
+    float z;
+
+    /**
+     * The w value of the vector.
+     */
+    float w;
 public:
 
     /**
@@ -359,31 +371,31 @@ public:
      * Access the x and y member as a vec2.
      * @return a copy of x and y as a vec2
      */
-    inline const vec2& xy() const { return reinterpret_cast<const vec2&>(x); }
+    [[nodiscard]] inline const vec2& xy() const { return reinterpret_cast<const vec2&>(x); }
 
     /**
      * Access the y and z member as a vec2.
      * @return a copy of y and z as a vec2
      */
-    inline const vec2& yz() const { return reinterpret_cast<const vec2&>(y); }
+    [[nodiscard]] inline const vec2& yz() const { return reinterpret_cast<const vec2&>(y); }
 
     /**
      * Access the z and w member as a vec2.
      * @return a copy of z and w as a vec2
      */
-    inline const vec2& zw() const { return reinterpret_cast<const vec2&>(z); }
+    [[nodiscard]] inline const vec2& zw() const { return reinterpret_cast<const vec2&>(z); }
 
     /**
      * Access the x, y and z member as a vec3.
      * @return a copy of x, y and z as a vec3
      */
-    inline const vec3& xyz() const { return reinterpret_cast<const vec3&>(x); }
+    [[nodiscard]] inline const vec3& xyz() const { return reinterpret_cast<const vec3&>(x); }
 
     /**
      * Access the y, z and w member as a vec3.
      * @return a copy of y, z and w as a vec3
      */
-    inline const vec3& yzw() const { return reinterpret_cast<const vec3&>(y); }
+    [[nodiscard]] inline const vec3& yzw() const { return reinterpret_cast<const vec3&>(y); }
 
     /**
      * Adds this vector element by element to the specified vector and returns the result.
@@ -426,7 +438,7 @@ public:
      * @param v2 the second specified vector
      * @returns the result
      */
-    vec4 crossProduct(const vec4& v1, const vec4& v2) const;
+    [[nodiscard]] vec4 crossProduct(const vec4& v1, const vec4& v2) const;
 
     /**
      * Access an element of this vector by its index.
@@ -446,13 +458,13 @@ public:
      * Returns a normalized version of this vector. Its length is guaranteed to be 1.
      * @returns the normalized vector
      */
-    vec4 normalize() const;
+    [[nodiscard]] vec4 normalize() const;
 
     /**
      * Returns the length, also known as magnitude, of this vector.
      * @returns the length
      */
-    float length() const;
+    [[nodiscard]] float length() const;
 
     /**
      * Checks if this vector equals the specified vector.
@@ -469,13 +481,15 @@ public:
     bool operator!=(const vec4& vec) const;
 };
 
+}
+
 /**
  * Prints the specified vector to the specified stream.
  * @param stream the specified stream.
  * @param v the specified vector
  * @returns the stream
  */
-std::ostream& operator<<(std::ostream& stream, const vec4& v);
+std::ostream& operator<<(std::ostream& stream, const Zoe::vec2& v);
 
 /**
  * Scales the specified vector by the specified factor.
@@ -483,6 +497,38 @@ std::ostream& operator<<(std::ostream& stream, const vec4& v);
  * @param v the specified vector
  * @returns the result
  */
-vec4 operator*(const float& m, const vec4& v);
+Zoe::vec2 operator*(const float& m, const Zoe::vec2& v);
 
-}
+
+/**
+ * Prints the specified vector to the specified stream.
+ * @param stream the specified stream.
+ * @param v the specified vector
+ * @returns the stream
+ */
+std::ostream& operator<<(std::ostream& stream, const Zoe::vec3& v);
+
+/**
+ * Scales the specified vector by the specified factor.
+ * @param m the specified factor
+ * @param v the specified vector
+ * @returns the result
+ */
+Zoe::vec3 operator*(const float& m, const Zoe::vec3& v);
+
+/**
+ * Prints the specified vector to the specified stream.
+ * @param stream the specified stream.
+ * @param v the specified vector
+ * @returns the stream
+ */
+std::ostream& operator<<(std::ostream& stream, const Zoe::vec4& v);
+
+/**
+ * Scales the specified vector by the specified factor.
+ * @param m the specified factor
+ * @param v the specified vector
+ * @returns the result
+ */
+Zoe::vec4 operator*(const float& m, const Zoe::vec4& v);
+

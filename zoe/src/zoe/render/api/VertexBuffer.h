@@ -78,9 +78,19 @@ public:
     virtual unsigned int getSize() const = 0;
 
 protected:
+    /**
+     * The used graphics context.
+     */
     GraphicsContext* context;
 
+    /**
+     * A unique id.
+     */
     int id;
+
+    /**
+     * `true` if this buffer is dynamic.
+     */
     bool dynamic;
 };
 

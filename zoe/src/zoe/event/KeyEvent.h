@@ -27,9 +27,20 @@ public:
     inline int getKeyCode() const { return keyCode; }
 
 protected:
+    /**
+     * Constructs a KeyEvent with the keycode that triggered this event.
+     * @param keycode the specified keycode
+     */
     KeyEvent(int keycode) : keyCode(keycode) {};
+
+    /**
+     * Destructs the KeyEvent.
+     */
     virtual ~KeyEvent() {}
 
+    /**
+     * The keycode that triggered the event.
+     */
     int keyCode;
 };
 

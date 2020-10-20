@@ -119,6 +119,9 @@ protected:
     virtual void onInputEvent(Event &event) = 0;
 
 protected:
+    /**
+     * The position in 3D space of the component.
+     */
     vec3 position{};
 private:
     std::vector<std::shared_ptr<BaseComponent>> children;

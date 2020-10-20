@@ -60,14 +60,14 @@ public:
     std::shared_ptr<Shader> getShader(const File &file, const std::set<std::string>& options) override;
 
     /**
-     * Creates a new Vertex Array.
+     * Creates a new VertexArray.
      * @returns the new VertexArray
      * @see OpenGLVertexArrayImpl
      */
     std::shared_ptr<VertexArray> getVertexArray() override;
 
     /**
-     * Creates a new Vertex buffer. The returned object is static if `dynamicBuffer == false` and dynamic if `dynamicBuffer == true`.
+     * Creates a new VertexBuffer. The returned object is static if `dynamicBuffer == false` and dynamic if `dynamicBuffer == true`.
      * @param dynamicBuffer whether the buffer is dynamic or not
      * @returns the new VertexBuffer
      * @see OpenGLVertexBufferImpl
@@ -109,7 +109,7 @@ public:
     std::shared_ptr<RenderTarget> getRenderTarget(unsigned int width, unsigned int height) override;
 
     /**
-     * Returns the default render target
+     * Returns the default render target.
      * @returns the default render target
      * @see OpenGLRenderTargetImpl
      */

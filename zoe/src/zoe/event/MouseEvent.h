@@ -91,9 +91,20 @@ public:
     inline int getMouseButton() const { return button; }
 
 protected:
+    /**
+     * Constructs a MouseButtonEvent with the button that triggered this event.
+     * @param button the specified button
+     */
     MouseButtonEvent(int button) : button(button) {}
+
+    /**
+     * Destructs the MouseButtonEvent.
+     */
     virtual ~MouseButtonEvent() {}
 
+    /**
+     * The button that triggered this event.
+     */
     int button;
 };
 

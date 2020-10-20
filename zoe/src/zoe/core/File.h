@@ -130,8 +130,19 @@ public:
     }
 
 protected:
+    /**
+     * The path of this file.
+     */
     std::string m_path;
+
+    /**
+     * The absolute path of this file.
+     */
     std::string absolutPath;
+
+    /**
+     * is `true` if the file is virtual.
+     */
     bool m_isVirtual;
 };
 

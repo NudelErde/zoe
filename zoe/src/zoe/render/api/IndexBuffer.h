@@ -80,9 +80,19 @@ public:
     inline bool isDynamic() const { return dynamic; }
 
 protected:
+    /**
+     * The used graphics context.
+     */
     GraphicsContext* context;
+
+    /**
+     * A unique id.
+     */
     int id;
 
+    /**
+     * `true` if this buffer is dynamic.
+     */
     bool dynamic;
 };
 

@@ -87,6 +87,9 @@ public:
         return getCategoryFlags() & (unsigned int) category;
     }
 protected:
+    /**
+     * `handled` is true if the event is handled and should be ignored.
+     */
     bool handled = false;
 };
 

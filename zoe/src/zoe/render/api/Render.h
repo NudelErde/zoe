@@ -146,9 +146,19 @@ public:
     inline const int& getID() const { return id; }
 
 protected:
+    /**
+     * The used graphics context.
+     */
     GraphicsContext* context;
+
+    /**
+     * The save settings.
+     */
     RenderSettings settings;
 
+    /**
+     * A unique id.
+     */
     int id;
 
     friend class Render;

@@ -18,8 +18,19 @@ namespace Zoe {
  * Contains information about the window
  */
 struct DLL_PUBLIC WindowProps {
+    /**
+     * The title of the window.
+     */
 	std::string title;
+
+	/**
+	 * The width of the window in pixels.
+	 */
 	unsigned int width;
+
+	/**
+	 * The height of the window in pixels.
+	 */
 	unsigned int height;
 
 	/**
@@ -39,6 +50,9 @@ struct DLL_PUBLIC WindowProps {
  */
 class DLL_PUBLIC Window {
 public:
+    /**
+     * The callback type.
+     */
 	using EventCallbackFn = std::function<void(Event&)>;
 
 	/**

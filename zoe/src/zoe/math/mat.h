@@ -105,19 +105,19 @@ public:
      * Calculates the inverse of this matrix. Throws an exception if the determinant is 0.
      * @returns the inverse matrix
      */
-    mat2x2 inverse() const;
+    [[nodiscard]] mat2x2 inverse() const;
 
     /**
      * Calculates the transpose of this matrix.
      * @return the transposed matrix
      */
-    mat2x2 transpose() const;
+    [[nodiscard]] mat2x2 transpose() const;
 
     /**
      * Calculates the determinant of this matrix.
      * @return the determinant
      */
-    float determinant() const;
+    [[nodiscard]] float determinant() const;
 
     /**
      * Returns the 2 by 2 identity matrix.
@@ -132,28 +132,6 @@ public:
 private:
     vec2 data[2]{};
 };
-/**
- * Prints the specified 2 by 2 matrix to the specified stream.
- * @param stream the specified stream.
- * @param v the specified matrix
- * @returns the stream
- */
-std::ostream& operator<<(std::ostream& stream, const mat2x2& v);
-
-/**
- * Multiplies the specified matrix and the specified float element by element.
- * @param mat the specified matrix
- * @param a the specified float
- * @returns the result
- */
-mat2x2 operator*(const mat2x2& mat, float a);
-/**
- * Multiplies the specified matrix and the specified float element by element.
- * @param a the specified float
- * @param mat the specified matrix
- * @returns the result
- */
-mat2x2 operator*(float a, const mat2x2& mat);
 
 /**
  * A 3 by 3 matrix. The vales can be access by the [] operator. It returns a vector which has [] operator. The first [] is the y coordinate of the cell.
@@ -242,19 +220,19 @@ public:
      * Calculates the inverse of this matrix. Throws an exception if the determinant is 0.
      * @returns the inverse matrix
      */
-    mat3x3 inverse() const;
+    [[nodiscard]] mat3x3 inverse() const;
 
     /**
     * Calculates the transpose of this matrix.
     * @return the transposed matrix
     */
-    mat3x3 transpose() const;
+    [[nodiscard]] mat3x3 transpose() const;
 
     /**
      * Calculates the determinant of this matrix.
      * @return the determinant
      */
-    float determinant() const;
+    [[nodiscard]] float determinant() const;
 
     /**
      * Returns the 3 by 3 identity matrix.
@@ -270,14 +248,6 @@ public:
 private:
     vec3 data[3]{};
 };
-
-/**
- * Prints the specified 3 by 3 matrix to the specified stream.
- * @param stream the specified stream.
- * @param v the specified matrix
- * @returns the stream
- */
-std::ostream& operator<<(std::ostream& stream, const mat3x3& v);
 
 /**
  * Returns a rotation matrix for 2D space by the specified angle in radians.
@@ -301,22 +271,6 @@ mat3x3 translate2D(float x, float y);
  * @returns the scaling matrix
  */
 mat3x3 scale2D(float scaleX, float scaleY);
-
-/**
- * Multiplies the specified matrix and the specified float element by element.
- * @param mat the specified matrix
- * @param a the specified float
- * @returns the result
- */
-mat3x3 operator*(const mat3x3& mat, float a);
-
-/**
- * Multiplies the specified matrix and the specified float element by element.
- * @param a the specified float
- * @param mat the specified matrix
- * @returns the result
- */
-mat3x3 operator*(float a, const mat3x3& mat);
 
 /**
  * A43 by 4 matrix. The vales can be access by the [] operator. It returns a vector which has [] operator. The first [] is the y coordinate of the cell.
@@ -405,19 +359,19 @@ public:
      * Calculates the inverse of this matrix. Throws an exception if the determinant is 0.
      * @returns the inverse matrix
      */
-    mat4x4 inverse() const;
+    [[nodiscard]] mat4x4 inverse() const;
 
     /**
     * Calculates the transpose of this matrix.
     * @return the transposed matrix
     */
-    mat4x4 transpose() const;
+    [[nodiscard]] mat4x4 transpose() const;
 
     /**
      * Calculates the determinant of this matrix.
      * @return the determinant
      */
-    float determinant() const;
+    [[nodiscard]] float determinant() const;
 
     /**
      * Returns the 4 by 4 identity matrix.
@@ -434,14 +388,6 @@ public:
 private:
     vec4 data[4]{};
 };
-
-/**
- * Prints the specified 4 by 4 matrix to the specified stream.
- * @param stream the specified stream.
- * @param v the specified matrix
- * @returns the stream
- */
-std::ostream& operator<<(std::ostream& stream, const mat4x4& v);
 
 /**
  * Returns a rotation around the Z-axis matrix for 3D space by the specified angle in radians.
@@ -512,20 +458,74 @@ mat4x4 calcViewMatrix(vec3 position, vec3 rotation);
  */
 mat4x4 perspective(float near, float far, float fov, float aspectRatio);
 
-/**
- * Multiplies the specified matrix and the specified float element by element.
- * @param mat the specified matrix
- * @param a the specified float
- * @returns the result
- */
-mat4x4 operator*(const mat4x4& mat, float a);
-
-/**
- * Multiplies the specified matrix and the specified float element by element.
- * @param a the specified float
- * @param mat the specified matrix
- * @returns the result
- */
-mat4x4 operator*(float a, const mat4x4& mat);
-
 }
+
+/**
+ * Prints the specified 2 by 2 matrix to the specified stream.
+ * @param stream the specified stream.
+ * @param v the specified matrix
+ * @returns the stream
+ */
+std::ostream& operator<<(std::ostream& stream, const Zoe::mat2x2& v);
+
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param mat the specified matrix
+ * @param a the specified float
+ * @returns the result
+ */
+Zoe::mat2x2 operator*(const Zoe::mat2x2& mat, float a);
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param a the specified float
+ * @param mat the specified matrix
+ * @returns the result
+ */
+Zoe::mat2x2 operator*(float a, const Zoe::mat2x2& mat);
+
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param mat the specified matrix
+ * @param a the specified float
+ * @returns the result
+ */
+Zoe::mat4x4 operator*(const Zoe::mat4x4& mat, float a);
+
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param a the specified float
+ * @param mat the specified matrix
+ * @returns the result
+ */
+Zoe::mat4x4 operator*(float a, const Zoe::mat4x4& mat);
+
+/**
+ * Prints the specified 4 by 4 matrix to the specified stream.
+ * @param stream the specified stream.
+ * @param v the specified matrix
+ * @returns the stream
+ */
+std::ostream& operator<<(std::ostream& stream, const Zoe::mat4x4& v);
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param mat the specified matrix
+ * @param a the specified float
+ * @returns the result
+ */
+Zoe::mat3x3 operator*(const Zoe::mat3x3& mat, float a);
+
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param a the specified float
+ * @param mat the specified matrix
+ * @returns the result
+ */
+Zoe::mat3x3 operator*(float a, const Zoe::mat3x3& mat);
+
+/**
+ * Prints the specified 3 by 3 matrix to the specified stream.
+ * @param stream the specified stream.
+ * @param v the specified matrix
+ * @returns the stream
+ */
+std::ostream& operator<<(std::ostream& stream, const Zoe::mat3x3& v);

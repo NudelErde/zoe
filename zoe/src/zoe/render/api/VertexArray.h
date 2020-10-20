@@ -69,8 +69,15 @@ public:
     inline const int& getID() const { return id; }
 
 protected:
+
+    /**
+     * The used graphics context.
+     */
     GraphicsContext* context;
 
+    /**
+     * A unique id.
+     */
     int id;
 };
 

@@ -30,8 +30,24 @@ namespace Zoe{
         vec4 clearColor;
         /**
          * Dimension and position of the viewport.
+         * X-value.
          */
-        unsigned int x,y,width,height;
+        unsigned int x;
+        /**
+         * Dimension and position of the viewport.
+         * Y-value.
+         */
+        unsigned int y;
+        /**
+         * Dimension and position of the viewport.
+         * width-value.
+         */
+        unsigned int width;
+        /**
+         * Dimension and position of the viewport.
+         * height-value.
+         */
+        unsigned int height;
     };
 
 }

@@ -17,10 +17,25 @@ class NativeScriptComponent;
  */
 class DLL_PUBLIC NativeScript {
 public:
+    /**
+     * The onUpdate function is called every game tick with the time since the last event.
+     */
     virtual void onUpdate(const double&) {}
+
+    /**
+     * The onInit function is called once.
+     * It is guaranteed that the onInit function is called before the onUpdate function is called the first time.
+     */
     virtual void onInit() {}
 
+    /**
+     * The parent of the NativeScriptComponent.
+     */
     std::weak_ptr<BaseComponent> component{};
+
+    /**
+     * The NativeScriptComponent.
+     */
     std::weak_ptr<NativeScriptComponent> scriptComponent{};
 };
 
