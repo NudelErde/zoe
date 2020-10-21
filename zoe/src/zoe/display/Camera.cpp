@@ -31,8 +31,10 @@ const mat4x4& Camera::getInvViewMatrix() const {
 }
 
 void Camera::draw(Model &model) const {
-    model.getMaterial().bind(*this, model.getModelMatrix());
-    getRender()->draw(*model.getVertexArray(), *model.getMaterial().getShader());
+    if(render){
+        model.getMaterial().bind(*this, model.getModelMatrix());
+        getRender()->draw(*model.getVertexArray(), *model.getMaterial().getShader());
+    }
 }
 
 vec3 Camera::getPosition() const {
@@ -57,7 +59,7 @@ void Camera2D::setPosition(const vec2 &pos) {
 
 vec3 Camera2D::getPosition() const {
     vec3 res{};
-    res.xy = position;
+    res.xy() = position;
     return res;
 }
 
@@ -127,7 +129,7 @@ const vec3 &Camera3D::getRotation() const {
 }
 
 vec3 Camera3D::getDirection() const {
-    return (rotateXZ3D(rotation.y) * rotateYZ3D(rotation.x) * rotateXY3D(rotation.z) * vec4({0, 0, -1, 0})).xyz;
+    return (rotateXZ3D(rotation.y) * rotateYZ3D(rotation.x) * rotateXY3D(rotation.z) * vec4({0, 0, -1, 0})).xyz();
 }
 
 void Camera3D::setFoV(const float &f) {

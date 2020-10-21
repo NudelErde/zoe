@@ -24,7 +24,7 @@ ComponentLayer::ComponentLayer() : ComponentLayer(1600, 900) {}
 
 ComponentLayer::ComponentLayer(const unsigned int &width, const unsigned int &height) : Layer("ComponentLayer"), width(width),
                                                                           height(height) {
-    setSubscribedEvents(EventCategory::EventCategoryApplication | EventCategory::EventCategoryInput);
+    setSubscribedEvents((unsigned int)EventCategory::Application | (unsigned int)EventCategory::Input);
     timeOfLastTick = std::chrono::steady_clock::now();
 
     if (!data.init) {
@@ -73,17 +73,9 @@ void ComponentLayer::onEvent(Event &event) {
     EventDispatcher dispatcher(event);
     dispatcher.dispatch<AppRenderEvent>([this](AppRenderEvent &eve) { this->onDrawEvent(eve); });
     dispatcher.dispatch<AppTickEvent>([this](AppTickEvent &eve) { this->onTickEvent(eve); });
-    if (event.isInCategory(EventCategoryInput)) {
+    if (event.isInCategory(EventCategory::Input)) {
         inputEvent(event);
     }
-}
-
-void ComponentLayer::onAttach() {
-
-}
-
-void ComponentLayer::onDetach() {
-
 }
 
 void ComponentLayer::fill(const XMLNode &node) {
@@ -136,8 +128,8 @@ vec2 ComponentLayer::getMousePosition() {
         vec2 pos = Input::getMousePosition();
         pos.x *= (float)ptr->width;
         pos.y *= (float)ptr->height;
-        mat4x4 viewMatrix = ptr->getCamera()->getViewMatrix();
-        return (viewMatrix.inverse()*vec4({pos.x, pos.y, 0, 1})).xy;
+        mat4x4 invViewMatrix = ptr->getCamera()->getInvViewMatrix();
+        return (invViewMatrix.inverse()*vec4({pos.x, pos.y, 0, 1})).xy();
     }
     throw std::runtime_error("ComponentLayer API from non component source");
 }

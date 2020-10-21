@@ -5,7 +5,7 @@
  *      Author: florian
  */
 
-#ifndef WIN32
+#if !defined(WIN32) || defined(DOXYGEN)
 
 #include "LinuxWindow.h"
 #include "../../zoe/event/CommonEvent.h"

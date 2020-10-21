@@ -93,7 +93,7 @@ const Font &UITool::getFont() {
     return font;
 }
 
-void UITool::drawImage(const std::shared_ptr<Texture> &image, const vec2 &&pos, const vec2 &size) {
+void UITool::drawImage(const std::shared_ptr<Texture> &image, const vec2 &pos, const vec2 &size) {
     mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,-pos.y+450,0) * scale3D(size.x,-size.y,1);
     imageShader->setUniform4m("ModelViewProjection", modelViewProjection);
     imageShader->setTexture("u_image", *image);

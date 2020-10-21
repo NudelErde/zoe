@@ -16,8 +16,6 @@ namespace Zoe {
 static std::shared_ptr<std::map<std::string, std::function<std::shared_ptr<BaseComponent>()>>> registeredComponents
         = std::make_shared<std::map<std::string, std::function<std::shared_ptr<BaseComponent>()>>>();
 
-BaseComponent::BaseComponent() = default;
-
 void BaseComponent::add(const std::shared_ptr<BaseComponent> &component) {
     if (auto ptr = component->parent.lock()) {
         warning("Component already has a parent! Component is not added!");

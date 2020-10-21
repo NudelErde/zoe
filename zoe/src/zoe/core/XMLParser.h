@@ -15,10 +15,39 @@
 
 namespace Zoe{
 
+/**
+ * An XMLNode is the parsed node.
+ * ```
+ * <Name attributeKey1="attributeValue1" attributeKey2="attributeKey2" ...>
+ *     Content...
+ *
+ *     <Child1>
+ *         ...
+ *     </Child1>
+ *     <Child2>
+ *         ...
+ *     </Child2>
+ *     ...
+ * </Name>
+ * ```
+ */
 struct DLL_PUBLIC XMLNode{
+    /**
+     * The name of this node.
+     */
 	std::string name;
+	/**
+	 * The content of this node.
+	 */
 	std::string content;
+	/**
+	 * The children of this node.
+	 */
 	std::vector<XMLNode> children;
+
+	/**
+	 * The attributes to this node.
+	 */
 	std::map<std::string,std::string> attributes;
 };
 

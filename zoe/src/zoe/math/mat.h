@@ -11,126 +11,521 @@
 
 #include "vec.h"
 
-namespace Zoe{
+namespace Zoe {
 
 class mat2x2;
+
 class mat3x3;
+
 class mat4x4;
 
-class DLL_PUBLIC mat2x2{
+/**
+ * A 2 by 2 matrix. The vales can be access by the [] operator. It returns a vector which has [] operator. The first [] is the y coordinate of the cell.
+ * This pattern can be used to assign the matrix:\n
+ * m[0][0] = 1; m[0][1] = 0;\n
+ * m[1][0] = 0; m[1][1] = 1;
+ */
+class mat2x2 {
 public:
-	mat2x2();
-	explicit mat2x2(const mat3x3& mat);
-	explicit mat2x2(const mat4x4& mat);
-	~mat2x2();
-	mat2x2 operator+(const mat2x2& mat) const;
-	mat2x2 operator-(const mat2x2& mat) const;
-	vec2 operator*(const vec2& vec) const;
-	mat2x2 operator*(const mat2x2& mat) const;
 
-	vec2 operator[](const int& index) const;
-	vec2& operator[](const int& index);
+    /**
+     * Creates an empty 2 by 2 matrix.
+     */
+    mat2x2();
 
-    bool operator==(const mat2x2 &rhs) const;
-    bool operator!=(const mat2x2 &rhs) const;
+    /**
+     * Creates a new 2 by 2 matrix. Copies the top left corner of the specified matrix.
+     * @param mat the specified matrix
+     */
+    explicit mat2x2(const mat3x3& mat);
 
-    mat2x2 inverse() const;
-    mat2x2 transpose() const;
+    /**
+     * Creates a new 2 by 2 matrix. Copies the top left corner of the specified matrix.
+     * @param mat the specified matrix
+     */
+    explicit mat2x2(const mat4x4& mat);
 
-    float determinant() const;
+    /**
+     * Adds this matrix element by element to the specified matrix and returns the result.
+     * @param mat the specified matrix
+     * @returns the result
+     */
+    mat2x2 operator+(const mat2x2& mat) const;
 
+    /**
+     * Subtracts this matrix element by element from the specified matrix and returns the result.
+     * @param mat the specified matrix
+     * @returns the result
+     */
+    mat2x2 operator-(const mat2x2& mat) const;
+
+    /**
+     * Multiplies this matrix and the specified vector using matrix vector multiplication.
+     * @param vec the specified vector
+     * @returns the result
+     */
+    vec2 operator*(const vec2& vec) const;
+
+    /**
+     * Multiplies this matrix and the specified matrix using matrix multiplication.
+     * @param mat the specified matrix
+     * @returns the result
+     */
+    mat2x2 operator*(const mat2x2& mat) const;
+
+    /**
+     * Access the row of this matrix. The index must be 0 or 1. The returned vector also has an operator[] to access the element of this matrix.
+     * @param index the index of the row
+     * @returns the row as a vector
+     */
+    vec2 operator[](const int& index) const;
+
+    /**
+     * Access the row of this matrix. The index must be 0 or 1. The returned vector also has an operator[] to access the element of this matrix.
+     * @param index the index of the row
+     * @returns a reference to the row as a vector
+     */
+    vec2& operator[](const int& index);
+
+    /**
+     * Checks if this matrix equals the specified matrix.
+     * @param rhs the specified matrix
+     * @returns `true` if every element is equal
+     */
+    bool operator==(const mat2x2& rhs) const;
+
+    /**
+	 * Checks if this matrix does not equal the specified matrix.
+	 * @param rhs the specified matrix
+	 * @returns `true` if any element is different
+	 */
+    bool operator!=(const mat2x2& rhs) const;
+
+    /**
+     * Calculates the inverse of this matrix. Throws an exception if the determinant is 0.
+     * @returns the inverse matrix
+     */
+    [[nodiscard]] mat2x2 inverse() const;
+
+    /**
+     * Calculates the transpose of this matrix.
+     * @return the transposed matrix
+     */
+    [[nodiscard]] mat2x2 transpose() const;
+
+    /**
+     * Calculates the determinant of this matrix.
+     * @return the determinant
+     */
+    [[nodiscard]] float determinant() const;
+
+    /**
+     * Returns the 2 by 2 identity matrix.
+     * The 2 by 2 identity matrix is:\n
+     * ```
+     * 1 0
+     * 0 1
+     * ```
+     * @returns the 2 by 2 identity matrix
+     */
     static const mat2x2& identity();
 private:
-	vec2 data[2]{};
+    vec2 data[2]{};
 };
-DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat2x2& v);
-
-DLL_PUBLIC mat2x2 operator*(const mat2x2& mat, float a);
-DLL_PUBLIC mat2x2 operator*(float a, const mat2x2& mat);
-
-class DLL_PUBLIC mat3x3{
-public:
-	mat3x3();
-	explicit mat3x3(const mat2x2& mat);
-	explicit mat3x3(const mat4x4& mat);
-	~mat3x3();
-	mat3x3 operator+(const mat3x3& mat) const;
-	mat3x3 operator-(const mat3x3& mat) const;
-	vec3 operator*(const vec3& vec) const;
-	mat3x3 operator*(const mat3x3& rhs) const;
-
-	vec3 operator[](const int& index )const;
-	vec3& operator[](const int& index );
-
-    bool operator==(const mat3x3 &rhs) const;
-    bool operator!=(const mat3x3 &rhs) const;
-
-    mat3x3 inverse() const;
-    mat3x3 transpose() const;
-
-    float determinant() const;
-
-    static const mat3x3& identity();
-private:
-	vec3 data[3]{};
-};
-DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat3x3& v);
-
-DLL_PUBLIC mat3x3 rotate2D(float angle);
-DLL_PUBLIC mat3x3 translate2D(float x,float y);
-DLL_PUBLIC mat3x3 scale2D(float scaleX,float scaleY);
-
-DLL_PUBLIC mat3x3 operator*(const mat3x3& mat, float a);
-DLL_PUBLIC mat3x3 operator*(float a, const mat3x3& mat);
 
 /**
- * mat[0][0] = 0;mat[0][1] = 0;mat[0][2] = 0;mat[0][3] = 0;
- * mat[1][0] = 0;mat[1][1] = 0;mat[1][2] = 0;mat[1][3] = 0;
- * mat[2][0] = 0;mat[2][1] = 0;mat[2][2] = 0;mat[2][3] = 0;
- * mat[3][0] = 0;mat[3][1] = 0;mat[3][2] = 0;mat[3][3] = 0;
+ * A 3 by 3 matrix. The vales can be access by the [] operator. It returns a vector which has [] operator. The first [] is the y coordinate of the cell.
+ * This pattern can be used to assign the matrix:\n
+ * m[0][0] = 1; m[0][1] = 0; m[0][2] = 0;\n
+ * m[1][0] = 0; m[1][1] = 1; m[1][2] = 0;\n
+ * m[2][0] = 0; m[2][1] = 0; m[2][2] = 1;
  */
-class DLL_PUBLIC mat4x4{
+class mat3x3 {
 public:
-	mat4x4();
+
+    /**
+     * Creates an empty 3 by 3 matrix.
+     */
+    mat3x3();
+
+    /**
+     * Creates a new 3 by 3 matrix. Copies the specified matrix in the top left corner. The rest is filled like the 3 by 3 identity matrix is.
+     * @param mat the specified matrix
+     */
+    explicit mat3x3(const mat2x2& mat);
+
+    /**
+     * Creates a new 3 by 3 matrix. Copies the top left corner of the specified matrix.
+     * @param mat the specified matrix
+     */
+    explicit mat3x3(const mat4x4& mat);
+
+    /**
+     * Adds this matrix element by element to the specified matrix and returns the result.
+     * @param mat the specified matrix
+     * @returns the result
+     */
+    mat3x3 operator+(const mat3x3& mat) const;
+
+    /**
+     * Subtracts this matrix element by element from the specified matrix and returns the result.
+     * @param mat the specified matrix
+     * @returns the result
+     */
+    mat3x3 operator-(const mat3x3& mat) const;
+
+    /**
+     * Multiplies this matrix and the specified vector using matrix vector multiplication.
+     * @param vec the specified vector
+     * @returns the result
+     */
+    vec3 operator*(const vec3& vec) const;
+
+    /**
+     * Multiplies this matrix and the specified matrix using matrix multiplication.
+     * @param rhs the specified matrix
+     * @returns the result
+     */
+    mat3x3 operator*(const mat3x3& rhs) const;
+
+    /**
+     * Access the row of this matrix. The index must be 0 or 1. The returned vector also has an operator[] to access the element of this matrix.
+     * @param index the index of the row
+     * @returns the row as a vector
+     */
+    vec3 operator[](const int& index) const;
+
+    /**
+     * Access the row of this matrix. The index must be 0 or 1. The returned vector also has an operator[] to access the element of this matrix.
+     * @param index the index of the row
+     * @returns a reference to the row as a vector
+     */
+    vec3& operator[](const int& index);
+
+    /**
+     * Checks if this matrix equals the specified matrix.
+     * @param rhs the specified matrix
+     * @returns `true` if every element is equal
+     */
+    bool operator==(const mat3x3& rhs) const;
+
+    /**
+	 * Checks if this matrix does not equal the specified matrix.
+	 * @param rhs the specified matrix
+	 * @returns `true` if any element is different
+	 */
+    bool operator!=(const mat3x3& rhs) const;
+
+    /**
+     * Calculates the inverse of this matrix. Throws an exception if the determinant is 0.
+     * @returns the inverse matrix
+     */
+    [[nodiscard]] mat3x3 inverse() const;
+
+    /**
+    * Calculates the transpose of this matrix.
+    * @return the transposed matrix
+    */
+    [[nodiscard]] mat3x3 transpose() const;
+
+    /**
+     * Calculates the determinant of this matrix.
+     * @return the determinant
+     */
+    [[nodiscard]] float determinant() const;
+
+    /**
+     * Returns the 3 by 3 identity matrix.
+     * The 3 by 3 identity matrix is:\n
+     * ```
+     * 1 0 0
+     * 0 1 0
+     * 0 0 1
+     * ```
+     * @returns the 3 by 3 identity matrix
+     */
+    static const mat3x3& identity();
+private:
+    vec3 data[3]{};
+};
+
+/**
+ * Returns a rotation matrix for 2D space by the specified angle in radians.
+ * @param angle the specified angle
+ * @returns the rotation matrix
+ */
+mat3x3 rotate2D(float angle);
+
+/**
+ * Returns a translation matrix for 2D space by the specified offset.
+ * @param x the x offset
+ * @param y the y offset
+ * @return the translation matrix
+ */
+mat3x3 translate2D(float x, float y);
+
+/**
+ * Returns a scaling matrix for 2D space by the specified values in the x and y direction.
+ * @param scaleX the x scale factor
+ * @param scaleY the y scale factor
+ * @returns the scaling matrix
+ */
+mat3x3 scale2D(float scaleX, float scaleY);
+
+/**
+ * A43 by 4 matrix. The vales can be access by the [] operator. It returns a vector which has [] operator. The first [] is the y coordinate of the cell.
+ * This pattern can be used to assign the matrix:\n
+ * m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;\n
+ * m[1][0] = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = 0;\n
+ * m[2][0] = 0; m[2][1] = 0; m[2][2] = 1; m[2][3] = 0;\n
+ * m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
+ */
+class mat4x4 {
+public:
+    /**
+     * Creates an empty 4 by 4 matrix.
+     */
+    mat4x4();
+
+    /**
+     * Creates a new 4 by 4 matrix. Copies the specified matrix in the top left corner. The rest is filled like the 4 by 4 identity matrix is.
+     * @param mat the specified matrix
+     */
     explicit mat4x4(const mat2x2& mat);
+
+    /**
+     * Creates a new 4 by 4 matrix. Copies the specified matrix in the top left corner. The rest is filled like the 4 by 4 identity matrix is.
+     * @param mat the specified matrix
+     */
     explicit mat4x4(const mat3x3& mat);
-	~mat4x4();
-	mat4x4 operator+(const mat4x4& mat) const;
-	mat4x4 operator-(const mat4x4& mat) const;
-	vec4 operator*(const vec4& vec) const;
-	mat4x4 operator*(const mat4x4& mat) const;
 
-	vec4 operator[](const int& index )const;
-	vec4& operator[](const int& index );
+    /**
+     * Adds this matrix element by element to the specified matrix and returns the result.
+     * @param mat the specified matrix
+     * @returns the result
+     */
+    mat4x4 operator+(const mat4x4& mat) const;
 
-    bool operator==(const mat4x4 &rhs) const;
+    /**
+     * Subtracts this matrix element by element from the specified matrix and returns the result.
+     * @param mat the specified matrix
+     * @returns the result
+     */
+    mat4x4 operator-(const mat4x4& mat) const;
 
-    bool operator!=(const mat4x4 &rhs) const;
+    /**
+     * Multiplies this matrix and the specified vector using matrix vector multiplication.
+     * @param vec the specified vector
+     * @returns the result
+     */
+    vec4 operator*(const vec4& vec) const;
 
-    mat4x4 inverse() const;
-    mat4x4 transpose() const;
+    /**
+     * Multiplies this matrix and the specified matrix using matrix multiplication.
+     * @param mat the specified matrix
+     * @returns the result
+     */
+    mat4x4 operator*(const mat4x4& mat) const;
 
-    float determinant() const;
+    /**
+     * Access the row of this matrix. The index must be 0 or 1. The returned vector also has an operator[] to access the element of this matrix.
+     * @param index the index of the row
+     * @returns the row as a vector
+     */
+    vec4 operator[](const int& index) const;
 
+    /**
+     * Access the row of this matrix. The index must be 0 or 1. The returned vector also has an operator[] to access the element of this matrix.
+     * @param index the index of the row
+     * @returns a reference to the row as a vector
+     */
+    vec4& operator[](const int& index);
+
+    /**
+     * Checks if this matrix equals the specified matrix.
+     * @param rhs the specified matrix
+     * @returns `true` if every element is equal
+     */
+    bool operator==(const mat4x4& rhs) const;
+
+    /**
+	 * Checks if this matrix does not equal the specified matrix.
+	 * @param rhs the specified matrix
+	 * @returns `true` if any element is different
+	 */
+    bool operator!=(const mat4x4& rhs) const;
+
+    /**
+     * Calculates the inverse of this matrix. Throws an exception if the determinant is 0.
+     * @returns the inverse matrix
+     */
+    [[nodiscard]] mat4x4 inverse() const;
+
+    /**
+    * Calculates the transpose of this matrix.
+    * @return the transposed matrix
+    */
+    [[nodiscard]] mat4x4 transpose() const;
+
+    /**
+     * Calculates the determinant of this matrix.
+     * @return the determinant
+     */
+    [[nodiscard]] float determinant() const;
+
+    /**
+     * Returns the 4 by 4 identity matrix.
+     * The 4 by 4 identity matrix is:\n
+     * ```
+     * 1 0 0 0
+     * 0 1 0 0
+     * 0 0 1 0
+     * 0 0 0 1
+     * ```
+     * @returns the 4 by 4 identity matrix
+     */
     static const mat4x4& identity();
 private:
-	vec4 data[4]{};
+    vec4 data[4]{};
 };
-DLL_PUBLIC std::ostream& operator<<(std::ostream& stream,const mat4x4& v);
 
-DLL_PUBLIC mat4x4 rotateXY3D(float angle);
-DLL_PUBLIC mat4x4 rotateYZ3D(float angle);
-DLL_PUBLIC mat4x4 rotateXZ3D(float angle);
+/**
+ * Returns a rotation around the Z-axis matrix for 3D space by the specified angle in radians.
+ * @param angle the specified angle
+ * @returns the rotation matrix
+ */
+mat4x4 rotateXY3D(float angle);
 
-DLL_PUBLIC mat4x4 translate3D(float x,float y,float z);
-DLL_PUBLIC mat4x4 scale3D(float scaleX,float scaleY,float scaleZ);
+/**
+ * Returns a rotation around the X-axis matrix for 3D space by the specified angle in radians.
+ * @param angle the specified angle
+ * @returns the rotation matrix
+ */
+mat4x4 rotateYZ3D(float angle);
 
-DLL_PUBLIC mat4x4 orthographic(float left, float top, float right, float bottom, float near, float far);
-DLL_PUBLIC mat4x4 calcViewMatrix(vec3 position, vec3 rotation);
-DLL_PUBLIC mat4x4 perspective(float near,float far,float fov,float aspectRatio);
+/**
+ * Returns a rotation around the Y-axis matrix for 3D space by the specified angle in radians.
+ * @param angle the specified angle
+ * @returns the rotation matrix
+ */
+mat4x4 rotateXZ3D(float angle);
 
+/**
+ * Returns a translation matrix for 3D space by the specified offset.
+ * @param x the x offset
+ * @param y the y offset
+ * @param z the z offset
+ * @return the translation matrix
+ */
+mat4x4 translate3D(float x, float y, float z);
 
-DLL_PUBLIC mat4x4 operator*(const mat4x4& mat, float a);
-DLL_PUBLIC mat4x4 operator*(float a, const mat4x4& mat);
+/**
+ * Returns a scaling matrix for 3D space by the specified values in the x, y and z direction.
+ * @param scaleX the x scale factor
+ * @param scaleY the y scale factor
+ * @param scaleZ the z scale factor
+ * @returns the scaling matrix
+ */
+mat4x4 scale3D(float scaleX, float scaleY, float scaleZ);
+
+/**
+ * Calculates an orthographic projection matrix, also known as a perspective projection matrix, with the specified limits.
+ * @param left The leftmost value in the resulting area
+ * @param top The highest value that is in the resulting range
+ * @param right the rightmost value that is in the resulting space
+ * @param bottom The lowest value that is in the resulting range
+ * @param near the nearest value found in the resulting space
+ * @param far the furthest value that is in the resulting space
+ * @returns the resulting orthographic projection matrix
+ */
+mat4x4 orthographic(float left, float top, float right, float bottom, float near, float far);
+
+/**
+ * Calculates the view matrix by the specified position and rotation.
+ * @param position the specified position
+ * @param rotation the specified rotation
+ * @returns the resulting view matrix
+ */
+mat4x4 calcViewMatrix(vec3 position, vec3 rotation);
+
+/**
+ * Calculates the perspective projection matrix.
+ * @param near the nearest possible value
+ * @param far the furthest possible value
+ * @param fov the field of view in degree
+ * @param aspectRatio the ratio from width to height
+ * @returns the resulting perspective projection matrix
+ */
+mat4x4 perspective(float near, float far, float fov, float aspectRatio);
 
 }
+
+/**
+ * Prints the specified 2 by 2 matrix to the specified stream.
+ * @param stream the specified stream.
+ * @param v the specified matrix
+ * @returns the stream
+ */
+std::ostream& operator<<(std::ostream& stream, const Zoe::mat2x2& v);
+
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param mat the specified matrix
+ * @param a the specified float
+ * @returns the result
+ */
+Zoe::mat2x2 operator*(const Zoe::mat2x2& mat, float a);
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param a the specified float
+ * @param mat the specified matrix
+ * @returns the result
+ */
+Zoe::mat2x2 operator*(float a, const Zoe::mat2x2& mat);
+
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param mat the specified matrix
+ * @param a the specified float
+ * @returns the result
+ */
+Zoe::mat4x4 operator*(const Zoe::mat4x4& mat, float a);
+
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param a the specified float
+ * @param mat the specified matrix
+ * @returns the result
+ */
+Zoe::mat4x4 operator*(float a, const Zoe::mat4x4& mat);
+
+/**
+ * Prints the specified 4 by 4 matrix to the specified stream.
+ * @param stream the specified stream.
+ * @param v the specified matrix
+ * @returns the stream
+ */
+std::ostream& operator<<(std::ostream& stream, const Zoe::mat4x4& v);
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param mat the specified matrix
+ * @param a the specified float
+ * @returns the result
+ */
+Zoe::mat3x3 operator*(const Zoe::mat3x3& mat, float a);
+
+/**
+ * Multiplies the specified matrix and the specified float element by element.
+ * @param a the specified float
+ * @param mat the specified matrix
+ * @returns the result
+ */
+Zoe::mat3x3 operator*(float a, const Zoe::mat3x3& mat);
+
+/**
+ * Prints the specified 3 by 3 matrix to the specified stream.
+ * @param stream the specified stream.
+ * @param v the specified matrix
+ * @returns the stream
+ */
+std::ostream& operator<<(std::ostream& stream, const Zoe::mat3x3& v);

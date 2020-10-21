@@ -5,7 +5,7 @@
  *      Author: florian
  */
 
-#ifdef WIN32
+#if defined(WIN32) || defined(DOXYGEN)
 
 #pragma once
 
@@ -14,18 +14,49 @@
 
 namespace Zoe {
 
+/**
+ * WindowsInput is the implementation for Input on Windows.
+ */
 class WindowsInput: public Input {
 public:
-	~WindowsInput();
+    /**
+     * destructs WindowsInput
+     */
+    ~WindowsInput();
 
 protected:
 
-	bool isKeyPressedImpl(int keycode) override;
+    /**
+     * Check if a specific keycode is pressed. KeyCodes are defined in the KeyCode.h file. Keycode constants begin with KEY_
+     * @param keycode is the checked keycode
+     * @returns true if key is pressed
+     */
+    bool isKeyPressedImpl(int keycode) override;
 
-	bool isMouseButtonPressedImpl(int button) override;
-	vec2 getMousePositionImpl() override;
-	float getMouseXImpl() override;
-	float getMouseYImpl() override;
+    /**
+     * Check if a specific mouse button is pressed. MouseCodes are defined in the MouseCode.h file. MouseCode constants begin with MOUSE_
+     * @param button is the checked mouse button
+     * @returns true if mouse is pressed
+     */
+    bool isMouseButtonPressedImpl(int button) override;
+
+    /**
+     * Get the mouse position in the window. The values range from 0 to 1.
+     * @returns mouse position in vec2
+     */
+    vec2 getMousePositionImpl() override;
+
+    /**
+     * Get the X-Coordinate of the mouse position in the window. The value ranges from 0 to 1.
+     * @returns X-Coordinate of mouse position
+     */
+    float getMouseXImpl() override;
+
+    /**
+     * Get the Y-Coordinate of the mouse position in the window. The value ranges from 0 to 1.
+     * @returns Y-Coordinate of mouse position
+     */
+    float getMouseYImpl() override;
 };
 
 }

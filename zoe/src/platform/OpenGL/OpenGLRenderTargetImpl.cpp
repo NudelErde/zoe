@@ -74,6 +74,6 @@ void OpenGLRenderTargetImplDefaultOuput::unbind() {
 }
 
 std::shared_ptr<Texture> OpenGLRenderTargetImplDefaultOuput::getColorAttachment() {
-    return std::shared_ptr<Texture>();
+    return nullptr;
 }
 }

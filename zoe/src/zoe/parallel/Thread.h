@@ -13,49 +13,130 @@
 
 namespace Zoe {
 
-    struct ThreadInformation {
-        bool m_notifyMe = true;
-        std::mutex m_mutex;
-        std::condition_variable m_cv;
-        std::string name;
-        unsigned int threadID;
-    };
+/**
+ * ThreadInformation contains the information shared between the threads.
+ */
+struct ThreadInformation {
+    /**
+     * The bool used to check whether the thread should be woken up.
+     */
+    bool m_notifyMe = true;
 
-    class DLL_PUBLIC Thread {
-    private:
-        std::shared_ptr<ThreadInformation> threadInfo;
+    /**
+     * The mutex used to lock the condition variable with.
+     */
+    std::mutex m_mutex;
 
-        explicit Thread(const std::string &name);
+    /**
+     * The condition variable used for waiting.
+     */
+    std::condition_variable m_cv;
 
-    public:
-        explicit Thread(std::shared_ptr<ThreadInformation> threadInformation);
+    /**
+     * The thread name
+     */
+    std::string name;
 
-        Thread(void (*function)());
+    /**
+     * The threadID
+     */
+    unsigned int threadID;
+};
 
-        Thread(const std::string &name, void (*function)());
+/**
+ * A Thead is used to execute code in parallel.
+ */
+class Thread {
+private:
+    std::shared_ptr<ThreadInformation> threadInfo;
 
-        Thread();
+    explicit Thread(const std::string& name);
 
-        ~Thread();
+    explicit Thread(std::shared_ptr<ThreadInformation> threadInformation);
 
-        void notify();
-        void notifyBlocking();
+    struct ThreadInformationTransferObject;
 
-        static bool isMainThread();
-        static void waitForThreadNotify();
-        static Thread* getMainThread();
-        static Thread* getThisThread();
+    friend void threadMethod(Thread::ThreadInformationTransferObject*);
+public:
 
-    public:
+    /**
+     * Creates a thread from a function pointer. The name is the thread ID.
+     * @param function the main function of the thread
+     */
+    explicit Thread(void (* function)());
 
-        static void checkThreadSetup();
+    /**
+     * Creates a thread from a function pointer and the specified name.
+     * @param name the specified name
+     * @param function the main function of the thread
+     */
+    Thread(const std::string& name, void (* function)());
 
-    public:
-        inline std::string getName() {
-            return threadInfo->name;
-        }
-    };
+    /**
+     * Creates an empty thread.
+     */
+    Thread();
 
-    DLL_PUBLIC void sleep(unsigned int ms);
+    /**
+     * Destructs the thread.
+     */
+    ~Thread();
+
+    /**
+     * Wakes the thread if it sleeps.
+     */
+    void notify();
+
+    /**
+     * Wakes the thread if it sleeps. The function is blocked until the thread is woken up.
+     */
+    void notifyBlocking();
+
+    /**
+     * Returns true if the current thread is the main thread.
+     * @return `true` if the current thread is the main thread
+     */
+    static bool isMainThread();
+
+    /**
+     * Sleeps until this thread is woken up from another thread.
+     */
+    static void waitForThreadNotify();
+
+    /**
+     * Get a pointer to the main thread object.
+     * @return a pointer to the main thread object
+     */
+    static Thread* getMainThread();
+
+    /**
+     * Get a pointer to the current thread object.
+     * @return a pointer to the current thread object
+     */
+    static Thread* getThisThread();
+
+public:
+
+    /**
+     * Ensures that the thread setup was executed.
+     */
+    static void checkThreadSetup();
+
+public:
+
+    /**
+     * Returns the name of the thread.
+     * @return the name of the thread
+     */
+    inline std::string getName() {
+        return threadInfo->name;
+    }
+};
+
+/**
+ * Sleeps for the specified time.
+ * @param ms the specified time
+ */
+void sleep(unsigned int ms);
 
 }  // namespace Zoe
