@@ -1,4 +1,4 @@
-name: Build (with CMake)
+name: CMake
 
 on:
   push:
@@ -55,27 +55,25 @@ jobs:
       - name: Use gcc-9
         run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
 
-      # Prepare CMake and Doxygen
-      - name: Prepare build
-        run: cmake .
-      - name: Prepare doxygen
-        run: rm -Rf ./docs/ && sed -i "s/zoe-curr-commit-hash/Documentation revision \#$GITHUB_RUN_NUMBER/g" ./.doxyfile
-
-      # Run 'doc_doxygen' target
-      - name: Generate docs
-        run: cmake --build . --target doc_doxygen
-
-      # Commit ./docs/
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          file_pattern: ./docs/*
-          commit_message: Automatically update documentation
-          commit_options: '--no-verify --signoff'
-          commit_user_name: GitHub Actions
-          commit_user_email: github-NudelErde-zoe@example.com
+      # Prepare and generate documentation
+      - name: Prepare and generate documentation
+        run: |
+          rm -Rf ./docs/
+          sed -i "s/zoe-curr-commit-hash/Documentation revision \#$GITHUB_RUN_NUMBER/g" ./.doxyfile
+          cmake .
+          cmake --build . --target doc_doxygen
 
       # Upload ./docs/
       - uses: actions/upload-artifact@v2
         with:
           name: docs
           path: ./docs/
+
+      # Commit ./docs/
+      - name: Commit update documentation
+        run: |
+          git config --global user.name github-actions
+          git config --global user.email github-actions@github.com
+          git add ./docs/
+          git commit -am "Automatically updated documentation"
+          git push
