@@ -56,14 +56,6 @@ vec2 vec2::normalize() const {
     return operator/(length());
 }
 
-std::ostream& operator<<(std::ostream& stream, const vec2& v) {
-    return stream << "Vec2: " << v.x << " | " << v.y;
-}
-
-vec2 operator*(const float& m, const vec2& v) {
-    return v.operator*(m);
-}
-
 bool vec2::operator==(const vec2& vec) const {
     return x == vec.x && y == vec.y;
 }
@@ -120,14 +112,6 @@ float vec3::length() const {
 
 vec3 vec3::normalize() const {
     return operator/(length());
-}
-
-std::ostream& operator<<(std::ostream& stream, const vec3& v) {
-    return stream << "Vec3: " << v.x << " | " << v.y << " | " << v.z;
-}
-
-vec3 operator*(const float& m, const vec3& v) {
-    return v.operator*(m);
 }
 
 bool vec3::operator==(const vec3& vec) const {
@@ -194,14 +178,6 @@ vec4 vec4::normalize() const {
     return operator/(length());
 }
 
-std::ostream& operator<<(std::ostream& stream, const vec4& v) {
-    return stream << "Vec4: " << v.x << " | " << v.y << " | " << v.z << " | " << v.w;
-}
-
-vec4 operator*(const float& m, const vec4& v) {
-    return v.operator*(m);
-}
-
 bool vec4::operator==(const vec4& vec) const {
     return x == vec.x && y == vec.y && z == vec.z && w == vec.w;
 }
@@ -210,4 +186,28 @@ bool vec4::operator!=(const vec4& vec) const {
     return !(*this == vec);
 }
 
+}
+
+std::ostream& operator<<(std::ostream& stream, const Zoe::vec2& v) {
+    return stream << "Vec2: " << v.x << " | " << v.y;
+}
+
+Zoe::vec2 operator*(const float& m, const Zoe::vec2& v) {
+    return v.operator*(m);
+}
+
+std::ostream& operator<<(std::ostream& stream, const Zoe::vec4& v) {
+    return stream << "Vec4: " << v.x << " | " << v.y << " | " << v.z << " | " << v.w;
+}
+
+Zoe::vec4 operator*(const float& m, const Zoe::vec4& v) {
+    return v.operator*(m);
+}
+
+std::ostream& operator<<(std::ostream& stream, const Zoe::vec3& v) {
+    return stream << "Vec3: " << v.x << " | " << v.y << " | " << v.z;
+}
+
+Zoe::vec3 operator*(const float& m, const Zoe::vec3& v) {
+    return v.operator*(m);
 }

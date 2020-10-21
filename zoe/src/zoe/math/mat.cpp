@@ -124,21 +124,6 @@ const mat2x2 &mat2x2::identity() {
     return instance;
 }
 
-
-mat2x2 operator*(const float a, const mat2x2 &mat) {
-    return operator*(mat, a);
-}
-
-mat2x2 operator*(const mat2x2 &mat, const float a) {
-    mat2x2 result;
-    for (int i = 0; i < 2; ++i) {
-        for (int j = 0; j < 2; ++j) {
-            result[i][j] = mat[i][j] * a;
-        }
-    }
-    return result;
-}
-
 mat3x3::mat3x3() = default;
 
 mat3x3::mat3x3(const mat2x2 &mat) {
@@ -316,31 +301,6 @@ mat3x3 scale2D(float scaleX, float scaleY) {
     res[1][2] = 0;
     res[2][2] = 1;
     return res;
-}
-
-std::ostream &operator<<(std::ostream &stream, const mat2x2 &v) {
-    return stream << v[0][0] << " | " << v[0][1] << "\n" << v[1][0] << " | "
-                  << v[1][1];
-}
-
-std::ostream &operator<<(std::ostream &stream, const mat3x3 &v) {
-    return stream << v[0][0] << " | " << v[0][1] << " | " << v[0][2] << "\n"
-                  << v[1][0] << " | " << v[1][1] << " | " << v[1][2] << "\n"
-                  << v[2][0] << " | " << v[2][1] << " | " << v[2][2];
-}
-
-mat3x3 operator*(const float a, const mat3x3 &mat) {
-    return operator*(mat, a);
-}
-
-mat3x3 operator*(const mat3x3 &mat, const float a) {
-    mat3x3 result;
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 3; ++j) {
-            result[i][j] = mat[i][j] * a;
-        }
-    }
-    return result;
 }
 
 mat4x4::mat4x4() = default;
@@ -559,13 +519,6 @@ const mat4x4 &mat4x4::identity() {
     return instance;
 }
 
-std::ostream &operator<<(std::ostream &stream, const mat4x4 &v) {
-    return stream << v[0][0] << " | " << v[0][1] << " | " << v[0][2] << " | " << v[0][3] << "\n"
-                  << v[1][0] << " | " << v[1][1] << " | " << v[1][2] << " | " << v[1][3] << "\n"
-                  << v[2][0] << " | " << v[2][1] << " | " << v[2][2] << " | " << v[2][3] << "\n"
-                  << v[3][0] << " | " << v[3][1] << " | " << v[3][2] << " | " << v[3][3];
-}
-
 mat4x4 rotateXY3D(float angle) {
     float c = std::cos(angle);
     float s = std::sin(angle);
@@ -731,12 +684,14 @@ mat4x4 perspective(float near, float far, float fov, float aspectRatio) {
     return proj * scale3D(1, 1, -1);
 }
 
-mat4x4 operator*(const float a, const mat4x4 &mat) {
+}
+
+Zoe::mat4x4 operator*(const float a, const Zoe::mat4x4 &mat) {
     return operator*(mat, a);
 }
 
-mat4x4 operator*(const mat4x4 &mat, const float a) {
-    mat4x4 result;
+Zoe::mat4x4 operator*(const Zoe::mat4x4 &mat, const float a) {
+    Zoe::mat4x4 result;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
             result[i][j] = mat[i][j] * a;
@@ -744,4 +699,49 @@ mat4x4 operator*(const mat4x4 &mat, const float a) {
     }
     return result;
 }
+
+Zoe::mat2x2 operator*(const float a, const Zoe::mat2x2 &mat) {
+    return operator*(mat, a);
+}
+
+Zoe::mat2x2 operator*(const Zoe::mat2x2 &mat, const float a) {
+    Zoe::mat2x2 result;
+    for (int i = 0; i < 2; ++i) {
+        for (int j = 0; j < 2; ++j) {
+            result[i][j] = mat[i][j] * a;
+        }
+    }
+    return result;
+}
+
+Zoe::mat3x3 operator*(const float a, const Zoe::mat3x3 &mat) {
+    return operator*(mat, a);
+}
+
+Zoe::mat3x3 operator*(const Zoe::mat3x3 &mat, const float a) {
+    Zoe::mat3x3 result;
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) {
+            result[i][j] = mat[i][j] * a;
+        }
+    }
+    return result;
+}
+
+std::ostream &operator<<(std::ostream &stream, const Zoe::mat2x2 &v) {
+    return stream << v[0][0] << " | " << v[0][1] << "\n" << v[1][0] << " | "
+                  << v[1][1];
+}
+
+std::ostream &operator<<(std::ostream &stream, const Zoe::mat3x3 &v) {
+    return stream << v[0][0] << " | " << v[0][1] << " | " << v[0][2] << "\n"
+                  << v[1][0] << " | " << v[1][1] << " | " << v[1][2] << "\n"
+                  << v[2][0] << " | " << v[2][1] << " | " << v[2][2];
+}
+
+std::ostream &operator<<(std::ostream &stream, const Zoe::mat4x4 &v) {
+    return stream << v[0][0] << " | " << v[0][1] << " | " << v[0][2] << " | " << v[0][3] << "\n"
+                  << v[1][0] << " | " << v[1][1] << " | " << v[1][2] << " | " << v[1][3] << "\n"
+                  << v[2][0] << " | " << v[2][1] << " | " << v[2][2] << " | " << v[2][3] << "\n"
+                  << v[3][0] << " | " << v[3][1] << " | " << v[3][2] << " | " << v[3][3];
 }
