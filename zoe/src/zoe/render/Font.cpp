@@ -26,15 +26,15 @@ namespace Zoe {
     };
 
     struct FontData {
-        FT_Face face;
-        unsigned char *source;
-        size_t sourceSize;
-        unsigned int *sourceReferences;
-        int size;
+        FT_Face face{};
+        unsigned char *source{};
+        size_t sourceSize{};
+        unsigned int *sourceReferences{};
+        int size{};
         std::map<unsigned long, GlyphData> glyphs;
-        unsigned char *textureBuffer;
-        unsigned int textureWidth;
-        unsigned int textureHeight;
+        unsigned char *textureBuffer{};
+        unsigned long long textureWidth{};
+        unsigned long long textureHeight{};
         std::shared_ptr<Texture> texture;
     };
 
