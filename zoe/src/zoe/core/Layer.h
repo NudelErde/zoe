@@ -13,42 +13,78 @@
 
 namespace Zoe {
 
+/**
+ * A Layer can be added to the Applications LayerStack. A Layer handles events if the event is not already handled.
+ * @see LayerStack
+ */
 class DLL_PUBLIC Layer {
 friend class LayerStack;
 public:
-	Layer(std::string  name);
+
+    /**
+     * Creates a new Layer with the specified name.
+     * @param name the specified name
+     */
+	explicit Layer(std::string name);
+
+	/**
+	 * Destructs the Layer.
+	 */
 	virtual ~Layer();
 
-	virtual void onAttach() {
-	}
-	virtual void onDetach() {
-	}
-	virtual void onEvent(Event& event) {
-	}
+	/**
+	 * Called when the Layer is inserted in the LayerStack.
+	 */
+	virtual void onAttach() {}
 
-	inline const std::string& getName() const {
+	/**
+	 * Called when the Layer is removed from the LayerStack.
+	 */
+	virtual void onDetach() {}
+
+	/**
+	 * Called when a subscribed event is triggered.
+	 * @param event the triggered event
+	 */
+	virtual void onEvent(Event& event) {}
+
+	/**
+	 * Returns the name of the Layer.
+	 * @return the name of the Layer
+	 */
+	[[nodiscard]] inline const std::string& getName() const {
 		return name;
 	}
 
-	inline void setEnabled(bool enabled) {
-		this->enabled = enabled;
-	}
-	inline bool isEnabled() const {
-		return this->enabled;
-	}
-
-	inline int getSubscribedEvents() const {
+	/**
+	 * Returns the flag that describes which events the Layer has subscribed to.
+	 * @return the subscribed events
+	 */
+	[[nodiscard]] inline unsigned int getSubscribedEvents() const {
 		return this->subscribedEvents;
 	}
 
-	inline void setSubscribedEvents(int events){
+    /**
+     * Specifies the flag that describes which events the Layer has subscribed to.
+     * @param events the subscribed events
+     */
+	inline void setSubscribedEvents(unsigned int events){
 		this->subscribedEvents = events;
 	}
 
 protected:
+    /**
+     * The name of the Layer.
+     */
 	std::string name;
+	/**
+	 * `enabled` is false if the layer should be ignored.
+	 */
 	bool enabled = true;
-	int subscribedEvents = EventCategory::EventCategoryNone;
+	/**
+	 * `subscribedEvents` describes which events should this layer receive.
+	 */
+	unsigned int subscribedEvents = static_cast<unsigned int>(EventCategory::None);
 };
 
 } /* namespace Zoe */

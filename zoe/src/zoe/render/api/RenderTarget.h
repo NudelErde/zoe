@@ -15,43 +15,100 @@
 
 namespace Zoe {
 
-    class GraphicsContext;
+class GraphicsContext;
 
-    class RenderTargetImpl {
-    public:
-        RenderTargetImpl(GraphicsContext *context) : context(context), id(GraphicsContext::generateID()) {}
+/**
+ * An abstract RenderTargetImpl.
+ */
+class RenderTargetImpl {
+public:
+    /**
+     * Creates a RenderTargetImpl with the specified context and generates an id for this object.
+     * @param context the specified context
+     */
+    RenderTargetImpl(GraphicsContext *context) : context(context), id(GraphicsContext::generateID()) {}
 
-        virtual ~RenderTargetImpl() = default;
+    /**
+     * A virtual default destructor.
+     */
+    virtual ~RenderTargetImpl() = default;
 
-        virtual void bind() = 0;
-        virtual void unbind() = 0;
-        virtual std::shared_ptr<Texture> getColorAttachment() = 0;
+    /**
+     * Binds the OpenGLRenderTarget if not already bound.
+     */
+    virtual void bind() = 0;
 
-        inline const int& getID() const{ return id;};
+    /**
+     * Unbinds the OpenGLRenderTarget.
+     */
+    virtual void unbind() = 0;
 
-    protected:
-        GraphicsContext *context;
+    /**
+     * Returns the color attachment. This is the texture that contains the color output.
+     * @returns the color attachment
+     */
+    virtual std::shared_ptr<Texture> getColorAttachment() = 0;
 
-        int id;
-    };
+    /**
+     * Returns an intern number used to identify this object.
+     * @return the id
+     */
+    inline const int &getID() const { return id; };
 
-    class DLL_PUBLIC RenderTarget {
-    public:
-        explicit RenderTarget(RenderTargetImpl *impl) : impl(impl) {}
+protected:
+    /**
+     * The used graphics context.
+     */
+    GraphicsContext *context;
 
-        ~RenderTarget() {}
+    /**
+     * A unique id.
+     */
+    int id;
+};
 
-        inline void bind() { impl->bind(); }
-        inline void unbind() { impl->unbind(); }
-        std::shared_ptr<Texture> getColorAttachment() { return impl->getColorAttachment();}
+/**
+* A Render Object contains information about the RenderTarget and selected settings.
+*/
+class DLL_PUBLIC RenderTarget {
+public:
+    /**
+     * Creates a RenderTarget from a specified RenderTargetImpl
+     * @param impl the specified RenderTargetImpl
+     */
+    explicit RenderTarget(RenderTargetImpl *impl) : impl(impl) {}
 
-        inline RenderTargetImpl* getImpl(){return &impl;}
+    /**
+     * Binds the OpenGLRenderTarget if not already bound.
+     */
+    inline void bind() { impl->bind(); }
 
-        inline const int& getID() const { return impl->getID();}
+    /**
+     * Unbinds the OpenGLRenderTarget.
+     */
+    inline void unbind() { impl->unbind(); }
 
-    private:
-        ImplPointer<RenderTargetImpl> impl;
-    };
+    /**
+     * Returns the color attachment. This is the texture that contains the color output.
+     * @returns the color attachment
+     */
+    std::shared_ptr<Texture> getColorAttachment() { return impl->getColorAttachment(); }
+
+    /**
+     * Returns the RenderTargetImpl.
+     * @return the RenderTargetImpl
+     */
+    inline RenderTargetImpl *getImpl() { return &impl; }
+
+    /**
+     * Returns an intern number used to identify this object.
+     * @return the id
+     */
+    inline const int &getID() const { return impl->getID(); }
+
+private:
+    ImplPointer <RenderTargetImpl> impl;
+};
 
 }
 

@@ -10,40 +10,84 @@
 #include "Event.h"
 #include "../core/Core.h"
 
-namespace Zoe{
+namespace Zoe {
 
-class DLL_PUBLIC KeyEvent: public Event{
+/**
+ * An event which indicates that a key was pressed or released.
+ * Can be a KeyPressedEvent or a KeyReleasedEvent.
+ * @tparam type the specific EventType
+ */
+template<EventType type>
+class DLL_PUBLIC KeyEvent : public EventTemplate<type, EventCategory::Keyboard, EventCategory::Input> {
 public:
-	inline int getKeyCode() const {return keyCode;}
-
-	EVENT_CLASS_CATEGORY(EventCategoryKeyboard | EventCategoryInput)
+    /**
+     * Returns the key code of the button that triggered the event.
+     * @returns the key code of the button that triggered the event
+     */
+    inline int getKeyCode() const { return keyCode; }
 
 protected:
-	KeyEvent(int keycode): keyCode(keycode){};
-	virtual ~KeyEvent(){}
+    /**
+     * Constructs a KeyEvent with the keycode that triggered this event.
+     * @param keycode the specified keycode
+     */
+    KeyEvent(int keycode) : keyCode(keycode) {};
 
-	int keyCode;
+    /**
+     * Destructs the KeyEvent.
+     */
+    virtual ~KeyEvent() {}
+
+    /**
+     * The keycode that triggered the event.
+     */
+    int keyCode;
 };
 
-class DLL_PUBLIC KeyPressedEvent: public KeyEvent{
+/**
+ * An event which indicates that a key was pressed.
+ */
+class DLL_PUBLIC KeyPressedEvent : public KeyEvent<EventType::KeyPressed> {
 public:
-	KeyPressedEvent(int keycode, int repeatcount): KeyEvent(keycode), repeatCount(repeatcount){}
-	~KeyPressedEvent(){}
 
-	inline int getRepeatCount() const {return repeatCount; }
+    /**
+     * Constructs a KeyPressedEvent with the specified keycode.
+     * @param keycode the pressed keycode
+     * @param repeatcount the number of repetitions
+     */
+    KeyPressedEvent(int keycode, int repeatcount) : KeyEvent(keycode), repeatCount(repeatcount) {}
 
-	EVENT_CLASS_TYPE(KeyPressed)
+    /**
+     * Destructs the KeyPressedEvent.
+     */
+    ~KeyPressedEvent() {}
+
+    /**
+     * Returns the number of repetitions
+     * @return the number of repetitions
+     */
+    inline int getRepeatCount() const { return repeatCount; }
 
 private:
-	int repeatCount;
+    int repeatCount;
 };
 
-class DLL_PUBLIC KeyReleasedEvent: public KeyEvent{
+/**
+ * An event which indicates that a key was released.
+ */
+class DLL_PUBLIC KeyReleasedEvent : public KeyEvent<EventType::KeyReleased> {
 public:
-	KeyReleasedEvent(int keycode): KeyEvent(keycode) {}
-	~KeyReleasedEvent(){}
+    /**
+     * Constructs a KeyReleasedEvent with the specified keycode.
+     * @param keycode the released keycode
+     */
+    KeyReleasedEvent(int keycode) : KeyEvent(keycode) {}
 
-	EVENT_CLASS_TYPE(KeyReleased)
+    /**
+     * Destructs the KeyReleasedEvent.
+     */
+    ~KeyReleasedEvent() {}
+
 };
 
 }
