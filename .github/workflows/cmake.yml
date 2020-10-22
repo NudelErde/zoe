@@ -69,14 +69,12 @@ jobs:
           name: docs
           path: ./docs/
 
-      # Move generated ./docs/ to branch 'docs'
-      - name: Move generated ./docs/ to target branch
+      # Move generated files to branch 'docs'
+      - name: Move generated files to target branch
         run: |
-          mv ./docs/ ./../zoe-docs/
-          git reset --hard
-          git checkout docs
-          rm -rf ./docs/
-          mv ./../zoe-docs/ ./docs/
+          git stash push -a
+          git checkout origin/docs
+          git stash pop
 
       # Commit ./docs/
       - name: Commit update documentation
