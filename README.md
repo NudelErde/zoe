@@ -1,8 +1,10 @@
-# zoe ![Build](https://github.com/NudelErde/zoe/workflows/Build%20(with%20CMake)/badge.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNudelErde%2Fzoe.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNudelErde%2Fzoe?ref=badge_shield)
+# zoe [![Docs](https://img.shields.io/badge/Docs-latest-succes?logo=c%2B%2B)](https://nudelerde.github.io/zoe/) [![Build](https://github.com/NudelErde/zoe/workflows/CMake/badge.svg)](https://github.com/NudelErde/zoe/actions?query=workflow%3ACMake) [![CodeQL](https://github.com/NudelErde/zoe/workflows/CodeQL/badge.svg)](https://github.com/NudelErde/zoe/actions?query=workflow%3ACodeQL) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FNudelErde%2Fzoe.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FNudelErde%2Fzoe?ref=badge_shield)
 *zoe* is a video game engine that I am working on in my free time. It probably won't surpass *Unity3D* or *Unreal Engine* but where is the fun in using any of these if you can make your own!
 
 I want it to be as optimized as possible but am limited to my free time.
 
+## Documentation
+You can find the documentation on [https://nudelerde.github.io/zoe/](https://nudelerde.github.io/zoe/).
 
 ## Running
 zoe is still work in progress. You can try running [the sandbox](https://github.com/NudelErde/zoe/releases) but please don't expect anything other than a simple demo.
