@@ -38,9 +38,24 @@ void Console::warning(const std::string &m) {
     if (this->logLevel <= LogLevel::Warning)Console::print(m, "warning");
 }
 
+inline std::tm localtime_xp(std::time_t timer) {
+    //windows sucks!
+    std::tm bt {};
+#if defined(__unix__)
+    localtime_r(&timer, &bt);
+#elif defined(_MSC_VER)
+    localtime_s(&bt, &timer);
+#else
+    static std::mutex mtx;
+    std::lock_guard<std::mutex> lock(mtx);
+    bt = *std::localtime(&timer);
+#endif
+    return bt;
+}
+
 static inline std::string getTimeString(const std::string& format){
     std::time_t now_c = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    std::tm now_tm = *std::localtime(&now_c);
+    std::tm now_tm = localtime_xp(now_c);
     char buffer[80];
     strftime(buffer, 80, format.c_str(), &now_tm);
     return std::string((char*)buffer);
