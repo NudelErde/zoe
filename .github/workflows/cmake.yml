@@ -58,7 +58,7 @@ jobs:
       # Prepare and generate documentation
       - name: Prepare and generate documentation
         run: |
-          rm -Rf ./docs/
+          rm -rf ./docs/
           sed -i "s/zoe-curr-commit-hash/Documentation revision \#$GITHUB_RUN_NUMBER/g" ./.doxyfile
           cmake .
           cmake --build . --target doc_doxygen
@@ -68,6 +68,15 @@ jobs:
         with:
           name: docs
           path: ./docs/
+
+      # Move generated ./docs/ to branch 'docs'
+      - name: Move generated ./docs/ to target branch
+        run: |
+          mv ./docs/ ./../zoe-docs/
+          git reset --hard
+          git checkout docs
+          rm -rf ./docs/
+          mv ./../zoe-docs/ ./docs/
 
       # Commit ./docs/
       - name: Commit update documentation
