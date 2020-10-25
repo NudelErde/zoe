@@ -13,7 +13,7 @@ namespace Zoe {
 /**
  * A Textbox is used to display a specified text at a specific position.
  */
-class DLL_PUBLIC TextBox : public BaseComponent{
+class DLL_PUBLIC TextBox : public BaseComponent {
 public:
     /**
      * Constructs an empty TextBox.
@@ -24,12 +24,12 @@ public:
      * Specifies the new text.
      * @param str the new text
      */
-    inline void setText(const std::string& str) {text = str;}
+    inline void setText(const std::string& str) { text = str; }
     /**
      * Returns the current text.
      * @returns the current text.
      */
-    inline const std::string& getText() {return text;}
+    inline const std::string& getText() { return text; }
 
 protected:
     /**
@@ -46,12 +46,12 @@ protected:
      * Handles input events.
      * @param event the input event
      */
-    void onInputEvent(Event &event) override;
+    void onInputEvent(Event& event) override;
     /**
      * Fills this component with the information in the specified xml node.
      * @param node the xml node
      */
-    void fill(const XMLNode &node) override;
+    void fill(const XMLNode& node) override;
     /**
      * Completes initialization. This method is called after all children are initialized. It is used to extract information for children.
      */

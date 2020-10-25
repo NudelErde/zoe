@@ -123,7 +123,7 @@ void UITool::drawText(const std::string & string, const vec2 &pos) {
     auto textureWidth = (float) font.getTextureWidth();
     auto textureHeight = (float) font.getTextureHeight();
 
-    mat4x4 modelViewProjection = projectionView * translate3D(pos.x-800,-pos.y+450,0)*scale3D(1,-1,1);
+    mat4x4 modelViewProjection = projectionView * translate3D(-800,450,0)*scale3D(1,-1,1);
     textShader->setUniform4m("ModelViewProjection", modelViewProjection);
 
     vec2 cursor = pos;

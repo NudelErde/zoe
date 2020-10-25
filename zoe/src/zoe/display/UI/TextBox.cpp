@@ -10,7 +10,7 @@ namespace Zoe {
 
 TextBox::TextBox() : font(Application::getDefaultFont()) {}
 
-void TextBox::onDraw(const Camera &camera) {
+void TextBox::onDraw(const Camera& camera) {
     UITool tool(camera);
     tool.setColor(color);
     vec2 pos = getWorldPosition().xy();
@@ -19,19 +19,23 @@ void TextBox::onDraw(const Camera &camera) {
 void TextBox::onUpdate(double time) {
 
 }
-void TextBox::onInputEvent(Event &event) {
+void TextBox::onInputEvent(Event& event) {
 
 }
-void TextBox::fill(const XMLNode &node) {
+void TextBox::fill(const XMLNode& node) {
     std::string fontName{};
     int size = -1;
     color.w = 1;
+
+    //position
     if (auto iter = node.attributes.find("x"); iter != node.attributes.end()) {
         position.x = std::stof(iter->second);
     }
     if (auto iter = node.attributes.find("y"); iter != node.attributes.end()) {
         position.y = std::stof(iter->second);
     }
+
+    //color
     if (auto iter = node.attributes.find("r"); iter != node.attributes.end()) {
         color.x = std::stof(iter->second);
     }
@@ -44,6 +48,7 @@ void TextBox::fill(const XMLNode &node) {
     if (auto iter = node.attributes.find("a"); iter != node.attributes.end()) {
         color.w = std::stof(iter->second);
     }
+    //content
     if (auto iter = node.attributes.find("text"); iter != node.attributes.end()) {
         text = iter->second;
     }
@@ -54,7 +59,7 @@ void TextBox::fill(const XMLNode &node) {
         size = std::stoi(iter->second);
     }
 
-    if(size == -1){
+    if (size == -1) {
         size = 30;
     }
 
@@ -63,9 +68,9 @@ void TextBox::fill(const XMLNode &node) {
         if (fontPath.isFile()) {
             font = Font(fontPath, size);
         } else {
-            warning("Font ",fontPath.getAbsolutePath(), " does not name a File. Fallback to default Font");
+            warning("Font ", fontPath.getAbsolutePath(), " does not name a File. Fallback to default Font");
         }
-    } else if(size != font.getSize()){
+    } else if (size != font.getSize()) {
         font = Font(font, size);
     }
 }
