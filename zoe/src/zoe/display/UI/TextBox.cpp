@@ -8,7 +8,7 @@
 
 namespace Zoe {
 
-TextBox::TextBox() : font(Application::getDefaultFont()) {}
+TextBox::TextBox() = default;
 
 void TextBox::onDraw(const Camera& camera) {
     UITool tool(camera);
@@ -71,7 +71,7 @@ void TextBox::fill(const XMLNode& node) {
             warning("Font ", fontPath.getAbsolutePath(), " does not name a File. Fallback to default Font");
         }
     } else if (size != font.getSize()) {
-        font = Font(font, size);
+        font.setSize(size);
     }
 }
 void TextBox::postFill() {

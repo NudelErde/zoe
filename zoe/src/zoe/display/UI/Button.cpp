@@ -9,7 +9,7 @@
 
 namespace Zoe {
 
-Button::Button() : font(Application::getDefaultFont()) {
+Button::Button() {
     onClick = []() {};
 }
 
@@ -113,7 +113,7 @@ void Button::fill(const XMLNode& node) {
             warning("Font ", fontPath.getAbsolutePath(), " does not name a File. Fallback to default Font");
         }
     } else if (fontSize != font.getSize()) {
-        font = Font(font, fontSize);
+        font.setSize(fontSize);
     }
 }
 
