@@ -87,6 +87,18 @@ public:
      */
     inline const std::vector<std::shared_ptr<BaseComponent>> &getChildren() { return children; }
 
+    /**
+     * Returns `true` if the component is focused.
+     * @return `true` if the component is focused
+     */
+    bool hasFocus() const;
+
+    /**
+     * Specifies the focus. All other components in this layer lose focus when this object receives focus.
+     * @param val the new focus value
+     */
+    void setFocus(bool val);
+
 protected:
 
     /**
@@ -126,6 +138,8 @@ protected:
 private:
     std::vector<std::shared_ptr<BaseComponent>> children;
     std::weak_ptr<BaseComponent> parent;
+
+    bool isFocused;
 
     void init(const XMLNode &node);
 

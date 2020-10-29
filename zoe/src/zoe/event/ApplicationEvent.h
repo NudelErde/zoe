@@ -15,7 +15,7 @@ namespace Zoe {
 /**
  * An event that indicates that an application tick occurred. Ticks happen in fixed intervals.
  */
-class DLL_PUBLIC AppTickEvent : public EventTemplate<EventType::AppTick, EventCategory::Application> {
+class AppTickEvent : public EventTemplate<EventType::AppTick, EventCategory::Application> {
 
 public:
     /**
@@ -32,7 +32,7 @@ public:
 /**
  * An event that indicates that an application update occurred. Updates are made when the status can change.
  */
-class DLL_PUBLIC AppUpdateEvent : public EventTemplate<EventType::AppUpdate, EventCategory::Application> {
+class AppUpdateEvent : public EventTemplate<EventType::AppUpdate, EventCategory::Application> {
 
 public:
     /**
@@ -49,7 +49,7 @@ public:
 /**
  * An event that indicates that a new Frame should be rendered.
  */
-class DLL_PUBLIC AppRenderEvent : public EventTemplate<EventType::AppRender, EventCategory::Application> {
+class AppRenderEvent : public EventTemplate<EventType::AppRender, EventCategory::Application> {
 
 public:
     /**

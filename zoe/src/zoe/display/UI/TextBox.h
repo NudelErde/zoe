@@ -58,9 +58,15 @@ protected:
     void postFill() override;
 
 private:
+    void onClick(MouseButtonPressedEvent& event);
+    void onKeyPress(KeyPressedEvent& event);
+
+private:
     std::string text;
     Font font;
     vec4 color{};
+    bool writeable{};
+    bool multiLine{};
 };
 
 }

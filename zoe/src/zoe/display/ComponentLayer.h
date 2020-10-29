@@ -65,12 +65,24 @@ public:
      */
     static bool isKeyPressed(int keycode);
     /**
-     * Check if a specific mouse button is pressed.Should not be called outside of the component system.
+     * Check if a specific mouse button is pressed. Should not be called outside of the component system.
      * @param button the mouse button to be checked
      * @returns `true` if the mouse button is pressed.
      * @see Input::isMouseButtonPressed
      */
     static bool isMouseButtonPressed(int button);
+
+    /**
+     * Return the focused component in the active layer. Should not be called outside of the component system.
+     * @return the focused component
+     */
+    static std::weak_ptr<BaseComponent> getFocusedObject();
+
+    /**
+     * Sets the focused component in the active layer. Should not be called outside of the component system.
+     * @param component the new focused component
+     */
+    static void setFocusedObject(const std::weak_ptr<BaseComponent>& component);
 
     /**
      * Returns the position of the mouse in component coordinate space. Should not be called outside of the component system.\n
@@ -126,6 +138,8 @@ private:
     std::chrono::time_point<std::chrono::steady_clock> timeOfLastTick;
 
     std::shared_ptr<Camera> camera;
+
+    std::weak_ptr<BaseComponent> focusedObject;
 
     std::shared_ptr<RenderTarget> target;
     std::shared_ptr<Render> render;

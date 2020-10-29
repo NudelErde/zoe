@@ -131,13 +131,26 @@ vec2 ComponentLayer::getMousePosition() {
         mat4x4 invViewMatrix = ptr->getCamera()->getInvViewMatrix();
         return (invViewMatrix.inverse()*vec4({pos.x, pos.y, 0, 1})).xy();
     }
-    throw std::runtime_error("ComponentLayer API from non component source");
+    throw std::runtime_error("ComponentLayer API from non component source. ComponentLayer::getMousePosition");
 }
 
+std::weak_ptr<BaseComponent> ComponentLayer::getFocusedObject() {
+    if (std::shared_ptr<ComponentLayer> ptr = currentLayer.lock()) {
+        return ptr->focusedObject;
+    }
+    throw std::runtime_error("ComponentLayer API from non component source. ComponentLayer::getFocusedObject");
+}
+
+void ComponentLayer::setFocusedObject(const std::weak_ptr<BaseComponent>& component) {
+    if (std::shared_ptr<ComponentLayer> ptr = currentLayer.lock()) {
+        ptr->focusedObject = component;
+        return;
+    }
+    throw std::runtime_error("ComponentLayer API from non component source. ComponentLayer::setFocusedObject");
+}
 void ComponentLayer::load(const File &file) {
     load(readXML(file));
 }
-
 void ComponentLayer::load(const XMLNode &node) {
     init(node);
 }

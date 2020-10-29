@@ -5,6 +5,9 @@
 #include "TextBox.h"
 #include "../../core/Application.h"
 #include "UITool.h"
+#include "../../core/KeyCode.h"
+#include "../ComponentLayer.h"
+#include <functional>
 
 namespace Zoe {
 
@@ -20,7 +23,39 @@ void TextBox::onUpdate(double time) {
 
 }
 void TextBox::onInputEvent(Event& event) {
-
+    EventDispatcher eventDispatcher(event);
+    eventDispatcher.dispatch<MouseButtonPressedEvent>([this](MouseButtonPressedEvent& e) { this->onClick(e); });
+    eventDispatcher.dispatch<KeyPressedEvent>([this](KeyPressedEvent& e) { this->onKeyPress(e); });
+}
+void TextBox::onClick(MouseButtonPressedEvent& event) {
+    setFocus(true);
+}
+void TextBox::onKeyPress(KeyPressedEvent& event) {
+    if (!writeable || !hasFocus())
+        return;
+    int keyCode = event.getKeyCode();
+    if (multiLine) {
+        warning("Multiline mode is not supported yet.");
+    } else {
+        ///@todo rework after KeyEvent contain the pressed char. (KeyLayout stuff, pls lib do this work for me :c)
+        if (keyCode == KEY_BACKSPACE) {
+            text = text.substr(0, text.length() - 1);
+        } else if (keyCode >= KEY_A && keyCode <= KEY_Z) {
+            if (ComponentLayer::isKeyPressed(KEY_LEFT_SHIFT) || ComponentLayer::isKeyPressed(KEY_RIGHT_SHIFT)) {
+                text += ((char) keyCode);
+            } else {
+                text += ((char) ((unsigned int) keyCode | 0b00100000u));
+            }
+        } else if (keyCode == KEY_ESCAPE) {
+            setFocus(false);
+        } else if (keyCode == KEY_SPACE) {
+            text += " ";
+        } else if (keyCode >= KEY_0 && keyCode <= KEY_9) {
+            text += ((char) keyCode);
+        } else if (keyCode >= KEY_KP_0 && keyCode <= KEY_KP_9) {
+            text += (char)(keyCode - KEY_KP_0 + KEY_0);
+        }
+    }
 }
 void TextBox::fill(const XMLNode& node) {
     std::string fontName{};
@@ -57,6 +92,10 @@ void TextBox::fill(const XMLNode& node) {
     }
     if (auto iter = node.attributes.find("size"); iter != node.attributes.end()) {
         size = std::stoi(iter->second);
+    }
+
+    if (auto iter = node.attributes.find("writeable"); iter != node.attributes.end()) {
+        writeable = iter->second == "true";
     }
 
     if (size == -1) {

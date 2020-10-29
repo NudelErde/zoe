@@ -1,5 +1,5 @@
 <ComponentLayer>
-    <TextBox x="100" y="100" r="0" g="1" b="1" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr">
+    <TextBox x="100" y="100" r="0" g="1" b="1" writeable="true" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr">
     </TextBox>
     <Button x="800" y="450" text_r="0.75" text_g="0.75" text_b="0.75"
             background_r="0.25" background_g="0.25" background_b="0.25" width="240" height="90" text="Test">

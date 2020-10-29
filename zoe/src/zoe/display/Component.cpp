@@ -10,13 +10,14 @@
 #include "NativeScriptComponent.h"
 #include "ChaiScriptComponent.h"
 #include "UI/TextBox.h"
+#include "ComponentLayer.h"
 
 namespace Zoe {
 
 static std::shared_ptr<std::map<std::string, std::function<std::shared_ptr<BaseComponent>()>>> registeredComponents
         = std::make_shared<std::map<std::string, std::function<std::shared_ptr<BaseComponent>()>>>();
 
-void BaseComponent::add(const std::shared_ptr<BaseComponent> &component) {
+void BaseComponent::add(const std::shared_ptr<BaseComponent>& component) {
     if (auto ptr = component->parent.lock()) {
         warning("Component already has a parent! Component is not added!");
     } else {
@@ -25,9 +26,9 @@ void BaseComponent::add(const std::shared_ptr<BaseComponent> &component) {
     }
 }
 
-void BaseComponent::init(const XMLNode &node) {
+void BaseComponent::init(const XMLNode& node) {
     fill(node);
-    for (const auto &xmlChild : node.children) {
+    for (const auto& xmlChild : node.children) {
         if (hasComponentConstructor(xmlChild.name)) {
             std::shared_ptr<BaseComponent> child = createComponent(xmlChild.name);
             add(child);
@@ -40,35 +41,35 @@ void BaseComponent::init(const XMLNode &node) {
 }
 
 void
-BaseComponent::registerComponent(const std::string &name, const std::function<std::shared_ptr<BaseComponent>()> &func) {
+BaseComponent::registerComponent(const std::string& name, const std::function<std::shared_ptr<BaseComponent>()>& func) {
     (*registeredComponents)[name] = func;
 }
 
-std::shared_ptr<BaseComponent> BaseComponent::createComponent(const std::string &name) {
+std::shared_ptr<BaseComponent> BaseComponent::createComponent(const std::string& name) {
     return (*registeredComponents)[name]();
 }
 
-bool BaseComponent::hasComponentConstructor(const std::string &name) {
+bool BaseComponent::hasComponentConstructor(const std::string& name) {
     return registeredComponents->count(name);
 }
 
-void BaseComponent::draw(const Camera &camera) {
+void BaseComponent::draw(const Camera& camera) {
     onDraw(camera);
-    for (const auto &child: children) {
+    for (const auto& child: children) {
         child->draw(camera);
     }
 }
 
 void BaseComponent::update(double time) {
     onUpdate(time);
-    for (const auto &child: children) {
+    for (const auto& child: children) {
         child->update(time);
     }
 }
 
-void BaseComponent::inputEvent(Event &event) {
+void BaseComponent::inputEvent(Event& event) {
     onInputEvent(event);
-    for (const auto &child: children) {
+    for (const auto& child: children) {
         child->inputEvent(event);
     }
 }
@@ -92,6 +93,22 @@ vec3 BaseComponent::getWorldPosition() {
     } else {
         return position;
     }
+}
+bool BaseComponent::hasFocus() const {
+    return isFocused;
+}
+void BaseComponent::setFocus(bool val) {
+    if (val == isFocused)
+        return;
+    if (val) {
+        if (auto ptr = ComponentLayer::getFocusedObject().lock()) {
+            ptr->isFocused = false;
+        }
+        ComponentLayer::setFocusedObject(weak_from_this());
+    } else {
+        ComponentLayer::setFocusedObject(std::weak_ptr<BaseComponent>());
+    }
+    isFocused = val;
 }
 
 }

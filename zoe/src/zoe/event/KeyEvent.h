@@ -15,6 +15,7 @@ namespace Zoe {
 /**
  * An event which indicates that a key was pressed or released.
  * Can be a KeyPressedEvent or a KeyReleasedEvent.
+ * @todo Capture char with key layout and stuff
  * @tparam type the specific EventType
  */
 template<EventType type>
