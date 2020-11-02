@@ -102,7 +102,6 @@ public:
 
     /**
      * FontHolder should not be copied.
-     * @param font the specified font
      */
     FontHolder(const FontHolder &) = delete;
 
@@ -162,6 +161,10 @@ public:
      */
     [[nodiscard]] unsigned int getTextureWidth();
 
+    /**
+     * Returns the file used to create this object.
+     * @return the font file
+     */
     [[nodiscard]] const File &getFile();
 
     /**

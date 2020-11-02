@@ -96,6 +96,7 @@ void UTF::codepointToUTF8(char32_t codepoint, const std::function<void(uint8_t)>
         callback(ch3);
     } else {
         //don't know this boi
+        warning("The codepoint with the value ", codepoint, "can not be converted to a UTF8 sequence");
     }
 }
 void UTF::utf8ToCodepoint(const std::string& utf8, const std::function<void(uint32_t)>& callback) {
