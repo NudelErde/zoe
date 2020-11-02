@@ -66,7 +66,7 @@ void OpenGLIndexBufferImpl::unbind() {
     }
 }
 
-void OpenGLIndexBufferImpl::setData(unsigned int *data, unsigned int count) {
+void OpenGLIndexBufferImpl::setData(const unsigned int *data, unsigned int count) {
     bind();
     if (count == this->count) {
         glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int) * count, data);

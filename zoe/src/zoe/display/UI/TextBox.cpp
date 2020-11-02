@@ -7,6 +7,7 @@
 #include "UITool.h"
 #include "../../core/KeyCode.h"
 #include "../ComponentLayer.h"
+#include "../../core/UTF.h"
 #include <functional>
 
 namespace Zoe {
@@ -26,35 +27,40 @@ void TextBox::onInputEvent(Event& event) {
     EventDispatcher eventDispatcher(event);
     eventDispatcher.dispatch<MouseButtonPressedEvent>([this](MouseButtonPressedEvent& e) { this->onClick(e); });
     eventDispatcher.dispatch<KeyPressedEvent>([this](KeyPressedEvent& e) { this->onKeyPress(e); });
+    eventDispatcher.dispatch<CharInputEvent>([this](CharInputEvent& e) { this->onTextInput(e); });
 }
 void TextBox::onClick(MouseButtonPressedEvent& event) {
     setFocus(true);
 }
+
+
 void TextBox::onKeyPress(KeyPressedEvent& event) {
     if (!writeable || !hasFocus())
         return;
     int keyCode = event.getKeyCode();
+    ///@todo add cursor
     if (multiLine) {
         warning("Multiline mode is not supported yet.");
     } else {
-        ///@todo rework after KeyEvent contain the pressed char. (KeyLayout stuff, pls lib do this work for me :c)
+        ///@todo Add UTF8 support for character deletion
         if (keyCode == KEY_BACKSPACE) {
             text = text.substr(0, text.length() - 1);
-        } else if (keyCode >= KEY_A && keyCode <= KEY_Z) {
-            if (ComponentLayer::isKeyPressed(KEY_LEFT_SHIFT) || ComponentLayer::isKeyPressed(KEY_RIGHT_SHIFT)) {
-                text += ((char) keyCode);
-            } else {
-                text += ((char) ((unsigned int) keyCode | 0b00100000u));
-            }
         } else if (keyCode == KEY_ESCAPE) {
             setFocus(false);
-        } else if (keyCode == KEY_SPACE) {
-            text += " ";
-        } else if (keyCode >= KEY_0 && keyCode <= KEY_9) {
-            text += ((char) keyCode);
-        } else if (keyCode >= KEY_KP_0 && keyCode <= KEY_KP_9) {
-            text += (char)(keyCode - KEY_KP_0 + KEY_0);
         }
+    }
+}
+
+void TextBox::onTextInput(CharInputEvent& event) {
+    if (!writeable || !hasFocus())
+        return;
+    
+    if (multiLine) {
+        warning("Multiline mode is not supported yet.");
+    } else {
+        UTF::codepointToUTF8(event.getCodePoint(), [this](uint8_t ch) {
+            text += (char) ch;
+        });
     }
 }
 void TextBox::fill(const XMLNode& node) {

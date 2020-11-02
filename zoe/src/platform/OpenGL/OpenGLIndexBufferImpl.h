@@ -51,7 +51,7 @@ public:
      * @param data the index array
      * @param count the size of the index array
      */
-    void setData(unsigned int *data, unsigned int count);
+    void setData(const unsigned int *data, unsigned int count);
 
     /**
      * Allocates a new index array and populates it with `count` indexes that start at `offset`. The returned array needs to be deleted!

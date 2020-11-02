@@ -60,7 +60,7 @@ protected:
 private:
     void onClick(MouseButtonPressedEvent& event);
     void onKeyPress(KeyPressedEvent& event);
-
+    void onTextInput(CharInputEvent& event);
 private:
     std::string text;
     Font font;
