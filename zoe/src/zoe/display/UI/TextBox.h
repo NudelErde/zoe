@@ -7,6 +7,7 @@
 #include "../../core/Core.h"
 #include "../Component.h"
 #include "../../render/Font.h"
+#include "../../core/UTF.h"
 
 namespace Zoe {
 
@@ -24,13 +25,31 @@ public:
      * Specifies the new text.
      * @param str the new text
      */
-    inline void setText(const std::string& str) { text = str; }
+    void setText(const std::string& str);
+
+    /**
+     * Specifies the new text.
+     * @param str the new text
+     */
+    void setText(const UTF8String& str);
+
     /**
      * Returns the current text.
      * @returns the current text.
      */
-    inline const std::string& getText() { return text; }
+    inline const UTF8String& getText() { return text; }
 
+    /**
+        * Returns true if the TextBox is writeable.
+        * @return true if the TextBox is writeable
+        */
+    [[nodiscard]] bool isWriteable() const;
+
+    /**
+     * Set whether the TextBox is writeable.
+     * @param writeable true if the TextBox should be writeable
+     */
+    void setWriteable(bool writeable);
 protected:
     /**
      * Draws this component on the specified camera.
@@ -62,11 +81,13 @@ private:
     void onKeyPress(KeyPressedEvent& event);
     void onTextInput(CharInputEvent& event);
 private:
-    std::string text;
+    UTF8String text;
     Font font;
     vec4 color{};
     bool writeable{};
     bool multiLine{};
+    int cursorX{};
+    int cursorY{};
 };
 
 }

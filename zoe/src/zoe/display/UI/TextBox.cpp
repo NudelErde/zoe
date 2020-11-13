@@ -19,6 +19,24 @@ void TextBox::onDraw(const Camera& camera) {
     tool.setColor(color);
     vec2 pos = getWorldPosition().xy();
     tool.drawText(text, pos);
+
+    if (!writeable || !hasFocus())
+        return;
+
+    if (multiLine) {
+        warning("Multiline mode is not supported yet.");
+    } else {
+        int cursorIndex = cursorX;
+        vec2 cursorPos = pos;
+        text.asUTF32([&](uint32_t ch) {
+            if (cursorIndex <= 0) {
+                return;
+            }
+            cursorPos.x += (float) font.getCharMetric(ch).horiAdvance / 64.0f;
+            --cursorIndex;
+        });
+        tool.drawRectangle(cursorPos, vec2((float) font.getSize() / 2.5f, (float) font.getSize() / 10.0f));
+    }
 }
 void TextBox::onUpdate(double time) {
 
@@ -38,15 +56,33 @@ void TextBox::onKeyPress(KeyPressedEvent& event) {
     if (!writeable || !hasFocus())
         return;
     int keyCode = event.getKeyCode();
-    ///@todo add cursor
     if (multiLine) {
         warning("Multiline mode is not supported yet.");
     } else {
-        ///@todo Add UTF8 support for character deletion
         if (keyCode == KEY_BACKSPACE) {
-            text = text.substr(0, text.length() - 1);
+            if (cursorX > 0) {
+                --cursorX;
+                text.remove(cursorX);
+            }
+        } else if (keyCode == KEY_DELETE) {
+            text.remove(cursorX);
         } else if (keyCode == KEY_ESCAPE) {
             setFocus(false);
+        } else if (keyCode == KEY_LEFT) {
+            --cursorX;
+            if (cursorX < 0) {
+                cursorX = 0;
+            }
+        } else if (keyCode == KEY_RIGHT) {
+            ++cursorX;
+            auto size = text.charCount();
+            if (cursorX > size) {
+                cursorX = (int) size;
+            }
+        } else if (keyCode == KEY_END) {
+            cursorX = (int) text.charCount();
+        } else if (keyCode == KEY_HOME) {
+            cursorX = 0;
         }
     }
 }
@@ -54,13 +90,12 @@ void TextBox::onKeyPress(KeyPressedEvent& event) {
 void TextBox::onTextInput(CharInputEvent& event) {
     if (!writeable || !hasFocus())
         return;
-    
+
     if (multiLine) {
         warning("Multiline mode is not supported yet.");
     } else {
-        UTF::codepointToUTF8(event.getCodePoint(), [this](uint8_t ch) {
-            text += (char) ch;
-        });
+        text.insert(cursorX, event.getCodePoint());
+        ++cursorX;
     }
 }
 void TextBox::fill(const XMLNode& node) {
@@ -91,7 +126,7 @@ void TextBox::fill(const XMLNode& node) {
     }
     //content
     if (auto iter = node.attributes.find("text"); iter != node.attributes.end()) {
-        text = iter->second;
+        setText(iter->second);
     }
     if (auto iter = node.attributes.find("font"); iter != node.attributes.end()) {
         fontName = iter->second;
@@ -113,7 +148,7 @@ void TextBox::fill(const XMLNode& node) {
         if (fontPath.isFile()) {
             font = Font(fontPath, size);
         } else {
-            warning("Font ", fontPath.getAbsolutePath(), " does not name a File. Fallback to default Font");
+            warningf("Font {} does not name a File. Fallback to default Font", fontPath.getAbsolutePath());
         }
     } else if (size != font.getSize()) {
         font.setSize(size);
@@ -121,5 +156,19 @@ void TextBox::fill(const XMLNode& node) {
 }
 void TextBox::postFill() {
 
+}
+void TextBox::setText(const std::string& str) {
+    text = str;
+    cursorX = (int) text.charCount();
+}
+void TextBox::setText(const UTF8String& str) {
+    text = str;
+    cursorX = (int) text.charCount();
+}
+bool TextBox::isWriteable() const {
+    return writeable;
+}
+void TextBox::setWriteable(bool writeable) {
+    TextBox::writeable = writeable;
 }
 }

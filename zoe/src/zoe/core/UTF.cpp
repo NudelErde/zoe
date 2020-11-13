@@ -160,4 +160,78 @@ void UTF::utf8ToCodepoint(const std::string& utf8, const std::function<void(uint
     }
 }
 
+UTF8String::UTF8String(std::string str) : string(std::move(str)) {}
+
+UTF8String::operator std::string&() {
+    return string;
+}
+
+UTF8String::operator const std::string&() const {
+    return string;
+}
+
+std::string UTF8String::asUTF32() const {
+    return UTF::utf8ToCodepoint(string);
+}
+
+void UTF8String::asUTF32(const std::function<void(uint32_t)>& function) const {
+    UTF::utf8ToCodepoint(string, function);
+}
+
+std::string::size_type UTF8String::charCount() const {
+    std::string::size_type size = 0;
+    for (const auto* ptr = (const uint8_t*) string.c_str(); *ptr; ++ptr) {
+        if (!((*ptr & 0b10000000u) && ((uint8_t) ~(*ptr) & 0b01000000u))) {
+            ++size;
+        }
+    }
+    return size;
+}
+
+void UTF8String::insert(unsigned int index, char32_t u32char) {
+    std::string::size_type byteIndex = 0;
+    ++index;
+    for (const auto* ptr = (const uint8_t*) string.c_str(); *ptr; ++ptr) {
+        if (!((*ptr & 0b10000000u) && ((uint8_t) ~(*ptr) & 0b01000000u))) {
+            --index;
+        }
+        if (index == 0) {
+            uint8_t insertIteration = 0;
+            UTF::codepointToUTF8(u32char, [&](uint8_t ch) {
+                string.insert(byteIndex + (insertIteration++), 1, (char) ch);
+            });
+            return;
+        }
+        ++byteIndex;
+    }
+    uint8_t insertIteration = 0;
+    UTF::codepointToUTF8(u32char, [&](uint8_t ch) {
+        string.insert(byteIndex + (insertIteration++), 1, (char) ch);
+    });
+}
+
+void UTF8String::remove(unsigned int index) {
+    std::string::size_type byteIndex = 0;
+    ++index;
+    for (const auto* ptr = (const uint8_t*) string.c_str(); *ptr; ++ptr) {
+        if (!((*ptr & 0b10000000u) && ((uint8_t) ~(*ptr) & 0b01000000u))) {
+            --index;
+        }
+        if (index == 0) {
+            int bytesToDelete = 0;
+            if (*ptr & 0b10000000u) {
+                for (uint8_t i = 7; (*ptr & (1u << i)); --i) {
+                    ++bytesToDelete;
+                }
+            } else {
+                bytesToDelete = 1;
+            }
+            string.erase(byteIndex, bytesToDelete);
+            return;
+        }
+        ++byteIndex;
+    }
+}
+
+
 }
