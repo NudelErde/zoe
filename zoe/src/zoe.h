@@ -40,6 +40,9 @@
 #include "zoe/core/VirtualFiles.h"
 #include "zoe/core/Window.h"
 #include "zoe/core/XMLParser.h"
+#include "zoe/core/Scheduler.h"
+#include "zoe/core/UTF.h"
+#include "zoe/core/Task.h"
 
 #include "zoe/display/Game/Sprite.h"
 #include "zoe/display/Game/WorldObject.h"
@@ -56,7 +59,6 @@
 #include "zoe/math/mat.h"
 #include "zoe/math/vec.h"
 
-#include "zoe/parallel/Parallel.h"
 #include "zoe/parallel/Thread.h"
 
 #include "zoe/render/api/IndexBuffer.h"
