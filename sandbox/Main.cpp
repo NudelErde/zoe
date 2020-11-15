@@ -6,9 +6,20 @@
 
 using namespace Zoe;
 
+class ButtonScript: public NativeScript {
+public:
+    int number = 0;
+
+    void onActivation() override {
+        infof("Test {}", number++);
+    }
+};
+
 class App : public Application {
 public:
     App() {
+        NativeScriptComponent::registerNativeScript<ButtonScript>("ButtonScript");
+
         std::shared_ptr<ComponentLayer> uiLayer = std::make_shared<ComponentLayer>();
         uiLayer->setCamera(std::make_shared<Camera2D>(vec2({0, 0}), 1600.0f, 900.0f));
         uiLayer->load(File("sampleObjects/UITest.xml"));

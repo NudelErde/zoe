@@ -11,10 +11,12 @@
 
 #pragma once
 
+#ifndef DOXYGEN
 #ifdef ZOE_DEBUG
 #define devDebug(...) debug(__VA_ARGS__,"\n[",__FILE__, ":",__LINE__,"]")
 #else
 #define devDebug(...)
+#endif
 #endif
 
 namespace Zoe {

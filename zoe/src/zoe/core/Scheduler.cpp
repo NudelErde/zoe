@@ -46,3 +46,6 @@ void Zoe::Scheduler::execute() {
 void Zoe::Scheduler::exit() {
     running = false;
 }
+void Zoe::Scheduler::addTask(const std::function<Task()>& task) {
+    addTask(task());
+}

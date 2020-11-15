@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "../NativeScriptComponent.h"
 #include "../../core/Core.h"
 #include "../Component.h"
 #include "../../render/Font.h"
@@ -121,6 +122,7 @@ private:
     vec4 textColor{};
     std::string text;
     Font font;
+    std::weak_ptr<NativeScriptComponent> script{};
 };
 
 }

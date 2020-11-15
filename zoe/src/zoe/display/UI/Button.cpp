@@ -6,11 +6,16 @@
 #include "../ComponentLayer.h"
 #include "UITool.h"
 #include "../../core/Application.h"
+#include "../NativeScriptComponent.h"
 
 namespace Zoe {
 
 Button::Button() {
-    onClick = []() {};
+    onClick = [this]() {
+        if (auto ptr = script.lock()) {
+            ptr->onActivation();
+        }
+    };
 }
 
 void Button::setClickHandler(const std::function<void()>& handler) {
@@ -119,6 +124,11 @@ void Button::fill(const XMLNode& node) {
 
 void Button::postFill() {
     ///@todo search for script child => check if onClick function is in script
+    for (const auto& child : getChildren()) {
+        if(auto ptr = std::dynamic_pointer_cast<NativeScriptComponent>(child); ptr) {
+            script = ptr;
+        }
+    }
 }
 
 void Button::onMouseClick(MouseButtonReleasedEvent& mbre) {
