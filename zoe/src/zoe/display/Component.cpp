@@ -23,6 +23,12 @@ void BaseComponent::add(const std::shared_ptr<BaseComponent>& component) {
     } else {
         component->parent = shared_from_this();
         children.push_back(component);
+        std::vector<std::shared_ptr<BaseComponent>> components;
+        components.push_back(component);
+        for (const auto& comp : components) {
+            comp->layer = layer;
+            components.insert(components.end(), comp->children.begin(), comp->children.end());
+        }
     }
 }
 
@@ -100,15 +106,17 @@ bool BaseComponent::hasFocus() const {
 void BaseComponent::setFocus(bool val) {
     if (val == isFocused)
         return;
-    if (val) {
-        if (auto ptr = ComponentLayer::getFocusedObject().lock()) {
-            ptr->isFocused = false;
+    if(auto layerPtr = layer.lock()) {
+        if (val) {
+            if (auto ptr = layerPtr->getFocusedObject().lock()) {
+                ptr->isFocused = false;
+            }
+            layerPtr->setFocusedObject(weak_from_this());
+        } else {
+            layerPtr->setFocusedObject(std::weak_ptr<BaseComponent>());
         }
-        ComponentLayer::setFocusedObject(weak_from_this());
-    } else {
-        ComponentLayer::setFocusedObject(std::weak_ptr<BaseComponent>());
+        isFocused = val;
     }
-    isFocused = val;
 }
 
 }

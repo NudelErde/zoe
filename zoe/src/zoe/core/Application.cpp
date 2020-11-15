@@ -123,7 +123,11 @@ int main() {
         exit(EXIT_SUCCESS);
     } catch (const std::exception& e) {
         Zoe::critical("Uncaught error: ", e.what());
+#ifdef ZOE_DEBUG
+        throw;
+#else
         exit(EXIT_FAILURE);
+#endif
     }
 
 }

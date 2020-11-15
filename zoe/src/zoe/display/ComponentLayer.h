@@ -58,39 +58,41 @@ public:
     inline void setCamera(const std::shared_ptr<Camera>& cam) {camera = cam;}
 
     /**
-     * Check if a specific keycode is pressed. Should not be called outside of the component system.
+     * Check if a specific keycode is pressed.
      * @param keycode the keycode to be checked
      * @returns `true` if the key represented by the keycode is pressed.
      * @see Input::isKeyPressed
      */
-    static bool isKeyPressed(int keycode);
+    bool isKeyPressed(int keycode);
     /**
-     * Check if a specific mouse button is pressed. Should not be called outside of the component system.
+     * Check if a specific mouse button is pressed.
      * @param button the mouse button to be checked
      * @returns `true` if the mouse button is pressed.
      * @see Input::isMouseButtonPressed
      */
-    static bool isMouseButtonPressed(int button);
+    bool isMouseButtonPressed(int button);
 
     /**
-     * Return the focused component in the active layer. Should not be called outside of the component system.
+     * Return the focused component in the active layer.
      * @return the focused component
      */
-    static std::weak_ptr<BaseComponent> getFocusedObject();
+    std::weak_ptr<BaseComponent> getFocusedObject();
 
     /**
-     * Sets the focused component in the active layer. Should not be called outside of the component system.
+     * Sets the focused component in the active layer.
      * @param component the new focused component
      */
-    static void setFocusedObject(const std::weak_ptr<BaseComponent>& component);
+    void setFocusedObject(const std::weak_ptr<BaseComponent>& component);
 
     /**
-     * Returns the position of the mouse in component coordinate space. Should not be called outside of the component system.\n
+     * Returns the position of the mouse in component coordinate space.\n
      * The return value of Input::getMousePosition is changed in such a way that it matches the camera transformation.
      * @returns the mouse position in component coordinate space.
      * @see Input::getMousePosition
      */
-    static vec2 getMousePosition();
+     vec2 getMousePosition();
+
+     void add(const std::shared_ptr<BaseComponent> &component) override;
 
 protected:
     /**

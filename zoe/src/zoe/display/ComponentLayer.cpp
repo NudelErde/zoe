@@ -10,8 +10,6 @@
 
 namespace Zoe {
 
-thread_local std::weak_ptr<ComponentLayer> currentLayer;
-
 static struct {
     std::shared_ptr<Shader> imageCopy;
     std::shared_ptr<VertexArray> vertexArray;
@@ -70,7 +68,6 @@ ComponentLayer::ComponentLayer(const unsigned int& width, const unsigned int& he
 ComponentLayer::~ComponentLayer() = default;
 
 void ComponentLayer::onEvent(Event& event) {
-    currentLayer = std::dynamic_pointer_cast<ComponentLayer>(shared_from_this());
     EventDispatcher dispatcher(event);
     dispatcher.dispatch<AppRenderEvent>([this](AppRenderEvent& eve) { this->onDrawEvent(eve); });
     dispatcher.dispatch<AppTickEvent>([this](AppTickEvent& eve) { this->onTickEvent(eve); });
@@ -125,35 +122,33 @@ bool ComponentLayer::isMouseButtonPressed(int button) {
 }
 
 vec2 ComponentLayer::getMousePosition() {
-    if (std::shared_ptr<ComponentLayer> ptr = currentLayer.lock()) {
-        vec2 pos = Input::getMousePosition();
-        pos.x *= (float) ptr->width;
-        pos.y *= (float) ptr->height;
-        mat4x4 invViewMatrix = ptr->getCamera()->getInvViewMatrix();
-        return (invViewMatrix.inverse() * vec4({pos.x, pos.y, 0, 1})).xy();
-    }
-    throw std::runtime_error("ComponentLayer API from non component source. ComponentLayer::getMousePosition");
+    vec2 pos = Input::getMousePosition();
+    pos.x *= (float) width;
+    pos.y *= (float) height;
+    mat4x4 invViewMatrix = getCamera()->getInvViewMatrix();
+    return (invViewMatrix.inverse() * vec4({pos.x, pos.y, 0, 1})).xy();
 }
 
 std::weak_ptr<BaseComponent> ComponentLayer::getFocusedObject() {
-    if (std::shared_ptr<ComponentLayer> ptr = currentLayer.lock()) {
-        return ptr->focusedObject;
-    }
-    throw std::runtime_error("ComponentLayer API from non component source. ComponentLayer::getFocusedObject");
+    return focusedObject;
 }
 
 void ComponentLayer::setFocusedObject(const std::weak_ptr<BaseComponent>& component) {
-    if (std::shared_ptr<ComponentLayer> ptr = currentLayer.lock()) {
-        ptr->focusedObject = component;
-        return;
-    }
-    throw std::runtime_error("ComponentLayer API from non component source. ComponentLayer::setFocusedObject");
+    focusedObject = component;
 }
+
 void ComponentLayer::load(const File& file) {
     load(readXML(file));
 }
 void ComponentLayer::load(const XMLNode& node) {
     init(node);
+}
+void ComponentLayer::add(const std::shared_ptr<BaseComponent>& component) {
+    //if you don't understand (copy-pasted this stuff lul): https://stackoverflow.com/a/45507610
+    if(!layer.owner_before(std::weak_ptr<BaseComponent>{}) && !std::weak_ptr<BaseComponent>{}.owner_before(layer)) {
+        layer = std::dynamic_pointer_cast<ComponentLayer>(shared_from_this());
+    }
+    BaseComponent::add(component);
 }
 
 }

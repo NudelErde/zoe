@@ -137,7 +137,7 @@ void Button::onMouseClick(MouseButtonReleasedEvent& mbre) {
      * @todo why the fuck isn't this showing in doxygen :c
      */
     vec2 position = getWorldPosition().xy();
-    vec2 pos = ComponentLayer::getMousePosition();
+    vec2 pos = getLayer()->getMousePosition();
     if (pos.x > position.x && pos.x < position.x + size.x
         && pos.y > position.y && pos.y < position.y + size.y) {
         onClick();
