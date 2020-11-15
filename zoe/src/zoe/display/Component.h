@@ -107,6 +107,23 @@ public:
      */
     inline std::shared_ptr<ComponentLayer> getLayer() { return layer.lock(); }
 
+    std::shared_ptr<BaseComponent> getChildByID(const std::string& componentID);
+
+    template<typename T>
+    std::shared_ptr<T> getChildByIDAndType(const std::string& componentID) {
+        std::vector<std::shared_ptr<BaseComponent>> childVector = children;
+        for (const auto& child: childVector) {
+            if(child->id == componentID) {
+                if(auto ptr = std::dynamic_pointer_cast<T>(child)) {
+                    return ptr;
+                }
+            }
+            const auto& grandchildren = child->getChildren();
+            childVector.insert(childVector.end(), grandchildren.begin(), grandchildren.end());
+        }
+        return std::shared_ptr<T>();
+    }
+
 protected:
 
     /**
@@ -148,6 +165,7 @@ private:
     std::weak_ptr<BaseComponent> parent;
     std::weak_ptr<ComponentLayer> layer;
 
+    std::string id;
     bool isFocused;
 
     void init(const XMLNode& node);

@@ -12,6 +12,13 @@ public:
 
     void onActivation() override {
         infof("Test {}", number++);
+        Scheduler::addTask([]() -> Task{
+            using namespace std::chrono_literals;
+            co_await 10s;
+            info("Waited 10 seconds");
+            co_await 1h;
+            info("Long time");
+        }());
     }
 };
 
@@ -23,8 +30,9 @@ public:
         std::shared_ptr<ComponentLayer> uiLayer = std::make_shared<ComponentLayer>();
         uiLayer->setCamera(std::make_shared<Camera2D>(vec2({0, 0}), 1600.0f, 900.0f));
         uiLayer->load(File("sampleObjects/UITest.xml"));
-        std::dynamic_pointer_cast<Button>(uiLayer->getChildren()[1])->setClickHandler([=]() {
-            uiLayer->getChildren()[1]->setPosition(uiLayer->getChildren()[1]->getPosition()+vec3(1,1,0));
+        auto button1 = uiLayer->getChildByIDAndType<Button>("button1");
+        button1->setClickHandler([=]() {
+            button1->setPosition(button1->getPosition()+vec3(1,1,0));
         });
 
         getLayerStack().pushLayer(uiLayer);

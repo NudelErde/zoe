@@ -4,8 +4,10 @@
 
 #include "Task.h"
 #include "Scheduler.h"
+#include "Console.h"
 
 bool Zoe::Task::resume() {
+
     handle.resume();
     return handle.promise().shouldRepeat && !handle.done();
 }
@@ -53,10 +55,7 @@ std::suspend_always Zoe::Task::promise_type::yield_value(bool repeat) {
     shouldRepeat = repeat;
     return {};
 }
-Zoe::WaitTime Zoe::Task::promise_type::await_transform(std::chrono::milliseconds duration) {
-    return Zoe::WaitTime(duration);
-}
-Zoe::WaitTime::WaitTime(std::chrono::milliseconds time) : endpoint(time + std::chrono::steady_clock::now()) {}
+Zoe::WaitTime::WaitTime(std::chrono::time_point<std::chrono::steady_clock> time) : endpoint(time) {}
 
 bool Zoe::WaitTime::await_ready() {
     return std::chrono::steady_clock::now() >= endpoint;

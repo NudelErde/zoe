@@ -33,6 +33,9 @@ void BaseComponent::add(const std::shared_ptr<BaseComponent>& component) {
 }
 
 void BaseComponent::init(const XMLNode& node) {
+    if(auto iter = node.attributes.find("id"); iter != node.attributes.end()) {
+        id = iter->second;
+    }
     fill(node);
     for (const auto& xmlChild : node.children) {
         if (hasComponentConstructor(xmlChild.name)) {
@@ -117,6 +120,16 @@ void BaseComponent::setFocus(bool val) {
         }
         isFocused = val;
     }
+}
+std::shared_ptr<BaseComponent> BaseComponent::getChildByID(const std::string& componentID)  {
+    std::vector<std::shared_ptr<BaseComponent>> childVector = children;
+    for (const auto& child: childVector) {
+        if(child->id == componentID)
+            return child;
+        const auto& grandchildren = child->getChildren();
+        childVector.insert(childVector.end(), grandchildren.begin(), grandchildren.end());
+    }
+    return std::shared_ptr<BaseComponent>();
 }
 
 }

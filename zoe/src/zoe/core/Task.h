@@ -11,6 +11,8 @@
 
 namespace Zoe {
 
+inline int TaskUniqueID = 0;
+
 /**
  * If a function returns a Task it can be used as a coroutine. A coroutine can suspend it's execution an return to the caller.
  * A Task can be added to the Scheduler. If `co_yield true;` is executed the function suspends execution and another Task is executed.
@@ -28,6 +30,8 @@ namespace Zoe {
  */
 class Task {
 public:
+    int debug = 0;
+    int uniqueID = TaskUniqueID++;
     /**
      * The promise_type enables a function that returns a task as a coroutine.
      */
@@ -38,6 +42,10 @@ public:
      * @param handle the coroutine handle
      */
     explicit Task(std::coroutine_handle<promise_type> handle);
+    Task(const Task&) = delete;
+    Task& operator=(const Task&) = delete;
+    Task(Task&&) noexcept = default;
+    Task& operator=(Task&&) noexcept = default;
 
     /**
      * Resumes the tasks execution. Returns true if it can be continued. It shouldn't be resumed when it called `co_yield false;` or it reached it's end.
@@ -92,9 +100,11 @@ struct Task::promise_type {
     /**
      * This function is called when `co_await std::chrono::duration;` is called. It converts the duration in a WaitTime object. This method should only be called by the coroutine implementation.
      * @param duration the specified duration
+     * @tparam DurationType the type of the duration object
      * @return the co_awaited WaitTime object
      */
-    WaitTime await_transform(std::chrono::milliseconds duration);
+    template<typename DurationType>
+    WaitTime await_transform(DurationType duration) {return WaitTime(std::chrono::steady_clock::now() + duration);}
 
     /**
      * `true` if the coroutine should be resumed.
@@ -163,10 +173,10 @@ public:
 class WaitTime {
 public:
     /**
-     * Constructs the WaitTime object with a specified duration.
-     * @param milliseconds the duration
+     * Constructs the WaitTime object with a specified end point.
+     * @param timePoint the end point in time
      */
-    explicit WaitTime(std::chrono::milliseconds milliseconds);
+    explicit WaitTime(std::chrono::time_point<std::chrono::steady_clock> timePoint);
 
     /**
      * Check if the duration is already passed. This method should only be called by the coroutine implementation.

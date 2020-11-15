@@ -27,7 +27,7 @@ public:
      * it should call `co_yield true;` at least once per iteration.
      * @param task the added task
      */
-    static void addTask(Task task);
+    static void addTask(Task&& task);
 
     /**
      * Adds a function. The function will be executed once. The Scheduler is a cooperative Scheduler so the function
@@ -35,14 +35,6 @@ public:
      * @param function the added function
      */
     static void addTask(const std::function<void()>& function);
-
-    /**
-     * Adds a Task. The task will be executed until it is finished or it executes `co_yield false;`. The Scheduler is a
-     * cooperative Scheduler so the task has to call `co_yield true;` for other tasks to execute. If the task has an infinite while loop,
-     * it should call `co_yield true;` at least once per iteration.
-     * @param task the added task
-     */
-    static void addTask(const std::function<Task()>& task);
 
     /**
      * Sets a bool so that execute leaves the loop at the end of this iteration.
