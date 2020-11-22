@@ -59,6 +59,40 @@ private:
 class WaitTime;
 
 /**
+ * Is used to suspends the coroutines execution for a specified duration.
+ * `co_await std::chrono::duration` can be used to wait for the specified time.
+ * If the Task is executed in the main thread it will continue in the main thread.
+ * If the Task is executed in another thread, it will continue on a thread that is not the main thread.
+ */
+class WaitTime {
+public:
+    /**
+     * Constructs the WaitTime object with a specified end point.
+     * @param timePoint the end point in time
+     */
+    explicit WaitTime(std::chrono::time_point<std::chrono::steady_clock> timePoint);
+
+    /**
+     * Check if the duration is already passed. This method should only be called by the coroutine implementation.
+     * @return `true` if the duration is already passed
+     */
+    bool await_ready();
+
+    /**
+     * Suspends the execution of this coroutine and continues it after the specified duration. This method should only be called by the coroutine implementation.
+     * @param h the coroutine handle
+     */
+    void await_suspend(std::coroutine_handle<Task::promise_type> h);
+
+    /**
+     * Is called before the coroutine is resumed. This method should only be called by the coroutine implementation.
+     */
+    void await_resume();
+private:
+    std::chrono::time_point<std::chrono::steady_clock> endpoint;
+};
+
+/**
  * The promise_type enables a function that returns a task as a coroutine.
  */
 struct Task::promise_type {
@@ -162,40 +196,6 @@ public:
      * Is called before the coroutine is resumed. This method should only be called by the coroutine implementation.
      */
     void await_resume();
-};
-
-/**
- * Is used to suspends the coroutines execution for a specified duration.
- * `co_await std::chrono::duration` can be used to wait for the specified time.
- * If the Task is executed in the main thread it will continue in the main thread.
- * If the Task is executed in another thread, it will continue on a thread that is not the main thread.
- */
-class WaitTime {
-public:
-    /**
-     * Constructs the WaitTime object with a specified end point.
-     * @param timePoint the end point in time
-     */
-    explicit WaitTime(std::chrono::time_point<std::chrono::steady_clock> timePoint);
-
-    /**
-     * Check if the duration is already passed. This method should only be called by the coroutine implementation.
-     * @return `true` if the duration is already passed
-     */
-    bool await_ready();
-
-    /**
-     * Suspends the execution of this coroutine and continues it after the specified duration. This method should only be called by the coroutine implementation.
-     * @param h the coroutine handle
-     */
-    void await_suspend(std::coroutine_handle<Task::promise_type> h);
-
-    /**
-     * Is called before the coroutine is resumed. This method should only be called by the coroutine implementation.
-     */
-    void await_resume();
-private:
-    std::chrono::time_point<std::chrono::steady_clock> endpoint;
 };
 
 }
