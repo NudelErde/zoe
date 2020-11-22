@@ -94,9 +94,11 @@ void BaseComponent::init() {
     registerComponent<ModelComponent>("Model");
     registerComponent<NativeScriptComponent>("NativeScriptComponent");
     registerComponent<ChaiScriptComponent>("ChaiScriptComponent");
+    registerComponent<Camera2D>("Camera2D");
+    registerComponent<Camera3D>("Camera3D");
 }
 
-vec3 BaseComponent::getWorldPosition() {
+vec3 BaseComponent::getWorldPosition() const {
     if (auto ptr = parent.lock()) {
         return ptr->getWorldPosition() + position;
     } else {

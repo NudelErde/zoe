@@ -49,7 +49,7 @@ void Zoe::Task::promise_type::return_void() {
 
 }
 void Zoe::Task::promise_type::unhandled_exception() {
-
+    throw;
 }
 std::suspend_always Zoe::Task::promise_type::yield_value(bool repeat) {
     shouldRepeat = repeat;

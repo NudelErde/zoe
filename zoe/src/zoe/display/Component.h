@@ -8,11 +8,12 @@
 #include "../render/api/Render.h"
 #include "../core/XMLParser.h"
 #include "../event/CommonEvent.h"
-#include "Camera.h"
 
 namespace Zoe {
 
 class ComponentLayer;
+
+class Camera;
 
 /**
  * The component system is used to display game and UI. It is based on nodes. Every component can have children and
@@ -63,7 +64,7 @@ public:
      * Returns the absolut position of this component.
      * @returns the absolut position
      */
-    vec3 getWorldPosition();
+    vec3 getWorldPosition() const;
 
     /**
      * Returns the position of this component relative to the parent component.
@@ -111,15 +112,25 @@ public:
 
     template<typename T>
     std::shared_ptr<T> getChildByIDAndType(const std::string& componentID) {
-        std::vector<std::shared_ptr<BaseComponent>> childVector = children;
-        for (const auto& child: childVector) {
-            if(child->id == componentID) {
-                if(auto ptr = std::dynamic_pointer_cast<T>(child)) {
-                    return ptr;
+        std::vector<std::shared_ptr<BaseComponent>> childVector;
+        std::vector<std::shared_ptr<BaseComponent>> grandChildVector = children;
+        bool repeat = true;
+        while (repeat) {
+            childVector = grandChildVector;
+            grandChildVector.clear();
+            repeat = false;
+            for (const auto& child: childVector) {
+                if (child->id == componentID) {
+                    if (auto ptr = std::dynamic_pointer_cast<T>(child)) {
+                        return ptr;
+                    }
+                }
+                const auto& grandchildren = child->getChildren();
+                if(!grandchildren.empty()) {
+                    repeat = true;
+                    grandChildVector.insert(grandChildVector.end(), grandchildren.begin(), grandchildren.end());
                 }
             }
-            const auto& grandchildren = child->getChildren();
-            childVector.insert(childVector.end(), grandchildren.begin(), grandchildren.end());
         }
         return std::shared_ptr<T>();
     }

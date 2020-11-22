@@ -148,6 +148,7 @@ private:
     std::shared_ptr<Render> displayRender;
 
     unsigned int width, height;
+    std::string defaultCameraID;
 };
 
 }

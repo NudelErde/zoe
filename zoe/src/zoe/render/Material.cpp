@@ -272,7 +272,7 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
                              shader.setUniform3f("specularReflectivity_mtl", data.specularReflectivity.x,
                                                  data.specularReflectivity.y, data.specularReflectivity.z);
                              shader.setUniform1f("specularExponent_mtl", data.specularExponent);
-                             vec3 cameraPos = camera.getPosition();
+                             vec3 cameraPos = camera.getWorldPosition();
                              shader.setUniform3f("cameraPosition", cameraPos.x, cameraPos.y, cameraPos.z);
 
                              //TODO: source is enough documentation

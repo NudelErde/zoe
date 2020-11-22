@@ -78,10 +78,18 @@ void ComponentLayer::onEvent(Event& event) {
 
 void ComponentLayer::fill(const XMLNode& node) {
 
+    if (node.attributes.count("defaultCamera") > 0) {
+        defaultCameraID = node.attributes.at("defaultCamera");
+    }
 }
 
 void ComponentLayer::postFill() {
-
+    if (!defaultCameraID.empty()) {
+        auto cam = getChildByIDAndType<Camera>(defaultCameraID);
+        if (cam) {
+            setCamera(cam);
+        }
+    }
 }
 
 void ComponentLayer::onUpdate(double time) {
@@ -145,7 +153,7 @@ void ComponentLayer::load(const XMLNode& node) {
 }
 void ComponentLayer::add(const std::shared_ptr<BaseComponent>& component) {
     //if you don't understand (copy-pasted this stuff lul): https://stackoverflow.com/a/45507610
-    if(!layer.owner_before(std::weak_ptr<BaseComponent>{}) && !std::weak_ptr<BaseComponent>{}.owner_before(layer)) {
+    if (!layer.owner_before(std::weak_ptr<BaseComponent>{}) && !std::weak_ptr<BaseComponent>{}.owner_before(layer)) {
         layer = std::dynamic_pointer_cast<ComponentLayer>(shared_from_this());
     }
     BaseComponent::add(component);

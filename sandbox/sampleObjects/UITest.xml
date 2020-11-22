@@ -1,13 +1,17 @@
-<ComponentLayer>
-    <TextBox x="100" y="100" r="0" g="1" b="1" writeable="true" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr">
+<ComponentLayer defaultCamera="cam">
+    <TextBox x="100" y="100" r="0" g="1" b="1" writeable="true"
+             text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr">
     </TextBox>
     <Button id="button1" x="800" y="450" text_r="0.75" text_g="0.75" text_b="0.75"
             background_r="0.25" background_g="0.25" background_b="0.25" width="240" height="90" text="Movable button">
     </Button>
 
     <Button x="400" y="450" text_r="0.75" text_g="0.75" text_b="0.75"
-            background_r="0.25" background_g="0.25" background_b="0.25" width="240" height="90" text="Console log button">
-    <NativeScriptComponent script="ButtonScript">
-    </NativeScriptComponent>
+            background_r="0.25" background_g="0.25" background_b="0.25" width="240" height="90"
+            text="Console log button">
+        <NativeScriptComponent script="ButtonScript">
+        </NativeScriptComponent>
     </Button>
+    <Camera2D x="0" y="0" width="1600" height="900" id="cam">
+    </Camera2D>
 </ComponentLayer>
