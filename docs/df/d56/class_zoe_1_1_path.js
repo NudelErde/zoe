@@ -8,6 +8,7 @@ var class_zoe_1_1_path =
     [ "getPath", "df/d56/class_zoe_1_1_path.html#a7b09e07b2933e5514764adddee9c6c0b", null ],
     [ "isDirectory", "df/d56/class_zoe_1_1_path.html#a6e1f6b0904e2eb93879392edfdd927f4", null ],
     [ "isFile", "df/d56/class_zoe_1_1_path.html#a4e8dce23b43b16e99df13cac666501e7", null ],
+    [ "operator==", "df/d56/class_zoe_1_1_path.html#aad62b1f9332d8879b8738b102ac8b473", null ],
     [ "absolutPath", "df/d56/class_zoe_1_1_path.html#a89921fd14c554c738de8cf24e50b64b1", null ],
     [ "m_isVirtual", "df/d56/class_zoe_1_1_path.html#aed3ab635695b79602f17ecd3be9e6afb", null ],
     [ "m_path", "df/d56/class_zoe_1_1_path.html#afe4a4eecf57ac466dff25b7723019d25", null ]

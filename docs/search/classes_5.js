@@ -4,5 +4,6 @@ var searchData=
   ['fileerror',['FileError',['../d5/dfb/class_zoe_1_1_file_error.html',1,'Zoe']]],
   ['font',['Font',['../dc/df8/class_zoe_1_1_font.html',1,'Zoe']]],
   ['fontcharbitmapinformation',['FontCharBitmapInformation',['../d6/d30/struct_zoe_1_1_font_char_bitmap_information.html',1,'Zoe']]],
-  ['fontcharmetric',['FontCharMetric',['../db/dc8/struct_zoe_1_1_font_char_metric.html',1,'Zoe']]]
+  ['fontcharmetric',['FontCharMetric',['../db/dc8/struct_zoe_1_1_font_char_metric.html',1,'Zoe']]],
+  ['fontholder',['FontHolder',['../d1/da6/class_zoe_1_1_font_holder.html',1,'Zoe']]]
 ];
