@@ -64,7 +64,7 @@ public:
     inline void setModel(const Model &model) {WorldObject::model = model;}
 
 private:
-    //TODO: create LightSource class
+    ///@todo create LightSource class
     //LightSource lightSource
     //bool hasLightSource
     Model model;

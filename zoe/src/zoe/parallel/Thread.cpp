@@ -56,7 +56,7 @@ Thread::Thread(const std::string& name) {
         threadInfo->threadID = ++nextThreadID;
         threadInfo->name = name;
     } else {
-        Zoe::critical("Dat sollte so nich passieren");
+        Zoe::critical("Main thread constructor not called from main thread!");
     }
 }
 

@@ -59,5 +59,8 @@ void NativeScriptComponent::postFill() {
         script->onInit();
     }
 }
+void NativeScriptComponent::onActivation() {
+    script->onActivation();
+}
 
 }

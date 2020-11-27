@@ -29,6 +29,11 @@ public:
     virtual void onInit() {}
 
     /**
+     * The onActivation function is called when the parent component is activated.
+     */
+    virtual void onActivation() {}
+
+    /**
      * The parent of the NativeScriptComponent.
      */
     std::weak_ptr<BaseComponent> component{};
@@ -115,6 +120,12 @@ public:
      * Destructs the NativeScriptComponent.
      */
     ~NativeScriptComponent() = default;
+
+    /**
+     * The onActivation function is called when the parent component is activated.
+     */
+    void onActivation();
+
 protected:
 
     /**

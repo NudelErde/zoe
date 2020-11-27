@@ -10,8 +10,6 @@
 
 namespace Zoe {
 
-thread_local std::weak_ptr<ComponentLayer> currentLayer;
-
 static struct {
     std::shared_ptr<Shader> imageCopy;
     std::shared_ptr<VertexArray> vertexArray;
@@ -22,9 +20,10 @@ static struct {
 
 ComponentLayer::ComponentLayer() : ComponentLayer(1600, 900) {}
 
-ComponentLayer::ComponentLayer(const unsigned int &width, const unsigned int &height) : Layer("ComponentLayer"), width(width),
-                                                                          height(height) {
-    setSubscribedEvents((unsigned int)EventCategory::Application | (unsigned int)EventCategory::Input);
+ComponentLayer::ComponentLayer(const unsigned int& width, const unsigned int& height) : Layer("ComponentLayer"),
+                                                                                        width(width),
+                                                                                        height(height) {
+    setSubscribedEvents((unsigned int) EventCategory::Application | (unsigned int) EventCategory::Input);
     timeOfLastTick = std::chrono::steady_clock::now();
 
     if (!data.init) {
@@ -68,37 +67,44 @@ ComponentLayer::ComponentLayer(const unsigned int &width, const unsigned int &he
 
 ComponentLayer::~ComponentLayer() = default;
 
-void ComponentLayer::onEvent(Event &event) {
-    currentLayer = std::dynamic_pointer_cast<ComponentLayer>(shared_from_this());
+void ComponentLayer::onEvent(Event& event) {
     EventDispatcher dispatcher(event);
-    dispatcher.dispatch<AppRenderEvent>([this](AppRenderEvent &eve) { this->onDrawEvent(eve); });
-    dispatcher.dispatch<AppTickEvent>([this](AppTickEvent &eve) { this->onTickEvent(eve); });
+    dispatcher.dispatch<AppRenderEvent>([this](AppRenderEvent& eve) { this->onDrawEvent(eve); });
+    dispatcher.dispatch<AppTickEvent>([this](AppTickEvent& eve) { this->onTickEvent(eve); });
     if (event.isInCategory(EventCategory::Input)) {
         inputEvent(event);
     }
 }
 
-void ComponentLayer::fill(const XMLNode &node) {
+void ComponentLayer::fill(const XMLNode& node) {
 
+    if (node.attributes.count("defaultCamera") > 0) {
+        defaultCameraID = node.attributes.at("defaultCamera");
+    }
 }
 
 void ComponentLayer::postFill() {
-
+    if (!defaultCameraID.empty()) {
+        auto cam = getChildByIDAndType<Camera>(defaultCameraID);
+        if (cam) {
+            setCamera(cam);
+        }
+    }
 }
 
 void ComponentLayer::onUpdate(double time) {
 
 }
 
-void ComponentLayer::onDraw(const Camera &) {
+void ComponentLayer::onDraw(const Camera&) {
 
 }
 
-void ComponentLayer::onInputEvent(Event &event) {
+void ComponentLayer::onInputEvent(Event& event) {
 
 }
 
-void ComponentLayer::onDrawEvent(AppRenderEvent &event) {
+void ComponentLayer::onDrawEvent(AppRenderEvent& event) {
     render->clear();
     if (camera) {
         camera->setRender(render);
@@ -108,7 +114,7 @@ void ComponentLayer::onDrawEvent(AppRenderEvent &event) {
     displayRender->draw(*data.vertexArray, *data.imageCopy);
 }
 
-void ComponentLayer::onTickEvent(AppTickEvent &event) {
+void ComponentLayer::onTickEvent(AppTickEvent& event) {
     double duration = (std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::steady_clock::now() - timeOfLastTick).count() / 1000.0f);
     update(duration);
@@ -124,22 +130,33 @@ bool ComponentLayer::isMouseButtonPressed(int button) {
 }
 
 vec2 ComponentLayer::getMousePosition() {
-    if (std::shared_ptr<ComponentLayer> ptr = currentLayer.lock()) {
-        vec2 pos = Input::getMousePosition();
-        pos.x *= (float)ptr->width;
-        pos.y *= (float)ptr->height;
-        mat4x4 invViewMatrix = ptr->getCamera()->getInvViewMatrix();
-        return (invViewMatrix.inverse()*vec4({pos.x, pos.y, 0, 1})).xy();
-    }
-    throw std::runtime_error("ComponentLayer API from non component source");
+    vec2 pos = Input::getMousePosition();
+    pos.x *= (float) width;
+    pos.y *= (float) height;
+    mat4x4 invViewMatrix = getCamera()->getInvViewMatrix();
+    return (invViewMatrix.inverse() * vec4({pos.x, pos.y, 0, 1})).xy();
 }
 
-void ComponentLayer::load(const File &file) {
+std::weak_ptr<BaseComponent> ComponentLayer::getFocusedObject() {
+    return focusedObject;
+}
+
+void ComponentLayer::setFocusedObject(const std::weak_ptr<BaseComponent>& component) {
+    focusedObject = component;
+}
+
+void ComponentLayer::load(const File& file) {
     load(readXML(file));
 }
-
-void ComponentLayer::load(const XMLNode &node) {
+void ComponentLayer::load(const XMLNode& node) {
     init(node);
+}
+void ComponentLayer::add(const std::shared_ptr<BaseComponent>& component) {
+    //if you don't understand (copy-pasted this stuff lul): https://stackoverflow.com/a/45507610
+    if (!layer.owner_before(std::weak_ptr<BaseComponent>{}) && !std::weak_ptr<BaseComponent>{}.owner_before(layer)) {
+        layer = std::dynamic_pointer_cast<ComponentLayer>(shared_from_this());
+    }
+    BaseComponent::add(component);
 }
 
 }

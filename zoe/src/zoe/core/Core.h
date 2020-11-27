@@ -42,5 +42,5 @@
 #endif
 
 #define PI 3.141592f
-#define BIT(X) (1 << X)
+#define BIT(X) (1u << (uint32_t)X)
 

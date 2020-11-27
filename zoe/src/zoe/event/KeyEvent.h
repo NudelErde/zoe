@@ -56,14 +56,8 @@ public:
      * @param repeatcount the number of repetitions
      */
     KeyPressedEvent(int keycode, int repeatcount) : KeyEvent(keycode), repeatCount(repeatcount) {}
-
     /**
-     * Destructs the KeyPressedEvent.
-     */
-    ~KeyPressedEvent() {}
-
-    /**
-     * Returns the number of repetitions
+     * Returns the number of repetitions.
      * @return the number of repetitions
      */
     inline int getRepeatCount() const { return repeatCount; }
@@ -82,12 +76,26 @@ public:
      * @param keycode the released keycode
      */
     KeyReleasedEvent(int keycode) : KeyEvent(keycode) {}
+};
+
+/**
+ * An event which indicates that a char is produced by the operating system text input system.
+ * CharInputEvent obeys keyboard layouts and modifier keys and supports composing characters using dead keys
+ */
+class CharInputEvent : public EventTemplate<EventType::CharInput, EventCategory::Keyboard, EventCategory::Input> {
+public:
+    /**
+     * Constructs a CharInputEvent with the specified codepoint.
+     */
+    CharInputEvent(unsigned int codepoint) : codepoint(codepoint) {}
 
     /**
-     * Destructs the KeyReleasedEvent.
+     * Returns the codepoint produced by the operating system.
+     * @return the codepoint produced by the operating system
      */
-    ~KeyReleasedEvent() {}
-
+    [[nodiscard]] inline const unsigned int& getCodePoint() const noexcept { return codepoint; }
+private:
+    unsigned int codepoint;
 };
 
 }

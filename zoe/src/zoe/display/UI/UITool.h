@@ -50,7 +50,7 @@ public:
      * @param pos the upper left corner of the result
      * @param size the size of the resulting image
      */
-    void drawImage(const std::shared_ptr<Texture>& image,const vec2& pos,const vec2& size);
+    void drawImage(const std::shared_ptr<Texture>& image, const vec2& pos, const vec2& size);
     /**
      * Draw a rectangle at the specified location and size.
      * @param pos the upper left corner of the result
@@ -87,6 +87,12 @@ private:
     std::shared_ptr<IndexBuffer> textIndexBuffer;
     std::shared_ptr<VertexArray> textVertexArray;
     std::shared_ptr<Texture> textBitmap;
+
+    struct RenderChar;
+    static void fillRenderChar(RenderChar& renderChar, float textureWidth, float textureHeight, const vec2& cursor,
+                               const FontCharMetric& metric, const FontCharBitmapInformation& bitmapInformation);
+
+    void renderTextBuffer(const UITool::RenderChar* textVertexData, const unsigned int* textIndexData);
 };
 
 }

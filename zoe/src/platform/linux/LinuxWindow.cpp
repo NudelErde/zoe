@@ -165,6 +165,12 @@ void LinuxWindow::setUpListener() {
 		MouseMovedEvent event((float) x/(float)data.width,(float) y/(float)data.height);
 		data.eventCallback(event);
 	});
+	glfwSetCharCallback(window, [](GLFWwindow* window, unsigned int codepoint){
+	    WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+
+        CharInputEvent event(codepoint);
+        data.eventCallback(event);
+	});
 
 }
 

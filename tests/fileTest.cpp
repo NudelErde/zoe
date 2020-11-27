@@ -3,7 +3,6 @@
 //
 
 #include <zoe.h>
-#include <EntryPoint.h>
 
 using namespace Zoe;
 

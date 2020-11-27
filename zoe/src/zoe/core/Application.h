@@ -13,6 +13,7 @@
 #include "LayerStack.h"
 #include "../render/GraphicsContext.h"
 #include "../render/Font.h"
+#include "Task.h"
 
 namespace Zoe {
 
@@ -36,7 +37,7 @@ public:
 	virtual ~Application();
 
 	/**
-	 * Main loop. Will loop until the program is terminated with Application::exit or the window is closed.
+	 * Starts the program by adding the run tasks to the scheduler.
 	 */
 	void run();
 	/**
@@ -56,7 +57,7 @@ public:
 	/**
 	 * Exits clean. The program will be stopped at next loop iteration. Use std::exit to exit immediately.
 	 */
-	void exit();
+	static void exit();
 
 	/**
 	 * Returns Window. Is nullptr if application was create without window creation
@@ -80,20 +81,18 @@ public:
 		return *(get().getWindow().getContext());
 	}
 
-	/**
-	 * Returns the default Font.
-	 * @returns the default Font
-	 */
-	static const Font& getDefaultFont();
-
 private:
 	bool onWindowClose(WindowCloseEvent& e);
 
 	std::unique_ptr<Window> window;
-	bool running = true;
 
 	LayerStack layerStack;
 	bool hasWindow;
+
+private:
+    Task renderWindow();
+    Task updateObjects();
+    Task tickObjects();
 };
 
 /**

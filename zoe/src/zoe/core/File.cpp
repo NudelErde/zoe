@@ -29,7 +29,8 @@ struct VirtualFileData { //TODO: pack executable and zip for some files? runtime
     std::map<std::string, std::vector<std::string>> virtualDirectoryMap;
     std::set<std::string> isFile;
     std::set<std::string> isDirectory;
-    VirtualFileData(){
+
+    VirtualFileData() {
         isDirectory.insert("virtual/");
     }
 };
@@ -57,7 +58,7 @@ bool Path::exists() const {
 
 bool Path::isFile() const {
     if (!m_isVirtual) {
-        if(!exists())
+        if (!exists())
             return false;
         std::error_code error;
         bool val = std::filesystem::is_regular_file(m_path, error);
@@ -72,7 +73,7 @@ bool Path::isFile() const {
 
 bool Path::isDirectory() const {
     if (!m_isVirtual) {
-        if(!exists())
+        if (!exists())
             return false;
         std::error_code error;
         bool val = std::filesystem::is_directory(m_path, error);
@@ -108,7 +109,7 @@ std::string Path::getAbsolutePath() const {
         std::replace(val.begin(), val.end(), '\\', '/');
         return val;
     } else {
-        if(m_path == "virtual/")
+        if (m_path == "virtual/")
             return m_path;
         std::stringstream result;
         std::vector<std::string> args = split(m_path, '/');
@@ -138,6 +139,10 @@ std::string Path::getAbsolutePath() {
         absolutPath = std::as_const(*this).getAbsolutePath();
     }
     return absolutPath;
+}
+
+bool Path::operator==(const Path &rhs) const {
+    return rhs.getAbsolutePath() == getAbsolutePath();
 }
 
 Directory::Directory(const Path &path) : Path(path) {
@@ -186,7 +191,7 @@ void Directory::remove() const {
             throw FileError(m_path, error.message(), FileError::FileErrorCode::FilesystemError);
         }
     } else if (isDirectory()) {
-        if(m_path == "virtual/") //never delete virtual files root
+        if (m_path == "virtual/") //never delete virtual files root
             return;
         for (const auto &file : getFiles()) {
             if (file.isFile()) {
@@ -271,16 +276,16 @@ void File::remove() const {
     }
 }
 
-std::unique_ptr<uint8_t[]> File::getContent(size_t * size) const{
+std::unique_ptr<uint8_t[]> File::getContent(size_t *size) const {
     std::unique_ptr<std::istream> inputStream = createIStream(true);
     inputStream->seekg(0, std::ios::end);
     size_t length = inputStream->tellg();
-    if(size != nullptr){
+    if (size != nullptr) {
         *size = length;
     }
     std::unique_ptr<uint8_t[]> res = std::make_unique<uint8_t[]>(length);
     inputStream->seekg(0, std::ios::beg);
-    inputStream->read((char*)res.get(), length);
+    inputStream->read((char *) res.get(), length);
     return res;
 }
 

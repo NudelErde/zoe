@@ -86,6 +86,12 @@ public:
     Path(const std::string & name);
 
     /**
+     * Checks whether two path objects have the same absolute path.
+     * @return `true` if two path objects have the same absolute path
+     */
+    bool operator==(const Path&) const;
+
+    /**
      * Checks if this path corresponds to an existing file or directory.
      * @returns `true` if this file or directory exists
      */
