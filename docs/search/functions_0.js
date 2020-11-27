@@ -1,8 +1,14 @@
 var searchData=
 [
-  ['add',['add',['../d4/daf/class_zoe_1_1_base_component.html#aabf8edbfda326771db3843700a9952b2',1,'Zoe::BaseComponent']]],
+  ['add',['add',['../d4/daf/class_zoe_1_1_base_component.html#aabf8edbfda326771db3843700a9952b2',1,'Zoe::BaseComponent::add()'],['../da/d26/class_zoe_1_1_component_layer.html#a83c92971b7196519c7a077761c8d6bb8',1,'Zoe::ComponentLayer::add()']]],
+  ['addtask',['addTask',['../de/dfe/class_zoe_1_1_scheduler.html#a4640cde950072b089cf53b5338bb3412',1,'Zoe::Scheduler::addTask(Task &amp;&amp;task)'],['../de/dfe/class_zoe_1_1_scheduler.html#a555baf0744bde3ee253bbfd15573d84f',1,'Zoe::Scheduler::addTask(const std::function&lt; void()&gt; &amp;function)']]],
   ['application',['Application',['../da/d22/class_zoe_1_1_application.html#a566585de5c64a618892b35db007dc873',1,'Zoe::Application']]],
   ['apprenderevent',['AppRenderEvent',['../dd/da8/class_zoe_1_1_app_render_event.html#ae25feb215d5d95844a96d4b7eac66f15',1,'Zoe::AppRenderEvent']]],
   ['apptickevent',['AppTickEvent',['../d0/dbf/class_zoe_1_1_app_tick_event.html#a7cfa3709338381e282563ed1f19845a0',1,'Zoe::AppTickEvent']]],
-  ['appupdateevent',['AppUpdateEvent',['../df/d2a/class_zoe_1_1_app_update_event.html#ab3a74e4405aef89de8213c4980ee2e9d',1,'Zoe::AppUpdateEvent']]]
+  ['appupdateevent',['AppUpdateEvent',['../df/d2a/class_zoe_1_1_app_update_event.html#ab3a74e4405aef89de8213c4980ee2e9d',1,'Zoe::AppUpdateEvent']]],
+  ['asutf32',['asUTF32',['../d4/d07/class_zoe_1_1_u_t_f8_string.html#ad72d77134d7ea513bb0a5fc73408dd71',1,'Zoe::UTF8String::asUTF32() const'],['../d4/d07/class_zoe_1_1_u_t_f8_string.html#a49c49c5c0c6f760eee13b91b628a3598',1,'Zoe::UTF8String::asUTF32(const std::function&lt; void(uint32_t)&gt; &amp;callback) const']]],
+  ['await_5fready',['await_ready',['../d6/d53/class_zoe_1_1_wait_time.html#a3713b8d1c926c35aa85deee39c7285b8',1,'Zoe::WaitTime::await_ready()'],['../d8/dda/class_zoe_1_1_switch_to_sync.html#a09b6251a72928e0b0de4e599431780ec',1,'Zoe::SwitchToSync::await_ready()'],['../d3/d9c/class_zoe_1_1_switch_to_async.html#af0eb53b778ecbef7d4765d227cc18456',1,'Zoe::SwitchToAsync::await_ready()']]],
+  ['await_5fresume',['await_resume',['../d6/d53/class_zoe_1_1_wait_time.html#a3744b2c951817a1738d0400ef0615123',1,'Zoe::WaitTime::await_resume()'],['../d8/dda/class_zoe_1_1_switch_to_sync.html#a86b40bc651039305f53ed8b993d38d9e',1,'Zoe::SwitchToSync::await_resume()'],['../d3/d9c/class_zoe_1_1_switch_to_async.html#ab3e8fc81589f655d2423966e3bf2825c',1,'Zoe::SwitchToAsync::await_resume()']]],
+  ['await_5fsuspend',['await_suspend',['../d6/d53/class_zoe_1_1_wait_time.html#a96264f5d7af83dfea883ab0940176df4',1,'Zoe::WaitTime::await_suspend()'],['../d8/dda/class_zoe_1_1_switch_to_sync.html#aeebcca1e78aa9cf1c7661fa85480d61f',1,'Zoe::SwitchToSync::await_suspend()'],['../d3/d9c/class_zoe_1_1_switch_to_async.html#af66d06a45cb657135fd6ee66892d4f23',1,'Zoe::SwitchToAsync::await_suspend()']]],
+  ['await_5ftransform',['await_transform',['../d5/d9d/struct_zoe_1_1_task_1_1promise__type.html#ad2460dfcc22e849175be03b8b832f5e0',1,'Zoe::Task::promise_type']]]
 ];

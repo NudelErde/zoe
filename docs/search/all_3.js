@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['debug',['debug',['../de/d4c/class_zoe_1_1_console.html#acf5ab7e936f7549fe79abfea0438a7a9',1,'Zoe::Console']]],
+  ['debug',['debug',['../de/d4c/class_zoe_1_1_console.html#acf5ab7e936f7549fe79abfea0438a7a9',1,'Zoe::Console::debug()'],['../d3/d6e/_console_8h.html#a576d0068c2a2341ed735e927561fcfde',1,'Zoe::debug()']]],
+  ['debug_3c_20std_3a_3astring_20_3e',['debug&lt; std::string &gt;',['../d3/d6e/_console_8h.html#ad105cee4acfecac4b73398ab7213576a',1,'Zoe']]],
+  ['debugf',['debugf',['../d3/d6e/_console_8h.html#ad59327c654412efd17a123b00e41e366',1,'Zoe']]],
   ['determinant',['determinant',['../d4/dfe/class_zoe_1_1mat2x2.html#a18da48476dd9e8d0151755f53ef4b7ea',1,'Zoe::mat2x2::determinant()'],['../d5/d24/class_zoe_1_1mat3x3.html#a4c2841d3edd2aac2db56a13f789678e8',1,'Zoe::mat3x3::determinant()'],['../d9/d4c/class_zoe_1_1mat4x4.html#af23d11e977a06fb6831a11a6081d40be',1,'Zoe::mat4x4::determinant()']]],
   ['directory',['Directory',['../dd/d64/class_zoe_1_1_directory.html',1,'Zoe::Directory'],['../dd/d64/class_zoe_1_1_directory.html#a088f297c0efbabcdc85ac297f59e7bea',1,'Zoe::Directory::Directory(const Path &amp;path)'],['../dd/d64/class_zoe_1_1_directory.html#a88f2d82adccc82845b5d8ad4eebfb9a0',1,'Zoe::Directory::Directory(const std::string &amp;name)']]],
   ['dispatch',['dispatch',['../d9/d9b/class_zoe_1_1_event_dispatcher.html#ab55b449aee5fbc29857c7accb18b78ac',1,'Zoe::EventDispatcher']]],

@@ -7,7 +7,7 @@ var class_zoe_1_1_index_buffer_impl =
     [ "getData", "dc/de2/class_zoe_1_1_index_buffer_impl.html#a7cc6fa853a5a430df70c6cdf14da0790", null ],
     [ "getID", "dc/de2/class_zoe_1_1_index_buffer_impl.html#a1c03dd85a52d0c3795545363790737e6", null ],
     [ "isDynamic", "dc/de2/class_zoe_1_1_index_buffer_impl.html#a4ce5d8f475ada9f440c79f746ee00cc7", null ],
-    [ "setData", "dc/de2/class_zoe_1_1_index_buffer_impl.html#aaf3b8c3bda2c80817654c805c31fb35c", null ],
+    [ "setData", "dc/de2/class_zoe_1_1_index_buffer_impl.html#a68bd727ce9d014724debe64109703633", null ],
     [ "unbind", "dc/de2/class_zoe_1_1_index_buffer_impl.html#afaaeb68b1d873b455793780fe8a4de4b", null ],
     [ "context", "dc/de2/class_zoe_1_1_index_buffer_impl.html#ab08659f377c25694de8132f51b049c4c", null ],
     [ "dynamic", "dc/de2/class_zoe_1_1_index_buffer_impl.html#a481e83bae03083a390aa58138a6b443e", null ],

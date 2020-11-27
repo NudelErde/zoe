@@ -1,14 +1,14 @@
 var hierarchy =
 [
     [ "Zoe::Application", "da/d22/class_zoe_1_1_application.html", null ],
-    [ "Zoe::Camera", "de/d8b/class_zoe_1_1_camera.html", [
-      [ "Zoe::Camera2D", "de/d84/class_zoe_1_1_camera2_d.html", null ],
-      [ "Zoe::Camera3D", "d3/d63/class_zoe_1_1_camera3_d.html", null ]
-    ] ],
     [ "Zoe::Console", "de/d4c/class_zoe_1_1_console.html", null ],
     [ "enable_shared_from_this", null, [
       [ "Zoe::BaseComponent", "d4/daf/class_zoe_1_1_base_component.html", [
         [ "Zoe::Button", "d7/d1a/class_zoe_1_1_button.html", null ],
+        [ "Zoe::Camera", "de/d8b/class_zoe_1_1_camera.html", [
+          [ "Zoe::Camera2D", "de/d84/class_zoe_1_1_camera2_d.html", null ],
+          [ "Zoe::Camera3D", "d3/d63/class_zoe_1_1_camera3_d.html", null ]
+        ] ],
         [ "Zoe::ChaiScriptComponent", "d7/d0c/class_zoe_1_1_chai_script_component.html", null ],
         [ "Zoe::ComponentLayer", "da/d26/class_zoe_1_1_component_layer.html", null ],
         [ "Zoe::ModelComponent", "d3/d3b/class_zoe_1_1_model_component.html", null ],
@@ -27,6 +27,9 @@ var hierarchy =
       ] ],
       [ "Zoe::EventTemplate< EventType::AppUpdate, EventCategory::Application >", "d2/ddd/class_zoe_1_1_event_template.html", [
         [ "Zoe::AppUpdateEvent", "df/d2a/class_zoe_1_1_app_update_event.html", null ]
+      ] ],
+      [ "Zoe::EventTemplate< EventType::CharInput, EventCategory::Keyboard, EventCategory::Input >", "d2/ddd/class_zoe_1_1_event_template.html", [
+        [ "Zoe::CharInputEvent", "dc/d88/class_zoe_1_1_char_input_event.html", null ]
       ] ],
       [ "Zoe::EventTemplate< EventType::MouseMoved, EventCategory::Mouse, EventCategory::Input >", "d2/ddd/class_zoe_1_1_event_template.html", [
         [ "Zoe::MouseMovedEvent", "d5/d4b/class_zoe_1_1_mouse_moved_event.html", null ]
@@ -67,6 +70,7 @@ var hierarchy =
     [ "Zoe::Font", "dc/df8/class_zoe_1_1_font.html", null ],
     [ "Zoe::FontCharBitmapInformation", "d6/d30/struct_zoe_1_1_font_char_bitmap_information.html", null ],
     [ "Zoe::FontCharMetric", "db/dc8/struct_zoe_1_1_font_char_metric.html", null ],
+    [ "Zoe::FontHolder", "d1/da6/class_zoe_1_1_font_holder.html", null ],
     [ "Zoe::GraphicsContext", "d3/d11/class_zoe_1_1_graphics_context.html", [
       [ "Zoe::OpenGLContext", "dd/d05/class_zoe_1_1_open_g_l_context.html", null ]
     ] ],
@@ -111,6 +115,7 @@ var hierarchy =
       [ "Zoe::Directory", "dd/d64/class_zoe_1_1_directory.html", null ],
       [ "Zoe::File", "dd/d78/class_zoe_1_1_file.html", null ]
     ] ],
+    [ "Zoe::Task::promise_type", "d5/d9d/struct_zoe_1_1_task_1_1promise__type.html", null ],
     [ "Zoe::Render", "d8/d17/class_zoe_1_1_render.html", null ],
     [ "Zoe::RenderFlag", "d5/dbc/struct_zoe_1_1_render_flag.html", null ],
     [ "Zoe::RenderImpl", "de/d1d/class_zoe_1_1_render_impl.html", [
@@ -122,6 +127,7 @@ var hierarchy =
       [ "Zoe::OpenGLRenderTargetImpl", "de/d08/class_zoe_1_1_open_g_l_render_target_impl.html", null ],
       [ "Zoe::OpenGLRenderTargetImplDefaultOuput", "dc/da7/class_zoe_1_1_open_g_l_render_target_impl_default_ouput.html", null ]
     ] ],
+    [ "Zoe::Scheduler", "de/dfe/class_zoe_1_1_scheduler.html", null ],
     [ "Zoe::Shader", "d3/de5/class_zoe_1_1_shader.html", null ],
     [ "Zoe::ShaderImpl", "df/dfa/class_zoe_1_1_shader_impl.html", [
       [ "Zoe::OpenGLShaderImpl", "df/db1/class_zoe_1_1_open_g_l_shader_impl.html", null ]
@@ -129,6 +135,9 @@ var hierarchy =
     [ "streambuf", null, [
       [ "Zoe::VirtualStreambuf", "d9/df9/class_zoe_1_1_virtual_streambuf.html", null ]
     ] ],
+    [ "Zoe::SwitchToAsync", "d3/d9c/class_zoe_1_1_switch_to_async.html", null ],
+    [ "Zoe::SwitchToSync", "d8/dda/class_zoe_1_1_switch_to_sync.html", null ],
+    [ "Zoe::Task", "d8/d75/class_zoe_1_1_task.html", null ],
     [ "Zoe::Texture", "df/d25/class_zoe_1_1_texture.html", null ],
     [ "Zoe::TextureImpl", "d1/d7a/class_zoe_1_1_texture_impl.html", [
       [ "Zoe::OpenGLTextureImpl", "de/d2f/class_zoe_1_1_open_g_l_texture_impl.html", null ]
@@ -136,6 +145,8 @@ var hierarchy =
     [ "Zoe::Thread", "df/d3c/class_zoe_1_1_thread.html", null ],
     [ "Zoe::ThreadInformation", "de/d6a/struct_zoe_1_1_thread_information.html", null ],
     [ "Zoe::UITool", "db/d08/class_zoe_1_1_u_i_tool.html", null ],
+    [ "Zoe::UTF", "d6/d0f/class_zoe_1_1_u_t_f.html", null ],
+    [ "Zoe::UTF8String", "d4/d07/class_zoe_1_1_u_t_f8_string.html", null ],
     [ "Zoe::vec2", "dd/dbb/class_zoe_1_1vec2.html", null ],
     [ "Zoe::vec3", "d8/d19/class_zoe_1_1vec3.html", null ],
     [ "Zoe::vec4", "d0/d3d/class_zoe_1_1vec4.html", null ],
@@ -152,6 +163,7 @@ var hierarchy =
     [ "Zoe::VertexBufferLayoutImpl", "d7/df7/class_zoe_1_1_vertex_buffer_layout_impl.html", [
       [ "Zoe::OpenGLVertexBufferLayoutImpl", "da/d96/class_zoe_1_1_open_g_l_vertex_buffer_layout_impl.html", null ]
     ] ],
+    [ "Zoe::WaitTime", "d6/d53/class_zoe_1_1_wait_time.html", null ],
     [ "Zoe::WavefrontFile", "df/dd4/class_zoe_1_1_wavefront_file.html", null ],
     [ "Zoe::Window", "da/d69/class_zoe_1_1_window.html", [
       [ "Zoe::LinuxWindow", "de/dbe/class_zoe_1_1_linux_window.html", null ],

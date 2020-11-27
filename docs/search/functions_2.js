@@ -1,17 +1,22 @@
 var searchData=
 [
   ['camera',['Camera',['../de/d8b/class_zoe_1_1_camera.html#a4f933595b76d49dd53dd998925b154d2',1,'Zoe::Camera']]],
-  ['camera2d',['Camera2D',['../de/d84/class_zoe_1_1_camera2_d.html#a9e544f661b3fae0fb0317759460c5544',1,'Zoe::Camera2D']]],
-  ['camera3d',['Camera3D',['../d3/d63/class_zoe_1_1_camera3_d.html#ac20ce44e14948bc27857efc10de91de4',1,'Zoe::Camera3D']]],
+  ['camera2d',['Camera2D',['../de/d84/class_zoe_1_1_camera2_d.html#a9e544f661b3fae0fb0317759460c5544',1,'Zoe::Camera2D::Camera2D(const vec2 &amp;position, const float &amp;width, const float &amp;height)'],['../de/d84/class_zoe_1_1_camera2_d.html#a720229b4d0b433bfdc85f0eb3ec650dd',1,'Zoe::Camera2D::Camera2D()=default']]],
+  ['camera3d',['Camera3D',['../d3/d63/class_zoe_1_1_camera3_d.html#ac20ce44e14948bc27857efc10de91de4',1,'Zoe::Camera3D::Camera3D(const vec3 &amp;position, const vec3 &amp;rotation, const float &amp;fov, const float &amp;ratio)'],['../d3/d63/class_zoe_1_1_camera3_d.html#af7698b2d159f6ad94fcfe4ebf683839b',1,'Zoe::Camera3D::Camera3D()=default']]],
   ['chaiscriptcomponent',['ChaiScriptComponent',['../d7/d0c/class_zoe_1_1_chai_script_component.html#ab4d8ed7dc19a08e3be8aaf0370abac06',1,'Zoe::ChaiScriptComponent::ChaiScriptComponent()'],['../d7/d0c/class_zoe_1_1_chai_script_component.html#a9fb1c30cab4278e5b487867153eff149',1,'Zoe::ChaiScriptComponent::ChaiScriptComponent(ChaiScriptComponent &amp;&amp;) noexcept'],['../d7/d0c/class_zoe_1_1_chai_script_component.html#aeded85d17647e0790a08ea54203ffc89',1,'Zoe::ChaiScriptComponent::ChaiScriptComponent(const ChaiScriptComponent &amp;)=delete']]],
+  ['charcount',['charCount',['../d4/d07/class_zoe_1_1_u_t_f8_string.html#ae027dd181510b33ef9e2660a644af205',1,'Zoe::UTF8String']]],
+  ['charinputevent',['CharInputEvent',['../dc/d88/class_zoe_1_1_char_input_event.html#a04445b70456df905320620ffddb638cb',1,'Zoe::CharInputEvent']]],
   ['checkthreadsetup',['checkThreadSetup',['../df/d3c/class_zoe_1_1_thread.html#affb3e0f11a7f855c4d1e81508820957e',1,'Zoe::Thread']]],
   ['clear',['clear',['../d4/d8b/class_zoe_1_1_open_g_l_render_impl.html#ad3605e7331af9aac89d3cb107595514b',1,'Zoe::OpenGLRenderImpl::clear()'],['../dd/d78/class_zoe_1_1_file.html#a40f85c2c1ee4e5a4386b423f543cae53',1,'Zoe::File::clear()'],['../de/d1d/class_zoe_1_1_render_impl.html#ac41a0354541240fc47ed336a3c71afb6',1,'Zoe::RenderImpl::clear()'],['../d8/d17/class_zoe_1_1_render.html#a24f7027e5955a4a2bb8e6da62ce90b9a',1,'Zoe::Render::clear()']]],
+  ['codepointtoutf8',['codepointToUTF8',['../d6/d0f/class_zoe_1_1_u_t_f.html#ad756f348b528bd594690aeccd15ba7ec',1,'Zoe::UTF::codepointToUTF8(const std::string &amp;codepoint)'],['../d6/d0f/class_zoe_1_1_u_t_f.html#a455f27979226f85f321f06e33c230a8c',1,'Zoe::UTF::codepointToUTF8(const std::string &amp;codepoint, const std::function&lt; void(uint8_t)&gt; &amp;callback)'],['../d6/d0f/class_zoe_1_1_u_t_f.html#a502dddc44664cfa8fc807eca4d02f3e1',1,'Zoe::UTF::codepointToUTF8(char32_t codepoint, const std::function&lt; void(uint8_t)&gt; &amp;callback)']]],
   ['componentlayer',['ComponentLayer',['../da/d26/class_zoe_1_1_component_layer.html#a1c056e1f10363201b590b266083dff3b',1,'Zoe::ComponentLayer::ComponentLayer()'],['../da/d26/class_zoe_1_1_component_layer.html#a2589a1be5d70390c96cb0f4d116ad76b',1,'Zoe::ComponentLayer::ComponentLayer(const unsigned int &amp;width, const unsigned int &amp;height)']]],
   ['console',['Console',['../de/d4c/class_zoe_1_1_console.html#aba16cfd9f0894eb1312b1bc1155b6646',1,'Zoe::Console']]],
   ['create',['create',['../dd/d64/class_zoe_1_1_directory.html#a17c6a5353e83007770adab1fa24b5d4c',1,'Zoe::Directory::create()'],['../dd/d78/class_zoe_1_1_file.html#a654ac39534b0a6f06f434a779ac883e5',1,'Zoe::File::create()'],['../da/d69/class_zoe_1_1_window.html#ac34c255a1d1172f3c7d3fe20f0b845a9',1,'Zoe::Window::create()']]],
   ['createcomponent',['createComponent',['../d4/daf/class_zoe_1_1_base_component.html#a6f9256ec072b53d0038a2b3474395b37',1,'Zoe::BaseComponent']]],
   ['createiostream',['createIOStream',['../dd/d78/class_zoe_1_1_file.html#a9e065fa46a71fb2414af2ee63a263758',1,'Zoe::File']]],
   ['createistream',['createIStream',['../dd/d78/class_zoe_1_1_file.html#a08137115dea76fc33da794746c0646fd',1,'Zoe::File']]],
-  ['critical',['critical',['../de/d4c/class_zoe_1_1_console.html#ae0a58b974812ee372727307eaf524510',1,'Zoe::Console']]],
+  ['critical',['critical',['../de/d4c/class_zoe_1_1_console.html#ae0a58b974812ee372727307eaf524510',1,'Zoe::Console::critical()'],['../d3/d6e/_console_8h.html#aed24ea3f16bf95ab707b93e29e637699',1,'Zoe::critical()']]],
+  ['critical_3c_20std_3a_3astring_20_3e',['critical&lt; std::string &gt;',['../d3/d6e/_console_8h.html#ab8d1f0eb4fee935cf6d4a76b00dbd7c3',1,'Zoe']]],
+  ['criticalf',['criticalf',['../d3/d6e/_console_8h.html#a2e2239eb16d3e8be1f2c0ed8fdf1287e',1,'Zoe']]],
   ['crossproduct',['crossProduct',['../d8/d19/class_zoe_1_1vec3.html#a575f7ce22255d4e4672d832f6b7db17e',1,'Zoe::vec3::crossProduct()'],['../d0/d3d/class_zoe_1_1vec4.html#a5402b3523e70eac2b7275ad2c7e4041e',1,'Zoe::vec4::crossProduct()']]]
 ];

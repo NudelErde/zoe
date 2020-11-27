@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">zoe
-   &#160;<span id="projectnumber">Documentation revision #81</span>
+   &#160;<span id="projectnumber">Documentation revision #85</span>
    </div>
    <div id="projectbrief">zoe is a video game engine that I am working on in my free time</div>
   </td>
@@ -112,19 +112,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad91ef798ec19f485cf6ffa8d5d31a635"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72f8421a0b6aaf27a5c08d7b759c8f68"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d31/class_zoe_1_1_layer_stack.html">LayerStack</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d22/class_zoe_1_1_application.html#a72f8421a0b6aaf27a5c08d7b759c8f68">getLayerStack</a> ()</td></tr>
 <tr class="separator:a72f8421a0b6aaf27a5c08d7b759c8f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51afdae0167e3e6b891aace97f36b409"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d22/class_zoe_1_1_application.html#a51afdae0167e3e6b891aace97f36b409">exit</a> ()</td></tr>
-<tr class="separator:a51afdae0167e3e6b891aace97f36b409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad4b7c86569cf9d9b415768af566cf1e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d69/class_zoe_1_1_window.html">Window</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d22/class_zoe_1_1_application.html#aad4b7c86569cf9d9b415768af566cf1e">getWindow</a> ()</td></tr>
 <tr class="separator:aad4b7c86569cf9d9b415768af566cf1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a51afdae0167e3e6b891aace97f36b409"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d22/class_zoe_1_1_application.html#a51afdae0167e3e6b891aace97f36b409">exit</a> ()</td></tr>
+<tr class="separator:a51afdae0167e3e6b891aace97f36b409"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4245a2864328972286f7306a5093861f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../da/d22/class_zoe_1_1_application.html">Application</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d22/class_zoe_1_1_application.html#a4245a2864328972286f7306a5093861f">get</a> ()</td></tr>
 <tr class="separator:a4245a2864328972286f7306a5093861f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afef2d3f950d8f954d672ab2a1a40bdae"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d3/d11/class_zoe_1_1_graphics_context.html">GraphicsContext</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d22/class_zoe_1_1_application.html#afef2d3f950d8f954d672ab2a1a40bdae">getContext</a> ()</td></tr>
 <tr class="separator:afef2d3f950d8f954d672ab2a1a40bdae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66f3ea79d8a706d0305d740892a5a786"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="../../dc/df8/class_zoe_1_1_font.html">Font</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d22/class_zoe_1_1_application.html#a66f3ea79d8a706d0305d740892a5a786">getDefaultFont</a> ()</td></tr>
-<tr class="separator:a66f3ea79d8a706d0305d740892a5a786"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Main Class<br />
@@ -197,6 +195,9 @@ Parts that use the graphics context will not load and will likely crash the prog
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Zoe::Application::exit </td>
@@ -205,6 +206,11 @@ Parts that use the graphics context will not load and will likely crash the prog
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Exits clean. The program will be stopped at next loop iteration. Use std::exit to exit immediately. </p>
 
@@ -259,32 +265,6 @@ Parts that use the graphics context will not load and will likely crash the prog
 </table>
 </div><div class="memdoc">
 <p>Shortcut for <code><a class="el" href="../../da/d22/class_zoe_1_1_application.html#a4245a2864328972286f7306a5093861f">Application::get()</a>.<a class="el" href="../../da/d22/class_zoe_1_1_application.html#aad4b7c86569cf9d9b415768af566cf1e">getWindow()</a>.<a class="el" href="../../da/d22/class_zoe_1_1_application.html#afef2d3f950d8f954d672ab2a1a40bdae">getContext()</a></code> </p><dl class="section return"><dt>Returns</dt><dd>active graphics context </dd></dl>
-
-</div>
-</div>
-<a id="a66f3ea79d8a706d0305d740892a5a786"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66f3ea79d8a706d0305d740892a5a786">&#9670;&nbsp;</a></span>getDefaultFont()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const <a class="el" href="../../dc/df8/class_zoe_1_1_font.html">Font</a> &amp; Zoe::Application::getDefaultFont </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Returns the default <a class="el" href="../../dc/df8/class_zoe_1_1_font.html">Font</a>. </p><dl class="section return"><dt>Returns</dt><dd>the default <a class="el" href="../../dc/df8/class_zoe_1_1_font.html">Font</a> </dd></dl>
 
 </div>
 </div>
@@ -378,7 +358,7 @@ Parts that use the graphics context will not load and will likely crash the prog
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Main loop. Will loop until the program is terminated with <a class="el" href="../../da/d22/class_zoe_1_1_application.html#a51afdae0167e3e6b891aace97f36b409">Application::exit</a> or the window is closed. </p>
+<p>Starts the program by adding the run tasks to the scheduler. </p>
 
 </div>
 </div>
