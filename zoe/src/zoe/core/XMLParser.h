@@ -51,6 +51,12 @@ struct DLL_PUBLIC XMLNode{
 	std::map<std::string,std::string> attributes;
 };
 
+/**
+ * Parses an XMLFile to a XMLNode.
+ * @todo parse stuff like <test/>
+ * @param file the file.
+ * @return the top most node
+ */
 DLL_PUBLIC XMLNode readXML(const File& file);
 
 }

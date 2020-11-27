@@ -31,7 +31,8 @@ enum class EventType : unsigned int {
     MouseButtonPressed,
     MouseButtonReleased,
     MouseMoved,
-    MouseScrolled
+    MouseScrolled,
+    CharInput
 };
 
 /**

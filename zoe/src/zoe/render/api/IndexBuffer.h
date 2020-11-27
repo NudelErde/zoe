@@ -49,7 +49,7 @@ public:
      * @param data the index array
      * @param count the size of the index array
      */
-    virtual void setData(unsigned int* data, unsigned int count) = 0;
+    virtual void setData(const unsigned int* data, unsigned int count) = 0;
 
     /**
      * Allocates a new index array and populates it with `count` indexes that start at `offset`. The returned array needs to be deleted!
@@ -123,7 +123,7 @@ public:
      * @param data the index array
      * @param count the size of the index array
      */
-    inline void setData(unsigned int* data, unsigned int count) { impl->setData(data, count); };
+    inline void setData(const unsigned int* data, unsigned int count) { impl->setData(data, count); };
 
     /**
      * Allocates a new index array and populates it with `count` indexes that start at `offset`. The returned array needs to be deleted!
