@@ -7,3 +7,4 @@ endmacro()
 
 add_test_file(matrixTest matrixTest.cpp)
 add_test_file(fileTest fileTest.cpp)
+add_test_file(collisionTest collisionTest.cpp)

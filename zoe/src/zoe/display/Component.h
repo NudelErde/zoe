@@ -45,6 +45,8 @@ public:
      */
     void update(double time);
 
+    void physicsUpdate(double time);
+
     /**
      * Send the specified input event to this component and all child components.
      * @param event the specified input event
@@ -126,7 +128,7 @@ public:
                     }
                 }
                 const auto& grandchildren = child->getChildren();
-                if(!grandchildren.empty()) {
+                if (!grandchildren.empty()) {
                     repeat = true;
                     grandChildVector.insert(grandChildVector.end(), grandchildren.begin(), grandchildren.end());
                 }
@@ -155,10 +157,16 @@ protected:
     virtual void onDraw(const Camera& camera) = 0;
 
     /**
-     * Updates this component.
-     * @param time the time in seconds since the last update
+     * Updates this component. This function is called in a specific interval.
+     * @param delta the time in seconds since the last update
      */
-    virtual void onUpdate(double time) = 0;
+    virtual void onUpdate(double delta) = 0;
+
+    /**
+     * Updates this component. This function is called as fast as possible. It shouldn't take long to execute this function.
+     * @param delta the time in seconds since the last update
+     */
+    virtual void onPhysicsUpdate(double delta);
 
     /**
      * Handles input events.

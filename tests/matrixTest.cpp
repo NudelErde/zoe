@@ -181,6 +181,9 @@ public:
                 throw std::runtime_error("mat4x4.inverse failed!");
             }
         }
+        Scheduler::addTask([](){
+            Scheduler::exit();
+        });
     }
 
     ~App() override = default;

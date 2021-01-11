@@ -10,7 +10,9 @@
 #include "NativeScriptComponent.h"
 #include "ChaiScriptComponent.h"
 #include "UI/TextBox.h"
+#include "Physics/PhysicsGroup.h"
 #include "ComponentLayer.h"
+#include "Physics/BoxCollider.h"
 
 namespace Zoe {
 
@@ -76,6 +78,13 @@ void BaseComponent::update(double time) {
     }
 }
 
+void BaseComponent::physicsUpdate(double time) {
+    onPhysicsUpdate(time);
+    for (const auto& child: children) {
+        child->physicsUpdate(time);
+    }
+}
+
 void BaseComponent::inputEvent(Event& event) {
     onInputEvent(event);
     for (const auto& child: children) {
@@ -96,8 +105,9 @@ void BaseComponent::init() {
     registerComponent<ChaiScriptComponent>("ChaiScriptComponent");
     registerComponent<Camera2D>("Camera2D");
     registerComponent<Camera3D>("Camera3D");
+    registerComponent<PhysicsGroup>("PhysicsGroup");
+    registerComponent<BoxCollider>("BoxCollider");
 }
-
 vec3 BaseComponent::getWorldPosition() const {
     if (auto ptr = parent.lock()) {
         return ptr->getWorldPosition() + position;
@@ -133,5 +143,6 @@ std::shared_ptr<BaseComponent> BaseComponent::getChildByID(const std::string& co
     }
     return std::shared_ptr<BaseComponent>();
 }
+void BaseComponent::onPhysicsUpdate(double delta) {}
 
 }

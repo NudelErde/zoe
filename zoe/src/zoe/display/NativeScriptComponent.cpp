@@ -12,11 +12,11 @@ void NativeScriptComponent::init() {
     nativeScriptCreatorMap = std::make_shared<std::map<std::string, std::function<std::unique_ptr<NativeScript>()>>>();
 }
 
-void NativeScriptComponent::registerNativeScript(const std::string &scriptName,
-                                                 const std::function<std::unique_ptr<NativeScript>()> &func) {
+void NativeScriptComponent::registerNativeScript(const std::string& scriptName,
+                                                 const std::function<std::unique_ptr<NativeScript>()>& func) {
     nativeScriptCreatorMap->operator[](scriptName) = func;
 }
-std::unique_ptr<NativeScript> NativeScriptComponent::getNativeScript(const std::string &scriptName) {
+std::unique_ptr<NativeScript> NativeScriptComponent::getNativeScript(const std::string& scriptName) {
     if (auto iter = nativeScriptCreatorMap->find(scriptName); iter != nativeScriptCreatorMap->end()) {
         return (*iter).second();
     } else {
@@ -24,11 +24,11 @@ std::unique_ptr<NativeScript> NativeScriptComponent::getNativeScript(const std::
         return std::make_unique<NativeScript>();
     }
 }
-bool NativeScriptComponent::hasNativeScript(const std::string &scriptName) {
+bool NativeScriptComponent::hasNativeScript(const std::string& scriptName) {
     return nativeScriptCreatorMap->count(scriptName);
 }
 
-void NativeScriptComponent::onDraw(const Camera &camera) {}
+void NativeScriptComponent::onDraw(const Camera& camera) {}
 
 void NativeScriptComponent::onUpdate(double time) {
     if (!script) {
@@ -43,8 +43,8 @@ void NativeScriptComponent::onUpdate(double time) {
     }
 }
 
-void NativeScriptComponent::onInputEvent(Event &event) {}
-void NativeScriptComponent::fill(const XMLNode &node) {
+void NativeScriptComponent::onInputEvent(Event& event) {}
+void NativeScriptComponent::fill(const XMLNode& node) {
     if (node.attributes.count("script")) {
         scriptKey = node.attributes.at("script");
         if (NativeScriptComponent::hasNativeScript(scriptKey)) {
@@ -61,6 +61,9 @@ void NativeScriptComponent::postFill() {
 }
 void NativeScriptComponent::onActivation() {
     script->onActivation();
+}
+void NativeScriptComponent::onCollision(double delta, const std::function<void()>& resolve) {
+    script->onCollision(delta, resolve);
 }
 
 }

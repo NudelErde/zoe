@@ -85,7 +85,7 @@ void Camera2D::fill(const XMLNode& node) {
 
 Camera3D::Camera3D(const vec3& pos, const vec3& rot, const float& fov, const float& ratio) : rotation(rot), fov(fov),
                                                                                              ratio(ratio) {
-    setProjectionMatrix(perspective(0.1f, 100, fov, ratio));
+    setProjectionMatrix(scale3D(1,1,0.01f) * perspective(1, 2, fov, ratio));
     setPosition(pos);
     Camera3D::updateCameraMatrix();
 }
@@ -144,7 +144,7 @@ const vec3& Camera3D::getRotation() const {
 }
 
 vec3 Camera3D::getDirection() const {
-    return (rotateXZ3D(rotation.y) * rotateYZ3D(rotation.x) * rotateXY3D(rotation.z) * vec4({0, 0, -1, 0})).xyz();
+    return (rotateXZ3D(-rotation.y) * rotateYZ3D(-rotation.x) * rotateXY3D(-rotation.z) * vec4({0, 0, 1, 0})).xyz();
 }
 
 void Camera3D::setFoV(const float& f) {
@@ -189,6 +189,7 @@ void Camera3D::fill(const XMLNode& node) {
         ratio = std::stof(node.attributes.at("ratio"));
     }
     updateCameraMatrix();
+    setProjectionMatrix(scale3D(1,1,0.01f) * perspective(1, 2, fov, ratio));
 }
 
 }

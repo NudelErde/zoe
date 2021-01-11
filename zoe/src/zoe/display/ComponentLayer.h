@@ -138,6 +138,7 @@ private:
 
 private:
     std::chrono::time_point<std::chrono::steady_clock> timeOfLastTick;
+    std::chrono::time_point<std::chrono::steady_clock> timeOfLastPhysicsTick;
 
     std::shared_ptr<Camera> camera;
 
@@ -149,6 +150,7 @@ private:
 
     unsigned int width, height;
     std::string defaultCameraID;
+    void onUpdateEvent(AppUpdateEvent& event);
 };
 
 }

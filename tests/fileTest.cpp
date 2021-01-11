@@ -23,6 +23,9 @@ public:
             debug(str);
             std::exit(-1);
         }
+        Scheduler::addTask([](){
+            Scheduler::exit();
+        });
     }
 
     ~App() override = default;

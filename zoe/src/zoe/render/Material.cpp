@@ -277,10 +277,10 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
 
                              //TODO: source is enough documentation
                              shader.setUniform3f("lightPosition", cameraPos.x, cameraPos.y + 1, cameraPos.z);
-                             shader.setUniform3f("lightColor", 0, 0, 0);
+                             shader.setUniform3f("lightColor", 1, 1, 1);
 
                              //TODO: changeable intensity
-                             shader.setUniform1f("ambientIntensity", 1.0f);
+                             shader.setUniform1f("ambientIntensity", 0.2f);
                              shader.setUniform1f("diffuseIntensity", 1.0f);
                              shader.setUniform1f("specularIntensity", 1.0f);
                              for(const auto& entry: me->textures){

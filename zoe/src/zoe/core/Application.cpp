@@ -18,6 +18,7 @@
 #include "VirtualFiles.h"
 #include "Task.h"
 #include "Scheduler.h"
+#include "../display/Physics/PhysicsGroup.h"
 
 namespace Zoe {
 
@@ -46,6 +47,7 @@ Application::Application(bool withWindow) : hasWindow(withWindow) {
     initKeyMap();
     FontHolder::init();
     BaseComponent::init();
+    PhysicsGroup::init();
     if (withWindow) {
         UITool::init();
         displayRender = getContext().getRender();
@@ -69,6 +71,7 @@ void Application::onEvent(Event& e) {
     layerStack.dispatchEvent(e);
 }
 
+//framerate
 Task Application::renderWindow() {
     while (true) {
         co_yield true;
@@ -79,7 +82,7 @@ Task Application::renderWindow() {
     }
 }
 
-
+//Physics ticks/updates
 Task Application::updateObjects() {
     while (true) {
         co_yield true;
@@ -87,6 +90,8 @@ Task Application::updateObjects() {
         layerStack.dispatchEvent(event);
     }
 }
+
+//Game ticks/updates
 Task Application::tickObjects() {
     while (true) {
         co_yield true;
@@ -96,9 +101,11 @@ Task Application::tickObjects() {
 }
 
 void Application::run() {
-    Scheduler::addTask(renderWindow());
-    Scheduler::addTask(updateObjects());
-    Scheduler::addTask(tickObjects());
+    if(hasWindow) {
+        Scheduler::addTask(renderWindow());
+        Scheduler::addTask(updateObjects());
+        Scheduler::addTask(tickObjects());
+    }
 }
 
 void Application::exit() {

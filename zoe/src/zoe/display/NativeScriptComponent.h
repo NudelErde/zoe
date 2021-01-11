@@ -5,7 +5,7 @@
 #pragma once
 
 #include "../core/Core.h"
-#include "Component.h"
+#include "ScriptComponent.h"
 #include <functional>
 
 namespace Zoe {
@@ -34,6 +34,12 @@ public:
     virtual void onActivation() {}
 
     /**
+     * The onCollision function is the collision handler of a PhysicsComponent.
+     * @param delta the time since the last check
+     */
+    virtual void onCollision(double delta, const std::function<void()>& resolve) {}
+
+    /**
      * The parent of the NativeScriptComponent.
      */
     std::weak_ptr<BaseComponent> component{};
@@ -47,7 +53,7 @@ public:
 /**
  * A native script is used to script in c++.
  */
-class DLL_PUBLIC NativeScriptComponent : public BaseComponent {
+class DLL_PUBLIC NativeScriptComponent : public ScriptComponent {
 public:
     /**
      * Initialise the NativeScript system.
@@ -88,6 +94,17 @@ public:
      */
     static bool hasNativeScript(const std::string& scriptName);
 
+    /**
+     * The onActivation function is called when the parent component is activated.
+     */
+    void onActivation() override;
+
+    /**
+     * The onCollision function is the collision handler of a PhysicsComponent.
+     * @param delta the time since the last check
+     */
+    void onCollision(double delta, const std::function<void()>& resolve) override;
+
 public:
     /**
      * Creates an empty NativeScriptComponent.
@@ -120,11 +137,6 @@ public:
      * Destructs the NativeScriptComponent.
      */
     ~NativeScriptComponent() = default;
-
-    /**
-     * The onActivation function is called when the parent component is activated.
-     */
-    void onActivation();
 
 protected:
 

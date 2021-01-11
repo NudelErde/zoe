@@ -5,7 +5,7 @@
 #pragma once
 
 #include "../core/Core.h"
-#include "Component.h"
+#include "ScriptComponent.h"
 
 namespace Zoe {
 
@@ -15,7 +15,7 @@ struct ChaiScriptInstance;
  * A chai script is used to script in chaiscript.
  * @see https://chaiscript.com/
  */
-class DLL_PUBLIC ChaiScriptComponent : public BaseComponent {
+class DLL_PUBLIC ChaiScriptComponent : public ScriptComponent {
 public:
     /**
      * Creates an empty ChaiScriptComponent.
@@ -68,19 +68,30 @@ protected:
      * Does nothing.
      * @param event the input event
      */
-    void onInputEvent(Event &event) override;
+    void onInputEvent(Event& event) override;
 
     /**
      * Fills this component with the information in the specified xml node.
      * @param node the xml node
      */
-    void fill(const XMLNode &node) override;
+    void fill(const XMLNode& node) override;
 
     /**
      * Completes initialization. This method is called after all children are initialized. It is used to extract information for children.
      * Calls the onInit method of the script.
      */
     void postFill() override;
+
+    /**
+     * The onActivation function is called when the parent component is activated.
+     */
+    void onActivation() override;
+
+    /**
+     * The onCollision function is the collision handler of a PhysicsComponent.
+     * @param delta the time since the last check
+     */
+    void onCollision(double delta, const std::function<void()>& resolve) override;
 private:
     std::unique_ptr<ChaiScriptInstance> script;
 };
