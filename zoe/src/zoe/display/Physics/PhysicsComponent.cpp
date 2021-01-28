@@ -24,7 +24,7 @@ void Zoe::PhysicsComponent::onPhysicsUpdate(double delta) {
     }
     vec3 pos = getPosition() + (velocity * (float) delta) + (acceleration / 2) * (float) delta * (float) delta;
     setPosition(pos);
-    velocity = velocity + acceleration;
+    velocity = velocity + acceleration * (float)delta;
 }
 void Zoe::PhysicsComponent::addImpulse(const Zoe::vec3& impulse) {
     velocity = velocity + (impulse / mass);

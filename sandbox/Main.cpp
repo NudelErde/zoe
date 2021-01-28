@@ -9,7 +9,7 @@ using namespace Zoe;
 class CameraScript : public NativeScript {
 public:
 
-    void onUpdate(const double& t) override {
+    void onUpdate(const double &t) override {
         if (auto comp = std::dynamic_pointer_cast<Camera3D>(component.lock())) {
             vec3 pos = comp->getPosition();
             vec3 dir = comp->getDirection();
@@ -43,14 +43,20 @@ public:
             comp->setRotation(rot);
             if (Input::isKeyPressed(KEY_ENTER)) {
                 auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
-                auto upwardsAcceleration = cube->addAcceleration(vec3(0, 0.01, 0));
-                int i = 5;
-                Scheduler::addTask([upwardsAcceleration]() -> Task {
+                //cube->setVelocity(vec3(0, 1, 0));
+                cube->addAcceleration(vec3(0,0.1,0));
+            }
+            if(Input::isKeyPressed(KEY_ESCAPE)) {
+                auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
+                cube->setVelocity(vec3(0, -1, 0));
+            }
+            if(Input::isKeyPressed(KEY_G)) {
+                int i = 0;
+                Scheduler::addCoroutine([i]() -> Task{
                     using namespace std::chrono_literals;
-                    //co_await 1s;
-                    upwardsAcceleration();
-                    co_await 1s;
-                }());
+                    co_await 5s;
+                    debug(i);
+                });
             }
         }
     }
@@ -63,6 +69,7 @@ public:
         std::shared_ptr<ComponentLayer> layer = std::make_shared<ComponentLayer>();
 
         layer->load(File("sampleObjects/PhysicsExample.xml"));
+        //layer->load(File("sampleObjects/UITest.xml"));
 
         getLayerStack().pushLayer(layer);
     }
@@ -70,6 +77,6 @@ public:
     ~App() override = default;
 };
 
-Application* Zoe::createApplication() {
+Application *Zoe::createApplication() {
     return new App();
 }

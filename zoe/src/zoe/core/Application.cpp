@@ -24,7 +24,7 @@ namespace Zoe {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-static Application* s_Instance;
+static Application *s_Instance;
 static std::shared_ptr<Render> displayRender;
 
 Application::Application(bool withWindow) : hasWindow(withWindow) {
@@ -37,7 +37,7 @@ Application::Application(bool withWindow) : hasWindow(withWindow) {
     if (withWindow) {
 
         window = std::unique_ptr<Zoe::Window>(Zoe::Window::create());
-        std::function<void(Event&)> cb = BIND_EVENT_FN(onEvent);
+        std::function<void(Event &)> cb = BIND_EVENT_FN(onEvent);
         window->setEventCallback(cb);
     } else {
         Scheduler::exit();
@@ -60,11 +60,11 @@ Application::~Application() {
     Window::shutdown();
 }
 
-void Application::onEvent(Event& e) {
+void Application::onEvent(Event &e) {
 
     EventDispatcher dispatcher(e);
     { //---WindowClose-------------
-        std::function<bool(WindowCloseEvent&)> cb = BIND_EVENT_FN(
+        std::function<bool(WindowCloseEvent &)> cb = BIND_EVENT_FN(
                 onWindowClose);
         dispatcher.dispatch<WindowCloseEvent>(cb);
     }
@@ -101,10 +101,10 @@ Task Application::tickObjects() {
 }
 
 void Application::run() {
-    if(hasWindow) {
-        Scheduler::addTask(renderWindow());
-        Scheduler::addTask(updateObjects());
-        Scheduler::addTask(tickObjects());
+    if (hasWindow) {
+        Scheduler::addCoroutine([this]() { return renderWindow(); });
+        Scheduler::addCoroutine([this]() { return updateObjects(); });
+        Scheduler::addCoroutine([this]() { return tickObjects(); });
     }
 }
 
@@ -112,11 +112,12 @@ void Application::exit() {
     Scheduler::exit();
 }
 
-bool Application::onWindowClose(WindowCloseEvent& e) {
+bool Application::onWindowClose(WindowCloseEvent &e) {
     Scheduler::exit();
     return false;
 }
-Application& Application::get() {
+
+Application &Application::get() {
     return *s_Instance;
 }
 }
@@ -128,7 +129,7 @@ int main() {
         Zoe::Scheduler::execute();
         delete app;
         exit(EXIT_SUCCESS);
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         Zoe::critical("Uncaught error: ", e.what());
 #ifdef ZOE_DEBUG
         throw;

@@ -9,19 +9,15 @@
 
 static std::mutex executeLock;
 static std::vector<std::function<void()>> functions;
-static std::vector<Zoe::Task> tasks;
+static std::vector<Zoe::Scheduler::CoroutineContainer> tasks;
 static std::vector<std::function<void()>> newFunctions;
-static std::vector<Zoe::Task> newTasks;
+static std::vector<Zoe::Scheduler::CoroutineContainer> newTasks;
 static std::mutex listMutex;
 static std::thread::id schedulerThreadID;
 static bool running = true;
 
 std::thread::id Zoe::Scheduler::getThreadID() {
     return schedulerThreadID;
-}
-void Zoe::Scheduler::addTask(Zoe::Task&& task) {
-    std::lock_guard lg(listMutex);
-    newTasks.push_back(std::move(task));
 }
 void Zoe::Scheduler::addTask(const std::function<void()>& function) {
     std::lock_guard lg(listMutex);
@@ -36,8 +32,8 @@ void Zoe::Scheduler::execute() {
             for (auto& function: functions) {
                 function();
             }
-            std::erase_if(tasks, [](Task& t) -> bool {
-                bool shouldRepeat = t.resume();
+            std::erase_if(tasks, [](CoroutineContainer& t) -> bool {
+                bool shouldRepeat = t.task->resume();
                 return !shouldRepeat;
             });
             {
@@ -49,7 +45,6 @@ void Zoe::Scheduler::execute() {
                 }
                 newTasks.clear();
             }
-
         }
     } else {
         error("Scheduler::execute should not be called twice");
@@ -57,4 +52,17 @@ void Zoe::Scheduler::execute() {
 }
 void Zoe::Scheduler::exit() {
     running = false;
+}
+
+void Zoe::Scheduler::addCoroutineContainer(Zoe::Scheduler::CoroutineContainer&& cc) {
+    tasks.push_back(std::move(cc));
+}
+
+void Zoe::Scheduler::addTask(Zoe::Task&& task) {
+    addCoroutineContainer(CoroutineContainer(std::move(task), std::make_shared<int>()));
+}
+
+Zoe::Scheduler::CoroutineContainer::CoroutineContainer(Zoe::Task &&task, std::shared_ptr<void> callableObject) {
+    CoroutineContainer::task = std::make_unique<Zoe::Task>(std::move(task));
+    CoroutineContainer::callableObject = callableObject;
 }

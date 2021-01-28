@@ -159,7 +159,7 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
             currentMaterial.name = args;
         } else if (!currentMaterial.init) {
             //no currentMaterial
-            throw std::runtime_error(".mtl file is wrong formatted in line: " + std::to_string(lineNumber));
+            throw std::runtime_error(file.getAbsolutePath()+" file is wrong formatted in line: " + std::to_string(lineNumber));
         } else if (cmd == "ka") {
             currentMaterial.ambientReflectivity = readRGB_XYZ(args);
         } else if (cmd == "kd") {
