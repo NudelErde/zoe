@@ -51,9 +51,11 @@ public:
                 cube->setVelocity(vec3(0, -1, 0));
             }
             if(Input::isKeyPressed(KEY_G)) {
-                int i = 0;
+                static int value = 4;
+                int i = value++;
                 Scheduler::addCoroutine([i]() -> Task{
                     using namespace std::chrono_literals;
+                    debug(i);
                     co_await 5s;
                     debug(i);
                 });

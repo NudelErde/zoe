@@ -14,7 +14,8 @@ bool Zoe::Task::resume() {
 Zoe::Task::Task(std::coroutine_handle<Zoe::Task::promise_type> handle) : handle(handle) {}
 
 void Zoe::SwitchToSync::await_suspend(std::coroutine_handle<Task::promise_type> h) {
-    Scheduler::addTask([h]() { h.resume(); });
+    Scheduler::addCoroutineContainer(Scheduler::CoroutineContainer(h.promise().get_return_object(),
+                                                                   Scheduler::getCurrentCoroutineCallableObject()));
 }
 
 bool Zoe::SwitchToSync::await_ready() {
@@ -63,10 +64,11 @@ bool Zoe::WaitTime::await_ready() {
 void Zoe::WaitTime::await_suspend(std::coroutine_handle<Task::promise_type> h) {
     h.promise().shouldRepeat = false;
     bool insertTaskInMain = std::this_thread::get_id() == Scheduler::getThreadID();
-    std::thread thread([this, h, insertTaskInMain]() {
+    std::shared_ptr<void> coroutineContextObject = Scheduler::getCurrentCoroutineCallableObject();
+    std::thread thread([this, h, insertTaskInMain, coroutineContextObject]() {
         std::this_thread::sleep_until(endpoint);
-        if(insertTaskInMain) {
-            Scheduler::addTask(h.promise().get_return_object());
+        if (insertTaskInMain) {
+            Scheduler::addCoroutineContainer(Scheduler::CoroutineContainer(h.promise().get_return_object(), coroutineContextObject));
         } else {
             h.resume();
         }

@@ -15,7 +15,6 @@ namespace Zoe {
  * adding at least one task or starting another thread.
  */
 class Scheduler {
-
 public:
     /**
      * Returns the thread id of the thread that runs the execute function.
@@ -30,12 +29,11 @@ public:
      */
     static void addTask(const std::function<void()>& function);
 
-    static void addTask(Task&& task);
-
     template<typename T>
-    static void addCoroutine(T object) {
+    static void addCoroutine(const T& object) {
         std::shared_ptr<T> thing = std::make_shared<T>(std::move(object));
-        addCoroutineContainer(CoroutineContainer(thing->operator()(), thing));
+        Task task = thing->operator()();
+        addCoroutineContainer(CoroutineContainer(std::move(task), std::move(thing)));
     }
 
     /**
@@ -58,8 +56,12 @@ public:
         CoroutineContainer(CoroutineContainer&&) noexcept = default;
         CoroutineContainer& operator=(CoroutineContainer&&) noexcept  = default;
     };
-private:
+
+    [[nodiscard]] static std::shared_ptr<void> getCurrentCoroutineCallableObject();
     static void addCoroutineContainer(CoroutineContainer&& cc);
+private:
+
+    static inline std::shared_ptr<void> currentCoroutineCallableObject;
 };
 
 }

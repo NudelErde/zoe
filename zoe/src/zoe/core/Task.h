@@ -11,8 +11,6 @@
 
 namespace Zoe {
 
-inline int TaskUniqueID = 0;
-
 /**
  * If a function returns a Task it can be used as a coroutine. A coroutine can suspend it's execution an return to the caller.
  * A Task can be added to the Scheduler. If `co_yield true;` is executed the function suspends execution and another Task is executed.
@@ -30,8 +28,6 @@ inline int TaskUniqueID = 0;
  */
 class Task {
 public:
-    int debug = 0;
-    int uniqueID = TaskUniqueID++;
     /**
      * The promise_type enables a function that returns a task as a coroutine.
      */

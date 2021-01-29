@@ -3,6 +3,7 @@
 //
 
 #include "Scheduler.h"
+#include <utility>
 #include <vector>
 #include <mutex>
 #include "Console.h"
@@ -33,6 +34,7 @@ void Zoe::Scheduler::execute() {
                 function();
             }
             std::erase_if(tasks, [](CoroutineContainer& t) -> bool {
+                currentCoroutineCallableObject = t.callableObject;
                 bool shouldRepeat = t.task->resume();
                 return !shouldRepeat;
             });
@@ -55,14 +57,13 @@ void Zoe::Scheduler::exit() {
 }
 
 void Zoe::Scheduler::addCoroutineContainer(Zoe::Scheduler::CoroutineContainer&& cc) {
-    tasks.push_back(std::move(cc));
+    newTasks.push_back(std::move(cc));
 }
-
-void Zoe::Scheduler::addTask(Zoe::Task&& task) {
-    addCoroutineContainer(CoroutineContainer(std::move(task), std::make_shared<int>()));
+std::shared_ptr<void> Zoe::Scheduler::getCurrentCoroutineCallableObject() {
+    return currentCoroutineCallableObject;
 }
 
 Zoe::Scheduler::CoroutineContainer::CoroutineContainer(Zoe::Task &&task, std::shared_ptr<void> callableObject) {
     CoroutineContainer::task = std::make_unique<Zoe::Task>(std::move(task));
-    CoroutineContainer::callableObject = callableObject;
+    CoroutineContainer::callableObject = std::move(callableObject);
 }
