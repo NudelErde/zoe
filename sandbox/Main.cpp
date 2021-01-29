@@ -9,7 +9,7 @@ using namespace Zoe;
 class CameraScript : public NativeScript {
 public:
 
-    void onUpdate(const double &t) override {
+    void onUpdate(const double& t) override {
         if (auto comp = std::dynamic_pointer_cast<Camera3D>(component.lock())) {
             vec3 pos = comp->getPosition();
             vec3 dir = comp->getDirection();
@@ -43,21 +43,24 @@ public:
             comp->setRotation(rot);
             if (Input::isKeyPressed(KEY_ENTER)) {
                 auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
-                //cube->setVelocity(vec3(0, 1, 0));
-                cube->addAcceleration(vec3(0,0.1,0));
+                cube->setVelocity(vec3(0.5, 1, 0));
             }
-            if(Input::isKeyPressed(KEY_ESCAPE)) {
+            if (Input::isKeyPressed(KEY_BACKSPACE)) {
                 auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
-                cube->setVelocity(vec3(0, -1, 0));
+                cube->setVelocity(vec3(0, -1, -0.5));
             }
-            if(Input::isKeyPressed(KEY_G)) {
-                static int value = 4;
-                int i = value++;
-                Scheduler::addCoroutine([i]() -> Task{
+            if (Input::isKeyPressed(KEY_ESCAPE)) {
+                auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
+                cube->setVelocity(vec3());
+                cube->setPosition(vec3(0,0.1,0));
+            }
+            if (Input::isKeyPressed(KEY_G)) {
+                auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
+                auto gravity = cube->addAcceleration(vec3(0, -0.1, 0));
+                Scheduler::addCoroutine([gravity]() -> Task {
                     using namespace std::chrono_literals;
-                    debug(i);
                     co_await 5s;
-                    debug(i);
+                    gravity();
                 });
             }
         }
@@ -79,6 +82,6 @@ public:
     ~App() override = default;
 };
 
-Application *Zoe::createApplication() {
+Application* Zoe::createApplication() {
     return new App();
 }

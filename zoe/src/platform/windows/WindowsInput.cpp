@@ -19,7 +19,7 @@ Input* Input::getInstance() {
     return instance;
 }
 
-WindowsInput::~WindowsInput(){}
+WindowsInput::~WindowsInput()= default;
 
 bool WindowsInput::isKeyPressedImpl(int keycode) {
 	auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
@@ -42,12 +42,12 @@ vec2 WindowsInput::getMousePositionImpl() {
 
 float WindowsInput::getMouseXImpl() {
 	vec2 tmp = this->getMousePositionImpl();
-	return tmp.x;
+	return (float)tmp.x;
 }
 
 float WindowsInput::getMouseYImpl() {
 	vec2 tmp = this->getMousePositionImpl();
-	return tmp.y;
+	return (float)tmp.y;
 }
 
 }

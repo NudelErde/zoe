@@ -117,7 +117,7 @@ public:
      * Calculates the determinant of this matrix.
      * @return the determinant
      */
-    [[nodiscard]] float determinant() const;
+    [[nodiscard]] double determinant() const;
 
     /**
      * Returns the 2 by 2 identity matrix.
@@ -232,7 +232,7 @@ public:
      * Calculates the determinant of this matrix.
      * @return the determinant
      */
-    [[nodiscard]] float determinant() const;
+    [[nodiscard]] double determinant() const;
 
     /**
      * Returns the 3 by 3 identity matrix.
@@ -254,7 +254,7 @@ private:
  * @param angle the specified angle
  * @returns the rotation matrix
  */
-mat3x3 rotate2D(float angle);
+mat3x3 rotate2D(double angle);
 
 /**
  * Returns a translation matrix for 2D space by the specified offset.
@@ -262,7 +262,7 @@ mat3x3 rotate2D(float angle);
  * @param y the y offset
  * @return the translation matrix
  */
-mat3x3 translate2D(float x, float y);
+mat3x3 translate2D(double x, double y);
 
 /**
  * Returns a scaling matrix for 2D space by the specified values in the x and y direction.
@@ -270,7 +270,7 @@ mat3x3 translate2D(float x, float y);
  * @param scaleY the y scale factor
  * @returns the scaling matrix
  */
-mat3x3 scale2D(float scaleX, float scaleY);
+mat3x3 scale2D(double scaleX, double scaleY);
 
 /**
  * A43 by 4 matrix. The vales can be access by the [] operator. It returns a vector which has [] operator. The first [] is the y coordinate of the cell.
@@ -371,7 +371,7 @@ public:
      * Calculates the determinant of this matrix.
      * @return the determinant
      */
-    [[nodiscard]] float determinant() const;
+    [[nodiscard]] double determinant() const;
 
     /**
      * Returns the 4 by 4 identity matrix.
@@ -394,21 +394,21 @@ private:
  * @param angle the specified angle
  * @returns the rotation matrix
  */
-mat4x4 rotateXY3D(float angle);
+mat4x4 rotateXY3D(double angle);
 
 /**
  * Returns a rotation around the X-axis matrix for 3D space by the specified angle in radians.
  * @param angle the specified angle
  * @returns the rotation matrix
  */
-mat4x4 rotateYZ3D(float angle);
+mat4x4 rotateYZ3D(double angle);
 
 /**
  * Returns a rotation around the Y-axis matrix for 3D space by the specified angle in radians.
  * @param angle the specified angle
  * @returns the rotation matrix
  */
-mat4x4 rotateXZ3D(float angle);
+mat4x4 rotateXZ3D(double angle);
 
 /**
  * Returns a translation matrix for 3D space by the specified offset.
@@ -417,7 +417,7 @@ mat4x4 rotateXZ3D(float angle);
  * @param z the z offset
  * @return the translation matrix
  */
-mat4x4 translate3D(float x, float y, float z);
+mat4x4 translate3D(double x, double y, double z);
 
 /**
  * Returns a scaling matrix for 3D space by the specified values in the x, y and z direction.
@@ -426,7 +426,7 @@ mat4x4 translate3D(float x, float y, float z);
  * @param scaleZ the z scale factor
  * @returns the scaling matrix
  */
-mat4x4 scale3D(float scaleX, float scaleY, float scaleZ);
+mat4x4 scale3D(double scaleX, double scaleY, double scaleZ);
 
 /**
  * Calculates an orthographic projection matrix, also known as a perspective projection matrix, with the specified limits.
@@ -438,7 +438,7 @@ mat4x4 scale3D(float scaleX, float scaleY, float scaleZ);
  * @param far the furthest value that is in the resulting space
  * @returns the resulting orthographic projection matrix
  */
-mat4x4 orthographic(float left, float top, float right, float bottom, float near, float far);
+mat4x4 orthographic(double left, double top, double right, double bottom, double near, double far);
 
 /**
  * Calculates the view matrix by the specified position and rotation.
@@ -456,7 +456,7 @@ mat4x4 calcViewMatrix(vec3 position, vec3 rotation);
  * @param aspectRatio the ratio from width to height
  * @returns the resulting perspective projection matrix
  */
-mat4x4 perspective(float near, float far, float fov, float aspectRatio);
+mat4x4 perspective(double near, double far, double fov, double aspectRatio);
 
 }
 
@@ -469,35 +469,35 @@ mat4x4 perspective(float near, float far, float fov, float aspectRatio);
 std::ostream& operator<<(std::ostream& stream, const Zoe::mat2x2& v);
 
 /**
- * Multiplies the specified matrix and the specified float element by element.
+ * Multiplies the specified matrix and the specified double element by element.
  * @param mat the specified matrix
- * @param a the specified float
+ * @param a the specified double
  * @returns the result
  */
-Zoe::mat2x2 operator*(const Zoe::mat2x2& mat, float a);
+Zoe::mat2x2 operator*(const Zoe::mat2x2& mat, double a);
 /**
- * Multiplies the specified matrix and the specified float element by element.
- * @param a the specified float
+ * Multiplies the specified matrix and the specified double element by element.
+ * @param a the specified double
  * @param mat the specified matrix
  * @returns the result
  */
-Zoe::mat2x2 operator*(float a, const Zoe::mat2x2& mat);
+Zoe::mat2x2 operator*(double a, const Zoe::mat2x2& mat);
 
 /**
- * Multiplies the specified matrix and the specified float element by element.
+ * Multiplies the specified matrix and the specified double element by element.
  * @param mat the specified matrix
- * @param a the specified float
+ * @param a the specified double
  * @returns the result
  */
-Zoe::mat4x4 operator*(const Zoe::mat4x4& mat, float a);
+Zoe::mat4x4 operator*(const Zoe::mat4x4& mat, double a);
 
 /**
- * Multiplies the specified matrix and the specified float element by element.
- * @param a the specified float
+ * Multiplies the specified matrix and the specified double element by element.
+ * @param a the specified double
  * @param mat the specified matrix
  * @returns the result
  */
-Zoe::mat4x4 operator*(float a, const Zoe::mat4x4& mat);
+Zoe::mat4x4 operator*(double a, const Zoe::mat4x4& mat);
 
 /**
  * Prints the specified 4 by 4 matrix to the specified stream.
@@ -507,20 +507,20 @@ Zoe::mat4x4 operator*(float a, const Zoe::mat4x4& mat);
  */
 std::ostream& operator<<(std::ostream& stream, const Zoe::mat4x4& v);
 /**
- * Multiplies the specified matrix and the specified float element by element.
+ * Multiplies the specified matrix and the specified double element by element.
  * @param mat the specified matrix
- * @param a the specified float
+ * @param a the specified double
  * @returns the result
  */
-Zoe::mat3x3 operator*(const Zoe::mat3x3& mat, float a);
+Zoe::mat3x3 operator*(const Zoe::mat3x3& mat, double a);
 
 /**
- * Multiplies the specified matrix and the specified float element by element.
- * @param a the specified float
+ * Multiplies the specified matrix and the specified double element by element.
+ * @param a the specified double
  * @param mat the specified matrix
  * @returns the result
  */
-Zoe::mat3x3 operator*(float a, const Zoe::mat3x3& mat);
+Zoe::mat3x3 operator*(double a, const Zoe::mat3x3& mat);
 
 /**
  * Prints the specified 3 by 3 matrix to the specified stream.

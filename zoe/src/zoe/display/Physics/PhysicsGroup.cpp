@@ -14,7 +14,7 @@
 
 namespace Zoe {
 
-void PhysicsGroup::onDraw(const Camera &camera) {
+void PhysicsGroup::onDraw(const Camera& camera) {
 
 }
 
@@ -22,11 +22,11 @@ void PhysicsGroup::onUpdate(double time) {
 
 }
 
-void PhysicsGroup::onInputEvent(Event &event) {
+void PhysicsGroup::onInputEvent(Event& event) {
 
 }
 
-void PhysicsGroup::fill(const XMLNode &node) {
+void PhysicsGroup::fill(const XMLNode& node) {
     if (auto iter = node.attributes.find("maxDirectChecks"); iter != node.attributes.end()) {
         maxDirectChecks = std::stoi(iter->second);
     }
@@ -43,7 +43,7 @@ void PhysicsGroup::onPhysicsUpdate(double delta) {
     checkCollision(delta);
 }
 
-void PhysicsGroup::addPhysicsObject(const std::shared_ptr<PhysicsComponent> &physicsComponent) {
+void PhysicsGroup::addPhysicsObject(const std::shared_ptr<PhysicsComponent>& physicsComponent) {
     PhysicsCheckObject pco;
     pco.wComp = physicsComponent;
     elements.push_back(pco);
@@ -55,12 +55,12 @@ PhysicsGroup::PhysicsGroup() = default;
 //Specific type checks
 //----------------------------------------------------------------------------------------------------------------------
 
-bool specificCheckBoxBox(const std::shared_ptr<PhysicsComponent> &a_abs,
-                         const std::shared_ptr<PhysicsComponent> &b_abs,
+bool specificCheckBoxBox(const std::shared_ptr<PhysicsComponent>& a_abs,
+                         const std::shared_ptr<PhysicsComponent>& b_abs,
                          double delta) {
     auto a = std::dynamic_pointer_cast<BoxCollider>(a_abs);
     auto b = std::dynamic_pointer_cast<BoxCollider>(b_abs);
-    std::function<void()> nothing = []() {};
+    std::function < void() > nothing = []() {};
 
     if (a->collisionBehavior == BoxCollider::CollisionBehavior::AUTO &&
         b->collisionBehavior == BoxCollider::CollisionBehavior::STATIC) {
@@ -83,12 +83,16 @@ bool specificCheckBoxBox(const std::shared_ptr<PhysicsComponent> &a_abs,
         }
         vec3 direction = center - lastCenter;
 
-        float timeXMin = (sBox.getLowerCorner().x - lastCenter.x) / direction.x;
-        float timeXMax = (sBox.getHigherCorner().x - lastCenter.x) / direction.x;
-        float timeYMin = (sBox.getLowerCorner().y - lastCenter.y) / direction.y;
-        float timeYMax = (sBox.getHigherCorner().y - lastCenter.y) / direction.y;
-        float timeZMin = (sBox.getLowerCorner().z - lastCenter.z) / direction.z;
-        float timeZMax = (sBox.getHigherCorner().z - lastCenter.z) / direction.z;
+        double timeXMin = (sBox.getLowerCorner().x - lastCenter.x) / direction.x;
+        double timeXMax = (sBox.getHigherCorner().x - lastCenter.x) / direction.x;
+        double timeYMin = (sBox.getLowerCorner().y - lastCenter.y) / direction.y;
+        double timeYMax = (sBox.getHigherCorner().y - lastCenter.y) / direction.y;
+        double timeZMin = (sBox.getLowerCorner().z - lastCenter.z) / direction.z;
+        double timeZMax = (sBox.getHigherCorner().z - lastCenter.z) / direction.z;
+
+        if (std::isnan(timeXMin) || std::isnan(timeXMax) || std::isnan(timeYMin) || std::isnan(timeYMax) ||
+            std::isnan(timeZMin) || std::isnan(timeZMax))
+            return false;
 
         if (timeXMin > timeXMax) {
             std::swap(timeXMin, timeXMax);
@@ -99,14 +103,32 @@ bool specificCheckBoxBox(const std::shared_ptr<PhysicsComponent> &a_abs,
         if (timeZMin > timeZMax) {
             std::swap(timeZMin, timeZMax);
         }
-        float timeMin = std::max({timeXMin, timeYMin, timeZMin});
-        float timeMax = std::min({timeXMax, timeYMax, timeZMax});
-        if ((timeMin < timeMax && timeMin <= 1 && timeMin >= 0) ||
+
+        vec3 contactNormal{};
+
+        double timeMin = std::max({timeXMin, timeYMin, timeZMin});
+        double timeMax = std::min({timeXMax, timeYMax, timeZMax});
+
+        if (timeMin == timeXMin) {
+            contactNormal.x = (direction.x < 0) ? 1.0f : -1.0f;
+        } else if (timeMin == timeYMin) {
+            contactNormal.y = (direction.y < 0) ? 1.0f : -1.0f;
+        } else {
+            contactNormal.z = (direction.z < 0) ? 1.0f : -1.0f;
+        }
+        if ((timeMin < timeMax && timeMin < 1 && timeMin > 0) ||
             a->alignedBox.checkCollision(b->alignedBox)) { //check if b is in a
             //Collision
-            std::function<void()> bResolve = [=]() {
-                b->position = b->getLastPosition() + timeMin * direction;
-                ///@todo make velocity stuff thing
+            std::function < void() > bResolve = [=]() {
+                vec3 resolveDirection = contactNormal.elementMultiply(
+                        vec3(std::abs(direction.x), std::abs(direction.y), std::abs(direction.z)));
+                b->position = b->position + (1 - timeMin) * resolveDirection;
+                vec3 velocity = b->getVelocity();
+
+                velocity.x = ((contactNormal.x == 0) ? velocity.x : 0);
+                velocity.y = ((contactNormal.y == 0) ? velocity.y : 0);
+                velocity.z = ((contactNormal.z == 0) ? velocity.z : 0);
+                b->setVelocity(velocity);
             };
             a->onCollision(*b, delta, nothing);
             b->onCollision(*a, delta, bResolve);
@@ -141,20 +163,20 @@ void PhysicsGroup::init() {
     PhysicsGroup::addSpecificCollisionCheck<BoxCollider, BoxCollider>(specificCheckBoxBox);
 }
 
-void PhysicsGroup::addSpecificCollisionCheck(const std::type_index &typeA, const std::type_index &typeB,
-                                             const std::function<bool(const std::shared_ptr<PhysicsComponent> &,
-                                                                      const std::shared_ptr<PhysicsComponent> &,
-                                                                      double)> &function) {
-    specificCollisionCheckMap[typeB][typeA] = [function](const std::shared_ptr<PhysicsComponent> &a,
-                                                         const std::shared_ptr<PhysicsComponent> &b,
+void PhysicsGroup::addSpecificCollisionCheck(const std::type_index& typeA, const std::type_index& typeB,
+                                             const std::function<bool(const std::shared_ptr<PhysicsComponent>&,
+                                                                      const std::shared_ptr<PhysicsComponent>&,
+                                                                      double)>& function) {
+    specificCollisionCheckMap[typeB][typeA] = [function](const std::shared_ptr<PhysicsComponent>& a,
+                                                         const std::shared_ptr<PhysicsComponent>& b,
                                                          double delta) -> bool {
         return function(b, a, delta);
     };
     specificCollisionCheckMap[typeA][typeB] = function;
 }
 
-void PhysicsGroup::checkSpecificCollision(const std::shared_ptr<PhysicsComponent> &a,
-                                          const std::shared_ptr<PhysicsComponent> &b,
+void PhysicsGroup::checkSpecificCollision(const std::shared_ptr<PhysicsComponent>& a,
+                                          const std::shared_ptr<PhysicsComponent>& b,
                                           double delta) {
     auto func = specificCollisionCheckMap[std::type_index(typeid(*a))][std::type_index(typeid(*b))];
     if (func) {
@@ -169,20 +191,20 @@ void PhysicsGroup::checkSpecificCollision(const std::shared_ptr<PhysicsComponent
 void PhysicsGroup::checkCollision(double delta) {
     std::vector<CollisionCheck> checks;
     octCheck(elements, lastGlobalCenter, recursionLimit, 0, checks);
-    std::sort(checks.begin(), checks.end(), [](const CollisionCheck &a, const CollisionCheck &b) {
+    std::sort(checks.begin(), checks.end(), [](const CollisionCheck& a, const CollisionCheck& b) {
         return a.distance < b.distance; //smallest distance first
     });
-    for (auto &check : checks) {
+    for (auto& check : checks) {
         checkSpecificCollision(check.a, check.b, delta);
     }
-    for (auto &element : elements) {
+    for (auto& element : elements) {
         element.sComp = nullptr; // remove shared pointer to allow deletion of components
     }
 }
 
-void PhysicsGroup::octCheck(std::vector<PhysicsCheckObject> &vector, const vec3 &center,
+void PhysicsGroup::octCheck(std::vector<PhysicsCheckObject>& vector, const vec3& center,
                             uint8_t recursionCheckVariable, uint8_t prevFlag,
-                            std::vector<CollisionCheck> &collisionChecks) const {
+                            std::vector<CollisionCheck>& collisionChecks) const {
     if (vector.empty())
         return;
     if (recursionCheckVariable == 0) [[unlikely]] { //fallback
@@ -215,7 +237,7 @@ void PhysicsGroup::octCheck(std::vector<PhysicsCheckObject> &vector, const vec3 
     //nXnYnZ - -X-Y-Z - 7
 
     //check in which octant the object is (oct-tree would be nice but objects can change position without a physics update)
-    for (auto &element : vector) {
+    for (auto& element : vector) {
         if (recursionLimit == recursionCheckVariable) {
             //check if first recursion //Branch Predictor and Compiler should optimize this check significantly
             element.sComp = element.wComp.lock(); //create shared_ptr when in first recursion
@@ -228,9 +250,9 @@ void PhysicsGroup::octCheck(std::vector<PhysicsCheckObject> &vector, const vec3 
 
         //check in which octant the element is and increment it's counter
         //one object can be in more than one octant
-        const AxisAlignedBox &box = element.sComp->getAxisAlignedBox();
-        const vec3 &high = box.getHigherCorner();
-        const vec3 &low = box.getLowerCorner();
+        const AxisAlignedBox& box = element.sComp->getAxisAlignedBox();
+        const vec3& high = box.getHigherCorner();
+        const vec3& low = box.getLowerCorner();
         bool posX = high.x >= center.x;
         bool negX = low.x <= center.x;
         bool posY = high.y >= center.y;
@@ -272,17 +294,17 @@ void PhysicsGroup::octCheck(std::vector<PhysicsCheckObject> &vector, const vec3 
     vec3 directionAverage[8]{};
 
 
-    for (auto &element : vector) {
+    for (auto& element : vector) {
         if (element.sComp == nullptr)
             continue;
-        auto &myAligned = element.sComp->advancedAlignedBox;
+        auto& myAligned = element.sComp->advancedAlignedBox;
         vec3 myCenter = myAligned.getCenter();
         uint8_t checkedDirections = 0; // these 8 bits fill from least to most significant bit
         for (uint8_t direction = 0; direction < 8; ++direction) { // check `element` for all 8 directions
             if (element.positionFlag.flag & (1u << direction)) { // `element` is in this direction
                 if (directionCount[direction] > 1 && directionCount[direction] <= maxDirectChecks) {
                     for (size_t i = 0; i < directionIndex[direction]; ++i) {
-                        auto &otherElement = directionArray[direction][i];
+                        auto& otherElement = directionArray[direction][i];
                         if ((recursionCheckVariable == recursionLimit ||
                              !((otherElement.prevRecFlag.flag & element.prevRecFlag.flag) & prevFlag))
                             /*first check or not checked in parallel check*/
@@ -294,7 +316,7 @@ void PhysicsGroup::octCheck(std::vector<PhysicsCheckObject> &vector, const vec3 
                             // checked, then these two elements have already been checked for collisions
                             if (element.sComp->advancedAlignedBox.checkCollision(
                                     otherElement.sComp->advancedAlignedBox)) {
-                                auto &otherAligned = otherElement.sComp->advancedAlignedBox;
+                                auto& otherAligned = otherElement.sComp->advancedAlignedBox;
                                 vec3 connectionVector = myCenter - otherAligned.getCenter();
                                 collisionChecks.push_back({element.sComp, otherElement.sComp,
                                                            connectionVector * connectionVector});

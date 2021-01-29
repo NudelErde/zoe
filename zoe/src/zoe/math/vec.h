@@ -13,7 +13,9 @@
 namespace Zoe {
 
 class vec2;
+
 class vec3;
+
 class vec4;
 
 /**
@@ -25,12 +27,12 @@ public:
     /**
      * The x value of the vector.
      */
-    float x;
+    double x;
 
     /**
      * The y value of the vector.
      */
-    float y;
+    double y;
 public:
     /**
      * Creates a new null vector.
@@ -42,7 +44,7 @@ public:
      * @param x the specified x value
      * @param y the specified y value
      */
-    vec2(float x, float y);
+    vec2(double x, double y);
 
     /**
      * Creates a new vector with the values in the specified vector.
@@ -75,35 +77,35 @@ public:
      * @param v the specified vector
      * @returns the result
      */
-    float operator*(const vec2& v) const;
+    double operator*(const vec2& v) const;
 
     /**
      * Scales this vector by the specified factor.
      * @param m the specified factor
      * @returns the result
      */
-    vec2 operator*(const float& m) const;
+    vec2 operator*(const double& m) const;
 
     /**
      * Scales this vector by the multiplicative inverse of the specified factor.
      * @param d the specified factor
      * @returns the result
      */
-    vec2 operator/(const float& d) const;
+    vec2 operator/(const double& d) const;
 
     /**
      * Access an element of this vector by its index.
      * @param index the specified index
      * @returns the value
      */
-    float operator[](const int& index) const;
+    double operator[](const int& index) const;
 
     /**
      * Access an element of this vector by its index.
      * @param index the specified index
      * @returns a reference to the value
      */
-    float& operator[](const int& index);
+    double& operator[](const int& index);
 
     /**
      * Returns a normalized version of this vector. Its length is guaranteed to be 1.
@@ -115,7 +117,7 @@ public:
      * Returns the length, also known as magnitude, of this vector.
      * @returns the length
      */
-    [[nodiscard]] float length() const;
+    [[nodiscard]] double length() const;
 
     /**
      * Checks if this vector equals the specified vector.
@@ -130,6 +132,8 @@ public:
 	 * @returns `true` if any element is different
 	 */
     bool operator!=(const vec2& vec) const;
+
+    [[nodiscard]] vec2 elementMultiply(const vec2& v) const;
 };
 
 /**
@@ -141,15 +145,15 @@ public:
     /**
      * The x value of the vector.
      */
-    float x;
+    double x;
     /**
      * The y value of the vector.
      */
-    float y;
+    double y;
     /**
      * The z value of the vector.
      */
-    float z;
+    double z;
 public:
 
     /**
@@ -163,7 +167,7 @@ public:
      * @param y the specified y value
      * @param z the specified z value
      */
-    vec3(float x, float y, float z);
+    vec3(double x, double y, double z);
 
     /**
      * Creates a new vector with the values in the specified vector.
@@ -220,21 +224,21 @@ public:
      * @param v the specified vector
      * @returns the result
      */
-    float operator*(const vec3& v) const;
+    double operator*(const vec3& v) const;
 
     /**
      * Scales this vector by the specified factor.
      * @param m the specified factor
      * @returns the result
      */
-    vec3 operator*(const float& m) const;
+    vec3 operator*(const double& m) const;
 
     /**
      * Scales this vector by the multiplicative inverse of the specified factor.
      * @param d the specified factor
      * @returns the result
      */
-    vec3 operator/(const float& d) const;
+    vec3 operator/(const double& d) const;
 
     /**
      * Calculates the cross product of the specified an this vector.
@@ -248,14 +252,14 @@ public:
      * @param index the specified index
      * @returns the value
      */
-    float operator[](const int& index) const;
+    double operator[](const int& index) const;
 
     /**
      * Access an element of this vector by its index.
      * @param index the specified index
      * @returns a reference to the value
      */
-    float& operator[](const int& index);
+    double& operator[](const int& index);
 
     /**
      * Returns a normalized version of this vector. Its length is guaranteed to be 1.
@@ -267,7 +271,7 @@ public:
      * Returns the length, also known as magnitude, of this vector.
      * @returns the length
      */
-    [[nodiscard]] float length() const;
+    [[nodiscard]] double length() const;
 
     /**
      * Checks if this vector equals the specified vector.
@@ -282,6 +286,8 @@ public:
 	 * @returns `true` if any element is different
 	 */
     bool operator!=(const vec3& vec) const;
+
+    [[nodiscard]] vec3 elementMultiply(const vec3& v) const;
 };
 
 /**
@@ -293,22 +299,22 @@ public:
     /**
      * The x value of the vector.
      */
-    float x;
+    double x;
 
     /**
      * The y value of the vector.
      */
-    float y;
+    double y;
 
     /**
      * The z value of the vector.
      */
-    float z;
+    double z;
 
     /**
      * The w value of the vector.
      */
-    float w;
+    double w;
 public:
 
     /**
@@ -323,7 +329,7 @@ public:
      * @param z the specified z value
      * @param w the specified w value
      */
-    vec4(float x, float y, float z, float w);
+    vec4(double x, double y, double z, double w);
 
     /**
      * Creates a new vector with the values in the specified vector.
@@ -416,21 +422,21 @@ public:
      * @param v the specified vector
      * @returns the result
      */
-    float operator*(const vec4& v) const;
+    double operator*(const vec4& v) const;
 
     /**
      * Scales this vector by the specified factor.
      * @param m the specified factor
      * @returns the result
      */
-    vec4 operator*(const float& m) const;
+    vec4 operator*(const double& m) const;
 
     /**
      * Scales this vector by the multiplicative inverse of the specified factor.
      * @param d the specified factor
      * @returns the result
      */
-    vec4 operator/(const float& d) const;
+    vec4 operator/(const double& d) const;
 
     /**
      * Calculates the cross product of the two specified and this vector.
@@ -445,14 +451,14 @@ public:
      * @param index the specified index
      * @returns the value
      */
-    float operator[](const int& index) const;
+    double operator[](const int& index) const;
 
     /**
      * Access an element of this vector by its index.
      * @param index the specified index
      * @returns a reference to the value
      */
-    float& operator[](const int& index);
+    double& operator[](const int& index);
 
     /**
      * Returns a normalized version of this vector. Its length is guaranteed to be 1.
@@ -464,7 +470,7 @@ public:
      * Returns the length, also known as magnitude, of this vector.
      * @returns the length
      */
-    [[nodiscard]] float length() const;
+    [[nodiscard]] double length() const;
 
     /**
      * Checks if this vector equals the specified vector.
@@ -479,6 +485,8 @@ public:
 	 * @returns `true` if any element is different
 	 */
     bool operator!=(const vec4& vec) const;
+
+    [[nodiscard]] vec4 elementMultiply(const vec4& v) const;
 };
 
 }
@@ -497,7 +505,7 @@ std::ostream& operator<<(std::ostream& stream, const Zoe::vec2& v);
  * @param v the specified vector
  * @returns the result
  */
-Zoe::vec2 operator*(const float& m, const Zoe::vec2& v);
+Zoe::vec2 operator*(const double& m, const Zoe::vec2& v);
 
 
 /**
@@ -514,7 +522,7 @@ std::ostream& operator<<(std::ostream& stream, const Zoe::vec3& v);
  * @param v the specified vector
  * @returns the result
  */
-Zoe::vec3 operator*(const float& m, const Zoe::vec3& v);
+Zoe::vec3 operator*(const double& m, const Zoe::vec3& v);
 
 /**
  * Prints the specified vector to the specified stream.
@@ -530,5 +538,5 @@ std::ostream& operator<<(std::ostream& stream, const Zoe::vec4& v);
  * @param v the specified vector
  * @returns the result
  */
-Zoe::vec4 operator*(const float& m, const Zoe::vec4& v);
+Zoe::vec4 operator*(const double& m, const Zoe::vec4& v);
 

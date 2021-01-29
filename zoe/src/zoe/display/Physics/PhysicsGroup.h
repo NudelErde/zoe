@@ -104,7 +104,7 @@ private:
     struct CollisionCheck {
         std::shared_ptr<PhysicsComponent> a;
         std::shared_ptr<PhysicsComponent> b;
-        float distance;
+        double distance;
     };
 
     void octCheck(std::vector<PhysicsCheckObject>& vector, const vec3& center, uint8_t recursionCheckVariable,
