@@ -116,8 +116,7 @@ bool Application::onWindowClose(WindowCloseEvent &e) {
     Scheduler::exit();
     return false;
 }
-
-Application &Application::get() {
+Application& Application::get() {
     return *s_Instance;
 }
 }
