@@ -90,6 +90,7 @@ protected:
     /**
      * The onCollision function is the collision handler of a PhysicsComponent.
      * @param delta the time since the last check
+     * @param resolve the function that can resolve the collision
      */
     void onCollision(double delta, const std::function<void()>& resolve) override;
 private:

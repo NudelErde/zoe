@@ -45,6 +45,11 @@ public:
      */
     void update(double time);
 
+    /**
+     * Updates this component and all child components with the specified time in seconds since the last physics update.
+     * The physics update should be used to update the components position and is part of the physics system.
+     * @param time the time since the last update
+     */
     void physicsUpdate(double time);
 
     /**
@@ -110,8 +115,19 @@ public:
      */
     inline std::shared_ptr<ComponentLayer> getLayer() { return layer.lock(); }
 
+    /**
+     * Returns a pointer to the child with the specified id.
+     * @param componentID the specified id
+     * @return the child or null if not found
+     */
     std::shared_ptr<BaseComponent> getChildByID(const std::string& componentID);
 
+    /**
+     * Returns a pointer to the child with the specified id and type.
+     * @tparam T the specified type
+     * @param componentID the specified id
+     * @return the child or null if not found
+     */
     template<typename T>
     std::shared_ptr<T> getChildByIDAndType(const std::string& componentID) {
         std::vector<std::shared_ptr<BaseComponent>> childVector;

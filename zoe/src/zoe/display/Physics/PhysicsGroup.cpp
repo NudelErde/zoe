@@ -142,7 +142,7 @@ bool specificCheckBoxBox(const std::shared_ptr<PhysicsComponent>& a_abs,
         //magic condition
         //  resolve functions and onCollision
         //  return true
-        debug("Fuck u!");
+        debug("not implemented!");
 
         return false;
     } else {

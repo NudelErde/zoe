@@ -133,6 +133,11 @@ public:
 	 */
     bool operator!=(const vec2& vec) const;
 
+    /**
+     * Multiplies each element of this vector by the corresponding element in the specified vector .
+     * @param v the specified vector
+     * @return the result
+     */
     [[nodiscard]] vec2 elementMultiply(const vec2& v) const;
 };
 
@@ -287,6 +292,11 @@ public:
 	 */
     bool operator!=(const vec3& vec) const;
 
+    /**
+     * Multiplies each element of this vector by the corresponding element in the specified vector .
+     * @param v the specified vector
+     * @return the result
+     */
     [[nodiscard]] vec3 elementMultiply(const vec3& v) const;
 };
 
@@ -486,6 +496,11 @@ public:
 	 */
     bool operator!=(const vec4& vec) const;
 
+    /**
+     * Multiplies each element of this vector by the corresponding element in the specified vector .
+     * @param v the specified vector
+     * @return the result
+     */
     [[nodiscard]] vec4 elementMultiply(const vec4& v) const;
 };
 

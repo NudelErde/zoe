@@ -9,11 +9,23 @@
 
 namespace Zoe {
 
+/**
+ * A BoxCollider is a simple PhysicsComponent that is defined by an AxisAlignedBox.
+ */
 class BoxCollider : public PhysicsComponent {
 public:
 
+    /**
+     * onCollision is called when a collision has occurred with this object.
+     * @param other the other object
+     * @param delta the time since the last physics update
+     * @param resolve a function to resolve the collision
+     */
     void onCollision(PhysicsComponent& other, double delta, const std::function<void()>& resolve) override;
 
+    /**
+     * updateBoundingBox updates the internal bounding box.
+     */
     void updateBoundingBox() override;
 
 protected:

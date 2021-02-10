@@ -37,11 +37,11 @@ public:
      * Creates a Task from a coroutine handle. This should be called from Task::promise_type::get_return_object();
      * @param handle the coroutine handle
      */
-    explicit Task(std::coroutine_handle<promise_type> handle);
-    Task(const Task&) = delete;
-    Task& operator=(const Task&) = delete;
-    Task(Task&&) noexcept = default;
-    Task& operator=(Task&&) noexcept = default;
+    explicit Task(std::coroutine_handle<Task::promise_type> handle);
+    Task(const Task&) = delete; ///< A Task can not be copied. Because coroutine can not be copied.
+    Task& operator=(const Task&) = delete; ///< A Task can not be copied. Because coroutine can not be copied.
+    Task(Task&&) noexcept = default; ///< Defines the default move constructor.
+    Task& operator=(Task&&) noexcept = default; ///< Defines the default move assign.
 
     /**
      * Resumes the tasks execution. Returns true if it can be continued. It shouldn't be resumed when it called `co_yield false;` or it reached it's end.

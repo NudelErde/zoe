@@ -29,6 +29,11 @@ public:
      */
     static void addTask(const std::function<void()>& function);
 
+    /**
+     * Adds a coroutine using a callable object.
+     * @tparam T the type of the callable object
+     * @param object the callable object
+     */
     template<typename T>
     static void addCoroutine(const T& object) {
         std::shared_ptr<T> thing = std::make_shared<T>(std::move(object));
@@ -47,17 +52,40 @@ public:
      */
     static void execute();
 
+    /**
+     * The CoroutineContainer stores the Task and the callable object that created the Task to ensure that it's lifetime is long enough.
+     */
     struct CoroutineContainer{
+        /**
+         * The stored task.
+         */
         std::unique_ptr<Task> task;
+        /**
+         * The object that created the task.
+         */
         std::shared_ptr<void> callableObject;
 
-        CoroutineContainer() = default;
+        CoroutineContainer() = default; ///< Defines the default constructor.
+        /**
+         * Creates a CoroutineContainer with the specified task and callableObject.
+         * @param task the task
+         * @param callableObject the callableObject
+         */
         CoroutineContainer(Task&& task, std::shared_ptr<void> callableObject);
-        CoroutineContainer(CoroutineContainer&&) noexcept = default;
-        CoroutineContainer& operator=(CoroutineContainer&&) noexcept  = default;
+        CoroutineContainer(CoroutineContainer&&) noexcept = default; ///< Defines the move constructor.
+        CoroutineContainer& operator=(CoroutineContainer&&) noexcept  = default; ///< Defines the move assignment.
     };
 
+    /**
+     * Returns the last or current callableObject processed by the Scheduler.
+     * @return the last or current callableObject
+     */
     [[nodiscard]] static std::shared_ptr<void> getCurrentCoroutineCallableObject();
+
+    /**
+     * Adds a specified CoroutineContainer to the Scheduler.
+     * @param cc the CoroutineContainer
+     */
     static void addCoroutineContainer(CoroutineContainer&& cc);
 private:
 

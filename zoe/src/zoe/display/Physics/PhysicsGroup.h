@@ -19,14 +19,29 @@ namespace Zoe {
 
 //remove invalid elements on game tick not physics tick
 //create new lastGlobalCenter on game tick
+
+/**
+ * A PhysicsGroup connects multiple PhysicsComponents. Only the PhysicsComponents in the same group can collide.
+ */
 class PhysicsGroup : public BaseComponent {
 public:
-    PhysicsGroup();
+    PhysicsGroup(); ///< Creates an empty PhysicsGroup.
 
+    /**
+     * Check the collision for a specified delta time.
+     * @param delta the delta time
+     */
     void checkCollision(double delta);
 
+    /**
+     * Add a PhysicsComponent to this group
+     * @param physicsComponent the specified component
+     */
     void addPhysicsObject(const std::shared_ptr<PhysicsComponent>& physicsComponent);
 
+    /**
+     * Initializes the specific checks.
+     */
     static void init();
 
 protected:
@@ -60,16 +75,34 @@ protected:
      */
     void onPhysicsUpdate(double delta) override;
 
+    /**
+     * Checks for a collision between a and b in the time delta. A specific check is used.
+     * @param a the first object
+     * @param b the second object
+     * @param delta the delta time
+     */
     static void checkSpecificCollision(const std::shared_ptr<PhysicsComponent>& a,
                                        const std::shared_ptr<PhysicsComponent>& b,
                                        double delta);
 
+    /**
+     * Adds a specific collision check for TypeA and TypeB.
+     * @tparam TypeA the first type
+     * @tparam TypeB the second type
+     * @param function the specific collision check
+     */
     template<typename TypeA, typename TypeB>
     static void addSpecificCollisionCheck(const std::function<bool(const std::shared_ptr<PhysicsComponent>&,
                                                                    const std::shared_ptr<PhysicsComponent>&, double)>& function) {
         addSpecificCollisionCheck(std::type_index(typeid(TypeA)), std::type_index(typeid(TypeB)), function);
     }
 
+    /**
+     * Adds a specific collision check for typeA and typeB.
+     * @param typeA the first type
+     * @param typeB the second type
+     * @param function the specific collision check
+     */
     static void addSpecificCollisionCheck(const std::type_index& typeA, const std::type_index& typeB,
                                           const std::function<bool(const std::shared_ptr<PhysicsComponent>&,
                                                                    const std::shared_ptr<PhysicsComponent>&, double)>& function);
@@ -92,8 +125,8 @@ private:
                 bool nXnYpZ: 1;
                 bool nXnYnZ: 1;
             };
-            uint8_t flag;
-        };
+            uint8_t flag; ///< a bitflag representation of the PositionFlag
+        };///< The position flag is used to store in which octant the Object is
 
         std::weak_ptr<PhysicsComponent> wComp;
         std::shared_ptr<PhysicsComponent> sComp;
