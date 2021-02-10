@@ -46,6 +46,13 @@ public:
     void update(double time);
 
     /**
+     * Updates this component and all child components with the specified time in seconds since the last physics update.
+     * The physics update should be used to update the components position and is part of the physics system.
+     * @param time the time since the last update
+     */
+    void physicsUpdate(double time);
+
+    /**
      * Send the specified input event to this component and all child components.
      * @param event the specified input event
      */
@@ -108,8 +115,19 @@ public:
      */
     inline std::shared_ptr<ComponentLayer> getLayer() { return layer.lock(); }
 
+    /**
+     * Returns a pointer to the child with the specified id.
+     * @param componentID the specified id
+     * @return the child or null if not found
+     */
     std::shared_ptr<BaseComponent> getChildByID(const std::string& componentID);
 
+    /**
+     * Returns a pointer to the child with the specified id and type.
+     * @tparam T the specified type
+     * @param componentID the specified id
+     * @return the child or null if not found
+     */
     template<typename T>
     std::shared_ptr<T> getChildByIDAndType(const std::string& componentID) {
         std::vector<std::shared_ptr<BaseComponent>> childVector;
@@ -126,7 +144,7 @@ public:
                     }
                 }
                 const auto& grandchildren = child->getChildren();
-                if(!grandchildren.empty()) {
+                if (!grandchildren.empty()) {
                     repeat = true;
                     grandChildVector.insert(grandChildVector.end(), grandchildren.begin(), grandchildren.end());
                 }
@@ -155,10 +173,16 @@ protected:
     virtual void onDraw(const Camera& camera) = 0;
 
     /**
-     * Updates this component.
-     * @param time the time in seconds since the last update
+     * Updates this component. This function is called in a specific interval.
+     * @param delta the time in seconds since the last update
      */
-    virtual void onUpdate(double time) = 0;
+    virtual void onUpdate(double delta) = 0;
+
+    /**
+     * Updates this component. This function is called as fast as possible. It shouldn't take long to execute this function.
+     * @param delta the time in seconds since the last update
+     */
+    virtual void onPhysicsUpdate(double delta);
 
     /**
      * Handles input events.

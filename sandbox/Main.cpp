@@ -3,40 +3,80 @@
 //
 
 #include "zoe.h"
-#include <type_traits>
 
 using namespace Zoe;
 
-class ButtonScript : public NativeScript {
+class CameraScript : public NativeScript {
 public:
-    int number = 0;
 
-    void onActivation() override {
-        infof("Test {}", number++);
-        Scheduler::addTask([]() -> Task {
-            using namespace std::chrono_literals;
-            co_await 10s;
-            info("Waited 10 seconds");
-            co_await 1h;
-            info("Long time");
-        }());
+    void onUpdate(const double& t) override {
+        if (auto comp = std::dynamic_pointer_cast<Camera3D>(component.lock())) {
+            vec3 pos = comp->getPosition();
+            vec3 dir = comp->getDirection();
+            vec3 norm = dir.crossProduct(vec3(0, 1, 0)).normalize();
+            vec3 rot = comp->getRotation();
+            if (Input::isKeyPressed(KEY_W)) {
+                pos = pos + dir * (float) t;
+            }
+            if (Input::isKeyPressed(KEY_S)) {
+                pos = pos + dir * (float) -t;
+            }
+            if (Input::isKeyPressed(KEY_A)) {
+                pos = pos + norm * (float) t;
+            }
+            if (Input::isKeyPressed(KEY_D)) {
+                pos = pos + norm * (float) -t;
+            }
+            if (Input::isKeyPressed(KEY_SPACE)) {
+                pos = pos + vec3(0, 1, 0) * (float) t;
+            }
+            if (Input::isKeyPressed(KEY_LEFT_SHIFT)) {
+                pos = pos + vec3(0, 1, 0) * (float) -t;
+            }
+            if (Input::isKeyPressed(KEY_LEFT)) {
+                rot.y += (float) t;
+            }
+            if (Input::isKeyPressed(KEY_RIGHT)) {
+                rot.y += (float) -t;
+            }
+            comp->setPosition(pos);
+            comp->setRotation(rot);
+            if (Input::isKeyPressed(KEY_ENTER)) {
+                auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
+                cube->setVelocity(vec3(0.5, 1, 0));
+            }
+            if (Input::isKeyPressed(KEY_BACKSPACE)) {
+                auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
+                cube->setVelocity(vec3(0, -1, -0.5));
+            }
+            if (Input::isKeyPressed(KEY_ESCAPE)) {
+                auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
+                cube->setVelocity(vec3());
+                cube->setPosition(vec3(0,0.1,0));
+            }
+            if (Input::isKeyPressed(KEY_G)) {
+                auto cube = comp->getLayer()->getChildByIDAndType<PhysicsComponent>("test");
+                auto gravity = cube->addAcceleration(vec3(0, -0.1, 0));
+                Scheduler::addCoroutine([gravity]() -> Task {
+                    using namespace std::chrono_literals;
+                    co_await 5s;
+                    gravity();
+                });
+            }
+        }
     }
 };
 
 class App : public Application {
 public:
     App() {
-        NativeScriptComponent::registerNativeScript<ButtonScript>("ButtonScript");
+        NativeScriptComponent::registerNativeScript<CameraScript>("CameraScript");
+        std::shared_ptr<ComponentLayer> layer = std::make_shared<ComponentLayer>();
 
-        std::shared_ptr<ComponentLayer> uiLayer = std::make_shared<ComponentLayer>();
-        uiLayer->load(File("sampleObjects/UITest.xml"));
-        auto button1 = uiLayer->getChildByIDAndType<Button>("button1");
-        button1->setClickHandler([uiLayer]() {
-            auto button1 = uiLayer->getChildByIDAndType<Button>("button1");
-            button1->setPosition(button1->getPosition() + vec3(1, 1, 0));
-        });
+        layer->load(File("sampleObjects/PhysicsExample.xml"));
+        //layer->load(File("sampleObjects/UITest.xml"));
 
-        getLayerStack().pushLayer(uiLayer);
+        getLayerStack().pushLayer(layer);
     }
 
     ~App() override = default;

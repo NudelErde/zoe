@@ -6,6 +6,7 @@
  */
 
 #include "XMLParser.h"
+#include "Console.h"
 #include <sstream>
 #include <stack>
 #include <algorithm>
@@ -118,8 +119,12 @@ static void parseContent(XMLNode& node, std::unique_ptr<std::istream>& stream){
 
 static XMLNode parse(std::unique_ptr<std::istream>& stream, std::string tag){
 	XMLNode top;
-	parseNameAndAttributes(top, std::move(tag));
-	parseContent(top, stream);
+    if (tag.ends_with('/')) {
+        parseNameAndAttributes(top, std::move(tag));
+    } else {
+        parseNameAndAttributes(top, std::move(tag));
+        parseContent(top, stream);
+    }
 	return top;
 }
 
@@ -127,8 +132,12 @@ static XMLNode parse(std::unique_ptr<std::istream>& stream){
 	XMLNode top;
 	readTo(stream, '<'); //find start;
 	std::string nameAndAttributes = readTo(stream, '>');
-	parseNameAndAttributes(top, nameAndAttributes);
-	parseContent(top, stream);
+	if (nameAndAttributes.ends_with('/')) {
+        parseNameAndAttributes(top, nameAndAttributes);
+	} else {
+        parseNameAndAttributes(top, nameAndAttributes);
+        parseContent(top, stream);
+	}
 	return top;
 }
 

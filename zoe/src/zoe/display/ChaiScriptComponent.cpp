@@ -58,5 +58,11 @@ void ChaiScriptComponent::fill(const XMLNode &node) {
 void ChaiScriptComponent::postFill() {
     script->initFunction();
 }
+void ChaiScriptComponent::onActivation() {
+
+}
+void ChaiScriptComponent::onCollision(double delta, const std::function<void()>& resolve) {
+
+}
 
 }

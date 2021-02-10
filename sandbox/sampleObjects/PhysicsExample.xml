@@ -1,0 +1,21 @@
+<ComponentLayer defaultCamera="camera">
+    <PhysicsGroup id="PhysicsGroup"/>
+    <BoxCollider auto="static" group="PhysicsGroup" dx="6" dy="0" dz="7" x="-3" y="0" z="-3.5"/>
+    <BoxCollider auto="move" group="PhysicsGroup" dx="1" dy="1" dz="1" x="0" y="0.1" z="0" id="test">
+        <WorldObject>
+            <Model name="Cube" src="sampleObjects/Cube/Cube.obj"/>
+        </WorldObject>
+        <NativeScriptComponent script="CubeScript"/>
+    </BoxCollider>
+    <BoxCollider auto="static" group="PhysicsGroup" dx="1" dy="1" dz="1" x="0" y="2" z="0">
+        <WorldObject>
+            <Model name="Cube" src="sampleObjects/Cube/Cube.obj"/>
+        </WorldObject>
+    </BoxCollider>
+    <Camera3D id="camera" x="0" y="0.5" z="-3" pitch="0" yaw="0" roll="0" fov="90" ratio="1.7777777">
+        <NativeScriptComponent script="CameraScript"/>
+    </Camera3D>
+    <WorldObject>
+        <Model src="sampleObjects/Room/Room.obj"/>
+    </WorldObject>>
+</ComponentLayer>

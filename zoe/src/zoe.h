@@ -45,7 +45,11 @@
 #include "zoe/core/Task.h"
 
 #include "zoe/display/Game/Sprite.h"
+#include "zoe/display/Game/ModelComponent.h"
 #include "zoe/display/Game/WorldObject.h"
+#include "zoe/display/Physics/AxisAlignedBox.h"
+#include "zoe/display/Physics/PhysicsComponent.h"
+#include "zoe/display/Physics/PhysicsGroup.h"
 #include "zoe/display/UI/UITool.h"
 #include "zoe/display/UI/Button.h"
 #include "zoe/display/Camera.h"

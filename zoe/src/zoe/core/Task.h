@@ -11,8 +11,6 @@
 
 namespace Zoe {
 
-inline int TaskUniqueID = 0;
-
 /**
  * If a function returns a Task it can be used as a coroutine. A coroutine can suspend it's execution an return to the caller.
  * A Task can be added to the Scheduler. If `co_yield true;` is executed the function suspends execution and another Task is executed.
@@ -30,8 +28,6 @@ inline int TaskUniqueID = 0;
  */
 class Task {
 public:
-    int debug = 0;
-    int uniqueID = TaskUniqueID++;
     /**
      * The promise_type enables a function that returns a task as a coroutine.
      */
@@ -41,11 +37,11 @@ public:
      * Creates a Task from a coroutine handle. This should be called from Task::promise_type::get_return_object();
      * @param handle the coroutine handle
      */
-    explicit Task(std::coroutine_handle<promise_type> handle);
-    Task(const Task&) = delete;
-    Task& operator=(const Task&) = delete;
-    Task(Task&&) noexcept = default;
-    Task& operator=(Task&&) noexcept = default;
+    explicit Task(std::coroutine_handle<Task::promise_type> handle);
+    Task(const Task&) = delete; ///< A Task can not be copied. Because coroutine can not be copied.
+    Task& operator=(const Task&) = delete; ///< A Task can not be copied. Because coroutine can not be copied.
+    Task(Task&&) noexcept = default; ///< Defines the default move constructor.
+    Task& operator=(Task&&) noexcept = default; ///< Defines the default move assign.
 
     /**
      * Resumes the tasks execution. Returns true if it can be continued. It shouldn't be resumed when it called `co_yield false;` or it reached it's end.

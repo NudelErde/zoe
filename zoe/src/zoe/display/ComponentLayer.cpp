@@ -71,6 +71,7 @@ void ComponentLayer::onEvent(Event& event) {
     EventDispatcher dispatcher(event);
     dispatcher.dispatch<AppRenderEvent>([this](AppRenderEvent& eve) { this->onDrawEvent(eve); });
     dispatcher.dispatch<AppTickEvent>([this](AppTickEvent& eve) { this->onTickEvent(eve); });
+    dispatcher.dispatch<AppUpdateEvent>([this](AppUpdateEvent& eve) { this->onUpdateEvent(eve); });
     if (event.isInCategory(EventCategory::Input)) {
         inputEvent(event);
     }
@@ -114,6 +115,13 @@ void ComponentLayer::onDrawEvent(AppRenderEvent& event) {
     displayRender->draw(*data.vertexArray, *data.imageCopy);
 }
 
+void ComponentLayer::onUpdateEvent(AppUpdateEvent& event) {
+    double duration = (std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::steady_clock::now() - timeOfLastPhysicsTick).count() / 1000.0f);
+    physicsUpdate(duration);
+    timeOfLastPhysicsTick = std::chrono::steady_clock::now();
+}
+
 void ComponentLayer::onTickEvent(AppTickEvent& event) {
     double duration = (std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::steady_clock::now() - timeOfLastTick).count() / 1000.0f);
@@ -144,7 +152,6 @@ std::weak_ptr<BaseComponent> ComponentLayer::getFocusedObject() {
 void ComponentLayer::setFocusedObject(const std::weak_ptr<BaseComponent>& component) {
     focusedObject = component;
 }
-
 void ComponentLayer::load(const File& file) {
     load(readXML(file));
 }

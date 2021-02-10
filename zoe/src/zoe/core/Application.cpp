@@ -18,12 +18,13 @@
 #include "VirtualFiles.h"
 #include "Task.h"
 #include "Scheduler.h"
+#include "../display/Physics/PhysicsGroup.h"
 
 namespace Zoe {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-static Application* s_Instance;
+static Application *s_Instance;
 static std::shared_ptr<Render> displayRender;
 
 Application::Application(bool withWindow) : hasWindow(withWindow) {
@@ -36,7 +37,7 @@ Application::Application(bool withWindow) : hasWindow(withWindow) {
     if (withWindow) {
 
         window = std::unique_ptr<Zoe::Window>(Zoe::Window::create());
-        std::function<void(Event&)> cb = BIND_EVENT_FN(onEvent);
+        std::function<void(Event &)> cb = BIND_EVENT_FN(onEvent);
         window->setEventCallback(cb);
     } else {
         Scheduler::exit();
@@ -46,6 +47,7 @@ Application::Application(bool withWindow) : hasWindow(withWindow) {
     initKeyMap();
     FontHolder::init();
     BaseComponent::init();
+    PhysicsGroup::init();
     if (withWindow) {
         UITool::init();
         displayRender = getContext().getRender();
@@ -58,17 +60,18 @@ Application::~Application() {
     Window::shutdown();
 }
 
-void Application::onEvent(Event& e) {
+void Application::onEvent(Event &e) {
 
     EventDispatcher dispatcher(e);
     { //---WindowClose-------------
-        std::function<bool(WindowCloseEvent&)> cb = BIND_EVENT_FN(
+        std::function<bool(WindowCloseEvent &)> cb = BIND_EVENT_FN(
                 onWindowClose);
         dispatcher.dispatch<WindowCloseEvent>(cb);
     }
     layerStack.dispatchEvent(e);
 }
 
+//framerate
 Task Application::renderWindow() {
     while (true) {
         co_yield true;
@@ -79,7 +82,7 @@ Task Application::renderWindow() {
     }
 }
 
-
+//Physics ticks/updates
 Task Application::updateObjects() {
     while (true) {
         co_yield true;
@@ -87,6 +90,8 @@ Task Application::updateObjects() {
         layerStack.dispatchEvent(event);
     }
 }
+
+//Game ticks/updates
 Task Application::tickObjects() {
     while (true) {
         co_yield true;
@@ -96,16 +101,18 @@ Task Application::tickObjects() {
 }
 
 void Application::run() {
-    Scheduler::addTask(renderWindow());
-    Scheduler::addTask(updateObjects());
-    Scheduler::addTask(tickObjects());
+    if (hasWindow) {
+        Scheduler::addCoroutine([this]() { return renderWindow(); });
+        Scheduler::addCoroutine([this]() { return updateObjects(); });
+        Scheduler::addCoroutine([this]() { return tickObjects(); });
+    }
 }
 
 void Application::exit() {
     Scheduler::exit();
 }
 
-bool Application::onWindowClose(WindowCloseEvent& e) {
+bool Application::onWindowClose(WindowCloseEvent &e) {
     Scheduler::exit();
     return false;
 }
@@ -121,7 +128,7 @@ int main() {
         Zoe::Scheduler::execute();
         delete app;
         exit(EXIT_SUCCESS);
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         Zoe::critical("Uncaught error: ", e.what());
 #ifdef ZOE_DEBUG
         throw;

@@ -36,7 +36,6 @@ struct ShaderSource {
     std::map<std::string, std::string> tags;
 };
 
-//TODO: add zoe preprocessor
 static ShaderSource parseShader(const File &file, const std::set<std::string> &options) {
     unsigned int version = 0;
     std::unique_ptr<std::istream> stream = file.createIStream(false);
@@ -48,7 +47,7 @@ static ShaderSource parseShader(const File &file, const std::set<std::string> &o
     std::string line;
     std::stringstream ss[2];
     unsigned int samplerSlot = 0;
-    int index;
+    size_t index;
     bool optionSkipToEnd = false;
     while (getline(*stream, line)) {
         trim(line);
@@ -71,10 +70,10 @@ static ShaderSource parseShader(const File &file, const std::set<std::string> &o
                 optionSkipToEnd = true;
             }
         } else if (line.find("#version") != std::string::npos) {
-            unsigned int start = line.find("#version");
+            size_t start = line.find("#version");
             const char *cstr = line.c_str();
             int spaceCounter = 3;
-            unsigned int end = start;
+            size_t end = start;
             while (spaceCounter && end < line.length()) {
                 if (cstr[end] == ' ' || cstr[end] == '\n') {
                     --spaceCounter;
@@ -88,19 +87,19 @@ static ShaderSource parseShader(const File &file, const std::set<std::string> &o
             try {
                 version = std::stoi(line.substr(start, end));
             }
-            catch (std::invalid_argument const &e) {
+            catch (std::invalid_argument&) {
                 error("Could not read version of shader ", file.getPath(), ": ", line.substr(start, end));
             }
-            catch (std::out_of_range const &e) {
+            catch (std::out_of_range&) {
                 error("Could not read version of shader ", file.getPath(), ": ", line.substr(start, end));
             }
             if (type != ShaderType::NONE)
                 ss[(int) type] << line << '\n';
         } else if (line.rfind("#tag", 0) == 0) {
-            unsigned int start = line.find("#tag");
+            size_t start = line.find("#tag");
             const char *cstr = line.c_str();
             int spaceCounter = 3;
-            unsigned int end = start;
+            size_t end = start;
             while (spaceCounter && end < line.length()) {
                 if (cstr[end] == ' ' || cstr[end] == '\n') {
                     --spaceCounter;
@@ -116,7 +115,7 @@ static ShaderSource parseShader(const File &file, const std::set<std::string> &o
                                                                              line.length() - end);//TODO: trim value
         } else if (version < 330 && (line.rfind("layout(location=", 0)) == 0) {
             index = line.find("layout(location=");
-            unsigned int substringStart = 0;
+            size_t substringStart = 0;
             const char *str = line.c_str();
             layoutLocation ll;
             bool start = false;
@@ -273,17 +272,35 @@ void OpenGLShaderImpl::setUniform4f(const std::string &name, float v0, float v1,
 
 void OpenGLShaderImpl::setUniform2m(const std::string &name, const mat2x2 &mat) {
     bind();
-    glUniformMatrix2fv(getUniformLocation(name), 1, GL_FALSE, &(const_cast<mat2x2 &>(mat)[0][0]));
+    float fMat[4];
+    for(uint8_t y = 0; y < 2; ++y) {
+        for(uint8_t x = 0; x < 2; ++x) {
+            fMat[y*2+x] = (float) mat[x][y];
+        }
+    }
+    glUniformMatrix2fv(getUniformLocation(name), 1, GL_FALSE, fMat);
 }
 
 void OpenGLShaderImpl::setUniform3m(const std::string &name, const mat3x3 &mat) {
     bind();
-    glUniformMatrix3fv(getUniformLocation(name), 1, GL_TRUE, &(const_cast<mat3x3 &>(mat)[0][0]));
+    float fMat[9];
+    for(uint8_t y = 0; y < 3; ++y) {
+        for(uint8_t x = 0; x < 3; ++x) {
+            fMat[y*3+x] = (float) mat[x][y];
+        }
+    }
+    glUniformMatrix3fv(getUniformLocation(name), 1, GL_FALSE, fMat);
 }
 
 void OpenGLShaderImpl::setUniform4m(const std::string &name, const mat4x4 &mat) {
     bind();
-    glUniformMatrix4fv(getUniformLocation(name), 1, GL_TRUE, &(const_cast<mat4x4 &>(mat)[0][0]));
+    float fMat[16];
+    for(uint8_t y = 0; y < 4; ++y) {
+        for(uint8_t x = 0; x < 4; ++x) {
+            fMat[y*4+x] = (float) mat[x][y];
+        }
+    }
+    glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, fMat);
 }
 
 void OpenGLShaderImpl::setTexture(const std::string &name, Texture &texture) {

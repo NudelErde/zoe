@@ -19,7 +19,7 @@ void ModelComponent::fill(const XMLNode &node) {
     if (node.attributes.count("name")) {
         name = node.attributes.at("name");
     }
-    if (node.attributes.count("src") && node.attributes.count("name")) {
+    if (node.attributes.count("src")) {
         Path path(node.attributes.at("src"));
         if (path.isFile()) {
             const auto &wavefrontFile = WavefrontFile::parseWavefrontFile(path, false);

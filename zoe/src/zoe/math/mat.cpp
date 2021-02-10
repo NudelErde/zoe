@@ -97,7 +97,7 @@ mat2x2 mat2x2::transpose() const {
 
 mat2x2 mat2x2::inverse() const {
     mat2x2 result;
-    float det = determinant();
+    double det = determinant();
     if (det == 0) {
         throw std::runtime_error("Inverse matrix is undefined for matrices with determinant 0");
     }
@@ -110,7 +110,7 @@ mat2x2 mat2x2::inverse() const {
     return result;
 }
 
-float mat2x2::determinant() const {
+double mat2x2::determinant() const {
     return data[0][0] * data[1][1] - data[0][1] * data[1][0];
 }
 
@@ -221,7 +221,7 @@ mat3x3 mat3x3::inverse() const {
     result[2][1] = data[0][1] * data[2][0] - data[0][0] * data[2][1];
     result[2][2] = data[0][0] * data[1][1] - data[0][1] * data[1][0];
 
-    float det = result[0][0] * data[0][0] + result[0][1] * data[1][0] + result[0][2] * data[2][0];
+    double det = result[0][0] * data[0][0] + result[0][1] * data[1][0] + result[0][2] * data[2][0];
     if (det == 0) {
         throw std::runtime_error("Inverse matrix is undefined for matrices with determinant 0");
     }
@@ -241,7 +241,7 @@ mat3x3 mat3x3::transpose() const {
     return result;
 }
 
-float mat3x3::determinant() const {
+double mat3x3::determinant() const {
     return data[0][0] * data[1][1] * data[2][2] + data[0][1] * data[1][2] * data[2][0] +
            data[0][2] * data[1][0] * data[2][1]
            - (data[0][2] * data[1][1] * data[2][0] + data[1][0] * data[0][1] * data[2][2] +
@@ -259,9 +259,9 @@ const mat3x3 &mat3x3::identity() {
     return instance;
 }
 
-mat3x3 rotate2D(float angle) {
-    float s = std::sin(angle);
-    float c = std::cos(angle);
+mat3x3 rotate2D(double angle) {
+    double s = std::sin(angle);
+    double c = std::cos(angle);
     mat3x3 res;
     res[0][0] = c;
     res[1][0] = -s;
@@ -275,7 +275,7 @@ mat3x3 rotate2D(float angle) {
     return res;
 }
 
-mat3x3 translate2D(float x, float y) {
+mat3x3 translate2D(double x, double y) {
     mat3x3 res;
     res[0][0] = 1;
     res[0][1] = 0;
@@ -289,7 +289,7 @@ mat3x3 translate2D(float x, float y) {
     return res;
 }
 
-mat3x3 scale2D(float scaleX, float scaleY) {
+mat3x3 scale2D(double scaleX, double scaleY) {
     mat3x3 res;
     res[0][0] = scaleX;
     res[1][0] = 0;
@@ -458,7 +458,7 @@ mat4x4 mat4x4::inverse() const {
                      - (data[0][2] * data[1][1] * data[2][0] + data[0][1] * data[1][0] * data[2][2] +
                         data[2][1] * data[1][2] * data[0][0]));
 
-    float det = result[0][0] * data[0][0] + result[0][1] * data[1][0] + result[0][2] * data[2][0] +
+    double det = result[0][0] * data[0][0] + result[0][1] * data[1][0] + result[0][2] * data[2][0] +
                 result[0][3] * data[3][0];
     if (det == 0) {
         throw std::runtime_error("Inverse matrix is undefined for matrices with determinant 0");
@@ -479,7 +479,7 @@ mat4x4 mat4x4::transpose() const {
     return result;
 }
 
-float mat4x4::determinant() const {
+double mat4x4::determinant() const {
     return
             data[0][0] * (
                     data[1][1] * data[2][2] * data[3][3] + data[1][2] * data[2][3] * data[3][1] +
@@ -519,9 +519,9 @@ const mat4x4 &mat4x4::identity() {
     return instance;
 }
 
-mat4x4 rotateXY3D(float angle) {
-    float c = std::cos(angle);
-    float s = std::sin(angle);
+mat4x4 rotateXY3D(double angle) {
+    double c = std::cos(angle);
+    double s = std::sin(angle);
     mat4x4 res;
     res[0][0] = c;
     res[0][1] = -s;
@@ -542,9 +542,9 @@ mat4x4 rotateXY3D(float angle) {
     return res;
 }
 
-mat4x4 rotateYZ3D(float angle) {
-    float c = std::cos(angle);
-    float s = std::sin(angle);
+mat4x4 rotateYZ3D(double angle) {
+    double c = std::cos(angle);
+    double s = std::sin(angle);
     mat4x4 res;
     res[0][0] = 1;
     res[0][1] = 0;
@@ -565,9 +565,9 @@ mat4x4 rotateYZ3D(float angle) {
     return res;
 }
 
-mat4x4 rotateXZ3D(float angle) {
-    float c = std::cos(angle);
-    float s = std::sin(angle);
+mat4x4 rotateXZ3D(double angle) {
+    double c = std::cos(angle);
+    double s = std::sin(angle);
     mat4x4 res;
     res[0][0] = c;
     res[0][1] = 0;
@@ -588,7 +588,7 @@ mat4x4 rotateXZ3D(float angle) {
     return res;
 }
 
-mat4x4 translate3D(float x, float y, float z) {
+mat4x4 translate3D(double x, double y, double z) {
     mat4x4 res;
     res[0][0] = 1;
     res[0][1] = 0;
@@ -609,7 +609,7 @@ mat4x4 translate3D(float x, float y, float z) {
     return res;
 }
 
-mat4x4 scale3D(float scaleX, float scaleY, float scaleZ) {
+mat4x4 scale3D(double scaleX, double scaleY, double scaleZ) {
     mat4x4 res;
     res[0][0] = scaleX;
     res[1][0] = 0;
@@ -630,7 +630,7 @@ mat4x4 scale3D(float scaleX, float scaleY, float scaleZ) {
     return res;
 }
 
-mat4x4 orthographic(float left, float top, float right, float bottom, float near, float far) {
+mat4x4 orthographic(double left, double top, double right, double bottom, double near, double far) {
     mat4x4 res;
     res[0][0] = 2 / (right - left);
     res[0][1] = 0;
@@ -656,12 +656,12 @@ mat4x4 calcViewMatrix(vec3 position, vec3 rotation) {
            * translate3D(-position.x, -position.y, -position.z);
 }
 
-mat4x4 perspective(float near, float far, float fov, float aspectRatio) {
+mat4x4 perspective(double near, double far, double fov, double aspectRatio) {
     fov = fov / 180 * PI;
-    const float n = near;
-    const float f = far;
-    const float t = std::tan(fov / 2);
-    const float r = t * aspectRatio;
+    const double n = near;
+    const double f = far;
+    const double t = std::tan(fov / 2);
+    const double r = t * aspectRatio;
 
     mat4x4 proj;
     proj[0][0] = n / r;
@@ -686,11 +686,11 @@ mat4x4 perspective(float near, float far, float fov, float aspectRatio) {
 
 }
 
-Zoe::mat4x4 operator*(const float a, const Zoe::mat4x4 &mat) {
+Zoe::mat4x4 operator*(const double a, const Zoe::mat4x4 &mat) {
     return operator*(mat, a);
 }
 
-Zoe::mat4x4 operator*(const Zoe::mat4x4 &mat, const float a) {
+Zoe::mat4x4 operator*(const Zoe::mat4x4 &mat, const double a) {
     Zoe::mat4x4 result;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 4; ++j) {
@@ -700,11 +700,11 @@ Zoe::mat4x4 operator*(const Zoe::mat4x4 &mat, const float a) {
     return result;
 }
 
-Zoe::mat2x2 operator*(const float a, const Zoe::mat2x2 &mat) {
+Zoe::mat2x2 operator*(const double a, const Zoe::mat2x2 &mat) {
     return operator*(mat, a);
 }
 
-Zoe::mat2x2 operator*(const Zoe::mat2x2 &mat, const float a) {
+Zoe::mat2x2 operator*(const Zoe::mat2x2 &mat, const double a) {
     Zoe::mat2x2 result;
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < 2; ++j) {
@@ -714,11 +714,11 @@ Zoe::mat2x2 operator*(const Zoe::mat2x2 &mat, const float a) {
     return result;
 }
 
-Zoe::mat3x3 operator*(const float a, const Zoe::mat3x3 &mat) {
+Zoe::mat3x3 operator*(const double a, const Zoe::mat3x3 &mat) {
     return operator*(mat, a);
 }
 
-Zoe::mat3x3 operator*(const Zoe::mat3x3 &mat, const float a) {
+Zoe::mat3x3 operator*(const Zoe::mat3x3 &mat, const double a) {
     Zoe::mat3x3 result;
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
