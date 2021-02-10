@@ -9,5 +9,6 @@ var searchData=
   ['boundshader',['boundShader',['../d3/d11/class_zoe_1_1_graphics_context.html#ac48cac948f98297eeb0f609363e7d534',1,'Zoe::GraphicsContext']]],
   ['boundvertexarray',['boundVertexArray',['../d3/d11/class_zoe_1_1_graphics_context.html#acc2f2cd081ff242f060383f37dac56ad',1,'Zoe::GraphicsContext']]],
   ['boundvertexbuffer',['boundVertexBuffer',['../d3/d11/class_zoe_1_1_graphics_context.html#a6f0bc008b2f856dc724ec73e3da2ffe9',1,'Zoe::GraphicsContext']]],
-  ['button',['Button',['../d7/d1a/class_zoe_1_1_button.html',1,'Zoe::Button'],['../de/d19/class_zoe_1_1_mouse_button_event.html#a6e30ed55b233740598c16f7223699cf2',1,'Zoe::MouseButtonEvent::button()'],['../d7/d1a/class_zoe_1_1_button.html#a1402491602347a9224fc31c6a3e2e07f',1,'Zoe::Button::Button()']]]
+  ['boxcollider',['BoxCollider',['../d4/d57/class_zoe_1_1_box_collider.html',1,'Zoe']]],
+  ['button',['Button',['../d7/d1a/class_zoe_1_1_button.html',1,'Zoe::Button'],['../d7/d1a/class_zoe_1_1_button.html#a1402491602347a9224fc31c6a3e2e07f',1,'Zoe::Button::Button()'],['../de/d19/class_zoe_1_1_mouse_button_event.html#a6e30ed55b233740598c16f7223699cf2',1,'Zoe::MouseButtonEvent::button()']]]
 ];

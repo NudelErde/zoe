@@ -3,7 +3,7 @@ var class_zoe_1_1mat2x2 =
     [ "mat2x2", "d4/dfe/class_zoe_1_1mat2x2.html#a8449ac8f16481b657819c66147b0fb9b", null ],
     [ "mat2x2", "d4/dfe/class_zoe_1_1mat2x2.html#a96763439c8a595681193a0f8bd7fdf23", null ],
     [ "mat2x2", "d4/dfe/class_zoe_1_1mat2x2.html#a7a8841eacd528c0c30e5269cd0ebc3c2", null ],
-    [ "determinant", "d4/dfe/class_zoe_1_1mat2x2.html#a18da48476dd9e8d0151755f53ef4b7ea", null ],
+    [ "determinant", "d4/dfe/class_zoe_1_1mat2x2.html#a9c6917be80dac319c7c21bcdb334b08d", null ],
     [ "inverse", "d4/dfe/class_zoe_1_1mat2x2.html#a78060db696a9e3be056aff30f157983c", null ],
     [ "operator!=", "d4/dfe/class_zoe_1_1mat2x2.html#a737082a499ba189f26fed5f136be37c7", null ],
     [ "operator*", "d4/dfe/class_zoe_1_1mat2x2.html#af5fb2ae7b0661c69a0b1b05b3e09cab3", null ],

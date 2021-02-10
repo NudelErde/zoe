@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">zoe
-   &#160;<span id="projectnumber">Documentation revision #85</span>
+   &#160;<span id="projectnumber">Documentation revision #89</span>
    </div>
    <div id="projectbrief">zoe is a video game engine that I am working on in my free time</div>
   </td>
@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('de/dfe/class_zoe_1_1_scheduler.html','
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a>  </div>
   <div class="headertitle">
 <div class="title">Zoe::Scheduler Class Reference</div>  </div>
@@ -99,24 +100,74 @@ $(document).ready(function(){initNavTree('de/dfe/class_zoe_1_1_scheduler.html','
 
 <p><code>#include &lt;<a class="el" href="../../d4/dfa/_scheduler_8h_source.html">Scheduler.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dee/struct_zoe_1_1_scheduler_1_1_coroutine_container.html">CoroutineContainer</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a86a1c5abd289f4343d117d61655f4152"><td class="memItemLeft" align="right" valign="top">static std::thread::id&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html#a86a1c5abd289f4343d117d61655f4152">getThreadID</a> ()</td></tr>
 <tr class="separator:a86a1c5abd289f4343d117d61655f4152"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4640cde950072b089cf53b5338bb3412"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html#a4640cde950072b089cf53b5338bb3412">addTask</a> (<a class="el" href="../../d8/d75/class_zoe_1_1_task.html">Task</a> &amp;&amp;task)</td></tr>
-<tr class="separator:a4640cde950072b089cf53b5338bb3412"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a555baf0744bde3ee253bbfd15573d84f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html#a555baf0744bde3ee253bbfd15573d84f">addTask</a> (const std::function&lt; void()&gt; &amp;function)</td></tr>
 <tr class="separator:a555baf0744bde3ee253bbfd15573d84f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39725c215b2f77d841482db56fdc088a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a39725c215b2f77d841482db56fdc088a"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html#a39725c215b2f77d841482db56fdc088a">addCoroutine</a> (const T &amp;object)</td></tr>
+<tr class="separator:a39725c215b2f77d841482db56fdc088a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac63a28760a2190de748eaaccaccf2ed9"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html#ac63a28760a2190de748eaaccaccf2ed9">exit</a> ()</td></tr>
 <tr class="separator:ac63a28760a2190de748eaaccaccf2ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4619f79232f9e3b6da8f6f060199be29"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html#a4619f79232f9e3b6da8f6f060199be29">execute</a> ()</td></tr>
 <tr class="separator:a4619f79232f9e3b6da8f6f060199be29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac21c26e6e1da8225e5891d8d157611b1"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html#ac21c26e6e1da8225e5891d8d157611b1">getCurrentCoroutineCallableObject</a> ()</td></tr>
+<tr class="separator:ac21c26e6e1da8225e5891d8d157611b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa061b022627449e9f2cbbc586ec69cd"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html#afa061b022627449e9f2cbbc586ec69cd">addCoroutineContainer</a> (<a class="el" href="../../de/dee/struct_zoe_1_1_scheduler_1_1_coroutine_container.html">CoroutineContainer</a> &amp;&amp;cc)</td></tr>
+<tr class="separator:afa061b022627449e9f2cbbc586ec69cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The <a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html">Scheduler</a> executes Tasks and functions in the main thread. The main thread should call <a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html#a4619f79232f9e3b6da8f6f060199be29">Scheduler::execute</a> after adding at least one task or starting another thread. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4640cde950072b089cf53b5338bb3412"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4640cde950072b089cf53b5338bb3412">&#9670;&nbsp;</a></span>addTask() <span class="overload">[1/2]</span></h2>
+<a id="a39725c215b2f77d841482db56fdc088a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39725c215b2f77d841482db56fdc088a">&#9670;&nbsp;</a></span>addCoroutine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Zoe::Scheduler::addCoroutine </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>object</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Adds a coroutine using a callable object. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the type of the callable object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">object</td><td>the callable object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afa061b022627449e9f2cbbc586ec69cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa061b022627449e9f2cbbc586ec69cd">&#9670;&nbsp;</a></span>addCoroutineContainer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -125,10 +176,10 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Zoe::Scheduler::addTask </td>
+          <td class="memname">void Zoe::Scheduler::addCoroutineContainer </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d8/d75/class_zoe_1_1_task.html">Zoe::Task</a> &amp;&amp;&#160;</td>
-          <td class="paramname"><em>task</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../de/dee/struct_zoe_1_1_scheduler_1_1_coroutine_container.html">CoroutineContainer</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>cc</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -138,9 +189,9 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Adds a <a class="el" href="../../d8/d75/class_zoe_1_1_task.html">Task</a>. The task will be executed until it is finished or it executes <code>co_yield false;</code>. The <a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html">Scheduler</a> is a cooperative <a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html">Scheduler</a> so the task has to call <code>co_yield true;</code> for other tasks to execute. If the task has an infinite while loop, it should call <code>co_yield true;</code> at least once per iteration. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Adds a specified <a class="el" href="../../de/dee/struct_zoe_1_1_scheduler_1_1_coroutine_container.html">CoroutineContainer</a> to the <a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html">Scheduler</a>. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">task</td><td>the added task </td></tr>
+    <tr><td class="paramname">cc</td><td>the <a class="el" href="../../de/dee/struct_zoe_1_1_scheduler_1_1_coroutine_container.html">CoroutineContainer</a> </td></tr>
   </table>
   </dd>
 </dl>
@@ -148,7 +199,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a555baf0744bde3ee253bbfd15573d84f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a555baf0744bde3ee253bbfd15573d84f">&#9670;&nbsp;</a></span>addTask() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a555baf0744bde3ee253bbfd15573d84f">&#9670;&nbsp;</a></span>addTask()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,6 +279,32 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>Sets a bool so that execute leaves the loop at the end of this iteration. </p>
+
+</div>
+</div>
+<a id="ac21c26e6e1da8225e5891d8d157611b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac21c26e6e1da8225e5891d8d157611b1">&#9670;&nbsp;</a></span>getCurrentCoroutineCallableObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; void &gt; Zoe::Scheduler::getCurrentCoroutineCallableObject </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns the last or current callableObject processed by the <a class="el" href="../../de/dfe/class_zoe_1_1_scheduler.html">Scheduler</a>. </p><dl class="section return"><dt>Returns</dt><dd>the last or current callableObject </dd></dl>
 
 </div>
 </div>

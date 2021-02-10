@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">zoe
-   &#160;<span id="projectnumber">Documentation revision #85</span>
+   &#160;<span id="projectnumber">Documentation revision #89</span>
    </div>
    <div id="projectbrief">zoe is a video game engine that I am working on in my free time</div>
   </td>
@@ -108,6 +108,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa73a29ca0ba7fef452c822c81b933f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6983827f715589dfad369a5d6f87f588"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da0/class_zoe_1_1_native_script.html#a6983827f715589dfad369a5d6f87f588">onActivation</a> ()</td></tr>
 <tr class="separator:a6983827f715589dfad369a5d6f87f588"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad017fe6195adc82b95c03911c95cd08d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/da0/class_zoe_1_1_native_script.html#ad017fe6195adc82b95c03911c95cd08d">onCollision</a> (double delta, const std::function&lt; void()&gt; &amp;resolve)</td></tr>
+<tr class="separator:ad017fe6195adc82b95c03911c95cd08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Data Fields</h2></td></tr>
@@ -142,6 +144,49 @@ Data Fields</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>The onActivation function is called when the parent component is activated. </p>
+
+</div>
+</div>
+<a id="ad017fe6195adc82b95c03911c95cd08d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad017fe6195adc82b95c03911c95cd08d">&#9670;&nbsp;</a></span>onCollision()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void Zoe::NativeScript::onCollision </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>delta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::function&lt; void()&gt; &amp;&#160;</td>
+          <td class="paramname"><em>resolve</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>The onCollision function is the collision handler of a <a class="el" href="../../da/db6/class_zoe_1_1_physics_component.html">PhysicsComponent</a>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">delta</td><td>the time since the last check </td></tr>
+    <tr><td class="paramname">resolve</td><td>the function that can resolve the collision </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

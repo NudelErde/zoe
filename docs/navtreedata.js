@@ -19,7 +19,8 @@ var NAVTREE =
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
         [ "Typedefs", "functions_type.html", null ],
-        [ "Enumerations", "functions_enum.html", null ]
+        [ "Enumerations", "functions_enum.html", null ],
+        [ "Related Functions", "functions_rela.html", null ]
       ] ]
     ] ],
     [ "Files", null, [
@@ -31,10 +32,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"d4/d07/class_zoe_1_1_u_t_f8_string.html#ada98a2d8f11a6e8175f4c60090da5062",
-"d8/d17/class_zoe_1_1_render.html#a46d7f75a472b4aedc58645b7bfd673f9",
-"dc/de2/class_zoe_1_1_index_buffer_impl.html#a89fcba9fb56c4825cf5cde71c654c151",
-"df/d25/class_zoe_1_1_texture.html#ab9dfa1118d39ab05e3798ae8ce019f8b"
+"d3/de5/class_zoe_1_1_shader.html#ad7ff5fb40d1407063e06018699c011ce",
+"d7/d1a/class_zoe_1_1_button.html#aa47c6451f1ac829aa1c606bebb9a2d50",
+"db/da0/class_zoe_1_1_native_script.html",
+"de/d8b/class_zoe_1_1_camera.html#a720061a206bca05881ec14d7faadd2d8"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
