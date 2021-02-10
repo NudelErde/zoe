@@ -10,6 +10,7 @@
 #include <memory>
 #include <typeindex>
 #include <typeinfo>
+#include <cmath>
 #include "BoxCollider.h"
 
 namespace Zoe {
