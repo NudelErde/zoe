@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">zoe
-   &#160;<span id="projectnumber">Documentation revision #85</span>
+   &#160;<span id="projectnumber">Documentation revision #89</span>
    </div>
    <div id="projectbrief">zoe is a video game engine that I am working on in my free time</div>
   </td>
@@ -110,13 +110,14 @@ Inheritance diagram for Zoe::BaseComponent:</div>
   <map id="Zoe::BaseComponent_map" name="Zoe::BaseComponent_map">
 <area href="../../d7/d1a/class_zoe_1_1_button.html" alt="Zoe::Button" shape="rect" coords="301,112,592,136"/>
 <area href="../../de/d8b/class_zoe_1_1_camera.html" alt="Zoe::Camera" shape="rect" coords="301,168,592,192"/>
-<area href="../../d7/d0c/class_zoe_1_1_chai_script_component.html" alt="Zoe::ChaiScriptComponent" shape="rect" coords="301,224,592,248"/>
-<area href="../../da/d26/class_zoe_1_1_component_layer.html" alt="Zoe::ComponentLayer" shape="rect" coords="301,280,592,304"/>
-<area href="../../d3/d3b/class_zoe_1_1_model_component.html" alt="Zoe::ModelComponent" shape="rect" coords="301,336,592,360"/>
-<area href="../../dd/de9/class_zoe_1_1_native_script_component.html" alt="Zoe::NativeScriptComponent" shape="rect" coords="301,392,592,416"/>
-<area href="../../d0/dd9/class_zoe_1_1_sprite.html" alt="Zoe::Sprite" shape="rect" coords="301,448,592,472"/>
-<area href="../../dd/def/class_zoe_1_1_text_box.html" alt="Zoe::TextBox" shape="rect" coords="301,504,592,528"/>
-<area href="../../d5/dd2/class_zoe_1_1_world_object.html" alt="Zoe::WorldObject" shape="rect" coords="301,560,592,584"/>
+<area href="../../da/d26/class_zoe_1_1_component_layer.html" alt="Zoe::ComponentLayer" shape="rect" coords="301,224,592,248"/>
+<area href="../../d3/d3b/class_zoe_1_1_model_component.html" alt="Zoe::ModelComponent" shape="rect" coords="301,280,592,304"/>
+<area href="../../da/db6/class_zoe_1_1_physics_component.html" alt="Zoe::PhysicsComponent" shape="rect" coords="301,336,592,360"/>
+<area href="../../d1/df3/class_zoe_1_1_physics_group.html" alt="Zoe::PhysicsGroup" shape="rect" coords="301,392,592,416"/>
+<area href="../../d2/d8f/class_zoe_1_1_script_component.html" alt="Zoe::ScriptComponent" shape="rect" coords="301,448,592,472"/>
+<area href="../../d0/dd9/class_zoe_1_1_sprite.html" alt="Zoe::Sprite" shape="rect" coords="301,504,592,528"/>
+<area href="../../dd/def/class_zoe_1_1_text_box.html" alt="Zoe::TextBox" shape="rect" coords="301,560,592,584"/>
+<area href="../../d5/dd2/class_zoe_1_1_world_object.html" alt="Zoe::WorldObject" shape="rect" coords="301,616,592,640"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -126,6 +127,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1c7dac8d8ff45c86438c1b220591524a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a169ec421737f17504d9d70c2dc0339a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#a169ec421737f17504d9d70c2dc0339a0">update</a> (double time)</td></tr>
 <tr class="separator:a169ec421737f17504d9d70c2dc0339a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e3cd75199beaf8adfb4133a1cab8567"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#a9e3cd75199beaf8adfb4133a1cab8567">physicsUpdate</a> (double time)</td></tr>
+<tr class="separator:a9e3cd75199beaf8adfb4133a1cab8567"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a085b7602af08e645fc9e6dc587b4739d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#a085b7602af08e645fc9e6dc587b4739d">inputEvent</a> (<a class="el" href="../../db/d33/class_zoe_1_1_event.html">Event</a> &amp;event)</td></tr>
 <tr class="separator:a085b7602af08e645fc9e6dc587b4739d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabf8edbfda326771db3843700a9952b2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#aabf8edbfda326771db3843700a9952b2">add</a> (const std::shared_ptr&lt; <a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html">BaseComponent</a> &gt; &amp;component)</td></tr>
@@ -146,12 +149,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a95b91786922b18b85b5e8e4ad4760eba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabd723556e444de5b3e614242effcceb"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html">ComponentLayer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#aabd723556e444de5b3e614242effcceb">getLayer</a> ()</td></tr>
 <tr class="separator:aabd723556e444de5b3e614242effcceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a093966b508d0f432b6cd73c36254dc"><td class="memItemLeft" align="right" valign="top"><a id="a6a093966b508d0f432b6cd73c36254dc"></a>
-std::shared_ptr&lt; <a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html">BaseComponent</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>getChildByID</b> (const std::string &amp;componentID)</td></tr>
+<tr class="memitem:a6a093966b508d0f432b6cd73c36254dc"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html">BaseComponent</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#a6a093966b508d0f432b6cd73c36254dc">getChildByID</a> (const std::string &amp;componentID)</td></tr>
 <tr class="separator:a6a093966b508d0f432b6cd73c36254dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9cc04233be3f335dd05847a77246f173"><td class="memTemplParams" colspan="2"><a id="a9cc04233be3f335dd05847a77246f173"></a>
-template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a9cc04233be3f335dd05847a77246f173"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><b>getChildByIDAndType</b> (const std::string &amp;componentID)</td></tr>
+<tr class="memitem:a9cc04233be3f335dd05847a77246f173"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9cc04233be3f335dd05847a77246f173"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#a9cc04233be3f335dd05847a77246f173">getChildByIDAndType</a> (const std::string &amp;componentID)</td></tr>
 <tr class="separator:a9cc04233be3f335dd05847a77246f173"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
@@ -176,8 +177,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ab6b366a7020ea55cd9ddfadffd3d3568"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56544aaf1b0e7c25b92f4f3ef108e83d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#a56544aaf1b0e7c25b92f4f3ef108e83d">onDraw</a> (const <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html">Camera</a> &amp;camera)=0</td></tr>
 <tr class="separator:a56544aaf1b0e7c25b92f4f3ef108e83d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fda5092975a1144557a5048b8b6bc8b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#a7fda5092975a1144557a5048b8b6bc8b">onUpdate</a> (double time)=0</td></tr>
-<tr class="separator:a7fda5092975a1144557a5048b8b6bc8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69fe029b5b8fdba3ce0a1de8c4288699"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#a69fe029b5b8fdba3ce0a1de8c4288699">onUpdate</a> (double delta)=0</td></tr>
+<tr class="separator:a69fe029b5b8fdba3ce0a1de8c4288699"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad27dcf8c674e8399ea381ef80d084b03"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#ad27dcf8c674e8399ea381ef80d084b03">onPhysicsUpdate</a> (double delta)</td></tr>
+<tr class="separator:ad27dcf8c674e8399ea381ef80d084b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d2c590a87b2fa364db716f2a2c1f1fd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html#a3d2c590a87b2fa364db716f2a2c1f1fd">onInputEvent</a> (<a class="el" href="../../db/d33/class_zoe_1_1_event.html">Event</a> &amp;event)=0</td></tr>
 <tr class="separator:a3d2c590a87b2fa364db716f2a2c1f1fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -320,7 +323,73 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentLayer</b></
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../d3/d63/class_zoe_1_1_camera3_d.html#ac74ccad12b8b73f059db8a82d3e160a5">Zoe::Camera3D</a>, <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#a7313a67ddf2ce4723b37af72da964f24">Zoe::NativeScriptComponent</a>, <a class="el" href="../../de/d84/class_zoe_1_1_camera2_d.html#abac2d6bb29cd75b0c367b7009652d1f1">Zoe::Camera2D</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#a83a9c64c8340276a90ca203ffb65a865">Zoe::Button</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#a6415fa3f3fc385347fae6247c350ae1a">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#a4dbf62483b0aac2682029da056bff57d">Zoe::Camera</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#a440486d0fd741171cdd859491b8f5229">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#acdefb5f6c52ce41f095cf869fdf41349">Zoe::TextBox</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#a2b47104bae56d92505be43f98d70507b">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#aee551addcc9e63d9920d1131943edf4a">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#af1457692fca89915ca4e92247c65243d">Zoe::Sprite</a>.</p>
+<p>Implemented in <a class="el" href="../../d3/d63/class_zoe_1_1_camera3_d.html#ac74ccad12b8b73f059db8a82d3e160a5">Zoe::Camera3D</a>, <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#a7313a67ddf2ce4723b37af72da964f24">Zoe::NativeScriptComponent</a>, <a class="el" href="../../de/d84/class_zoe_1_1_camera2_d.html#abac2d6bb29cd75b0c367b7009652d1f1">Zoe::Camera2D</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#a83a9c64c8340276a90ca203ffb65a865">Zoe::Button</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#a6415fa3f3fc385347fae6247c350ae1a">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#a4dbf62483b0aac2682029da056bff57d">Zoe::Camera</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#a440486d0fd741171cdd859491b8f5229">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#acdefb5f6c52ce41f095cf869fdf41349">Zoe::TextBox</a>, <a class="el" href="../../d1/df3/class_zoe_1_1_physics_group.html#abeaa56ea63feecbdcac846c4b21f0d6e">Zoe::PhysicsGroup</a>, <a class="el" href="../../d4/d57/class_zoe_1_1_box_collider.html#ad89ad1ef134c1910aac6631317a70f04">Zoe::BoxCollider</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#a2b47104bae56d92505be43f98d70507b">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#aee551addcc9e63d9920d1131943edf4a">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#af1457692fca89915ca4e92247c65243d">Zoe::Sprite</a>.</p>
+
+</div>
+</div>
+<a id="a6a093966b508d0f432b6cd73c36254dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a093966b508d0f432b6cd73c36254dc">&#9670;&nbsp;</a></span>getChildByID()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="../../d4/daf/class_zoe_1_1_base_component.html">BaseComponent</a> &gt; Zoe::BaseComponent::getChildByID </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>componentID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a pointer to the child with the specified id. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">componentID</td><td>the specified id </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the child or null if not found </dd></dl>
+
+</div>
+</div>
+<a id="a9cc04233be3f335dd05847a77246f173"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cc04233be3f335dd05847a77246f173">&#9670;&nbsp;</a></span>getChildByIDAndType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;T&gt; Zoe::BaseComponent::getChildByIDAndType </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>componentID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Returns a pointer to the child with the specified id and type. </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>the specified type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">componentID</td><td>the specified id </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the child or null if not found </dd></dl>
 
 </div>
 </div>
@@ -577,7 +646,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentLayer</b></
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#a30dccdd8622b0be9feef6bf7d9c6d9af">Zoe::NativeScriptComponent</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#ac71ec37b569dbf5122e27047de843f03">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#ad7dfa663aa2c9d3b5a0ea482fe97f243">Zoe::Camera</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#aae391f90dd12e81a38284d1234d403a9">Zoe::Button</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#a427b2dc233734e2e0c1fddcd0d20ed93">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#ad57eceaaa3f82255b75c087e2a2055d8">Zoe::TextBox</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#ae6afcae477f6de210b69979ce9e81bf0">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#ab9133d0d66e1213aa5dc5328f9b6d7aa">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#a43ff38af6d9d2c01db1e809907e2b1d2">Zoe::Sprite</a>.</p>
+<p>Implemented in <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#a30dccdd8622b0be9feef6bf7d9c6d9af">Zoe::NativeScriptComponent</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#ac71ec37b569dbf5122e27047de843f03">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#ad7dfa663aa2c9d3b5a0ea482fe97f243">Zoe::Camera</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#aae391f90dd12e81a38284d1234d403a9">Zoe::Button</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#a427b2dc233734e2e0c1fddcd0d20ed93">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#ad57eceaaa3f82255b75c087e2a2055d8">Zoe::TextBox</a>, <a class="el" href="../../d1/df3/class_zoe_1_1_physics_group.html#a39e16b21cb33649f95afb1b0dad79732">Zoe::PhysicsGroup</a>, <a class="el" href="../../d4/d57/class_zoe_1_1_box_collider.html#ab6ccee0783e020fd1ef1d175fa789cb5">Zoe::BoxCollider</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#ae6afcae477f6de210b69979ce9e81bf0">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#ab9133d0d66e1213aa5dc5328f9b6d7aa">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#a43ff38af6d9d2c01db1e809907e2b1d2">Zoe::Sprite</a>.</p>
 
 </div>
 </div>
@@ -611,12 +680,46 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentLayer</b></
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#a937d726dcb5658662b709467c8584d8c">Zoe::NativeScriptComponent</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#a834758d6babd8289207dd4a346f42966">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#a2746bbbc9523b96222a49b65136a7239">Zoe::Camera</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#adc1a8057e5586c874165e81781783d90">Zoe::Button</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#aa173f459303caa0da2cb94e1175bc8e4">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#ab87355e88cfb39606155b3625ca608bd">Zoe::TextBox</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#a36ce0a02f02e2ecbcaedb034164f5ffd">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#a7dd50878e39248b4707886959e769583">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#a7099ae56d05c81c4202e68a67559537a">Zoe::Sprite</a>.</p>
+<p>Implemented in <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#a937d726dcb5658662b709467c8584d8c">Zoe::NativeScriptComponent</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#a834758d6babd8289207dd4a346f42966">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#a2746bbbc9523b96222a49b65136a7239">Zoe::Camera</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#adc1a8057e5586c874165e81781783d90">Zoe::Button</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#aa173f459303caa0da2cb94e1175bc8e4">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#ab87355e88cfb39606155b3625ca608bd">Zoe::TextBox</a>, <a class="el" href="../../d1/df3/class_zoe_1_1_physics_group.html#a4d2b2af2950540362638a9ed0f16a33e">Zoe::PhysicsGroup</a>, <a class="el" href="../../d4/d57/class_zoe_1_1_box_collider.html#a1ff19ebbdfa8c8c855d681f3c6a13637">Zoe::BoxCollider</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#a36ce0a02f02e2ecbcaedb034164f5ffd">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#a7dd50878e39248b4707886959e769583">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#a7099ae56d05c81c4202e68a67559537a">Zoe::Sprite</a>.</p>
 
 </div>
 </div>
-<a id="a7fda5092975a1144557a5048b8b6bc8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fda5092975a1144557a5048b8b6bc8b">&#9670;&nbsp;</a></span>onUpdate()</h2>
+<a id="ad27dcf8c674e8399ea381ef80d084b03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad27dcf8c674e8399ea381ef80d084b03">&#9670;&nbsp;</a></span>onPhysicsUpdate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Zoe::BaseComponent::onPhysicsUpdate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>delta</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Updates this component. This function is called as fast as possible. It shouldn't take long to execute this function. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">delta</td><td>the time in seconds since the last update </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="../../da/db6/class_zoe_1_1_physics_component.html#adff4e56007c498aba61741d662d10d5d">Zoe::PhysicsComponent</a>, and <a class="el" href="../../d1/df3/class_zoe_1_1_physics_group.html#abed18400ffedb995882441c0ee89f43c">Zoe::PhysicsGroup</a>.</p>
+
+</div>
+</div>
+<a id="a69fe029b5b8fdba3ce0a1de8c4288699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69fe029b5b8fdba3ce0a1de8c4288699">&#9670;&nbsp;</a></span>onUpdate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -628,7 +731,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentLayer</b></
           <td class="memname">virtual void Zoe::BaseComponent::onUpdate </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>time</em></td><td>)</td>
+          <td class="paramname"><em>delta</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -638,14 +741,38 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentLayer</b></
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Updates this component. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Updates this component. This function is called in a specific interval. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">time</td><td>the time in seconds since the last update </td></tr>
+    <tr><td class="paramname">delta</td><td>the time in seconds since the last update </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#a3ec045cdd371b1295ba3894f18e30420">Zoe::NativeScriptComponent</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#a8fbd02ace745306f40adb5a91477930d">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#af5a6ff78ac8210333f591213804a22e3">Zoe::Camera</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#a4b0ba4c8a9461ccac038f084923c5802">Zoe::Button</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#a5684ae517d28dc3268001e6d85ea89e4">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#ab322ec1e9074d16b378e36a30da41726">Zoe::TextBox</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#a4edef138f941ff019b59d714e6a56c8e">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#ae53da1471569cd1980c9c4dbd1cd1027">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#a3bd2dced8315888db4eb68ed3f1d2ccd">Zoe::Sprite</a>.</p>
+<p>Implemented in <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#a3ec045cdd371b1295ba3894f18e30420">Zoe::NativeScriptComponent</a>, <a class="el" href="../../da/db6/class_zoe_1_1_physics_component.html#a13b3a069bf8f8b96b6ddde58850ff5b5">Zoe::PhysicsComponent</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#a8fbd02ace745306f40adb5a91477930d">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#af5a6ff78ac8210333f591213804a22e3">Zoe::Camera</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#a4b0ba4c8a9461ccac038f084923c5802">Zoe::Button</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#a5684ae517d28dc3268001e6d85ea89e4">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#ab322ec1e9074d16b378e36a30da41726">Zoe::TextBox</a>, <a class="el" href="../../d1/df3/class_zoe_1_1_physics_group.html#a2ec92689af9a8d67644d657297e61019">Zoe::PhysicsGroup</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#a4edef138f941ff019b59d714e6a56c8e">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#ae53da1471569cd1980c9c4dbd1cd1027">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#a3bd2dced8315888db4eb68ed3f1d2ccd">Zoe::Sprite</a>.</p>
+
+</div>
+</div>
+<a id="a9e3cd75199beaf8adfb4133a1cab8567"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e3cd75199beaf8adfb4133a1cab8567">&#9670;&nbsp;</a></span>physicsUpdate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Zoe::BaseComponent::physicsUpdate </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Updates this component and all child components with the specified time in seconds since the last physics update. The physics update should be used to update the components position and is part of the physics system. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">time</td><td>the time since the last update </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -673,7 +800,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>ComponentLayer</b></
 </div><div class="memdoc">
 <p>Completes initialization. This method is called after all children are initialized. It is used to extract information for children. </p>
 
-<p>Implemented in <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#ad5d6907d22280d9135d6271ae0834502">Zoe::NativeScriptComponent</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#ac770e3cb0810640ed44aeeef01ad4d3d">Zoe::Button</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#a254def7fe8730a8d1d6a7b5b15df42e0">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#a27cccd4db7825d3ff7c9e2604713fc75">Zoe::Camera</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#a4f5471e4704868778fab1f480a7aecbd">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#ade685c35d5013a50f8b8099bfa5dce95">Zoe::TextBox</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#ac4027f2b9840e15b3906a11f461f3559">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#a6d99f9cf63aaf7d7e02402c6f32e591d">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#a2afeef330ce654d7a6260a3c6ff0cb22">Zoe::Sprite</a>.</p>
+<p>Implemented in <a class="el" href="../../dd/de9/class_zoe_1_1_native_script_component.html#ad5d6907d22280d9135d6271ae0834502">Zoe::NativeScriptComponent</a>, <a class="el" href="../../d7/d1a/class_zoe_1_1_button.html#ac770e3cb0810640ed44aeeef01ad4d3d">Zoe::Button</a>, <a class="el" href="../../da/d26/class_zoe_1_1_component_layer.html#a254def7fe8730a8d1d6a7b5b15df42e0">Zoe::ComponentLayer</a>, <a class="el" href="../../de/d8b/class_zoe_1_1_camera.html#a27cccd4db7825d3ff7c9e2604713fc75">Zoe::Camera</a>, <a class="el" href="../../d7/d0c/class_zoe_1_1_chai_script_component.html#a4f5471e4704868778fab1f480a7aecbd">Zoe::ChaiScriptComponent</a>, <a class="el" href="../../dd/def/class_zoe_1_1_text_box.html#ade685c35d5013a50f8b8099bfa5dce95">Zoe::TextBox</a>, <a class="el" href="../../d1/df3/class_zoe_1_1_physics_group.html#adaba40256eb3f1e703008efeec7242eb">Zoe::PhysicsGroup</a>, <a class="el" href="../../d4/d57/class_zoe_1_1_box_collider.html#ae987d92a66599b362765424843c27d29">Zoe::BoxCollider</a>, <a class="el" href="../../d3/d3b/class_zoe_1_1_model_component.html#ac4027f2b9840e15b3906a11f461f3559">Zoe::ModelComponent</a>, <a class="el" href="../../d5/dd2/class_zoe_1_1_world_object.html#a6d99f9cf63aaf7d7e02402c6f32e591d">Zoe::WorldObject</a>, and <a class="el" href="../../d0/dd9/class_zoe_1_1_sprite.html#a2afeef330ce654d7a6260a3c6ff0cb22">Zoe::Sprite</a>.</p>
 
 </div>
 </div>

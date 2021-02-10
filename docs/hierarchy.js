@@ -1,7 +1,9 @@
 var hierarchy =
 [
     [ "Zoe::Application", "da/d22/class_zoe_1_1_application.html", null ],
+    [ "Zoe::AxisAlignedBox", "de/d5b/class_zoe_1_1_axis_aligned_box.html", null ],
     [ "Zoe::Console", "de/d4c/class_zoe_1_1_console.html", null ],
+    [ "Zoe::Scheduler::CoroutineContainer", "de/dee/struct_zoe_1_1_scheduler_1_1_coroutine_container.html", null ],
     [ "enable_shared_from_this", null, [
       [ "Zoe::BaseComponent", "d4/daf/class_zoe_1_1_base_component.html", [
         [ "Zoe::Button", "d7/d1a/class_zoe_1_1_button.html", null ],
@@ -9,10 +11,16 @@ var hierarchy =
           [ "Zoe::Camera2D", "de/d84/class_zoe_1_1_camera2_d.html", null ],
           [ "Zoe::Camera3D", "d3/d63/class_zoe_1_1_camera3_d.html", null ]
         ] ],
-        [ "Zoe::ChaiScriptComponent", "d7/d0c/class_zoe_1_1_chai_script_component.html", null ],
         [ "Zoe::ComponentLayer", "da/d26/class_zoe_1_1_component_layer.html", null ],
         [ "Zoe::ModelComponent", "d3/d3b/class_zoe_1_1_model_component.html", null ],
-        [ "Zoe::NativeScriptComponent", "dd/de9/class_zoe_1_1_native_script_component.html", null ],
+        [ "Zoe::PhysicsComponent", "da/db6/class_zoe_1_1_physics_component.html", [
+          [ "Zoe::BoxCollider", "d4/d57/class_zoe_1_1_box_collider.html", null ]
+        ] ],
+        [ "Zoe::PhysicsGroup", "d1/df3/class_zoe_1_1_physics_group.html", null ],
+        [ "Zoe::ScriptComponent", "d2/d8f/class_zoe_1_1_script_component.html", [
+          [ "Zoe::ChaiScriptComponent", "d7/d0c/class_zoe_1_1_chai_script_component.html", null ],
+          [ "Zoe::NativeScriptComponent", "dd/de9/class_zoe_1_1_native_script_component.html", null ]
+        ] ],
         [ "Zoe::Sprite", "d0/dd9/class_zoe_1_1_sprite.html", null ],
         [ "Zoe::TextBox", "dd/def/class_zoe_1_1_text_box.html", null ],
         [ "Zoe::WorldObject", "d5/dd2/class_zoe_1_1_world_object.html", null ]
@@ -115,6 +123,7 @@ var hierarchy =
       [ "Zoe::Directory", "dd/d64/class_zoe_1_1_directory.html", null ],
       [ "Zoe::File", "dd/d78/class_zoe_1_1_file.html", null ]
     ] ],
+    [ "Zoe::PhysicsGroup::PhysicsCheckObject::PositionFlag", "d2/d38/union_zoe_1_1_physics_group_1_1_physics_check_object_1_1_position_flag.html", null ],
     [ "Zoe::Task::promise_type", "d5/d9d/struct_zoe_1_1_task_1_1promise__type.html", null ],
     [ "Zoe::Render", "d8/d17/class_zoe_1_1_render.html", null ],
     [ "Zoe::RenderFlag", "d5/dbc/struct_zoe_1_1_render_flag.html", null ],

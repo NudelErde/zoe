@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['task',['Task',['../d8/d75/class_zoe_1_1_task.html#a189bdc02c6ee8d7864130f58dc0d0d67',1,'Zoe::Task']]],
+  ['task',['Task',['../d8/d75/class_zoe_1_1_task.html#ade3131432d51175ce3eec21af8d0ddab',1,'Zoe::Task::Task(std::coroutine_handle&lt; Task::promise_type &gt; handle)'],['../d8/d75/class_zoe_1_1_task.html#a320d3256adcb9bef0c8eac0f4242d09a',1,'Zoe::Task::Task(const Task &amp;)=delete'],['../d8/d75/class_zoe_1_1_task.html#a2f0ce716afb68e932f2f50e467470539',1,'Zoe::Task::Task(Task &amp;&amp;) noexcept=default']]],
   ['textbox',['TextBox',['../dd/def/class_zoe_1_1_text_box.html#a3e9174fdff80ad3ca9a4d0f8445de66b',1,'Zoe::TextBox']]],
   ['texture',['Texture',['../df/d25/class_zoe_1_1_texture.html#a762b899d58921a54f9282d4195f13f9f',1,'Zoe::Texture']]],
   ['textureimpl',['TextureImpl',['../d1/d7a/class_zoe_1_1_texture_impl.html#ad432ca7090895ec2acc57412c9d8df78',1,'Zoe::TextureImpl']]],
