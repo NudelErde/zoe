@@ -106,7 +106,7 @@ void UITool::drawRectangle(const vec2& pos, const vec2& size) {
     mat4x4 modelViewProjection =
             projectionView * translate3D(pos.x - 800, -pos.y + 450, 0) * scale3D(size.x, -size.y, 1);
     rectangleShader->setUniform4m("ModelViewProjection", modelViewProjection);
-    rectangleShader->setUniform4f("Color", color.x, color.y, color.z, color.w);
+    rectangleShader->setUniform4f("Color", (float)color.x, (float)color.y, (float)color.z, (float)color.w);
     render->draw(*rectVertexArray, *rectangleShader);
 }
 
@@ -114,7 +114,7 @@ void UITool::drawOval(const vec2& pos, const vec2& size) {
     mat4x4 modelViewProjection =
             projectionView * translate3D(pos.x - 800, -pos.y + 450, 0) * scale3D(size.x, -size.y, 1);
     ovalShader->setUniform4m("ModelViewProjection", modelViewProjection);
-    ovalShader->setUniform4f("Color", color.x, color.y, color.z, color.w);
+    ovalShader->setUniform4f("Color", (float)color.x, (float)color.y, (float)color.z, (float)color.w);
     render->draw(*rectVertexArray, *ovalShader);
 }
 
@@ -167,7 +167,7 @@ void UITool::renderTextBuffer(const UITool::RenderChar* textVertexData, const un
     this->textVertexBuffer->setData(textVertexData, sizeof(RenderChar) * 64);
 
     textShader->setTexture("tex", *this->textBitmap);
-    textShader->setUniform4f("u_textColor", this->color.x, this->color.y, this->color.z, this->color.w);
+    textShader->setUniform4f("u_textColor", (float)color.x, (float)color.y, (float)color.z, (float)color.w);
     this->render->setAlphaEnabled(true);
     this->render->draw(*this->textVertexArray, *textShader);
 }

@@ -159,7 +159,7 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
             currentMaterial.name = args;
         } else if (!currentMaterial.init) {
             //no currentMaterial
-            throw std::runtime_error(".mtl file is wrong formatted in line: " + std::to_string(lineNumber));
+            throw std::runtime_error(file.getAbsolutePath()+" file is wrong formatted in line: " + std::to_string(lineNumber));
         } else if (cmd == "ka") {
             currentMaterial.ambientReflectivity = readRGB_XYZ(args);
         } else if (cmd == "kd") {
@@ -265,22 +265,22 @@ MaterialLibrary MaterialLibrary::parseMaterialLibrary(const File &file, bool for
                              if (tags.count("modelMatrix_it")) {
                                  shader.setUniform4m(tags.at("modelMatrix_it"), model.transpose().inverse());
                              }
-                             shader.setUniform3f("ambientReflectivity_mtl", data.ambientReflectivity.x,
-                                                 data.ambientReflectivity.y, data.ambientReflectivity.z);
-                             shader.setUniform3f("diffuseReflectivity_mtl", data.diffuseReflectivity.x,
-                                                 data.diffuseReflectivity.y, data.diffuseReflectivity.z);
-                             shader.setUniform3f("specularReflectivity_mtl", data.specularReflectivity.x,
-                                                 data.specularReflectivity.y, data.specularReflectivity.z);
-                             shader.setUniform1f("specularExponent_mtl", data.specularExponent);
+                             shader.setUniform3f("ambientReflectivity_mtl", (float)data.ambientReflectivity.x,
+                                                 (float)data.ambientReflectivity.y, (float)data.ambientReflectivity.z);
+                             shader.setUniform3f("diffuseReflectivity_mtl", (float)data.diffuseReflectivity.x,
+                                                 (float)data.diffuseReflectivity.y, (float)data.diffuseReflectivity.z);
+                             shader.setUniform3f("specularReflectivity_mtl", (float)data.specularReflectivity.x,
+                                                 (float)data.specularReflectivity.y, (float)data.specularReflectivity.z);
+                             shader.setUniform1f("specularExponent_mtl", (float)data.specularExponent);
                              vec3 cameraPos = camera.getWorldPosition();
-                             shader.setUniform3f("cameraPosition", cameraPos.x, cameraPos.y, cameraPos.z);
+                             shader.setUniform3f("cameraPosition", (float)cameraPos.x, (float)cameraPos.y, (float)cameraPos.z);
 
                              //TODO: source is enough documentation
-                             shader.setUniform3f("lightPosition", cameraPos.x, cameraPos.y + 1, cameraPos.z);
-                             shader.setUniform3f("lightColor", 0, 0, 0);
+                             shader.setUniform3f("lightPosition", (float)cameraPos.x, (float)cameraPos.y + 1, (float)cameraPos.z);
+                             shader.setUniform3f("lightColor", 1, 1, 1);
 
                              //TODO: changeable intensity
-                             shader.setUniform1f("ambientIntensity", 1.0f);
+                             shader.setUniform1f("ambientIntensity", 0.2f);
                              shader.setUniform1f("diffuseIntensity", 1.0f);
                              shader.setUniform1f("specularIntensity", 1.0f);
                              for(const auto& entry: me->textures){

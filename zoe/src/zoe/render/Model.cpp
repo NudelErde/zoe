@@ -199,15 +199,15 @@ WavefrontFile WavefrontFile::parseWavefrontFile(const File &file, bool forceRelo
 
         for (unsigned int index = 0; index < vertexVector.size(); ++index) {
             const auto &vertex = vertexVector[index];
-            vertexData[index * 9 + 0] = vertex.pos.x;
-            vertexData[index * 9 + 1] = vertex.pos.y;
-            vertexData[index * 9 + 2] = vertex.pos.z;
-            vertexData[index * 9 + 3] = vertex.pos.w;
-            vertexData[index * 9 + 4] = vertex.norm.x;
-            vertexData[index * 9 + 5] = vertex.norm.y;
-            vertexData[index * 9 + 6] = vertex.norm.z;
-            vertexData[index * 9 + 7] = vertex.tex.x;
-            vertexData[index * 9 + 8] = vertex.tex.y;
+            vertexData[index * 9 + 0] = (float) vertex.pos.x;
+            vertexData[index * 9 + 1] = (float) vertex.pos.y;
+            vertexData[index * 9 + 2] = (float) vertex.pos.z;
+            vertexData[index * 9 + 3] = (float) vertex.pos.w;
+            vertexData[index * 9 + 4] = (float) vertex.norm.x;
+            vertexData[index * 9 + 5] = (float) vertex.norm.y;
+            vertexData[index * 9 + 6] = (float) vertex.norm.z;
+            vertexData[index * 9 + 7] = (float) vertex.tex.x;
+            vertexData[index * 9 + 8] = (float) vertex.tex.y;
         }
         std::shared_ptr<VertexBuffer> vertexBuffer = Application::getContext().getVertexBuffer(false);
         vertexBuffer->setData(vertexData, (unsigned int) (vertexVector.size() * 9 * sizeof(float)));

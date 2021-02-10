@@ -19,7 +19,7 @@ Input* Input::getInstance() {
     return instance;
 }
 
-LinuxInput::~LinuxInput(){}
+LinuxInput::~LinuxInput() = default;
 
 bool LinuxInput::isKeyPressedImpl(int keycode) {
 	auto window = static_cast<GLFWwindow*>(Application::get().getWindow().getNativeWindow());
@@ -42,12 +42,12 @@ vec2 LinuxInput::getMousePositionImpl() {
 
 float LinuxInput::getMouseXImpl() {
 	vec2 tmp = this->getMousePositionImpl();
-	return tmp.x;
+	return (float)tmp.x;
 }
 
 float LinuxInput::getMouseYImpl() {
 	vec2 tmp = this->getMousePositionImpl();
-	return tmp.y;
+	return (float)tmp.y;
 }
 
 }
