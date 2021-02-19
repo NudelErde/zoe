@@ -49,7 +49,7 @@ protected:
 private:
     std::unique_ptr<File> imageSource;
     std::shared_ptr<Texture> texture;
-    verc2 size;
+    vec2 size;
 };
 
 }

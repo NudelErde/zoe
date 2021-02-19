@@ -7,9 +7,10 @@
 #include "Game/WorldObject.h"
 #include "Game/ModelComponent.h"
 #include "UI/Button.h"
+#include "UI/TextBox.h"
+#include "UI/Image.h"
 #include "NativeScriptComponent.h"
 #include "ChaiScriptComponent.h"
-#include "UI/TextBox.h"
 #include "Physics/PhysicsGroup.h"
 #include "ComponentLayer.h"
 #include "Physics/BoxCollider.h"
@@ -107,6 +108,7 @@ void BaseComponent::init() {
     registerComponent<Camera3D>("Camera3D");
     registerComponent<PhysicsGroup>("PhysicsGroup");
     registerComponent<BoxCollider>("BoxCollider");
+    registerComponent<Image>("Image");
 }
 vec3 BaseComponent::getWorldPosition() const {
     if (auto ptr = parent.lock()) {
