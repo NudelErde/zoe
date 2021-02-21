@@ -23,6 +23,8 @@ void Button::setClickHandler(const std::function<void()>& handler) {
 }
 
 void Button::onDraw(const Camera& camera) {
+    if(!isVisible())
+        return;
     UITool tool(camera);
     tool.setColor(backgroundColor);
     vec2 pos = getWorldPosition().xy();

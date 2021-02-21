@@ -101,13 +101,29 @@ public:
      * Returns `true` if the component is focused.
      * @return `true` if the component is focused
      */
-    bool hasFocus() const;
+    [[nodiscard]] bool hasFocus() const;
 
     /**
      * Specifies the focus. All other components in this layer lose focus when this object receives focus.
      * @param val the new focus value
      */
     void setFocus(bool val);
+
+    /**
+     * Returns `true` if this component is visible.
+     * @return `true` if this component is visible
+     */
+    [[nodiscard]] inline bool isVisible() const {
+        return visible;
+    }
+
+    /**
+     * Specifies the visibility of this component.
+     * @param v `true` if this component will be visible
+     */
+    inline void setVisible(const bool& v) {
+        visible = v;
+    }
 
     /**
      * Returns a pointer to the layer in which this component is located.
@@ -202,6 +218,7 @@ private:
 
     std::string id;
     bool isFocused;
+    bool visible = true;
 
     void init(const XMLNode& node);
 

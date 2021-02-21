@@ -12,6 +12,7 @@
         <NativeScriptComponent script="ButtonScript">
         </NativeScriptComponent>
     </Button>
+    <Image src="sampleObjects/Cube/Image.webp" x="0" y="0" width="100" height="100"/>
     <Camera2D x="0" y="0" width="1600" height="900" id="cam">
     </Camera2D>
 </ComponentLayer>

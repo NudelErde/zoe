@@ -15,6 +15,8 @@ namespace Zoe {
 TextBox::TextBox() = default;
 
 void TextBox::onDraw(const Camera& camera) {
+    if(!isVisible())
+        return;
     UITool tool(camera);
     tool.setColor(color);
     vec2 pos = getWorldPosition().xy();
