@@ -12,6 +12,7 @@ var class_zoe_1_1_base_component =
     [ "getWorldPosition", "d4/daf/class_zoe_1_1_base_component.html#a8005f6aecbfd02d64126dd486c9d7e96", null ],
     [ "hasFocus", "d4/daf/class_zoe_1_1_base_component.html#a84a05f3c73c709b4cf285a2aa7850de9", null ],
     [ "inputEvent", "d4/daf/class_zoe_1_1_base_component.html#a085b7602af08e645fc9e6dc587b4739d", null ],
+    [ "isVisible", "d4/daf/class_zoe_1_1_base_component.html#aa0df7013d92014e761a3e78ef5db3f42", null ],
     [ "onDraw", "d4/daf/class_zoe_1_1_base_component.html#a56544aaf1b0e7c25b92f4f3ef108e83d", null ],
     [ "onInputEvent", "d4/daf/class_zoe_1_1_base_component.html#a3d2c590a87b2fa364db716f2a2c1f1fd", null ],
     [ "onPhysicsUpdate", "d4/daf/class_zoe_1_1_base_component.html#ad27dcf8c674e8399ea381ef80d084b03", null ],
@@ -20,6 +21,7 @@ var class_zoe_1_1_base_component =
     [ "postFill", "d4/daf/class_zoe_1_1_base_component.html#ab6b366a7020ea55cd9ddfadffd3d3568", null ],
     [ "setFocus", "d4/daf/class_zoe_1_1_base_component.html#a95b91786922b18b85b5e8e4ad4760eba", null ],
     [ "setPosition", "d4/daf/class_zoe_1_1_base_component.html#adae7e7a348464118c940603f995d3f15", null ],
+    [ "setVisible", "d4/daf/class_zoe_1_1_base_component.html#a8d3b46b9a4cccbe55c07c6f340773225", null ],
     [ "update", "d4/daf/class_zoe_1_1_base_component.html#a169ec421737f17504d9d70c2dc0339a0", null ],
     [ "ComponentLayer", "d4/daf/class_zoe_1_1_base_component.html#a754487857417526a90f31baf7b8b21b6", null ],
     [ "position", "d4/daf/class_zoe_1_1_base_component.html#a0ca979ee729ad832f06f3a2e579c08e8", null ]

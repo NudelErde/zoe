@@ -12,6 +12,7 @@ var hierarchy =
           [ "Zoe::Camera3D", "d3/d63/class_zoe_1_1_camera3_d.html", null ]
         ] ],
         [ "Zoe::ComponentLayer", "da/d26/class_zoe_1_1_component_layer.html", null ],
+        [ "Zoe::Image", "d0/d7c/class_zoe_1_1_image.html", null ],
         [ "Zoe::ModelComponent", "d3/d3b/class_zoe_1_1_model_component.html", null ],
         [ "Zoe::PhysicsComponent", "da/db6/class_zoe_1_1_physics_component.html", [
           [ "Zoe::BoxCollider", "d4/d57/class_zoe_1_1_box_collider.html", null ]
