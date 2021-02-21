@@ -12,7 +12,7 @@
  *
  * \section build_sec Building
  * Init github submodules if needed: `git submodule update --init --recursive`\n
- * Make sure your compiler supports c++17\n
+ * Make sure your compiler supports C++20\n
  * Make sure you have CMake 3.13+ installed\n
  * \subsection build_win_sec On Windows
  * Install dependencies I don't know what you need. Just try to run cmake and google every error.\n

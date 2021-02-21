@@ -72,11 +72,13 @@ public:
     App() {
         NativeScriptComponent::registerNativeScript<CameraScript>("CameraScript");
         std::shared_ptr<ComponentLayer> layer = std::make_shared<ComponentLayer>();
-
+        std::shared_ptr<ComponentLayer> ui = std::make_shared<ComponentLayer>();
         layer->load(File("sampleObjects/PhysicsExample.xml"));
+        ui->load(File("sampleObjects/UITest.xml"));
         //layer->load(File("sampleObjects/UITest.xml"));
 
         getLayerStack().pushLayer(layer);
+        getLayerStack().pushLayer(ui);
     }
 
     ~App() override = default;
