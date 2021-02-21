@@ -1,6 +1,7 @@
 var searchData=
 [
   ['identity',['identity',['../d4/dfe/class_zoe_1_1mat2x2.html#a7a7ec1062a9fa4884aacbb4b5b1bd0f0',1,'Zoe::mat2x2::identity()'],['../d5/d24/class_zoe_1_1mat3x3.html#a0b258504d3fbad2402956e7eaf3314a6',1,'Zoe::mat3x3::identity()'],['../d9/d4c/class_zoe_1_1mat4x4.html#afc9412943b17ab97cc84fe9fcdf622a3',1,'Zoe::mat4x4::identity()']]],
+  ['image',['Image',['../d0/d7c/class_zoe_1_1_image.html#a6b39316406e6fdfaf1424a180298acfb',1,'Zoe::Image']]],
   ['implpointer',['ImplPointer',['../d0/d8d/class_zoe_1_1_impl_pointer.html#aeee69cc8b0748bf6529ba96f670fcd32',1,'Zoe::ImplPointer::ImplPointer()'],['../d0/d8d/class_zoe_1_1_impl_pointer.html#a7586f759c8eee1b14000008abe19403c',1,'Zoe::ImplPointer::ImplPointer(T *t)'],['../d0/d8d/class_zoe_1_1_impl_pointer.html#a08a9ad5118d32e6a850e89e4db7a90c8',1,'Zoe::ImplPointer::ImplPointer(const ImplPointer &amp;rhs)']]],
   ['indexbuffer',['IndexBuffer',['../db/d3b/class_zoe_1_1_index_buffer.html#aa7d4dcaef0dc7aca5b8d5f31e0537ece',1,'Zoe::IndexBuffer']]],
   ['indexbufferimpl',['IndexBufferImpl',['../dc/de2/class_zoe_1_1_index_buffer_impl.html#ab53adba3762026c6b7c12d4fbaedcbeb',1,'Zoe::IndexBufferImpl']]],
@@ -22,6 +23,7 @@ var searchData=
   ['ismainthread',['isMainThread',['../df/d3c/class_zoe_1_1_thread.html#ac97996e3678981f8889e041a83c63b86',1,'Zoe::Thread']]],
   ['ismousebuttonpressed',['isMouseButtonPressed',['../d2/db7/class_zoe_1_1_input.html#a291270c98f2d9fc9341f483454962343',1,'Zoe::Input::isMouseButtonPressed()'],['../da/d26/class_zoe_1_1_component_layer.html#ad6cd39678d2c412c4568eb0d87531acf',1,'Zoe::ComponentLayer::isMouseButtonPressed()']]],
   ['ismousebuttonpressedimpl',['isMouseButtonPressedImpl',['../df/d49/class_zoe_1_1_linux_input.html#a2f85033312b28897391c0e1fe88e596a',1,'Zoe::LinuxInput::isMouseButtonPressedImpl()'],['../d4/dca/class_zoe_1_1_windows_input.html#af5d15989f74689722406fe185d59d72e',1,'Zoe::WindowsInput::isMouseButtonPressedImpl()'],['../d2/db7/class_zoe_1_1_input.html#a70a4bc3c98d4d076ae4f5b7a525e28b3',1,'Zoe::Input::isMouseButtonPressedImpl()']]],
+  ['isvisible',['isVisible',['../d4/daf/class_zoe_1_1_base_component.html#aa0df7013d92014e761a3e78ef5db3f42',1,'Zoe::BaseComponent']]],
   ['isvsync',['isVSync',['../de/dbe/class_zoe_1_1_linux_window.html#a77f37c4e0a4f93f215f8dc72e1027919',1,'Zoe::LinuxWindow::isVSync()'],['../d1/d3b/class_zoe_1_1_windows_window.html#a3cb5a7b2689df5b8b0259215c9b38b5a',1,'Zoe::WindowsWindow::isVSync()'],['../da/d69/class_zoe_1_1_window.html#adad351034fba0bfc57df8de198c9c21f',1,'Zoe::Window::isVSync()']]],
   ['iswriteable',['isWriteable',['../dd/def/class_zoe_1_1_text_box.html#a9747925722a589d18e33272048cb68d8',1,'Zoe::TextBox']]]
 ];

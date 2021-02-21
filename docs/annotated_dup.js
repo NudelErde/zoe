@@ -27,6 +27,7 @@ var annotated_dup =
       [ "FontCharMetric", "db/dc8/struct_zoe_1_1_font_char_metric.html", "db/dc8/struct_zoe_1_1_font_char_metric" ],
       [ "FontHolder", "d1/da6/class_zoe_1_1_font_holder.html", "d1/da6/class_zoe_1_1_font_holder" ],
       [ "GraphicsContext", "d3/d11/class_zoe_1_1_graphics_context.html", "d3/d11/class_zoe_1_1_graphics_context" ],
+      [ "Image", "d0/d7c/class_zoe_1_1_image.html", "d0/d7c/class_zoe_1_1_image" ],
       [ "ImplPointer", "d0/d8d/class_zoe_1_1_impl_pointer.html", "d0/d8d/class_zoe_1_1_impl_pointer" ],
       [ "IndexBuffer", "db/d3b/class_zoe_1_1_index_buffer.html", "db/d3b/class_zoe_1_1_index_buffer" ],
       [ "IndexBufferImpl", "dc/de2/class_zoe_1_1_index_buffer_impl.html", "dc/de2/class_zoe_1_1_index_buffer_impl" ],

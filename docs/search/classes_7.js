@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['image',['Image',['../d0/d7c/class_zoe_1_1_image.html',1,'Zoe']]],
   ['implpointer',['ImplPointer',['../d0/d8d/class_zoe_1_1_impl_pointer.html',1,'Zoe']]],
   ['implpointer_3c_20zoe_3a_3aindexbufferimpl_20_3e',['ImplPointer&lt; Zoe::IndexBufferImpl &gt;',['../d0/d8d/class_zoe_1_1_impl_pointer.html',1,'Zoe']]],
   ['implpointer_3c_20zoe_3a_3arenderimpl_20_3e',['ImplPointer&lt; Zoe::RenderImpl &gt;',['../d0/d8d/class_zoe_1_1_impl_pointer.html',1,'Zoe']]],
