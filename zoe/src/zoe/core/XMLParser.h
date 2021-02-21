@@ -53,11 +53,17 @@ struct DLL_PUBLIC XMLNode{
 
 /**
  * Parses an XMLFile to a XMLNode.
- * @todo parse stuff like <test/>
- * @param file the file.
+ * @param file the file
  * @return the top most node
  */
-DLL_PUBLIC XMLNode readXML(const File& file);
+XMLNode readXML(const File& file);
+
+/**
+ * Parses an XMLString to a XMLNode.
+ * @param data the string
+ * @return the top most node
+ */
+XMLNode readXML(const std::string& data);
 
 }
 

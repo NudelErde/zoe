@@ -34,6 +34,13 @@ class DLL_PUBLIC BaseComponent : public std::enable_shared_from_this<BaseCompone
 public:
 
     /**
+     * Creates a component specified by the XML node.
+     * @param node the specified node
+     * @return the new component or an default constructed shared_ptr
+     */
+    [[nodiscard]] static std::shared_ptr<BaseComponent> componentByXML(const XMLNode& node);
+
+    /**
      * Draws this component and all child components on the specified camera.
      * @param camera the specified camera
      */

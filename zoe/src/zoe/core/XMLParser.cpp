@@ -36,6 +36,11 @@ static inline void trim(std::string &s) {
     rtrim(s);
 }
 
+static inline std::string copyTrim(std::string s) {
+    trim(s);
+    return s;
+}
+
 static inline std::string readString(std::string& in){
     const char* cstr = in.c_str();
     std::stringstream stringstream;
@@ -149,6 +154,11 @@ XMLNode readXML(const File& file) {
     }
 	std::unique_ptr<std::istream> stream = file.createIStream(false);
 
+	return parse(stream);
+}
+
+XMLNode readXML(const std::string& data) {
+    std::unique_ptr<std::istream> stream = std::make_unique<std::stringstream>(copyTrim(data));
 	return parse(stream);
 }
 

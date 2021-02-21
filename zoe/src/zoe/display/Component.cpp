@@ -9,6 +9,7 @@
 #include "UI/Button.h"
 #include "UI/TextBox.h"
 #include "UI/Image.h"
+#include "UI/Rectangle.h"
 #include "NativeScriptComponent.h"
 #include "ChaiScriptComponent.h"
 #include "Physics/PhysicsGroup.h"
@@ -32,6 +33,16 @@ void BaseComponent::add(const std::shared_ptr<BaseComponent>& component) {
             comp->layer = layer;
             components.insert(components.end(), comp->children.begin(), comp->children.end());
         }
+    }
+}
+
+std::shared_ptr<BaseComponent> BaseComponent::componentByXML(const XMLNode& node) {
+    if (hasComponentConstructor(node.name)) {
+        std::shared_ptr<BaseComponent> cmp = createComponent(node.name);
+        cmp->init(node);
+        return cmp;
+    } else {
+        return {};
     }
 }
 
@@ -109,6 +120,7 @@ void BaseComponent::init() {
     registerComponent<PhysicsGroup>("PhysicsGroup");
     registerComponent<BoxCollider>("BoxCollider");
     registerComponent<Image>("Image");
+    registerComponent<Rectangle>("Rectangle");
 }
 vec3 BaseComponent::getWorldPosition() const {
     if (auto ptr = parent.lock()) {
