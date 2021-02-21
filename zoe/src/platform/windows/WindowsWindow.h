@@ -21,7 +21,6 @@ namespace Zoe{
  */
 class DLL_PUBLIC WindowsWindow: public Window{
 public:
-
     /**
      * Creates WindowsWindow with the specified WindowProps
      * @param props the properties used to create this window
@@ -75,6 +74,10 @@ public:
      * @return graphics context
      */
     inline GraphicsContext* getContext() const override {return context;}
+
+    void setSize(unsigned int width, unsigned int height) override;
+    void setTitle(const std::string& str) override;
+    std::string getTitle() override;
 private:
 	void init(const WindowProps& props);
 	void shutdown();
