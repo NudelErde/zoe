@@ -195,6 +195,18 @@ void WindowsWindow::setVSync(bool enabled) {
 bool WindowsWindow::isVSync() const {
 	return data.vSync;
 }
+void WindowsWindow::setSize(unsigned int width, unsigned int height) {
+    data.width = width;
+    data.height = height;
+    glfwSetWindowSize(window, (int)width, (int)height);
+}
+void WindowsWindow::setTitle(const std::string& str) {
+    data.title = str;
+    glfwSetWindowTitle(window, str.c_str());
+}
+std::string WindowsWindow::getTitle() {
+    return data.title;
+}
 
 }
 

@@ -35,7 +35,6 @@ Application::Application(bool withWindow) : hasWindow(withWindow) {
     Console::init();
     //-------------------
     if (withWindow) {
-
         window = std::unique_ptr<Zoe::Window>(Zoe::Window::create());
         std::function<void(Event &)> cb = BIND_EVENT_FN(onEvent);
         window->setEventCallback(cb);

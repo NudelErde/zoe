@@ -39,7 +39,7 @@ struct DLL_PUBLIC WindowProps {
 	 * @param width the width in pixel
 	 * @param height the height in pixel
 	 */
-	WindowProps(const std::string& title = "Zoe Engine", unsigned int width =
+	explicit WindowProps(const std::string& title = "Zoe Engine", unsigned int width =
 			1280, unsigned int height = 720) :
 			title(title), width(width), height(height) {
 	}
@@ -76,6 +76,10 @@ public:
      * @return height
      */
 	virtual unsigned int getHeight() const = 0;
+
+	virtual void setSize(unsigned int width, unsigned int height) = 0;
+	virtual void setTitle(const std::string& str) = 0;
+	virtual std::string getTitle() = 0;
 
     /**
      * Sets the event callback function. The callback function is used when events are available.
