@@ -8,8 +8,7 @@
 
 namespace Zoe {
 
-Image::Image() {
-}
+Image::Image() = default;
 void Image::setSource(const File& source) {
     imageSource = std::make_unique<File>(source);
     texture = Application::getContext().getTexture(source);

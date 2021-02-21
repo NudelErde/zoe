@@ -109,10 +109,18 @@ public:
      */
     void setFocus(bool val);
 
+    /**
+     * Returns `true` if this component is visible.
+     * @return `true` if this component is visible
+     */
     [[nodiscard]] inline bool isVisible() const {
         return visible;
     }
 
+    /**
+     * Specifies the visibility of this component.
+     * @param v `true` if this component will be visible
+     */
     inline void setVisible(const bool& v) {
         visible = v;
     }
