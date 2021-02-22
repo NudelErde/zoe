@@ -57,12 +57,23 @@ void UITool::init() {
     textShader = Application::getContext().getShader(File("virtual/zoe/display/ui/Text.glsl"));
 }
 
-UITool::UITool(const Camera& camera) : font(*defaultFont), color(vec4({0, 0, 0, 1})),
+static vec2 extractSizeFromCamera(const Camera& camera) {
+    const auto* cam2d = dynamic_cast<const Camera2D*>(&camera);
+    if(cam2d != nullptr) {
+        return vec2(cam2d->getWidth(), cam2d->getHeight());
+    } else {
+        return vec2(camera.getRender()->getViewportWidth(), camera.getRender()->getViewportHeight());
+    }
+}
+
+UITool::UITool(const Camera& camera, const vec2& size) : font(*defaultFont), color(vec4({0, 0, 0, 1})),
                                        render(camera.getRender()),
                                        projectionView(camera.getProjectionMatrix() * camera.getViewMatrix()) {
     textVertexBuffer = Application::getContext().getVertexBuffer(true);
     textIndexBuffer = Application::getContext().getIndexBuffer(true);
     textVertexArray = Application::getContext().getVertexArray();
+
+    screenSize = size;
 
     RenderChar textVertexData[64];
     unsigned int textIndexData[6 * 64];
@@ -77,6 +88,8 @@ UITool::UITool(const Camera& camera) : font(*defaultFont), color(vec4({0, 0, 0, 
     textVertexArray->set(textVertexBuffer, textIndexBuffer, layout);
     textBitmap = this->font.getBitmap();
 }
+
+UITool::UITool(const Camera& camera): UITool(camera, extractSizeFromCamera(camera)) {}
 
 void UITool::setColor(const vec4& c) {
     color = c;
@@ -94,31 +107,31 @@ const Font& UITool::getFont() {
     return font;
 }
 
-void UITool::drawImage(const std::shared_ptr<Texture>& image, const vec2& pos, const vec2& size) {
+void UITool::drawImage(const std::shared_ptr<Texture>& image, const vec3& pos, const vec2& size) {
     mat4x4 modelViewProjection =
-            projectionView * translate3D(pos.x - 800, -pos.y + 450, 0) * scale3D(size.x, -size.y, 1);
+            projectionView * translate3D(pos.x - screenSize.x/2, -pos.y + screenSize.y/2, -pos.z) * scale3D(size.x, -size.y, 1);
     imageShader->setUniform4m("ModelViewProjection", modelViewProjection);
     imageShader->setTexture("u_image", *image);
     render->draw(*rectVertexArray, *imageShader);
 }
 
-void UITool::drawRectangle(const vec2& pos, const vec2& size) {
+void UITool::drawRectangle(const vec3& pos, const vec2& size) {
     mat4x4 modelViewProjection =
-            projectionView * translate3D(pos.x - 800, -pos.y + 450, 0) * scale3D(size.x, -size.y, 1);
+            projectionView * translate3D(pos.x - screenSize.x/2, -pos.y + screenSize.y/2, -pos.z) * scale3D(size.x, -size.y, 1);
     rectangleShader->setUniform4m("ModelViewProjection", modelViewProjection);
     rectangleShader->setUniform4f("Color", (float)color.x, (float)color.y, (float)color.z, (float)color.w);
     render->draw(*rectVertexArray, *rectangleShader);
 }
 
-void UITool::drawOval(const vec2& pos, const vec2& size) {
+void UITool::drawOval(const vec3& pos, const vec2& size) {
     mat4x4 modelViewProjection =
-            projectionView * translate3D(pos.x - 800, -pos.y + 450, 0) * scale3D(size.x, -size.y, 1);
+            projectionView * translate3D(pos.x - screenSize.x/2, -pos.y + screenSize.y/2, -pos.z) * scale3D(size.x, -size.y, 1);
     ovalShader->setUniform4m("ModelViewProjection", modelViewProjection);
     ovalShader->setUniform4f("Color", (float)color.x, (float)color.y, (float)color.z, (float)color.w);
     render->draw(*rectVertexArray, *ovalShader);
 }
 
-void UITool::drawText(const std::string& string, const vec2& pos) {
+void UITool::drawText(const std::string& string, const vec3& pos) {
     RenderChar textVertexData[64];
     unsigned int textIndexData[6 * 64];
 
@@ -127,7 +140,7 @@ void UITool::drawText(const std::string& string, const vec2& pos) {
     auto textureWidth = (float) font.getTextureWidth();
     auto textureHeight = (float) font.getTextureHeight();
 
-    mat4x4 modelViewProjection = projectionView * translate3D(-800, 450, 0) * scale3D(1, -1, 1);
+    mat4x4 modelViewProjection = projectionView * translate3D(-screenSize.x/2, screenSize.y/2, -pos.z) * scale3D(1, -1, 1);
     textShader->setUniform4m("ModelViewProjection", modelViewProjection);
 
     vec2 cursor = pos;

@@ -17,7 +17,14 @@ namespace Zoe {
 class DLL_PUBLIC UITool {
 public:
     /**
-     * Creates UITool with specified target camera
+     * Creates UITool with specified target camera and screen size.
+     * @param camera the target camera
+     * @param size the screen size
+     */
+    UITool(const Camera& camera, const vec2& size);
+
+    /**
+     * Creates UITool with specified target camera.
      * @param camera the target camera
      */
     explicit UITool(const Camera& camera);
@@ -50,27 +57,27 @@ public:
      * @param pos the upper left corner of the result
      * @param size the size of the resulting image
      */
-    void drawImage(const std::shared_ptr<Texture>& image, const vec2& pos, const vec2& size);
+    void drawImage(const std::shared_ptr<Texture>& image, const vec3& pos, const vec2& size);
     /**
      * Draw a rectangle at the specified location and size.
      * @param pos the upper left corner of the result
      * @param size the size of the resulting rectangle
      * @see UITool::setColor
      */
-    void drawRectangle(const vec2& pos, const vec2& size);
+    void drawRectangle(const vec3& pos, const vec2& size);
     /**
      * Draw an oval at the specified location and size.
      * @param pos the upper left corner of a rectangle surrounding the oval
      * @param size the size of the resulting oval
      * @see UITool::setColor
      */
-    void drawOval(const vec2& pos, const vec2& size);
+    void drawOval(const vec3& pos, const vec2& size);
     /**
      * Draw the specified text in the specified location. The text can contain UTF-8 symbols.
      * @param text the specified text
      * @param pos the position of the left end of the baseline
      */
-    void drawText(const std::string& text, const vec2& pos);
+    void drawText(const std::string& text, const vec3& pos);
 
     /**
      * Initializes shared UITool data. Must be called before UITool can be used. Application should call this method.
@@ -82,6 +89,7 @@ private:
     vec4 color;
     Font font;
     mat4x4 projectionView;
+    vec2 screenSize;
 
     std::shared_ptr<VertexBuffer> textVertexBuffer;
     std::shared_ptr<IndexBuffer> textIndexBuffer;

@@ -140,6 +140,9 @@ public:
      */
     Camera2D() = default;
 
+    [[nodiscard]] inline const double& getWidth() const {return width;}
+    [[nodiscard]] inline const double& getHeight() const {return height;}
+
 protected:
     /**
      * Updates the camera position.

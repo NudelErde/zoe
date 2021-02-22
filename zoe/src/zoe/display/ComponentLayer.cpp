@@ -23,7 +23,8 @@ ComponentLayer::ComponentLayer() : ComponentLayer(1600, 900) {}
 ComponentLayer::ComponentLayer(const unsigned int& width, const unsigned int& height) : Layer("ComponentLayer"),
                                                                                         width(width),
                                                                                         height(height) {
-    setSubscribedEvents((unsigned int) EventCategory::Application | (unsigned int) EventCategory::Input);
+    setSubscribedEvents((unsigned int) EventCategory::Application | (unsigned int) EventCategory::Input |
+                        (unsigned int) EventCategory::Window);
     timeOfLastTick = std::chrono::steady_clock::now();
 
     if (!data.init) {
@@ -74,6 +75,9 @@ void ComponentLayer::onEvent(Event& event) {
     dispatcher.dispatch<AppUpdateEvent>([this](AppUpdateEvent& eve) { this->onUpdateEvent(eve); });
     if (event.isInCategory(EventCategory::Input)) {
         inputEvent(event);
+    }
+    if (event.isInCategory(EventCategory::Window)) {
+        onWindowEvent(event);
     }
 }
 
@@ -164,6 +168,16 @@ void ComponentLayer::add(const std::shared_ptr<BaseComponent>& component) {
         layer = std::dynamic_pointer_cast<ComponentLayer>(shared_from_this());
     }
     BaseComponent::add(component);
+}
+void ComponentLayer::onWindowEvent(Event& e) {
+    EventDispatcher eventDispatcher(e);
+    eventDispatcher.dispatch<WindowResizeEvent>([this](WindowResizeEvent& e) { onWindowResize(e); });
+}
+void ComponentLayer::onWindowResize(WindowResizeEvent& e) {
+    displayRender->setViewport(0, 0, e.getWidth(), e.getHeight());
+}
+void ComponentLayer::onAttach() {
+    displayRender->setViewport(0, 0, Application::get().getWindow().getWidth(), Application::get().getWindow().getHeight());
 }
 
 }

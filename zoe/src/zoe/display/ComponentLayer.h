@@ -136,6 +136,10 @@ private:
      */
     void onTickEvent(AppTickEvent& );
 
+    void onWindowEvent(Event& e);
+    void onWindowResize(WindowResizeEvent& e);
+
+    void onAttach() override;
 private:
     std::chrono::time_point<std::chrono::steady_clock> timeOfLastTick;
     std::chrono::time_point<std::chrono::steady_clock> timeOfLastPhysicsTick;

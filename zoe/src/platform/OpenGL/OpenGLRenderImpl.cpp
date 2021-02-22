@@ -18,7 +18,7 @@
 namespace Zoe {
 
 OpenGLRenderImpl::OpenGLRenderImpl(GraphicsContext *context) :
-        RenderImpl(context, 0, 0, 1280, 720) {
+        RenderImpl(context, 0, 0, Application::get().getWindow().getWidth(), Application::get().getWindow().getHeight()) {
     settings.width = Application::get().getWindow().getWidth();
     settings.height = Application::get().getWindow().getHeight();
 }

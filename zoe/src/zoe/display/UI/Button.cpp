@@ -23,15 +23,13 @@ void Button::setClickHandler(const std::function<void()>& handler) {
 }
 
 void Button::onDraw(const Camera& camera) {
-    if(!isVisible())
-        return;
     UITool tool(camera);
     tool.setColor(backgroundColor);
-    vec2 pos = getWorldPosition().xy();
+    vec3 pos = getWorldPosition();
     tool.drawRectangle(pos, size);
     tool.setColor(textColor);
     tool.setFont(font);
-    vec2 textPos = pos;
+    vec3 textPos = pos;
     textPos.y += size.y; /// @todo calculate this so that the text is centered
     tool.drawText(text, textPos);
 }
@@ -79,15 +77,6 @@ void Button::fill(const XMLNode& node) {
     if (auto iter = node.attributes.find("background_a"); iter != node.attributes.end()) {
         backgroundColor.w = std::stof(iter->second);
     }
-
-    //position
-    if (node.attributes.count("x") > 0) {
-        position.x = std::stof(node.attributes.at("x"));
-    }
-    if (node.attributes.count("y") > 0) {
-        position.y = std::stof(node.attributes.at("y"));
-    }
-    position.z = 0;
 
     //size
     if (node.attributes.count("width") > 0) {

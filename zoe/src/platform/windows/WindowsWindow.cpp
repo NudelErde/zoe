@@ -195,10 +195,19 @@ void WindowsWindow::setVSync(bool enabled) {
 bool WindowsWindow::isVSync() const {
 	return data.vSync;
 }
+
+static volatile bool inSetSizeEventRecursion = false;
 void WindowsWindow::setSize(unsigned int width, unsigned int height) {
     data.width = width;
     data.height = height;
     glfwSetWindowSize(window, (int)width, (int)height);
+
+    if(!inSetSizeEventRecursion) {
+        WindowResizeEvent event(width, height);
+        inSetSizeEventRecursion = true;
+        data.eventCallback(event);
+        inSetSizeEventRecursion = false;
+    }
 }
 void WindowsWindow::setTitle(const std::string& str) {
     data.title = str;

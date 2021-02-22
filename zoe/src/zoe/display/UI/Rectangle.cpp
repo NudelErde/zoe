@@ -9,13 +9,10 @@ namespace Zoe {
 
 Rectangle::Rectangle() = default;
 
-
 void Rectangle::onDraw(const Camera& camera) {
-    if(!isVisible())
-        return;
     UITool t(camera);
     t.setColor(color);
-    t.drawRectangle(getWorldPosition().xy(), size);
+    t.drawRectangle(getWorldPosition(), size);
 }
 void Rectangle::onUpdate(double time) {
 
@@ -24,15 +21,6 @@ void Rectangle::onInputEvent(Event& event) {
 
 }
 void Rectangle::fill(const XMLNode& node) {
-    if (auto iter = node.attributes.find("x"); iter != node.attributes.end()) {
-        position.x = std::stof(iter->second);
-    }
-    if (auto iter = node.attributes.find("y"); iter != node.attributes.end()) {
-        position.y = std::stof(iter->second);
-    }
-    if (auto iter = node.attributes.find("z"); iter != node.attributes.end()) {
-        position.z = std::stof(iter->second);
-    }
     if (auto iter = node.attributes.find("width"); iter != node.attributes.end()) {
         size.x = std::stof(iter->second);
     }
