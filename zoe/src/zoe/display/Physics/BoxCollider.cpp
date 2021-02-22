@@ -13,16 +13,6 @@ void BoxCollider::onInputEvent(Event& event) {
 
 }
 void BoxCollider::fill(const XMLNode& node) {
-    if (auto iter = node.attributes.find("x"); iter != node.attributes.end()) {
-        position.x = std::stof(iter->second);
-    }
-    if (auto iter = node.attributes.find("y"); iter != node.attributes.end()) {
-        position.y = std::stof(iter->second);
-    }
-    if (auto iter = node.attributes.find("z"); iter != node.attributes.end()) {
-        position.z = std::stof(iter->second);
-    }
-
     if (auto iter = node.attributes.find("dx"); iter != node.attributes.end()) {
         dimension.x = std::stof(iter->second);
     }

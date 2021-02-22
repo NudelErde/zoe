@@ -46,10 +46,28 @@ std::shared_ptr<BaseComponent> BaseComponent::componentByXML(const XMLNode& node
     }
 }
 
-void BaseComponent::init(const XMLNode& node) {
+void BaseComponent::commonAttributeFill(const XMLNode& node) {
     if(auto iter = node.attributes.find("id"); iter != node.attributes.end()) {
         id = iter->second;
     }
+    if (auto iter = node.attributes.find("x"); iter != node.attributes.end()) {
+        position.x = std::stof(iter->second);
+    }
+    if (auto iter = node.attributes.find("y"); iter != node.attributes.end()) {
+        position.y = std::stof(iter->second);
+    }
+    if (auto iter = node.attributes.find("z"); iter != node.attributes.end()) {
+        position.z = std::stof(iter->second);
+    }
+    if (auto iter = node.attributes.find("visible"); iter != node.attributes.end()) {
+        setVisible(iter->second == "true");
+    } else {
+        setVisible(true);
+    }
+}
+
+void BaseComponent::init(const XMLNode& node) {
+    commonAttributeFill(node);
     fill(node);
     for (const auto& xmlChild : node.children) {
         if (hasComponentConstructor(xmlChild.name)) {
@@ -77,6 +95,8 @@ bool BaseComponent::hasComponentConstructor(const std::string& name) {
 }
 
 void BaseComponent::draw(const Camera& camera) {
+    if(!isVisible())
+        return;
     onDraw(camera);
     for (const auto& child: children) {
         child->draw(camera);

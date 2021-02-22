@@ -15,11 +15,9 @@ namespace Zoe {
 TextBox::TextBox() = default;
 
 void TextBox::onDraw(const Camera& camera) {
-    if(!isVisible())
-        return;
     UITool tool(camera);
     tool.setColor(color);
-    vec2 pos = getWorldPosition().xy();
+    vec3 pos = getWorldPosition();
     tool.drawText(text, pos);
 
     if (!writeable || !hasFocus())
@@ -29,7 +27,7 @@ void TextBox::onDraw(const Camera& camera) {
         warning("Multiline mode is not supported yet.");
     } else {
         int cursorIndex = cursorX;
-        vec2 cursorPos = pos;
+        vec3 cursorPos = pos;
         text.asUTF32([&](uint32_t ch) {
             if (cursorIndex <= 0) {
                 return;
@@ -104,14 +102,6 @@ void TextBox::fill(const XMLNode& node) {
     std::string fontName{};
     int size = -1;
     color.w = 1;
-
-    //position
-    if (auto iter = node.attributes.find("x"); iter != node.attributes.end()) {
-        position.x = std::stof(iter->second);
-    }
-    if (auto iter = node.attributes.find("y"); iter != node.attributes.end()) {
-        position.y = std::stof(iter->second);
-    }
 
     //color
     if (auto iter = node.attributes.find("r"); iter != node.attributes.end()) {

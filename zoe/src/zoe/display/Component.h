@@ -229,6 +229,8 @@ private:
 
     void init(const XMLNode& node);
 
+    void commonAttributeFill(const XMLNode& node);
+
     friend class ComponentLayer;
 
 public:

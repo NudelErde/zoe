@@ -20,7 +20,7 @@ void Image::onDraw(const Camera& camera) {
     if (!isVisible() || !imageSource)
         return;
     UITool t(camera);
-    vec2 pos = getWorldPosition().xy();
+    vec3 pos = getWorldPosition();
     t.drawImage(texture, pos, size);
 }
 void Image::onUpdate(double time) {
@@ -30,15 +30,6 @@ void Image::onInputEvent(Event& event) {
 
 }
 void Image::fill(const XMLNode& node) {
-    if (auto iter = node.attributes.find("x"); iter != node.attributes.end()) {
-        position.x = std::stof(iter->second);
-    }
-    if (auto iter = node.attributes.find("y"); iter != node.attributes.end()) {
-        position.y = std::stof(iter->second);
-    }
-    if (auto iter = node.attributes.find("z"); iter != node.attributes.end()) {
-        position.z = std::stof(iter->second);
-    }
     if (auto iter = node.attributes.find("width"); iter != node.attributes.end()) {
         size.x = std::stof(iter->second);
     }

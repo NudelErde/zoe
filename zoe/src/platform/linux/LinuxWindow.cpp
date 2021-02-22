@@ -196,10 +196,18 @@ bool LinuxWindow::isVSync() const {
 	return data.vSync;
 }
 
+static volatile bool inSetSizeEventRecursion = false;
 void LinuxWindow::setSize(unsigned int width, unsigned int height) {
     data.width = width;
     data.height = height;
     glfwSetWindowSize(window, (int)width, (int)height);
+
+    if(!inSetSizeEventRecursion) {
+        WindowResizeEvent event(width, height);
+        inSetSizeEventRecursion = true;
+        data.eventCallback(event);
+        inSetSizeEventRecursion = false;
+    }
 }
 void LinuxWindow::setTitle(const std::string& str) {
     data.title = str;
