@@ -168,13 +168,18 @@ void BaseComponent::setFocus(bool val) {
     }
 }
 std::shared_ptr<BaseComponent> BaseComponent::getChildByID(const std::string& componentID)  {
-    std::vector<std::shared_ptr<BaseComponent>> childVector = children;
-    for (const auto& child: childVector) {
-        if(child->id == componentID)
-            return child;
-        const auto& grandchildren = child->getChildren();
-        childVector.insert(childVector.end(), grandchildren.begin(), grandchildren.end());
+    std::vector<std::shared_ptr<BaseComponent>> childVector;
+    std::vector<std::shared_ptr<BaseComponent>> newChildren = children;
+    while(!newChildren.empty()) {
+        childVector = newChildren;
+        for (const auto& child: childVector) {
+            if(child->id == componentID)
+                return child;
+            const auto& grandchildren = child->getChildren();
+            newChildren.insert(newChildren.end(), grandchildren.begin(), grandchildren.end());
+        }
     }
+
     return std::shared_ptr<BaseComponent>();
 }
 void BaseComponent::onPhysicsUpdate(double delta) {}

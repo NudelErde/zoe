@@ -41,6 +41,12 @@ public:
     virtual void onCollision(double delta, const std::function<void()>& resolve) {}
 
     /**
+     * Returns a shared pointer to the parent of the NativeScriptComponent.
+     * @return the shared pointer
+     */
+    [[nodiscard]] inline std::shared_ptr<BaseComponent> getComponent() const { return component.lock(); }
+
+    /**
      * The parent of the NativeScriptComponent.
      */
     std::weak_ptr<BaseComponent> component{};
@@ -66,7 +72,8 @@ public:
      * @param scriptName the specified name
      * @param function the function
      */
-    static void registerNativeScript(const std::string &scriptName, const std::function<std::unique_ptr<NativeScript>()>& function);
+    static void
+    registerNativeScript(const std::string& scriptName, const std::function<std::unique_ptr<NativeScript>()>& function);
 
     /**
      * Register a native script class with a specified name
@@ -74,7 +81,7 @@ public:
      * @param scriptName the name of the script
      */
     template<typename ScriptClass>
-    static inline void registerNativeScript(const std::string &scriptName) {
+    static inline void registerNativeScript(const std::string& scriptName) {
         registerNativeScript(scriptName, []() -> std::unique_ptr<NativeScript> {
             return std::make_unique<ScriptClass>();
         });
@@ -86,7 +93,7 @@ public:
      * @param scriptName the script name
      * @return a script instance
      */
-    static std::unique_ptr<NativeScript> getNativeScript(const std::string &scriptName);
+    static std::unique_ptr<NativeScript> getNativeScript(const std::string& scriptName);
 
     /**
      * Returns `true` if the specified script name exists.
@@ -116,24 +123,24 @@ public:
     /**
      * Defines a default move constructor.
      */
-    NativeScriptComponent(NativeScriptComponent &&) noexcept = default;
+    NativeScriptComponent(NativeScriptComponent&&) noexcept = default;
 
     /**
      * Defines a default move assign.
      * @return the result
      */
-    NativeScriptComponent &operator=(NativeScriptComponent &&) noexcept = default;
+    NativeScriptComponent& operator=(NativeScriptComponent&&) noexcept = default;
 
     /**
      * Deletes the copy constructor.
      */
-    NativeScriptComponent(const NativeScriptComponent &) = delete;
+    NativeScriptComponent(const NativeScriptComponent&) = delete;
 
     /**
      * Deletes the copy assign.
      * @return the result
      */
-    NativeScriptComponent &operator=(const NativeScriptComponent &) = delete;
+    NativeScriptComponent& operator=(const NativeScriptComponent&) = delete;
 
     /**
      * Destructs the NativeScriptComponent.
@@ -147,7 +154,7 @@ protected:
      * Does nothing.
      * @param camera the specified camera
      */
-    void onDraw(const Camera &camera) override;
+    void onDraw(const Camera& camera) override;
 
     /**
      * Calls the onUpdate methode of the native script with the delta time.
@@ -160,13 +167,13 @@ protected:
      * Does nothing.
      * @param event the input event
      */
-    void onInputEvent(Event &event) override;
+    void onInputEvent(Event& event) override;
 
     /**
      * Fills this component with the information in the specified xml node.
      * @param node the xml node
      */
-    void fill(const XMLNode &node) override;
+    void fill(const XMLNode& node) override;
 
     /**
      * Completes initialization. This method is called after all children are initialized. It is used to extract information for children.
