@@ -75,6 +75,12 @@ public:
     //virtual void unload() = 0;
 
     /**
+     * Removes the specified component.
+     * @param component the component
+     */
+    virtual void remove(const std::shared_ptr<BaseComponent>& component);
+
+    /**
      * Returns the absolut position of this component.
      * @returns the absolut position
      */
@@ -136,7 +142,9 @@ public:
      * Returns a pointer to the layer in which this component is located.
      * @return a pointer to the layer
      */
-    inline std::shared_ptr<ComponentLayer> getLayer() { return layer.lock(); }
+    [[nodiscard]] inline std::shared_ptr<ComponentLayer> getLayer() const { return layer.lock(); }
+
+    [[nodiscard]] inline const std::string& getID() const { return id; }
 
     /**
      * Returns a pointer to the child with the specified id.

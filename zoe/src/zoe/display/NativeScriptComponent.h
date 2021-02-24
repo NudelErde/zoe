@@ -37,8 +37,9 @@ public:
      * The onCollision function is the collision handler of a PhysicsComponent.
      * @param delta the time since the last check
      * @param resolve the function that can resolve the collision
+     * @param other the other object
      */
-    virtual void onCollision(double delta, const std::function<void()>& resolve) {}
+    virtual void onCollision(double delta, const std::function<void()>& resolve, PhysicsComponent& other) {}
 
     /**
      * Returns a shared pointer to the parent of the NativeScriptComponent.
@@ -111,8 +112,9 @@ public:
      * The onCollision function is the collision handler of a PhysicsComponent.
      * @param delta the time since the last check
      * @param resolve the function that can resolve the collision
+     * @param other the other object
      */
-    void onCollision(double delta, const std::function<void()>& resolve) override;
+    void onCollision(double delta, const std::function<void()>& resolve, PhysicsComponent& other) override;
 
 public:
     /**
@@ -146,6 +148,8 @@ public:
      * Destructs the NativeScriptComponent.
      */
     ~NativeScriptComponent() = default;
+
+    [[nodiscard]] const std::unique_ptr<NativeScript>& getScript() const;
 
 protected:
 

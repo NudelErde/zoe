@@ -8,11 +8,13 @@
 
 void Zoe::PhysicsComponent::onUpdate(double time) {
     if (!hasInit && !physicsGroupName.empty()) {
-        auto ptr = getLayer()->getChildByIDAndType<PhysicsGroup>(physicsGroupName);
-        if (ptr != nullptr) { //init only when group was found
-            hasInit = true;
-            group = ptr;
-            ptr->addPhysicsObject(std::dynamic_pointer_cast<PhysicsComponent>(shared_from_this()));
+        if(auto lay = getLayer(); lay != nullptr) {
+            auto ptr = lay->getChildByIDAndType<PhysicsGroup>(physicsGroupName);
+            if (ptr != nullptr) { //init only when group was found
+                hasInit = true;
+                group = ptr;
+                ptr->addPhysicsObject(std::dynamic_pointer_cast<PhysicsComponent>(shared_from_this()));
+            }
         }
     }
 }

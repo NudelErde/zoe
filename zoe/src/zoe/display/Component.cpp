@@ -28,12 +28,25 @@ void BaseComponent::add(const std::shared_ptr<BaseComponent>& component) {
         component->parent = shared_from_this();
         children.push_back(component);
         std::vector<std::shared_ptr<BaseComponent>> components;
-        components.push_back(component);
-        for (const auto& comp : components) {
-            comp->layer = layer;
-            components.insert(components.end(), comp->children.begin(), comp->children.end());
+        std::vector<std::shared_ptr<BaseComponent>> childComponents;
+        childComponents.push_back(component);
+
+        while(!childComponents.empty()) {
+            components = childComponents;
+            childComponents = std::vector<std::shared_ptr<BaseComponent>>();
+            for (const auto& comp : components) {
+                comp->layer = layer;
+                childComponents.insert(childComponents.begin(), comp->children.begin(), comp->children.end());
+            }
         }
     }
+}
+
+void BaseComponent::remove(const std::shared_ptr<BaseComponent>& component) {
+    component->setFocus(false);
+    children.erase(std::remove(children.begin(), children.end(), component), children.end());
+    component->parent.reset();
+    component->layer.reset();
 }
 
 std::shared_ptr<BaseComponent> BaseComponent::componentByXML(const XMLNode& node) {
@@ -47,7 +60,7 @@ std::shared_ptr<BaseComponent> BaseComponent::componentByXML(const XMLNode& node
 }
 
 void BaseComponent::commonAttributeFill(const XMLNode& node) {
-    if(auto iter = node.attributes.find("id"); iter != node.attributes.end()) {
+    if (auto iter = node.attributes.find("id"); iter != node.attributes.end()) {
         id = iter->second;
     }
     if (auto iter = node.attributes.find("x"); iter != node.attributes.end()) {
@@ -95,7 +108,7 @@ bool BaseComponent::hasComponentConstructor(const std::string& name) {
 }
 
 void BaseComponent::draw(const Camera& camera) {
-    if(!isVisible())
+    if (!isVisible())
         return;
     onDraw(camera);
     for (const auto& child: children) {
@@ -155,7 +168,7 @@ bool BaseComponent::hasFocus() const {
 void BaseComponent::setFocus(bool val) {
     if (val == isFocused)
         return;
-    if(auto layerPtr = layer.lock()) {
+    if (auto layerPtr = layer.lock()) {
         if (val) {
             if (auto ptr = layerPtr->getFocusedObject().lock()) {
                 ptr->isFocused = false;
@@ -167,13 +180,13 @@ void BaseComponent::setFocus(bool val) {
         isFocused = val;
     }
 }
-std::shared_ptr<BaseComponent> BaseComponent::getChildByID(const std::string& componentID)  {
+std::shared_ptr<BaseComponent> BaseComponent::getChildByID(const std::string& componentID) {
     std::vector<std::shared_ptr<BaseComponent>> childVector;
     std::vector<std::shared_ptr<BaseComponent>> newChildren = children;
-    while(!newChildren.empty()) {
+    while (!newChildren.empty()) {
         childVector = newChildren;
         for (const auto& child: childVector) {
-            if(child->id == componentID)
+            if (child->id == componentID)
                 return child;
             const auto& grandchildren = child->getChildren();
             newChildren.insert(newChildren.end(), grandchildren.begin(), grandchildren.end());

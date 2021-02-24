@@ -61,7 +61,7 @@ void ChaiScriptComponent::postFill() {
 void ChaiScriptComponent::onActivation() {
 
 }
-void ChaiScriptComponent::onCollision(double delta, const std::function<void()>& resolve) {
+void ChaiScriptComponent::onCollision(double delta, const std::function<void()>& resolve, PhysicsComponent& other) {
 
 }
 

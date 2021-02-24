@@ -61,7 +61,6 @@ tests/*Test*
 !tests/*.h
 !tests/*.c
 
-examples
 *.vcxproj
 *.filters
 *.sln

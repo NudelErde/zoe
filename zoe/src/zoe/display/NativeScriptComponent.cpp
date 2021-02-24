@@ -62,8 +62,11 @@ void NativeScriptComponent::postFill() {
 void NativeScriptComponent::onActivation() {
     script->onActivation();
 }
-void NativeScriptComponent::onCollision(double delta, const std::function<void()>& resolve) {
-    script->onCollision(delta, resolve);
+void NativeScriptComponent::onCollision(double delta, const std::function<void()>& resolve, PhysicsComponent& other) {
+    script->onCollision(delta, resolve, other);
+}
+const std::unique_ptr<NativeScript>& NativeScriptComponent::getScript() const {
+    return script;
 }
 
 }
