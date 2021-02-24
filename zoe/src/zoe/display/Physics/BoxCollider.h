@@ -28,12 +28,16 @@ public:
      */
     void updateBoundingBox() override;
 
+    [[nodiscard]] inline const std::weak_ptr<ScriptComponent>& getScript() const { return script; }
+    [[nodiscard]] inline const std::string& getScriptID() const { return scriptComponentID; }
+
 protected:
     /**
      * Draws this component on the specified camera.
      * @param camera the specified camera
      */
     void onDraw(const Camera& camera) override;
+
     /**
      * Handles input events.
      * @param event the input event

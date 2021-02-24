@@ -63,6 +63,9 @@ bool specificCheckBoxBox(const std::shared_ptr<PhysicsComponent>& a_abs,
     auto b = std::dynamic_pointer_cast<BoxCollider>(b_abs);
     std::function < void() > nothing = []() {};
 
+    a->updateBoundingBox();
+    b->updateBoundingBox();
+
     if (a->collisionBehavior == BoxCollider::CollisionBehavior::AUTO &&
         b->collisionBehavior == BoxCollider::CollisionBehavior::STATIC) {
         std::swap(a, b);

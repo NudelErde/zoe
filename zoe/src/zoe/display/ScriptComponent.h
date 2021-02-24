@@ -8,6 +8,8 @@
 
 namespace Zoe {
 
+class PhysicsComponent;
+
 /**
  * ScriptComponent is the abstract script. Implemented by ChaiScriptComponent and NativeScriptComponent
  */
@@ -23,7 +25,7 @@ public:
      * @param delta the time since the last check
      * @param resolve the function that can resolve the collision
      */
-    virtual void onCollision(double delta, const std::function<void()>& resolve) = 0;
+    virtual void onCollision(double delta, const std::function<void()>& resolve, PhysicsComponent& other) = 0;
 };
 
 }

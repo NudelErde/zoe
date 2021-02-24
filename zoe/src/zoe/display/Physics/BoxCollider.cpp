@@ -3,6 +3,7 @@
 //
 
 #include "BoxCollider.h"
+#include "../ComponentLayer.h"
 
 namespace Zoe {
 
@@ -63,8 +64,12 @@ void BoxCollider::postFill() {
     }
 }
 void BoxCollider::onCollision(PhysicsComponent& other, double delta, const std::function<void()>& resolve) {
+    if(!script.lock() && getLayer()) {
+        script = getLayer()->getChildByIDAndType<ScriptComponent>(scriptComponentID);
+    }
+
     if(auto ptr = script.lock()) {
-        ptr->onCollision(delta, resolve);
+        ptr->onCollision(delta, resolve, other);
     }
     if (collisionBehavior == CollisionBehavior::AUTO) {
         resolve();
